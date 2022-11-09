@@ -35,6 +35,7 @@ export const pathList = [
   { title: '认知管理', topMenuId: 3 },
   { title: '运营管理', topMenuId: 4 },*/
   { title: '系统管理', topMenuId: 1 },
+  { title: '开发工具', topMenuId: 3 },
   { title: '我的账号', topMenuId: 2, hidden: true }
 ]
 /**
@@ -178,6 +179,62 @@ export const constantRoutes = [
         name: 'changePassword',
         component: () => import('@/views/accountManage/changePassword'),
         meta: { title: '修改密码' }
+      }
+    ]
+  },
+  // 代码生成
+  {
+    path: '/code',
+    component: Layout,
+    meta: { title: '代码生成', leftMenuId: 3 },
+    redirect: '/code/list',
+    children: [
+      {
+        path: 'list',
+        name: 'list',
+        component: () => import('@/views/codeCreate/index'),
+        meta: { title: '代码生成器' }
+      },
+      {
+        path: 'dist',
+        name: 'dist',
+        component: () => import('@/views/dictManage/dictList'),
+        meta: { title: '字典管理' }
+      },
+      // {
+      //   path: 'demo',
+      //   name: 'demo',
+      //   component: () => import('@/views/demo/list'),
+      //   meta: { title: '案例' }
+      // },
+      // {
+      //   path: 'demo/detail',
+      //   name: 'demo',
+      //   component: () => import('@/views/demo/detail'),
+      //   meta: { title: '案例详情' }
+      // }
+    ]
+  },
+  {
+    path: '/goodsBase',
+    component: Layout,
+    meta: { title: '商品基本信息', leftMenuId: 3 },
+    redirect: '/goodsBase/list',
+    children: [
+      {
+        path: 'list',
+        name: 'list',
+        component: () => import('@/views/goodsBase/list'),
+        meta: { title: '商品基本信息' },
+        children: [
+          {
+            path: 'detail',
+            name: 'detail',
+            component: () => import('@/views/goodsBase/detail'),
+            meta: { title: '详情', routerId: 3 },
+            hidden: true
+          }
+        ]
       }
     ]
   },
