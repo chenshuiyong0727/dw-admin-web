@@ -118,7 +118,13 @@ export default {
         this.$alert('没有选中数据')
         return
       }
-      this.isShowDialog1 = true
+      this.$confirm('是否批量修改关键词（包含下一级）?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.isShowDialog1 = true
+      })
     },
     selected(val) {
       this.selectedId = val
