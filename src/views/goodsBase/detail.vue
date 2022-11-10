@@ -66,13 +66,13 @@
           </el-upload>
         </el-form-item>
       </el-row>
-      <el-row class="form-flex">
-        <el-col :span="10">
-          <el-form-item  prop="imgUrl" label="图片地址"    class="is-required" >
-            <el-input v-model="form.imgUrl" :disabled="type == 1 "></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
+<!--      <el-row class="form-flex">-->
+<!--        <el-col :span="10">-->
+<!--          <el-form-item  prop="imgUrl" label="图片地址"    class="is-required" >-->
+<!--            <el-input v-model="form.imgUrl" :disabled="type == 1 "></el-input>-->
+<!--          </el-form-item>-->
+<!--        </el-col>-->
+<!--      </el-row>-->
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item  prop="brand" label="品牌" >

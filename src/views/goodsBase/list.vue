@@ -60,16 +60,17 @@
 
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-      <el-table-column align="center" prop="id" label="商品基本信息编号" />
-      <el-table-column align="center" prop="type" label="类型">
-        <template slot-scope="scope">{{ scope.row.type | dictToDescTypeValue(20221108) }}</template>
-      </el-table-column>
+
       <el-table-column align="center" prop="actNo" label="货号" />
       <el-table-column align="center" label="图片"  width="120">
         <template slot-scope="scope">
           <img  v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"  @click="avatarShow(scope.row.imgUrl)" >
         </template>
       </el-table-column>
+      <el-table-column align="center" prop="type" label="类型">
+        <template slot-scope="scope">{{ scope.row.type | dictToDescTypeValue(20221108) }}</template>
+      </el-table-column>
+      <el-table-column align="center"   width="180" prop="id"  label="商品基本信息编号" />
       <el-table-column align="center" prop="name" label="商品名称" />
       <el-table-column align="center" prop="brand" label="品牌" />
       <el-table-column align="center" prop="remark" label="备注" />
