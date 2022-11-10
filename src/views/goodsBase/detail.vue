@@ -25,7 +25,9 @@
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item  prop="actNo" label="货号"    class="is-required" >
-            <el-input v-model="form.actNo" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.actNo" :disabled="type == 1 ">
+              <el-button type="primary"  slot="append" @click="getImgUrl(form.actNo)" icon="el-icon-refresh">获取图片</el-button>
+            </el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -35,6 +37,34 @@
             <el-input v-model="form.name" :disabled="type == 1 "></el-input>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row>
+        <el-form-item label="图片" class="is-required">
+          <el-upload
+            :disabled="type == 1"
+            class="avatar-uploader"
+            action="/gw/op/v1/file/uploadFile"
+            :show-file-list="false"
+            :on-success="handleImageSuccess"
+            :before-upload="beforeImageUpload"
+          >
+            <img
+              v-if="form.imgUrl"
+              :src="fileUrl + form.imgUrl"
+              style="width: 240px"
+              @click="avatarShow(form.imgUrl)"
+            />
+            <el-button v-if="type != 1" v-show="!form.imgUrl" size="small"
+            >上传图片</el-button
+            >
+            <el-button
+              v-if="type != 1"
+              v-show="form.imgUrl"
+              size="small"
+              style="margin-right: 15px"
+            >重新上传</el-button>
+          </el-upload>
+        </el-form-item>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
@@ -71,20 +101,21 @@
   </div>
 </template>
 <script>
+import { fileApi } from '@/api/file'
 import { goodsBaseApi } from '@/api/goodsBase'
-import { validatorRule } from '@/utils/validateRlue'
 export default {
   data() {
     return {
       form: {
-      	type: '',
-      	actNo: '',
+      	type: 1,
+      	actNo: 'ao3108018',
       	name: '',
       	imgUrl: '',
-      	brand: '',
+      	brand: '耐克',
       	remark: '',
 	 		},
-	    typeList: [],
+      fileUrl: fileUrl,
+      typeList: [],
 	    dataStatusList: [],
 	    type: '',
 	    id: '',
@@ -114,6 +145,34 @@ export default {
     this.listSysDict()
   },
   methods: {
+    avatarShow(e) {
+      if (!e){
+        return
+      }
+      window.open(this.fileUrl + e)
+    },
+    async handleImageSuccess(res, file) {
+      this.form.imgUrl = res.data
+    },
+    beforeImageUpload(file) {
+      const fileName = file.name
+      const fileType = fileName.substring(fileName.lastIndexOf('.'))
+      // jpeg,.png,.jpg,.bmp,.gif
+      if (
+        fileType === '.jpg' ||
+        fileType === '.png' ||
+        fileType === '.jpeg' ||
+        fileType === '.bmp' ||
+        fileType === '.gif'
+      ) {
+        // 不处理
+      } else {
+        this.$message.error(
+          '不是,jpeg,.png,.jpg,.bmp,.gif文件,请上传正确的图片类型'
+        )
+        return false
+      }
+    },
     getDetailById(id) {
       if (id) {
         goodsBaseApi.getDetailById(id).then(res => {
@@ -124,6 +183,35 @@ export default {
           }
         })
       }
+    },
+    // getImgUrl(actNo) {
+    //   if (!actNo) {
+    //     this.$message.error('请输入货号')
+    //     return false
+    //   }
+    //   // let actNo = this.form.actNo
+    //   fileApi.getImgUrl(actNo).then(res => {
+    //     if (res.subCode === 1000) {
+    //       this.$message.error(res.subMsg)
+    //     } else {
+    //       this.$message.error(res.subMsg)
+    //     }
+    //   })
+    // },
+    getImgUrl(actNo) {
+      if (!actNo) {
+        this.$message.error('请输入货号')
+        return false
+      }
+      fileApi.getImgUrl({ actNo }).then(res => {
+        if (res.subCode === 1000) {
+          console.info(res.data)
+          this.$message.success(res.subMsg)
+          this.form.imgUrl = res.data.url
+        } else {
+          this.$message.error(res.subMsg)
+        }
+      })
     },
     listSysDict() {
       let sysDictList = sessionStorage.getItem('sysDictList') ? JSON.parse(sessionStorage.getItem('sysDictList')) : []
@@ -140,6 +228,10 @@ export default {
     submit() {
       this.$refs['form'].validate(async(valid) => {
         if (!valid) {
+          return false
+        }
+        if (!this.form.imgUrl) {
+          this.$message.error('上传图片')
           return false
         }
 	      if (this.type == 2) {

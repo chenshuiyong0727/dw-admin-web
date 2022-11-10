@@ -30,6 +30,17 @@ export const goodsBaseApi = {
     url: '/gw/op/v1/goodsBase/' + id,
     method: 'get'
   }),
+
+  // 获取详情
+  getImgUrl: (actNo) => request({
+    url: '/gw/op/v1/file/getImgUrl/' + actNo,
+    method: 'get'
+  }),
+  // getImgUrl: (body) => request({
+  //   url: '/gw/op/v1/file/getImgUrl',
+  //   method: 'get',
+  //   params: body
+  // }),
   // 新增
   add: (body) => request({
     url: '/gw/op/v1/goodsBase',
