@@ -26,11 +26,6 @@ router.beforeEach(async(to, from, next) => {
       next({ path: '/' })
       NProgress.done()
     } else {
-      if (to.path === '/systemClass') {
-        next()
-        NProgress.done()
-        return
-      }
       if (to.path.toLowerCase() === '/noauthority') {
         next()
         NProgress.done()

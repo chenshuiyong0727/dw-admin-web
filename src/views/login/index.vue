@@ -191,21 +191,21 @@ export default {
         if (res.data) {
           // 初始化字典
           initSysDict().then(() => {
-            // const functionList = JSON.parse(sessionStorage.getItem('functionList'))
-            // const allRouter = functionList.filter(item => item.functionType == '1' && item.route)
-            // allRouter.sort((a, b) => {
-            //   return a.sort - b.sort
-            // })
-            // const isHasRouterAuth = functionList.filter(item => item.functionType == '1' && item.route && item.route == this.redirect)
-            // if (!isHasRouterAuth.length) {
-            //   this.redirect = allRouter[0].route
-            // }
-            // this.$router.push({ path: this.redirect || '/systemClass' })
-            if (this.redirectUrl && this.systemId && this.systemId != 0) {
-              this.$router.push({ path: '/systemClass', query: { redirectUrl: this.redirectUrl, systemId: this.systemId }})
-            } else {
-              this.$router.push('/systemClass')
+            const functionList = JSON.parse(sessionStorage.getItem('functionList'))
+            const allRouter = functionList.filter(item => item.functionType == '1' && item.route)
+            allRouter.sort((a, b) => {
+              return a.sort - b.sort
+            })
+            const isHasRouterAuth = functionList.filter(item => item.functionType == '1' && item.route && item.route == this.redirect)
+            if (!isHasRouterAuth.length) {
+              this.redirect = allRouter[0].route
             }
+            this.$router.push({ path: this.redirect || '/systemClass' })
+            // if (this.redirectUrl && this.systemId && this.systemId != 0) {
+            //   this.$router.push({ path: '/systemClass', query: { redirectUrl: this.redirectUrl, systemId: this.systemId }})
+            // } else {
+            //   this.$router.push('/systemClass')
+            // }
           })
         } else {
           this.$message.error(res.subMsg)

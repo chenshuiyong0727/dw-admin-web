@@ -27,6 +27,7 @@
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img src="../../resources/assets/images/default_user.png" class="user-avatar">
+<!--          <img src="../../resources/assets/images/header.jpg" class="user-avatar">-->
           <span class="user-name">{{ name ? name : userName ? userName : '系统用户' }}</span>
           <i class="el-icon-caret-bottom" />
         </div>
@@ -41,9 +42,6 @@
               修改密码
             </el-dropdown-item>
           </router-link>
-          <el-dropdown-item divided @click.native="switchSystem">
-            <span style="display:block;">切换系统</span>
-          </el-dropdown-item>
           <el-dropdown-item divided @click.native="logout">
             <span style="display:block;">退出登录</span>
           </el-dropdown-item>
@@ -134,9 +132,6 @@ export default {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login`)
     },
-    async switchSystem() {
-      this.$router.push(`/login`)
-    }
   }
 }
 </script>

@@ -56,7 +56,7 @@ export const constantRoutes = [
   },
   {
     path: '/',
-    redirect: '/systemClass',
+    redirect: '/goodsBase',
     hidden: true
   },
   // 组织管理
@@ -237,11 +237,6 @@ export const constantRoutes = [
         ]
       }
     ]
-  },
-  {
-    path: '/systemClass',
-    component: () => import('@/views/systemClass'),
-    hidden: true
   },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
