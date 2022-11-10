@@ -40,7 +40,7 @@ service.interceptors.request.use(
       // please modify it according to the actual situation
       if (config.url !== '/gw/op/v1/auth/login') {
         config.headers['tokenAuth'] = getCookieByName('org_token_auth')
-        config.headers['xxlSsoSessionId'] = getCookieByName('session_id')
+        // config.headers['xxlSsoSessionId'] = getCookieByName('session_id')
         config.headers['sign'] = 'sdfa454werwrw'
       }
     }

@@ -6,7 +6,7 @@ import { resetRouter } from '@/router'
 const getDefaultState = () => {
   return {
     token: getCookieByName('org_token_auth'),
-    sessionId: getCookieByName('sessionId'),
+    // sessionId: getCookieByName('sessionId'),
     name: '',
     avatar: '',
     userId: ''
@@ -22,9 +22,9 @@ const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
   },
-  SET_SESSION_ID: (state, sessionId) => {
-    state.sessionId = sessionId
-  },
+  // SET_SESSION_ID: (state, sessionId) => {
+  //   state.sessionId = sessionId
+  // },
   SET_REFRESH_TOKEN: (state, refreshToken) => {
     state.refreshToken = refreshToken
   },
@@ -54,11 +54,11 @@ const actions = {
           sessionStorage.setItem('projectList', JSON.stringify(data.projectList))
           sessionStorage.setItem('systemList', JSON.stringify(data.systemList))
           commit('SET_TOKEN', data.token)
-          commit('SET_SESSION_ID', data.sessionId)
+          // commit('SET_SESSION_ID', data.sessionId)
           commit('SET_USER_ID', data.userId)
           commit('SET_NAME', data.userAccount)
           setCookieByName('org_token_auth', data.token)
-          setCookieByName('session_id', data.sessionId)
+          // setCookieByName('session_id', data.sessionId)
           setCookieByName('refresh_org_token_auth', data.refreshToken)
           setCookieByName('user_id', data.userId)
           setCookieByName('user_name', data.userAccount)
