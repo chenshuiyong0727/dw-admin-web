@@ -63,22 +63,28 @@
           <el-button type="text" @click="showDictEdit(scope.row)">
             编辑
           </el-button>
+          <el-button type="text" @click="showDictDrawer(scope.row)">
+            设置字典
+          </el-button>
+          <el-button type="text" @click="handleDelete(scope.row)">
+            删除
+          </el-button>
 
-          <el-divider direction="vertical"></el-divider>
+<!--          <el-divider direction="vertical"></el-divider>-->
 
-          <el-dropdown trigger="click">
-            <span class="el-dropdown-link">
-              下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="showDictDrawer(scope.row)"
-                >设置字典</el-dropdown-item
-              >
-              <el-dropdown-item @click.native="handleDelete(scope.row)"
-                >删除</el-dropdown-item
-              >
-            </el-dropdown-menu>
-          </el-dropdown>
+<!--          <el-dropdown trigger="click">-->
+<!--            <span class="el-dropdown-link">-->
+<!--              下拉菜单<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
+<!--            </span>-->
+<!--            <el-dropdown-menu slot="dropdown">-->
+<!--              <el-dropdown-item @click.native="showDictDrawer(scope.row)"-->
+<!--                >设置字典</el-dropdown-item-->
+<!--              >-->
+<!--              <el-dropdown-item @click.native="handleDelete(scope.row)"-->
+<!--                >删除</el-dropdown-item-->
+<!--              >-->
+<!--            </el-dropdown-menu>-->
+<!--          </el-dropdown>-->
         </template>
       </el-table-column>
     </el-table>

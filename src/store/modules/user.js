@@ -70,7 +70,7 @@ const actions = {
     })
   },
 
-  // user logout
+  // user logout 库存
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
       userContainerApi.logout().then(res => {
