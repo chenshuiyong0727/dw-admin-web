@@ -46,8 +46,8 @@
       <el-table-column show-overflow-tooltip  prop="functionName" width="130" label="菜单名称" />
       <el-table-column show-overflow-tooltip  prop="functionKey" width="220" label="菜单键值" />
       <el-table-column show-overflow-tooltip  prop="locationPath" width="300" label="本地路径" />
-      <el-table-column show-overflow-tooltip  prop="sort" label="排序" />
       <el-table-column show-overflow-tooltip  prop="route"  width="200" label="路由" />
+      <el-table-column show-overflow-tooltip  prop="sort" label="排序" />
       <el-table-column  prop="functionType" label="权限类型">
         <template slot-scope="scope">{{ scope.row.functionType | dictToDescTypeValue(8) }}</template>
       </el-table-column>

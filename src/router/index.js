@@ -219,7 +219,7 @@ export const constantRoutes = [
     path: '/goodsBase',
     component: Layout,
     meta: { title: '商品基本信息', leftMenuId: 3 },
-    redirect: '/goodsBase/list',
+    redirect: '/goodsBase/goodsInventory',
     children: [
       {
         path: 'list',
@@ -231,6 +231,21 @@ export const constantRoutes = [
             path: 'detail',
             name: 'detail',
             component: () => import('@/views/goodsBase/detail'),
+            meta: { title: '详情', routerId: 3 },
+            hidden: true
+          }
+        ]
+      },
+      {
+        path: 'goodsInventory',
+        name: 'goodsInventory',
+        component: () => import('@/views/goodsInventory/list'),
+        meta: { title: '商品库存' },
+        children: [
+          {
+            path: 'detail',
+            name: 'detail',
+            component: () => import('@/views/goodsInventory/detail'),
             meta: { title: '详情', routerId: 3 },
             hidden: true
           }
