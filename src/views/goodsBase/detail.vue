@@ -66,6 +66,23 @@
           </el-upload>
         </el-form-item>
       </el-row>
+      <el-row class="form-flex">
+        <el-col :span="10">
+          <el-form-item  prop="sizeList" label="尺码" class="is-required">
+            <el-cascader ref="owner" :disabled="type == 1 " v-model="sizeList"
+                         :options="options" @change="getSize" :show-all-levels="true"
+                         :props="props" size="small"  style="width:100%; display:inline-block"></el-cascader>
+
+<!--            <el-input v-model="sizeList" :disabled="type == 1 "></el-input>-->
+          </el-form-item>
+        </el-col>
+      </el-row>
+<!--      <el-row class="form-flex">-->
+<!--        <el-col :span="5"><i class="red">*</i><span>尺码：</span></el-col>-->
+<!--        <el-col :span="18" :offset="1">-->
+<!--          <el-cascader ref="owner" v-model="sizeList" :options="options" @change="getSize" :show-all-levels="true" :props="props" size="small"  style="width:100%; display:inline-block"></el-cascader>-->
+<!--        </el-col>-->
+<!--      </el-row>-->
 <!--      <el-row class="form-flex">-->
 <!--        <el-col :span="10">-->
 <!--          <el-form-item  prop="imgUrl" label="图片地址"    class="is-required" >-->
@@ -113,12 +130,19 @@ export default {
       	imgUrl: '',
       	brand: '耐克',
       	remark: '',
-	 		},
+        sizeList: []
+      },
+      props: {
+        lazy: false,
+        multiple: true
+      },
+      sizeList: [],
       fileUrl: fileUrl,
       typeList: [],
 	    dataStatusList: [],
 	    type: '',
 	    id: '',
+      options: [],
       rules: {
 				type: [
 				  { required: true, trigger: 'blur', message: '类型非空' },
@@ -142,9 +166,42 @@ export default {
     }
   },
   mounted() {
-    this.listSysDict()
+    this.init()
   },
   methods: {
+    getSize() {
+      this.form.sizeList = []
+      for (let i = 0; i < this.sizeList.length; i++) {
+        this.form.sizeList.push(this.sizeList[i][1])
+      }
+    },
+    listSysDict() {
+      let sysDictList = sessionStorage.getItem('sysDictList') ? JSON.parse(sessionStorage.getItem('sysDictList')) : []
+      this.typeList = sysDictList.filter(item => item.typeValue == 20221108)
+      this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
+    },
+    init() {
+      this.listSysDict()
+      let typeList = this.typeList
+      let options = []
+      for (let i = 0; i < typeList.length; i++) {
+        goodsBaseApi.listDropDownSizes({ type: typeList[i].fieldValue }, false).then (res => {
+          if (res.subCode === 1000) {
+            options.push({
+              label: typeList[i].fieldName,
+              value: typeList[i].fieldValue,
+              children: res.data.map(item => {
+                return {
+                  value: item.id,
+                  label: item.size
+                }
+              })
+            })
+          }
+        })
+      }
+      this.options = options
+    },
     avatarShow(e) {
       if (!e){
         return
@@ -178,26 +235,17 @@ export default {
         goodsBaseApi.getDetailById(id).then(res => {
           if (res.subCode === 1000) {
             this.form = res.data ? res.data : {}
+            this.form.sizeList = []
+            this.sizeList = res.data.sizeListList
+            for (let i = 0; i < res.data.sizeListList.length; i++) {
+              this.form.sizeList.push(res.data.sizeListList[i][1])
+            }
           } else {
             this.$message.error(res.subMsg)
           }
         })
       }
     },
-    // getImgUrl(actNo) {
-    //   if (!actNo) {
-    //     this.$message.error('请输入货号')
-    //     return false
-    //   }
-    //   // let actNo = this.form.actNo
-    //   fileApi.getImgUrl(actNo).then(res => {
-    //     if (res.subCode === 1000) {
-    //       this.$message.error(res.subMsg)
-    //     } else {
-    //       this.$message.error(res.subMsg)
-    //     }
-    //   })
-    // },
     getImgUrl(actNo) {
       if (!actNo) {
         this.$message.error('请输入货号')
@@ -213,13 +261,7 @@ export default {
         }
       })
     },
-    listSysDict() {
-      let sysDictList = sessionStorage.getItem('sysDictList') ? JSON.parse(sessionStorage.getItem('sysDictList')) : []
-      this.typeList = sysDictList.filter(item => item.typeValue == 20221108)
-      this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
-    },
     goBack() {
-    	// *** 根据真实路径配置地址
       this.$router.push({path: '/goodsBase/list'})
     },
     goEdit() {
@@ -232,6 +274,10 @@ export default {
         }
         if (!this.form.imgUrl) {
           this.$message.error('上传图片')
+          return false
+        }
+        if (!this.form.sizeList.length) {
+          this.$message.error('请选择尺码')
           return false
         }
 	      if (this.type == 2) {

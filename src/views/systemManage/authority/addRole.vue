@@ -17,6 +17,10 @@
       <el-col :span="5"><i class="red">*</i><span>角色名称：</span></el-col>
       <el-col :span="18" :offset="1"><el-input maxlength="15" v-model="roleName" placeholder="角色名称" size="small"></el-input></el-col>
     </el-row>
+    <el-row class="button" type="flex" justify="center">
+      <el-button type="primary" @click="getCheckedKeys">确认</el-button>
+      <el-button type="text" @click="goBack">返回</el-button>
+    </el-row>
     <div class="author-list">
       <div class="list">
         <p>全部功能权限</p>
@@ -63,10 +67,6 @@
         </div>
       </div>
     </div>
-    <el-row class="button" type="flex" justify="center">
-      <el-button type="primary" @click="getCheckedKeys">确认</el-button>
-      <el-button type="text" @click="goBack">返回</el-button>
-    </el-row>
   </div>
 </template>
 <script>

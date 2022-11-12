@@ -69,19 +69,6 @@
       <el-col :span="5"><i class="red">*</i><span>联系电话：</span></el-col>
       <el-col :span="18" :offset="1"><el-input v-input-validation v-model="param.userMobile" maxlength="11" placeholder="联系电话" size="small"></el-input></el-col>
     </el-row>
-    <!-- <el-row class="form-flex">
-      <el-col :span="5"><i class="red">*</i><span>角色：</span></el-col>
-      <el-col :span="18" :offset="1">
-        <el-select v-model="param.roleIds" multiple style="width:100%; display:inline-block" size="small">
-          <el-option
-            v-for="item in roleList"
-            :key="item.roleId"
-            :label="item.roleName"
-            :value="item.roleId">
-          </el-option>
-        </el-select>
-      </el-col>
-    </el-row> -->
     <el-row class="form-flex">
       <el-col :span="5"><i class="red">*</i><span>角色：</span></el-col>
       <el-col :span="18" :offset="1"><el-cascader ref="owner" v-model="roleIds" :options="options" @change="getOwner" :show-all-levels="true" :props="props" size="small"  style="width:100%; display:inline-block"></el-cascader></el-col>
@@ -146,13 +133,8 @@ export default {
     }
   },
   methods: {
-   
+
     getOwner() {
-      // let tempObj = this.$refs.owner.getCheckedNodes()[0]
-      // console.log(this.roleIds)
-      // if (tempObj) {
-      //   this.param.roleIds.push(tempObj.value)
-      // }
       this.param.roleIds = []
       for (let i = 0; i < this.roleIds.length; i++) {
         this.param.roleIds.push(this.roleIds[i][1])
