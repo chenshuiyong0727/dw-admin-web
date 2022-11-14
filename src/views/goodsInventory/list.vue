@@ -7,7 +7,7 @@
           <el-row class="query-form">
             <el-col>
               <el-form-item size="small">
-                <el-input v-model.trim="queryParam.id" placeholder="关键词 （货号、尺码）"></el-input>
+                <el-input v-model.trim="queryParam1.keyword" placeholder="关键词 （货号、尺码）"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -27,7 +27,7 @@
           </el-row>
         </el-form>
 
-        <el-table style="margin-top: 20px" border :data="tableData" @selection-change="selected">
+        <el-table style="margin-top: 20px" border :data="tableData1" @row-click="rowClick">
 
           <el-table-column align="center" prop="goodsId" label="商品编号"/>
           <el-table-column align="center" prop="sizeId" label="尺码编号"/>
@@ -37,11 +37,11 @@
           <el-pagination
             @size-change="reSearchHandle"
             @current-change="pageChangeHandle"
-            :current-page="queryParam.pageNum"
+            :current-page="queryParam1.pageNum"
             :page-sizes="[10, 20, 50, 100]"
-            :page-size="queryParam.pageSize"
+            :page-size="queryParam1.pageSize"
             layout="total, prev, pager, next, jumper"
-            :total="totalCount">
+            :total="totalCount1">
           </el-pagination>
         </el-row>
       </div>
@@ -195,6 +195,11 @@ export default {
   },
   data() {
     return {
+      queryParam1: {
+        keyword: '',
+        pageSize: 10,
+        pageNum: 1
+      },
       queryParam: {
         id: '',
         goodsId: '',
@@ -214,14 +219,20 @@ export default {
       selectedId: [],
       ids: [],
       tableData: [],
+      tableData1: [],
+      totalCount1: 1,
       totalCount: 1
     }
   },
   mounted() {
-    this.getPage()
+    this.page()
     this.listSysDict()
   },
   methods: {
+    rowClick(row) {
+      // this.queryParam.id = row.id
+      this.pageGoods(row.id)
+    },
     showInventoryDrawer() {
       this.$refs['inventory-detail-edit'].show()
     },
@@ -243,7 +254,21 @@ export default {
         this.queryParam.updateTimeTo = null
       }
     },
-    getPage() {
+    page() {
+      goodsInventoryApi.page(this.queryParam1).then(res => {
+        if (res.subCode === 1000) {
+          this.tableData1 = res.data ? res.data.list : []
+          this.totalCount1 = res.data ? res.data.pageInfo.totalCount : 0
+          this.pageGoods(this.tableData1[0].id)
+        } else {
+          this.$message.error(res.subMsg)
+        }
+      })
+    },
+    pageGoods(id) {
+      if (id) {
+        this.queryParam.id = id
+      }
       goodsInventoryApi.page(this.queryParam).then(res => {
         if (res.subCode === 1000) {
           this.tableData = res.data ? res.data.list : []

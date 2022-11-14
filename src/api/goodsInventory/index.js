@@ -6,6 +6,12 @@ export const goodsInventoryApi = {
     method: 'get',
     params: body
   }),
+  // 获取数据列表
+  pageGoods: (body) => request({
+    url: '/gw/op/v1/goodsInventory',
+    method: 'get',
+    params: body
+  }),
   // 批量删除
   batchdelete: (body) => request({
     url: '/gw/op/v1/goodsInventory/batch/remove',
