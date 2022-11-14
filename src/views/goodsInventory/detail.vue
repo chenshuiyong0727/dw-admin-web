@@ -1,150 +1,329 @@
 <template>
-  <div class="page-container">
-    <el-row type="flex"  justify="space-between" class="top-flex" >
-      <h5  v-if="type == 1">详情</h5>
-      <h5  v-if="type == 2">编辑</h5>
-      <h5  v-if="type == 3">新增</h5>
-      <el-button size="small" style="margin-right: 10px ; margin-bottom: 10px" @click="goBack()">返回列表</el-button>
-    </el-row>
-    <el-form ref="form" :model="form"  :rules="rules" label-width="150px">
-      <el-row class="form-flex">
-        <el-col :span="10">
-          <el-form-item  prop="id" label="库存编号"    class="is-required" >
-            <el-input v-model="form.id" :disabled="type == 1 "></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row class="form-flex">
-        <el-col :span="10">
-          <el-form-item  prop="goodsId" label="商品编号"    class="is-required" >
-            <el-input v-model="form.goodsId" :disabled="type == 1 "></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row class="form-flex">
-        <el-col :span="10">
-          <el-form-item  prop="sizeId" label="尺码编号"    class="is-required" >
-            <el-input v-model="form.sizeId" :disabled="type == 1 "></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row class="form-flex">
-        <el-col :span="10">
-          <el-form-item  prop="inventory" label="库存"    class="is-required" >
-            <el-input v-model="form.inventory" :disabled="type == 1 "></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-form-item>
-        <el-button-group v-if="type != 1">
-          <el-button type="primary" @click="submit()">提交</el-button>
-          <el-button  @click="goBack()">取消</el-button>
-        </el-button-group>
-        <el-button-group v-else>
-          <el-button  type="primary"  @click="goEdit">编辑</el-button>
-        </el-button-group>
-      </el-form-item>
-    </el-form>
-  </div>
+    <div class="page-container container-flex">
+      <div class="container-left" >
+        <el-row class="clearfix btm-distance">
+          <div class="overview">
+            <h5>{{form.actNo}}</h5>
+            <img
+              v-if="form.imgUrl"
+              :src="fileUrl + form.imgUrl"
+              style="width: 100px;height: 100px;"
+              @click="avatarShow(form.imgUrl)"
+            />
+          </div>
+        </el-row>
+        <el-form ref="form" style="padding-top: 70px;">
+          <el-row class="query-form">
+            <el-col>
+              <el-form-item size="small">
+                <el-input v-model.trim="unifiedPrice" placeholder="一键设置入库价">
+                  <el-button type="primary"  slot="append" @click="setUnifiedPrice()" >确认</el-button>
+                </el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+        <el-row class="clearfix btm-distance">
+          <span @click="addSizeHandle(item, index)"
+                :class="activeIndex.includes(index) ? 'cityActive' : 'city'"
+                v-for="(item, index) in form.sizeVoList" :key="item.id">{{item.size}} </span>
+        </el-row>
+      </div>
+      <div class="container-right">
+        <el-table style="margin-top: 20px" border :data="tableData">
+
+<!--          <el-table-column type="selection" width="55"></el-table-column>-->
+          <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+          <el-table-column align="center" prop="size" label="尺码"/>
+          <el-table-column align="center" prop="inventory" label="库存">
+            <template scope="scope">
+              <div class="input-box">
+                <el-input-number size="small"  v-model="scope.row.inventory" ></el-input-number>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="price" label="单价">
+            <template scope="scope">
+              <div class="input-box">
+                <el-input size="small"  v-model="scope.row.price"></el-input>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="createTime" label="总价">
+            <template v-if="scope.row.price && scope.row.inventory" slot-scope="scope">{{scope.row.price * scope.row.inventory }}</template>
+          </el-table-column>
+          <el-table-column fixed="right" align="center" label="操作" width="130">
+            <template slot-scope="scope">
+              <el-button type="text" @click="goDel(scope.row.sizeIndex,scope.row)">删除
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </div>
 </template>
+
 <script>
-  import { goodsInventoryApi } from '@/api/goodsInventory'
-  import { validatorRule } from '@/utils/validateRlue'
-  export default {
-    data() {
-      return {
-        form: {
-      id: '',
-      goodsId: '',
-      sizeId: '',
-      inventory: '',
-    },
-      dataStatusList: [],
-      type: '',
+import { goodsBaseApi } from '@/api/goodsBase'
+import { goodsInventoryApi } from '@/api/goodsInventory'
+import { permissionMixin } from '@/mixins/permissionMixin'
+
+export default {
+  mixins: [permissionMixin],
+  components: {
+  },
+  data() {
+    return {
+      form: {
+        sizeVoList: '',
+        actNo: '',
+        imgUrl: ''
+      },
+      queryParam1: {
+        keyword: '',
+        pageSize: 10,
+        pageNum: 1
+      },
+      queryParam: {
         id: '',
-        rules: {
-        id: [
-        { required: true, trigger: 'blur', message: '库存编号非空' },
-      ],
-        goodsId: [
-        { required: true, trigger: 'blur', message: '商品编号非空' },
-      ],
-        sizeId: [
-        { required: true, trigger: 'blur', message: '尺码编号非空' },
-      ],
-        inventory: [
-        { required: true, trigger: 'blur', message: '库存非空' },
-      ]
-      }
+        goodsId: '',
+        sizeId: '',
+        inventoryFrom: '',
+        inventoryTo: '',
+        createTimeFrom: '',
+        createTimeTo: '',
+        updateTimeFrom: '',
+        updateTimeTo: '',
+        pageSize: 10,
+        pageNum: 1
+      },
+      activeIndex: [],
+      fileUrl: fileUrl,
+      goodsId: '',
+      unifiedPrice: '',
+      dataStatusList: [],
+      createTime: '',
+      updateTime: '',
+      selectedId: [],
+      ids: [],
+      tableData: [],
+      totalCount: 1
     }
+  },
+  created() {
+    const { goodsId } = this.$route.query
+    this.goodsId = goodsId
+    this.form.goodsId = goodsId
+    if (this.goodsId) {
+      this.getDetailById(this.goodsId)
+    }
+  },
+  methods: {
+    setUnifiedPrice() {
+      if(!this.unifiedPrice) {
+        this.$message.error('请输入价格')
+        return
+      }
+      let table1 = []
+      for (let i=0; i<this.tableData.length; i++){
+        let data1 = this.tableData[i]
+        data1.price = this.unifiedPrice
+        table1.push(data1)
+      }
+      this.tableData = table1
     },
-    created() {
-      const { id, type } = this.$route.query
-      this.id = id
-      this.type = type
-      this.form.id = id
-      if (this.id) {
-        this.getDetailById(this.id)
+    addSizeHandle(item, index = 0) {
+      if (!this.activeIndex.includes(index)){
+        this.activeIndex.push(index)
+        item.sizeIndex = index
+        this.tableData.push(item)
+        let table1 = []
+        for (let i=0; i<this.tableData.length; i++){
+          let data1 = this.tableData[i]
+          let price = 1
+          if (this.unifiedPrice) {
+            price = this.unifiedPrice
+          }
+          data1.price = price
+          data1.inventory = 1
+          table1.push(data1)
+        }
+        this.tableData = table1
+      } else {
+        this.del(index)
+        this.delItem(item)
       }
     },
-    mounted() {
-      this.listSysDict()
+    goDel(index,item) {
+      this.del(index)
+      this.delItem(item)
     },
-    methods: {
-      getDetailById(id) {
-        if (id) {
-          goodsInventoryApi.getDetailById(id).then(res => {
-            if (res.subCode === 1000) {
-              this.form = res.data ? res.data : {}
-            } else {
-              this.$message.error(res.subMsg)
-            }
-          })
+    del(index){
+      for (let i=0; i<this.activeIndex.length; i++){
+        if (this.activeIndex[i] == index){
+          this.activeIndex.splice(i, 1)
         }
-      },
-      listSysDict() {
-        let sysDictList = sessionStorage.getItem('sysDictList') ? JSON.parse(sessionStorage.getItem('sysDictList')) : []
-        this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
-      },
-      goBack() {
-        // *** 根据真实路径配置地址
-        this.$router.push({path: '/goodsBase/goodsInventory'})
-      },
-      goEdit() {
-        this.type = 2
-      },
-      submit() {
-        this.$refs['form'].validate(async(valid) => {
-          if (!valid) {
-            return false
-          }
-          if (this.type == 2) {
-            goodsInventoryApi.update(this.form).then(res => {
-              if (res.subCode === 1000) {
-                this.$message.success('操作成功')
-                this.goBack()
-              } else {
-                this.$message.error(res.subMsg)
-              }
-            })
+      }
+      console.log(this.activeIndex)
+    },
+    delItem(item){
+      for (let i=0; i<this.tableData.length; i++){
+        if (this.tableData[i].id == item.id){
+          this.tableData.splice(i, 1)
+        }
+      }
+      console.log(this.tableData)
+    },
+    avatarShow(e) {
+      if (!e) {
+        return
+      }
+      window.open(this.fileUrl + e)
+    },
+    getDetailById(id) {
+      if (id) {
+        goodsBaseApi.getDetailById(id).then(res => {
+          if (res.subCode === 1000) {
+            this.form = res.data ? res.data : {}
           } else {
-            goodsInventoryApi.add(this.form).then(res => {
-              if (res.subCode === 1000) {
-                this.$message.success('操作成功')
-                this.goBack()
-              } else {
-                this.$message.error(res.subMsg)
-              }
-            })
+            this.$message.error(res.subMsg)
           }
         })
       }
+    },
+    changeStatus(id, dataStatus) {
+      goodsInventoryApi.changeStatus({ id, dataStatus }).then(res => {
+        if (res.subCode === 1000) {
+          this.$message.success(res.subMsg)
+        } else {
+          this.$message.error(res.subMsg)
+        }
+        this.getPage()
+      })
+    },
+    search() {
+      this.queryParam.pageNum = 1
+      this.getPage()
+    },
+    selected(val) {
+      this.selectedId = val
+      let temp = []
+      for (let i = 0; i < this.selectedId.length; i++) {
+        temp.push(this.selectedId[i].id)
+      }
+      this.ids = temp
+    },
+    batchdelete() {
+      if (this.ids.length == 0) {
+        this.$alert('没有选中数据')
+        return
+      }
+      this.$confirm('是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        goodsInventoryApi.batchdelete(this.ids).then(res => {
+          if (res.subCode === 1000) {
+            this.$message.success(res.subMsg)
+            this.getPage()
+          } else {
+            this.$message.error(res.subMsg)
+          }
+        })
+      })
+    },
+    resetHandle() {
+      this.queryParam = {
+        id: '',
+        goodsId: '',
+        sizeId: '',
+        inventoryFrom: '',
+        inventoryTo: '',
+        createTimeFrom: '',
+        createTimeTo: '',
+        updateTimeFrom: '',
+        updateTimeTo: '',
+        pageSize: 10,
+        pageNum: 1
+      }
+      this.createTime = ''
+      this.updateTime = ''
+      this.getPage()
     }
   }
+}
 </script>
-<style>
-  h5 {
-    font-size: 16px;
-    padding-bottom: 10px;
+
+<style lang="scss" scoped>
+  .page-container {
+    height: 100%;
+
+    .container-left {
+      h5 {
+        font-size: 14px;
+        font-weight: bold;
+        /*border-bottom: 1px solid #ddd;*/
+        margin: 0;
+        padding: 0 0 10px 0;
+      }
+
+      .select {
+        padding-top: 15px;
+      }
+
+      .project-list {
+        li {
+          padding: 10px 0;
+
+          &.on {
+            a {
+              color: rgb(64, 158, 255);
+              text-decoration: underline
+            }
+          }
+        }
+      }
+    }
+
+    .container-right {
+      .list {
+        border-top: 1px solid #ddd;
+        padding-top: 15px;
+        margin-top: 15px;
+
+        .from-title {
+          background: #eee;
+          padding: 0 15px;
+        }
+
+        .form-flex {
+          line-height: 40px;
+        }
+      }
+    }
+  }
+
+  .no-data p {
+    text-align: center;
+    padding-top: 100px;
+  }
+  .overview {
+    padding: 20px 15px;
+    border-radius: 5px;
+    height: 80px;
+    /*width: 195px;*/
+    margin-right: 35px;
+    float: left;
+    strong {
+      font-size: 16px;
+      color: #111;
+      padding-bottom: 5px;
+      display: inline-block;
+    }
+    p {
+      line-height: 25px;
+    }
   }
 </style>
+

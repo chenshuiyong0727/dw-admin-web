@@ -120,7 +120,7 @@
             </el-button>
             <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-plus"
                        v-permission:[buttonPermissionArr.searchBtn]="['新增']"
-                       @click="goDetail(null,3)">新增尺码
+                       @click="goDetail()">新增尺码
             </el-button>
             <el-button type="danger" size="small" style="margin-right: 10px" icon="el-icon-delete"
                        v-permission:[buttonPermissionArr.searchBtn]="['批量删除']" @click="batchdelete">
@@ -150,10 +150,6 @@
           <el-table-column fixed="right" align="center" label="操作" width="130"
                            v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length">
             <template slot-scope="scope">
-              <!--            <div>-->
-              <!--              <el-button type="text" @click="goDetail(scope.row.id , 1)" v-permission:[buttonPermissionArr.listBtn]="['查看']">查看</el-button>-->
-              <!--              <el-button type="text" @click="goDetail(scope.row.id , 2)" v-permission:[buttonPermissionArr.listBtn]="['编辑']">编辑</el-button>-->
-              <!--            </div>-->
               <el-button type="text" @click="goDel(scope.row.id)"
                          v-permission:[buttonPermissionArr.listBtn]="['删除']">删除
               </el-button>
@@ -231,7 +227,7 @@ export default {
   methods: {
     rowClick(row) {
       // this.queryParam.id = row.id
-      this.pageGoods(row.id)
+      this.pageGoods(row.goodsId)
     },
     showInventoryDrawer() {
       this.$refs['inventory-detail-edit'].show()
@@ -259,15 +255,15 @@ export default {
         if (res.subCode === 1000) {
           this.tableData1 = res.data ? res.data.list : []
           this.totalCount1 = res.data ? res.data.pageInfo.totalCount : 0
-          this.pageGoods(this.tableData1[0].id)
+          this.pageGoods(this.tableData1[0].goodsId)
         } else {
           this.$message.error(res.subMsg)
         }
       })
     },
-    pageGoods(id) {
-      if (id) {
-        this.queryParam.id = id
+    pageGoods(goodsId) {
+      if (goodsId) {
+        this.queryParam.goodsId = goodsId
       }
       goodsInventoryApi.page(this.queryParam).then(res => {
         if (res.subCode === 1000) {
@@ -292,9 +288,10 @@ export default {
       this.queryParam.pageNum = 1
       this.getPage()
     },
-    goDetail(id, type) {
+    goDetail() {
       // *** 根据真实路径配置地址
-      this.$router.push({ path: '/goodsBase/goodsInventory/detail', query: { id, type } })
+      let goodsId = this.queryParam.goodsId
+      this.$router.push({ path: '/goodsBase/goodsInventory/detail', query: { goodsId }})
     },
     goDel(id) {
       goodsInventoryApi.delById(id).then(res => {
@@ -392,7 +389,7 @@ export default {
       h5 {
         font-size: 14px;
         font-weight: bold;
-        border-bottom: 1px solid #ddd;
+        /*border-bottom: 1px solid #ddd;*/
         margin: 0;
         padding: 0 0 10px 0;
       }
