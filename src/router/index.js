@@ -34,8 +34,8 @@ export const pathList = [
   { title: '用户管理', topMenuId: 2 },
   { title: '认知管理', topMenuId: 3 },
   { title: '运营管理', topMenuId: 4 },*/
-  { title: '系统管理', topMenuId: 1 },
   { title: '开发工具', topMenuId: 3 },
+  { title: '系统管理', topMenuId: 1 },
   { title: '我的账号', topMenuId: 2, hidden: true }
 ]
 /**
@@ -182,39 +182,6 @@ export const constantRoutes = [
       }
     ]
   },
-  // 代码生成
-  {
-    path: '/code',
-    component: Layout,
-    meta: { title: '代码生成', leftMenuId: 3 },
-    redirect: '/code/list',
-    children: [
-      {
-        path: 'list',
-        name: 'list',
-        component: () => import('@/views/codeCreate/index'),
-        meta: { title: '代码生成器' }
-      },
-      {
-        path: 'dist',
-        name: 'dist',
-        component: () => import('@/views/dictManage/dictList'),
-        meta: { title: '字典管理' }
-      },
-      // {
-      //   path: 'demo',
-      //   name: 'demo',
-      //   component: () => import('@/views/demo/list'),
-      //   meta: { title: '案例' }
-      // },
-      // {
-      //   path: 'demo/detail',
-      //   name: 'demo',
-      //   component: () => import('@/views/demo/detail'),
-      //   meta: { title: '案例详情' }
-      // }
-    ]
-  },
   {
     path: '/goodsBase',
     component: Layout,
@@ -250,6 +217,27 @@ export const constantRoutes = [
             hidden: true
           }
         ]
+      }
+    ]
+  },
+  // 代码生成
+  {
+    path: '/code',
+    component: Layout,
+    meta: { title: '代码生成', leftMenuId: 3 },
+    redirect: '/code/list',
+    children: [
+      {
+        path: 'list',
+        name: 'list',
+        component: () => import('@/views/codeCreate/index'),
+        meta: { title: '代码生成器' }
+      },
+      {
+        path: 'dist',
+        name: 'dist',
+        component: () => import('@/views/dictManage/dictList'),
+        meta: { title: '字典管理' }
       }
     ]
   },

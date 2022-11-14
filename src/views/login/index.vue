@@ -200,7 +200,8 @@ export default {
             if (!isHasRouterAuth.length) {
               this.redirect = allRouter[0].route
             }
-            this.$router.push({ path: this.redirect || '/systemClass' })
+            this.$router.push({ path: '/goodsBase' || this.redirect })
+            // this.$router.push({ path: this.redirect || '/systemClass' })
             // if (this.redirectUrl && this.systemId && this.systemId != 0) {
             //   this.$router.push({ path: '/systemClass', query: { redirectUrl: this.redirectUrl, systemId: this.systemId }})
             // } else {

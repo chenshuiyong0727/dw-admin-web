@@ -31,15 +31,15 @@
       font-size: 20px;
     }
   }
-  
+
   .el-row {
     margin-bottom: 15px;
     .el-col {
       text-align: right;
     }
   }
-  
-  
+
+
   .button {
     margin-top: 60px;
     .btn {
@@ -76,17 +76,17 @@
   align-items: stretch;
 }
 .container-left {
-  width: 190px;
+  width: 300px;
   min-height: calc(100vh - 140px);
   overflow: auto;
   border-right: 1px solid #ccc;
   flex: 0 1 auto;
   // float: left;
-  
+
 }
 .container-right {
   // float: left;
-  width: calc(100% - 190px);
+  width: calc(100% - 300px);
   box-sizing: border-box;
   padding: 20px;
   flex: 1 0 auto;
