@@ -16,7 +16,7 @@
                 v-for="item in typeList"
                 :key="item.fieldValue"
                 :label="item.fieldName"
-                :value="+item.fieldValue">
+                :value="item.fieldValue">
               </el-option>
             </el-select>
           </el-form-item>
@@ -125,7 +125,7 @@ export default {
     return {
       form: {
       	type: 1,
-      	actNo: 'ao3108018',
+      	actNo: '',
       	name: '',
       	imgUrl: '',
       	brand: '耐克',
@@ -267,6 +267,18 @@ export default {
     goEdit() {
       this.type = 2
     },
+    resetHandle() {
+      this.form = {
+        type: 1,
+        actNo: '',
+        name: '',
+        imgUrl: '',
+        brand: '耐克',
+        remark: '',
+        sizeList: []
+      }
+      this.options= []
+    },
     submit() {
       this.$refs['form'].validate(async(valid) => {
         if (!valid) {
@@ -293,7 +305,16 @@ export default {
 	        goodsBaseApi.add(this.form).then(res => {
 	          if (res.subCode === 1000) {
 	            this.$message.success('操作成功')
-	            this.goBack()
+	            // this.goBack()
+              this.$confirm('是否继续添加商品?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                this.resetHandle()
+              }).catch(() => {
+                this.goBack()
+              })
 	          } else {
 	            this.$message.error(res.subMsg)
 	          }

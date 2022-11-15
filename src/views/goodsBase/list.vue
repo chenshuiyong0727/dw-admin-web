@@ -15,7 +15,7 @@
                 v-for="item in typeList"
                 :key="item.fieldValue"
                 :label="item.fieldName"
-                :value="+item.fieldValue">
+                :value="item.fieldValue">
               </el-option>
             </el-select>
           </el-form-item>
