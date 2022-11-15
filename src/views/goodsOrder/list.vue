@@ -171,7 +171,13 @@
       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
       <el-table-column align="center" prop="id" label="订单主键"/>
       <el-table-column align="center" prop="orderNo" label="订单号"/>
-      <el-table-column align="center" prop="inventoryId" label="库存编号"/>
+      <el-table-column align="center" label="图片" width="120" >
+        <template slot-scope="scope">
+          <img  v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"  @click="avatarShow(scope.row.imgUrl)" >
+        </template>
+      </el-table-column>
+      <el-table-column align="center" prop="actNo" label="货号"/>
+      <el-table-column align="center" prop="size" label="尺码"/>
       <el-table-column align="center" prop="status" label="状态">
         <template slot-scope="scope">{{ scope.row.status | dictToDescTypeValue(37) }}</template>
       </el-table-column>
@@ -179,7 +185,7 @@
       <el-table-column align="center" prop="freight" label="运费"/>
       <el-table-column align="center" prop="poundage" label="手续费"/>
       <el-table-column align="center" prop="theirPrice" label="到手价"/>
-      <el-table-column align="center" prop="addressId" label="地址编号"/>
+      <el-table-column align="center" prop="address" label="地址"/>
       <el-table-column align="center" prop="waybillNo" label="运单编号"/>
       <el-table-column align="center" prop="createTime" label="创建时间">
         <template slot-scope="scope">{{scope.row.createTime | formateTime('{y}-{m}-{d} {h}:{i}')
@@ -227,6 +233,12 @@
         :total="totalCount">
       </el-pagination>
     </el-row>
+    <!-- </three-level-route> -->
+    <div class="popContainer" v-if="pictureZoomShow" @click="pictureZoomShow = false">
+      <div class="imageShow">
+        <img :src="fileUrl + imageZoom" alt="" width="100%" height="100%">
+      </div>
+    </div>
   </three-level-route>
 </template>
 
@@ -243,6 +255,9 @@ export default {
   },
   data() {
     return {
+      pictureZoomShow: false,
+      imageZoom: '',
+      fileUrl: fileUrl,
       queryParam: {
         id: '',
         orderNo: '',
@@ -280,6 +295,10 @@ export default {
     this.listSysDict()
   },
   methods: {
+    avatarShow(e) {
+      this.imageZoom = e
+      this.pictureZoomShow = true
+    },
     createTimeChange() {
       if (this.createTime) {
         this.queryParam.createTimeFrom = this.createTime[0]

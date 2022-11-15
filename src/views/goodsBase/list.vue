@@ -258,29 +258,4 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .age-sty {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .userPic {
-    width: 80px;
-    height: 80px;
-  }
-  .popContainer{
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.3);
-    z-index: 999;
-    display: grid;
-    align-items:center;
-  }
-  .imageShow {
-    margin: auto;
-    width: 520px;
-    height: 520px;
-  }
 </style>

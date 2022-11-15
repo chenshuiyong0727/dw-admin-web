@@ -165,6 +165,7 @@ export default {
   data() {
     return {
       sizeData: '',
+      imageZoom: '',
       isShowDialog: false,
       queryParam1: {
         keyword: '',
