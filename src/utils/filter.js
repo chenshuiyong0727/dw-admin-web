@@ -35,4 +35,9 @@ Vue.filter('dictToDescTypeValue', (value, type) => {
   let res = sysDictList.filter(item => item.typeValue == type && item.fieldValue == value)
   return res.length ? res[0].fieldName : '--'
 })
+Vue.filter('numFilter', (value) => {
+  // 截取当前数据到小数点后两位
+  let realVal = parseFloat(value).toFixed(2)
+  return realVal
+})
 Vue.filter('formateTime', parseTime)
