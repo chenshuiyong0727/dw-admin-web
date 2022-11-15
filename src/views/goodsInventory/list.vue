@@ -29,9 +29,12 @@
 
         <el-table style="margin-top: 20px" border :data="tableData1" @row-click="rowClick">
 
-          <el-table-column align="center" prop="goodsId" label="商品编号"/>
-          <el-table-column align="center" prop="sizeId" label="尺码编号"/>
-          <el-table-column align="center" prop="inventory" label="库存"/>
+          <el-table-column align="center" prop="actNo" label="货号" />
+          <el-table-column align="center" label="图片"  width="120">
+            <template slot-scope="scope">
+              <img  v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"  @click="avatarShow(scope.row.imgUrl)" >
+            </template>
+          </el-table-column>
         </el-table>
         <el-row class="top-15">
           <el-pagination
@@ -46,115 +49,33 @@
         </el-row>
       </div>
       <div class="container-right">
-        <el-form ref="form">
-          <el-row class="query-form">
-            <el-col :span="6">
-              <el-form-item size="small">
-                <el-input v-model.trim="queryParam.id" placeholder="库存编号"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <el-form-item size="small">
-                <el-input v-model.trim="queryParam.goodsId" placeholder="商品编号"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <el-form-item size="small">
-                <div>
-                  <el-input
-                    style="width: 45%"
-                    v-input-validation
-                    v-model.trim="queryParam.inventoryFrom"
-                    placeholder="库存开始">
-                  </el-input>
-                  <span> - </span>
-                  <el-input
-                    style="width: 45%"
-                    v-input-validation
-                    v-model.trim="queryParam.inventoryTo"
-                    placeholder="库存结束">
-                  </el-input>
-                </div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <el-form-item size="small">
-                <el-input v-model.trim="queryParam.sizeId" placeholder="尺码编号"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <el-form-item size="small">
-                <el-date-picker
-                  v-model="createTime"
-                  type="daterange"
-                  range-separator="至"
-                  start-placeholder="创建时间"
-                  end-placeholder="创建时间"
-                  @change="createTimeChange"
-                  value-format="yyyy-MM-dd">
-                </el-date-picker>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <el-form-item size="small">
-                <el-date-picker
-                  v-model="updateTime"
-                  type="daterange"
-                  range-separator="至"
-                  start-placeholder="更新时间"
-                  end-placeholder="更新时间"
-                  @change="updateTimeChange"
-                  value-format="yyyy-MM-dd">
-                </el-date-picker>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row type="flex" justify="center"
-                  v-if="buttonPermissionArr.searchBtn && buttonPermissionArr.searchBtn.length">
-            <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-search"
-                       v-permission:[buttonPermissionArr.searchBtn]="['查询']" @click="search">查询
-            </el-button>
-            <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-refresh"
-                       v-permission:[buttonPermissionArr.searchBtn]="['查询']" @click="resetHandle">重置
-            </el-button>
-            <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-plus"
-                       v-permission:[buttonPermissionArr.searchBtn]="['新增']"
-                       @click="goDetail()">新增尺码
-            </el-button>
-            <el-button type="danger" size="small" style="margin-right: 10px" icon="el-icon-delete"
-                       v-permission:[buttonPermissionArr.searchBtn]="['批量删除']" @click="batchdelete">
-              批量删除
-            </el-button>
-          </el-row>
-        </el-form>
+        <el-row class="clearfix btm-distance">
+          <div class="overview">
+<!--            <h5>{{form.actNo}}</h5>-->
+            <!--            <img-->
+            <!--              v-if="form.imgUrl"-->
+            <!--              :src="fileUrl + form.imgUrl"-->
+            <!--              style="width: 100px;height: 100px;"-->
+            <!--              @click="avatarShow(form.imgUrl)"-->
+            <!--            />-->
+          </div>
+        </el-row>
 
         <el-table style="margin-top: 20px" border :data="tableData" @selection-change="selected">
 
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
           <!--        <el-table-column align="center" prop="id" label="库存编号" />-->
-          <el-table-column align="center" prop="goodsId" label="商品编号"/>
-          <el-table-column align="center" prop="sizeId" label="尺码编号"/>
+          <el-table-column align="center" prop="size" label="尺码"/>
           <el-table-column align="center" prop="inventory" label="库存"/>
-          <el-table-column align="center" prop="createTime" label="创建时间">
-            <template slot-scope="scope">{{scope.row.createTime | formateTime('{y}-{m}-{d} {h}:{i}')
-              }}
-            </template>
-          </el-table-column>
-          <el-table-column align="center" prop="updateTime" label="更新时间">
-            <template slot-scope="scope">{{scope.row.updateTime | formateTime('{y}-{m}-{d} {h}:{i}')
-              }}
-            </template>
-          </el-table-column>
-          <el-table-column fixed="right" align="center" label="操作" width="130"
-                           v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length">
+          <el-table-column align="center" prop="price" label="入库价"/>
+          <el-table-column align="center" prop="dwPrice" label="得物价"/>
+          <el-table-column fixed="right" align="center" label="操作" width="80">
             <template slot-scope="scope">
-              <el-button type="text" @click="goDel(scope.row.id)"
-                         v-permission:[buttonPermissionArr.listBtn]="['删除']">删除
-              </el-button>
-              <el-button type="text" @click="changeStatus(scope.row.id, 0)"
-                         v-permission:[buttonPermissionArr.listBtn]="['更新状态']">卖出
+<!--              <el-button type="text" @click="goDel(scope.row.id)"-->
+<!--                         v-permission:[buttonPermissionArr.listBtn]="['删除']">删除-->
+<!--              </el-button>-->
+              <el-button type="text" @click="changeStatus(scope.row.id, 0)">卖出
               </el-button>
             </template>
           </el-table-column>
@@ -172,6 +93,12 @@
         </el-row>
       </div>
       <inventoryDetail ref="inventory-detail-edit"  />
+    </div>
+    <!-- </three-level-route> -->
+    <div class="popContainer" v-if="pictureZoomShow" @click="pictureZoomShow = false">
+      <div class="imageShow">
+        <img :src="fileUrl + imageZoom" alt="" width="100%" height="100%">
+      </div>
     </div>
   </three-level-route>
 </template>
@@ -209,6 +136,8 @@ export default {
         pageSize: 10,
         pageNum: 1
       },
+      pictureZoomShow: false,
+      fileUrl: fileUrl,
       dataStatusList: [],
       createTime: '',
       updateTime: '',
@@ -225,8 +154,11 @@ export default {
     this.listSysDict()
   },
   methods: {
+    avatarShow(e) {
+      this.imageZoom = e
+      this.pictureZoomShow = true
+    },
     rowClick(row) {
-      // this.queryParam.id = row.id
       this.pageGoods(row.goodsId)
     },
     showInventoryDrawer() {
@@ -255,7 +187,7 @@ export default {
         if (res.subCode === 1000) {
           this.tableData1 = res.data ? res.data.list : []
           this.totalCount1 = res.data ? res.data.pageInfo.totalCount : 0
-          this.pageGoods(this.tableData1[0].goodsId)
+          this.pageGoods(this.tableData1[0].id)
         } else {
           this.$message.error(res.subMsg)
         }
@@ -265,7 +197,7 @@ export default {
       if (goodsId) {
         this.queryParam.goodsId = goodsId
       }
-      goodsInventoryApi.page(this.queryParam).then(res => {
+      goodsInventoryApi.pageGoods(this.queryParam).then(res => {
         if (res.subCode === 1000) {
           this.tableData = res.data ? res.data.list : []
           this.totalCount = res.data ? res.data.pageInfo.totalCount : 0

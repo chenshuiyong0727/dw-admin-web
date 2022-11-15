@@ -8,7 +8,7 @@ export const goodsInventoryApi = {
   }),
   // 获取数据列表
   pageGoods: (body) => request({
-    url: '/gw/op/v1/goodsInventory',
+    url: '/gw/op/v1/goodsInventory/pageGoods',
     method: 'get',
     params: body
   }),
