@@ -42,6 +42,12 @@ export const goodsInventoryApi = {
     method: 'post',
     data: body
   }),
+  // 上架商品
+  shelvesGoods: (body) => request({
+    url: '/gw/op/v1/goodsInventory/shelvesGoods',
+    method: 'post',
+    data: body
+  }),
   // 更新
   update: (body) => request({
     url: '/gw/op/v1/goodsInventory',
