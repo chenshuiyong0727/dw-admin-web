@@ -220,6 +220,29 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/goodsOrder',
+    component: Layout,
+    meta: { title: '商品订单信息', leftMenuId: 3 },
+    redirect: '/goodsOrder/list',
+    children: [
+      {
+        path: 'list',
+        name: 'list',
+        component: () => import('@/views/goodsOrder/list'),
+        meta: { title: '商品订单信息' },
+        children: [
+          {
+            path: 'detail',
+            name: 'detail',
+            component: () => import('@/views/goodsOrder/detail'),
+            meta: { title: '详情', routerId: 3 },
+            hidden: true
+          }
+        ]
+      }
+    ]
+  },
   // 代码生成
   {
     path: '/code',

@@ -4,12 +4,12 @@
         <el-row class="clearfix btm-distance">
           <div class="overview">
             <h5>{{form.actNo}}</h5>
-<!--            <img-->
-<!--              v-if="form.imgUrl"-->
-<!--              :src="fileUrl + form.imgUrl"-->
-<!--              style="width: 100px;height: 100px;"-->
-<!--              @click="avatarShow(form.imgUrl)"-->
-<!--            />-->
+            <img
+              v-if="form.imgUrl"
+              :src="fileUrl + form.imgUrl"
+              style="width: 100px;height: 100px;"
+              @click="avatarShow(form.imgUrl)"
+            />
           </div>
         </el-row>
         <el-form ref="form" style="padding-top: 70px;">

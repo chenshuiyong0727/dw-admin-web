@@ -49,7 +49,7 @@
             </el-form-item>
           </el-form>
         </div>
-        <el-table ref="inventoryTable" :data="tableData">
+        <el-table style="width:100%" height="500"  ref="inventoryTable" :data="tableData">
           <el-table-column align="center" prop="actNo"  label="货号" />
           <el-table-column align="center" label="图片">
             <template slot-scope="scope">
@@ -64,7 +64,7 @@
             label="操作"
           >
             <template v-slot="scope">
-              <el-button icon="el-icon-plus"  type="text" @click="handleUpdate(scope.row)">
+              <el-button icon="el-icon-plus"  type="text" @click="goDetail(scope.row.id)">
                 新增尺码
               </el-button>
             </template>
@@ -118,8 +118,13 @@ export default {
     }
   },
   methods: {
-    goDetail(id, type) {
-      this.$router.push({ path: '/goodsBase/list/detail', query: { id, type }})
+    // goDetail(id, type) {
+    //   this.$router.push({ path: '/goodsBase/list/detail', query: { id, type }})
+    // },
+    goDetail(goodsId) {
+      // *** 根据真实路径配置地址
+      // let goodsId = this.queryParam.goodsId
+      this.$router.push({ path: '/goodsBase/goodsInventory/detail', query: { goodsId }})
     },
     show() {
       this.inventoryDetailVisible = true

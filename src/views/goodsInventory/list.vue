@@ -1,7 +1,7 @@
 <template>
   <three-level-route>
     <div class="page-container container-flex">
-      <div class="container-left" v-if="1==2">
+      <div class="container-left" v-if="1==1">
         <h5>商品列表</h5>
         <el-form ref="form">
           <el-row class="query-form">
@@ -12,13 +12,10 @@
             </el-col>
           </el-row>
 
-          <el-row type="flex" justify="center"
-                  v-if="buttonPermissionArr.searchBtn && buttonPermissionArr.searchBtn.length">
-            <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-search"
-                       v-permission:[buttonPermissionArr.searchBtn]="['查询']" @click="search">查询
+          <el-row type="flex" justify="center">
+            <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-search" @click="search">查询
             </el-button>
             <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-plus"
-                       v-permission:[buttonPermissionArr.searchBtn]="['新增']"
                        @click="showInventoryDrawer()">新增库存
             </el-button>
           </el-row>
@@ -27,7 +24,7 @@
         <el-table style="margin-top: 20px" border :data="tableData1" @row-click="rowClick">
 
           <el-table-column align="center" prop="actNo" label="货号" />
-          <el-table-column align="center" label="图片"  width="120">
+          <el-table-column align="center" label="图片"  >
             <template slot-scope="scope">
               <img  v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"  @click="avatarShow(scope.row.imgUrl)" >
             </template>
@@ -46,25 +43,31 @@
         </el-row>
       </div>
       <div class="container-right">
-        <el-row class="clearfix btm-distance">
-          <div class="overview">
-<!--            <h5>{{form.actNo}}</h5>-->
-            <!--            <img-->
-            <!--              v-if="form.imgUrl"-->
-            <!--              :src="fileUrl + form.imgUrl"-->
-            <!--              style="width: 100px;height: 100px;"-->
-            <!--              @click="avatarShow(form.imgUrl)"-->
-            <!--            />-->
-          </div>
-        </el-row>
-
+<!--        <el-row class="clearfix btm-distance">-->
+<!--          <div class="overview">-->
+<!--&lt;!&ndash;            <h5>{{form.actNo}}</h5>&ndash;&gt;-->
+<!--            &lt;!&ndash;            <img&ndash;&gt;-->
+<!--            &lt;!&ndash;              v-if="form.imgUrl"&ndash;&gt;-->
+<!--            &lt;!&ndash;              :src="fileUrl + form.imgUrl"&ndash;&gt;-->
+<!--            &lt;!&ndash;              style="width: 100px;height: 100px;"&ndash;&gt;-->
+<!--            &lt;!&ndash;              @click="avatarShow(form.imgUrl)"&ndash;&gt;-->
+<!--            &lt;!&ndash;            />&ndash;&gt;-->
+<!--          </div>-->
+<!--        </el-row>-->
+        <el-form ref="form">
+          <el-row type="flex" justify="center">
+            <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-plus"
+                       @click="goDetail()">新增尺码
+            </el-button>
+          </el-row>
+        </el-form>
         <el-table style="margin-top: 20px" border :data="tableData" >
 
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
           <!--        <el-table-column align="center" prop="id" label="库存编号" />-->
-          <el-table-column align="center" prop="size" label="尺码"/>
-          <el-table-column align="center" prop="inventory" label="库存"/>
+          <el-table-column align="center" prop="size" width="50" label="尺码"/>
+          <el-table-column align="center" prop="inventory" width="50" label="库存"/>
 <!--          <el-table-column align="center" prop="price" label="入库价"/>-->
 <!--          <el-table-column align="center" prop="inventory" label="库存">-->
 <!--            <template scope="scope">-->
@@ -203,8 +206,14 @@ export default {
       this.imageZoom = e
       this.pictureZoomShow = true
     },
+    goDetail() {
+      // *** 根据真实路径配置地址
+      let goodsId = this.queryParam.goodsId
+      this.$router.push({ path: '/goodsBase/goodsInventory/detail', query: { goodsId }})
+    },
     rowClick(row) {
-      this.pageGoods(row.goodsId)
+      console.info(row)
+      this.pageGoods(row.id)
     },
     showInventoryDrawer() {
       this.$refs['inventory-detail-edit'].show()
@@ -284,7 +293,7 @@ export default {
     // },
     search() {
       this.queryParam.pageNum = 1
-      this.getPage()
+      this.page()
     }
   }
 }

@@ -50,7 +50,7 @@
             </el-form-item>
           </el-form>
         </div>
-        <el-table ref="dictTable" :data="list">
+        <el-table style="width:100%" height="430" ref="dictTable" :data="list">
           <el-table-column
             align="center"
             show-overflow-tooltip
