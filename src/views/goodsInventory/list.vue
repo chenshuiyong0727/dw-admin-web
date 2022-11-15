@@ -1,7 +1,7 @@
 <template>
   <three-level-route>
     <div class="page-container container-flex">
-      <div class="container-left">
+      <div class="container-left" v-if="1==2">
         <h5>商品列表</h5>
         <el-form ref="form">
           <el-row class="query-form">
@@ -16,9 +16,6 @@
                   v-if="buttonPermissionArr.searchBtn && buttonPermissionArr.searchBtn.length">
             <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-search"
                        v-permission:[buttonPermissionArr.searchBtn]="['查询']" @click="search">查询
-            </el-button>
-            <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-refresh"
-                       v-permission:[buttonPermissionArr.searchBtn]="['查询']" @click="resetHandle">重置
             </el-button>
             <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-plus"
                        v-permission:[buttonPermissionArr.searchBtn]="['新增']"
@@ -69,12 +66,37 @@
           <el-table-column align="center" prop="size" label="尺码"/>
           <el-table-column align="center" prop="inventory" label="库存"/>
           <el-table-column align="center" prop="price" label="入库价"/>
-          <el-table-column align="center" prop="dwPrice" label="得物价"/>
+          <el-table-column align="center" prop="" label="总入库价">
+            <template  slot-scope="scope">{{scope.row.price * scope.row.inventory }}</template>
+          </el-table-column>
+<!--          <el-table-column align="center" prop="dwPrice" label="得物价"/>-->
+          <el-table-column align="center" prop="dwPrice" label="得物价">
+            <template scope="scope">
+              <div class="input-box">
+                <el-input size="small"  v-model="scope.row.dwPrice"></el-input>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="" label="手续费单价">
+            <template v-if="scope.row.dwPrice" slot-scope="scope">{{(scope.row.dwPrice * 0.075 + 38 + 8.5) | numFilter}}</template>
+          </el-table-column>
+          <el-table-column align="center" prop="" label="到手单价">
+            <template v-if="scope.row.dwPrice" slot-scope="scope">{{(scope.row.dwPrice - (scope.row.dwPrice * 0.075 + 38 + 8.5)) | numFilter}}</template>
+          </el-table-column>
+          <el-table-column align="center" prop="" label="预计利润">
+            <template v-if="scope.row.dwPrice" slot-scope="scope">
+<!--              style="color: red"-->
+              <span :style="(scope.row.dwPrice - (scope.row.dwPrice * 0.075 + 38 + 8.5) - scope.row.price - 10) > 50 ? 'color: red' : ''"
+              >
+                {{(scope.row.dwPrice - (scope.row.dwPrice * 0.075 + 38 + 8.5) - scope.row.price - 10) | numFilter}}
+              </span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="createTime" label="入库时间">
+            <template slot-scope="scope">{{scope.row.createTime | formateTime() }} </template>
+          </el-table-column>
           <el-table-column fixed="right" align="center" label="操作" width="80">
             <template slot-scope="scope">
-<!--              <el-button type="text" @click="goDel(scope.row.id)"-->
-<!--                         v-permission:[buttonPermissionArr.listBtn]="['删除']">删除-->
-<!--              </el-button>-->
               <el-button type="text" @click="changeStatus(scope.row.id, 0)">卖出
               </el-button>
             </template>
@@ -107,7 +129,6 @@
 import ThreeLevelRoute from '@/components/ThreeLevelRoute'
 import { goodsInventoryApi } from '@/api/goodsInventory'
 import { permissionMixin } from '@/mixins/permissionMixin'
-import { getExport } from '@/api/exportFile'
 import InventoryDetail from './components/inventoryDetail'
 
 export default {
@@ -126,23 +147,12 @@ export default {
       queryParam: {
         id: '',
         goodsId: '',
-        sizeId: '',
-        inventoryFrom: '',
-        inventoryTo: '',
-        createTimeFrom: '',
-        createTimeTo: '',
-        updateTimeFrom: '',
-        updateTimeTo: '',
         pageSize: 10,
         pageNum: 1
       },
       pictureZoomShow: false,
       fileUrl: fileUrl,
       dataStatusList: [],
-      createTime: '',
-      updateTime: '',
-      selectedId: [],
-      ids: [],
       tableData: [],
       tableData1: [],
       totalCount1: 1,
@@ -163,24 +173,6 @@ export default {
     },
     showInventoryDrawer() {
       this.$refs['inventory-detail-edit'].show()
-    },
-    createTimeChange() {
-      if (this.createTime) {
-        this.queryParam.createTimeFrom = this.createTime[0]
-        this.queryParam.createTimeTo = this.createTime[1]
-      } else {
-        this.queryParam.createTimeFrom = null
-        this.queryParam.createTimeTo = null
-      }
-    },
-    updateTimeChange() {
-      if (this.updateTime) {
-        this.queryParam.updateTimeFrom = this.updateTime[0]
-        this.queryParam.updateTimeTo = this.updateTime[1]
-      } else {
-        this.queryParam.updateTimeFrom = null
-        this.queryParam.updateTimeTo = null
-      }
     },
     page() {
       goodsInventoryApi.page(this.queryParam1).then(res => {
@@ -247,66 +239,6 @@ export default {
     },
     search() {
       this.queryParam.pageNum = 1
-      this.getPage()
-    },
-    selected(val) {
-      this.selectedId = val
-      let temp = []
-      for (let i = 0; i < this.selectedId.length; i++) {
-        temp.push(this.selectedId[i].id)
-      }
-      this.ids = temp
-    },
-    batchdelete() {
-      if (this.ids.length == 0) {
-        this.$alert('没有选中数据')
-        return
-      }
-      this.$confirm('是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        goodsInventoryApi.batchdelete(this.ids).then(res => {
-          if (res.subCode === 1000) {
-            this.$message.success(res.subMsg)
-            this.getPage()
-          } else {
-            this.$message.error(res.subMsg)
-          }
-        })
-      })
-    },
-    exportHandle() {
-      let data = {}
-      if (this.ids.length > 0) {
-        data.ids = this.ids
-      } else {
-        this.$message.success('未勾选数据，导出符合条件的所有数据')
-        data = {
-          ...this.queryParam
-        }
-      }
-      getExport('/gw/op/v1/goodsInventory/export', data, 'post', '商品库存列表').then(() => {
-        this.$emit('refresh')
-      })
-    },
-    resetHandle() {
-      this.queryParam = {
-        id: '',
-        goodsId: '',
-        sizeId: '',
-        inventoryFrom: '',
-        inventoryTo: '',
-        createTimeFrom: '',
-        createTimeTo: '',
-        updateTimeFrom: '',
-        updateTimeTo: '',
-        pageSize: 10,
-        pageNum: 1
-      }
-      this.createTime = ''
-      this.updateTime = ''
       this.getPage()
     }
   }

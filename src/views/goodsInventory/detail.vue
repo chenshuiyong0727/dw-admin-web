@@ -77,9 +77,6 @@
           <el-table-column align="center" prop="" label="手续费单价">
             <template v-if="scope.row.dwPrice" slot-scope="scope">{{(scope.row.dwPrice * 0.075 + 38 + 8.5) | numFilter}}</template>
           </el-table-column>
-<!--          <el-table-column align="center" prop="" label="到手单价">-->
-<!--            <template v-if="scope.row.dwPrice" slot-scope="scope">{{(scope.row.dwPrice - (scope.row.dwPrice * 0.075 + 38 + 8.5)) | numFilter}}</template>-->
-<!--          </el-table-column>-->
           <el-table-column align="center" prop="" label="到手单价">
             <template v-if="scope.row.dwPrice" slot-scope="scope">{{(scope.row.dwPrice - (scope.row.dwPrice * 0.075 + 38 + 8.5)) | numFilter}}</template>
           </el-table-column>
