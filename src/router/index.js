@@ -240,6 +240,54 @@ export const constantRoutes = [
             hidden: true
           }
         ]
+      },
+      {
+        path: 'list2',
+        name: 'list2',
+        component: () => import('@/views/goodsOrder/list2'),
+        meta: { title: '已上架商品' }
+      },
+      {
+        path: 'list3',
+        name: 'list3',
+        component: () => import('@/views/goodsOrder/list3'),
+        meta: { title: '待发货商品' }
+      },
+      {
+        path: 'list4',
+        name: 'list4',
+        component: () => import('@/views/goodsOrder/list4'),
+        meta: { title: '已发货商品' }
+      },
+      {
+        path: 'list5',
+        name: 'list5',
+        component: () => import('@/views/goodsOrder/list5'),
+        meta: { title: '已揽件商品' }
+      },
+      {
+        path: 'list6',
+        name: 'list6',
+        component: () => import('@/views/goodsOrder/list6'),
+        meta: { title: '已收货商品' }
+      },
+      {
+        path: 'list7',
+        name: 'list7',
+        component: () => import('@/views/goodsOrder/list7'),
+        meta: { title: '成功商品' }
+      },
+      {
+        path: 'list8',
+        name: 'list8',
+        component: () => import('@/views/goodsOrder/list7'),
+        meta: { title: '瑕疵商品' }
+      },
+      {
+        path: 'list9',
+        name: 'list9',
+        component: () => import('@/views/goodsOrder/list9'),
+        meta: { title: '已下架商品' }
       }
     ]
   },

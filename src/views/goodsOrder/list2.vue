@@ -17,19 +17,7 @@
             <el-input v-model.trim="queryParam.inventoryId" placeholder="库存编号"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
-          <el-form-item size="small">
-            <el-select v-model="queryParam.status">
-              <el-option label="状态" value=""></el-option>
-              <el-option
-                v-for="item in statusList"
-                :key="item.fieldValue"
-                :label="item.fieldName"
-                :value="+item.fieldValue">
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
+
         <el-col :span="6">
           <el-form-item size="small">
             <div>
@@ -187,9 +175,46 @@
           }}
         </template>
       </el-table-column>
-      <el-table-column fixed="right" align="center" label="操作" width="100">
+      <el-table-column fixed="right" align="center" label="操作" width="130"
+                       v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length">
         <template slot-scope="scope">
-            <el-button type="text" @click="changeStatus(scope.row)" >交易成功</el-button>
+          <div>
+<!--            //  下架	1-->
+<!--            //  已上架	2-->
+<!--            //  待发货	3-->
+<!--            //  已发货	4-->
+<!--            //  已揽件	5-->
+<!--            //  已收货	6-->
+<!--            //  成功	7-->
+<!--            //  瑕疵	8-->
+<!--            //  取消	9-->
+<!--            //  发货后取消	10-->
+<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 0">上架</el-button>-->
+<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="[1,9,10] .includes(scope.row.status)  ">上架</el-button>-->
+            <el-button type="text" @click="changeStatus(scope.row)" >待发货</el-button>
+<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 3">已发货</el-button>-->
+<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 4">已揽件</el-button>-->
+<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 5">已收货</el-button>-->
+<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 6">成功</el-button>-->
+<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 6">瑕疵</el-button>-->
+<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">瑕疵</el-button>-->
+<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">取消</el-button>-->
+<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">发货后取消</el-button>-->
+<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">已上架</el-button>-->
+
+<!--            <el-button type="text" @click="goDetail(scope.row.id , 1)">查看-->
+<!--            </el-button>-->
+<!--            <el-button type="text" @click="goDetail(scope.row.id , 2)">编辑-->
+<!--            </el-button>-->
+          </div>
+          <el-button type="text" @click="goDel(scope.row.id)">删除
+          </el-button>
+          <el-button type="text" @click="changeStatus(scope.row.id, 0)"
+                     v-if="scope.row.dataStatus == 1">停用
+          </el-button>
+          <el-button type="text" @click="changeStatus(scope.row.id, 1)"
+                     v-if="scope.row.dataStatus == 0">启用
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -233,7 +258,7 @@ export default {
         id: '',
         orderNo: '',
         inventoryId: '',
-        status: '',
+        status: 2,
         shelvesPriceFrom: '',
         shelvesPriceTo: '',
         freightFrom: '',
@@ -389,7 +414,7 @@ export default {
         id: '',
         orderNo: '',
         inventoryId: '',
-        status: '',
+        status:2,
         shelvesPriceFrom: '',
         shelvesPriceTo: '',
         freightFrom: '',
