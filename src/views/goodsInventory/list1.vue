@@ -87,10 +87,10 @@
       <el-table-column align="center" prop="sizeId" label="尺码编号" />
       <el-table-column align="center" prop="inventory" label="库存" />
       <el-table-column align="center" prop="createTime" label="创建时间">
-        <template slot-scope="scope">{{scope.row.createTime | formateTime('{y}-{m}-{d} {h}:{i}') }} </template>
+        <template slot-scope="scope">{{scope.row.createTime | formateTime() }} </template>
       </el-table-column>
       <el-table-column align="center" prop="updateTime" label="更新时间">
-        <template slot-scope="scope">{{scope.row.updateTime | formateTime('{y}-{m}-{d} {h}:{i}') }} </template>
+        <template slot-scope="scope">{{scope.row.updateTime | formateTime() }} </template>
       </el-table-column>
       <el-table-column fixed="right" align="center" label="操作" width="130" v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length">
         <template slot-scope="scope">

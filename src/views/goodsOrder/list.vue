@@ -119,6 +119,32 @@
         <el-col :span="6">
           <el-form-item size="small">
             <el-date-picker
+              v-model="sellTime"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="出售时间"
+              end-placeholder="出售时间"
+              @change="sellTimeChange"
+              value-format="yyyy-MM-dd">
+            </el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item size="small">
+            <el-date-picker
+              v-model="successTime"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="交易成功时间"
+              end-placeholder="交易成功时间"
+              @change="successTimeChange"
+              value-format="yyyy-MM-dd">
+            </el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item size="small">
+            <el-date-picker
               v-model="createTime"
               type="daterange"
               range-separator="至"
@@ -174,16 +200,21 @@
       <el-table-column align="center" prop="shelvesPrice" label="原售价"/>
       <el-table-column align="center" prop="freight" label="运费"/>
       <el-table-column align="center" prop="poundage" label="手续费"/>
+      <el-table-column align="center" prop="subsidiesPrice" label="补贴价"/>
       <el-table-column align="center" prop="theirPrice" label="到手价"/>
       <el-table-column align="center" prop="address" label="地址"/>
       <el-table-column align="center" prop="waybillNo" label="运单编号"/>
+      <el-table-column align="center" prop="sellTime" label="出售时间">
+        <template slot-scope="scope">{{scope.row.sellTime | formateTime }}</template>
+      </el-table-column>
+      <el-table-column align="center" prop="successTime" label="交易成功时间">
+        <template slot-scope="scope">{{scope.row.successTime | formateTime() }}</template>
+      </el-table-column>
       <el-table-column align="center" prop="createTime" label="创建时间">
-        <template slot-scope="scope">{{scope.row.createTime | formateTime('{y}-{m}-{d} {h}:{i}')
-          }}
-        </template>
+        <template slot-scope="scope">{{scope.row.createTime | formateTime() }}</template>
       </el-table-column>
       <el-table-column align="center" prop="updateTime" label="更新时间">
-        <template slot-scope="scope">{{scope.row.updateTime | formateTime('{y}-{m}-{d} {h}:{i}')
+        <template slot-scope="scope">{{scope.row.updateTime | formateTime()
           }}
         </template>
       </el-table-column>
@@ -248,11 +279,17 @@ export default {
         createTimeTo: '',
         updateTimeFrom: '',
         updateTimeTo: '',
+        sellTimeFrom: '',
+        sellTimeTo: '',
+        successTimeFrom: '',
+        successTimeTo: '',
         pageSize: 10,
         pageNum: 1
       },
       statusList: [],
       dataStatusList: [],
+      sellTime: '',
+      successTime: '',
       createTime: '',
       updateTime: '',
       selectedId: [],
@@ -266,8 +303,8 @@ export default {
     this.listSysDict()
   },
   methods: {
-    changeStatus(id, dataStatus) {
-      goodsOrderApi.changeStatus({ id, dataStatus }).then(res => {
+    changeStatus(row) {
+      goodsOrderApi.changeStatus(row).then(res => {
         if (res.subCode === 1000) {
           this.$message.success(res.subMsg)
         } else {
@@ -279,6 +316,24 @@ export default {
     avatarShow(e) {
       this.imageZoom = e
       this.pictureZoomShow = true
+    },
+    successTimeChange() {
+      if (this.successTime) {
+        this.queryParam.successTimeFrom = this.successTime[0]
+        this.queryParam.successTimeTo = this.successTime[1]
+      } else {
+        this.queryParam.successTimeFrom = null
+        this.queryParam.successTimeTo = null
+      }
+    },
+    sellTimeChange() {
+      if (this.sellTime) {
+        this.queryParam.sellTimeFrom = this.sellTime[0]
+        this.queryParam.sellTimeTo = this.sellTime[1]
+      } else {
+        this.queryParam.sellTimeFrom = null
+        this.queryParam.sellTimeTo = null
+      }
     },
     createTimeChange() {
       if (this.createTime) {
@@ -404,11 +459,17 @@ export default {
         createTimeTo: '',
         updateTimeFrom: '',
         updateTimeTo: '',
+        sellTimeFrom: '',
+        sellTimeTo: '',
+        successTimeFrom: '',
+        successTimeTo: '',
         pageSize: 10,
         pageNum: 1
       }
       this.createTime = ''
       this.updateTime = ''
+      this.sellTime = ''
+      this.successTime = ''
       this.getPage()
     }
   }

@@ -159,19 +159,21 @@
       <el-table-column align="center" prop="status" label="状态">
         <template slot-scope="scope">{{ scope.row.status | dictToDescTypeValue(37) }}</template>
       </el-table-column>
+      <el-table-column align="center" prop="price" label="入库价"/>
       <el-table-column align="center" prop="shelvesPrice" label="原售价"/>
       <el-table-column align="center" prop="freight" label="运费"/>
       <el-table-column align="center" prop="poundage" label="手续费"/>
+      <el-table-column align="center" prop="subsidiesPrice" label="补贴价"/>
       <el-table-column align="center" prop="theirPrice" label="到手价"/>
       <el-table-column align="center" prop="address" label="地址"/>
       <el-table-column align="center" prop="waybillNo" label="运单编号"/>
       <el-table-column align="center" prop="createTime" label="创建时间">
-        <template slot-scope="scope">{{scope.row.createTime | formateTime('{y}-{m}-{d} {h}:{i}')
+        <template slot-scope="scope">{{scope.row.createTime | formateTime()
           }}
         </template>
       </el-table-column>
       <el-table-column align="center" prop="updateTime" label="更新时间">
-        <template slot-scope="scope">{{scope.row.updateTime | formateTime('{y}-{m}-{d} {h}:{i}')
+        <template slot-scope="scope">{{scope.row.updateTime | formateTime()
           }}
         </template>
       </el-table-column>
@@ -179,42 +181,8 @@
                        v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length">
         <template slot-scope="scope">
           <div>
-<!--            //  下架	1-->
-<!--            //  已上架	2-->
-<!--            //  待发货	3-->
-<!--            //  已发货	4-->
-<!--            //  已揽件	5-->
-<!--            //  已收货	6-->
-<!--            //  成功	7-->
-<!--            //  瑕疵	8-->
-<!--            //  取消	9-->
-<!--            //  发货后取消	10-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 0">上架</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="[1,9,10] .includes(scope.row.status)  ">上架</el-button>-->
-            <el-button type="text" @click="changeStatus(scope.row)" >待发货</el-button>
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 3">已发货</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 4">已揽件</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 5">已收货</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 6">成功</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 6">瑕疵</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">瑕疵</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">取消</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">发货后取消</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">已上架</el-button>-->
-
-<!--            <el-button type="text" @click="goDetail(scope.row.id , 1)">查看-->
-<!--            </el-button>-->
-<!--            <el-button type="text" @click="goDetail(scope.row.id , 2)">编辑-->
-<!--            </el-button>-->
+            <el-button type="text" @click="changeStatusDialog(scope.row)" >出售</el-button>
           </div>
-          <el-button type="text" @click="goDel(scope.row.id)">删除
-          </el-button>
-          <el-button type="text" @click="changeStatus(scope.row.id, 0)"
-                     v-if="scope.row.dataStatus == 1">停用
-          </el-button>
-          <el-button type="text" @click="changeStatus(scope.row.id, 1)"
-                     v-if="scope.row.dataStatus == 0">启用
-          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -235,6 +203,11 @@
         <img :src="fileUrl + imageZoom" alt="" width="100%" height="100%">
       </div>
     </div>
+    <order-change-status-dialog2
+      v-if="isShowDialog "
+      :orderData="orderData"
+      @refreshPage="refreshPage"
+      @closDialog="closDialog"/>
   </three-level-route>
 </template>
 
@@ -243,14 +216,18 @@ import ThreeLevelRoute from '@/components/ThreeLevelRoute'
 import { goodsOrderApi } from '@/api/goodsOrder'
 import { permissionMixin } from '@/mixins/permissionMixin'
 import { getExport } from '@/api/exportFile'
+import orderChangeStatusDialog2 from './components/orderChangeStatusDialog2'
 
 export default {
   mixins: [permissionMixin],
   components: {
+    orderChangeStatusDialog2,
     ThreeLevelRoute
   },
   data() {
     return {
+      orderData: '',
+      isShowDialog: false,
       pictureZoomShow: false,
       imageZoom: '',
       fileUrl: fileUrl,
@@ -291,8 +268,19 @@ export default {
     this.listSysDict()
   },
   methods: {
-    changeStatus(id, dataStatus) {
-      goodsOrderApi.changeStatus({ id, dataStatus }).then(res => {
+    changeStatusDialog(row) {
+      this.orderData = row
+      this.isShowDialog = true
+    },
+    closDialog() {
+      this.isShowDialog = false
+    },
+    refreshPage() {
+      this.isShowDialog = false
+      this.getPage()
+    },
+    changeStatus(row) {
+      goodsOrderApi.changeStatus(row).then(res => {
         if (res.subCode === 1000) {
           this.$message.success(res.subMsg)
         } else {

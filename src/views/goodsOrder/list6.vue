@@ -162,16 +162,17 @@
       <el-table-column align="center" prop="shelvesPrice" label="原售价"/>
       <el-table-column align="center" prop="freight" label="运费"/>
       <el-table-column align="center" prop="poundage" label="手续费"/>
+      <el-table-column align="center" prop="subsidiesPrice" label="补贴价"/>
       <el-table-column align="center" prop="theirPrice" label="到手价"/>
       <el-table-column align="center" prop="address" label="地址"/>
       <el-table-column align="center" prop="waybillNo" label="运单编号"/>
       <el-table-column align="center" prop="createTime" label="创建时间">
-        <template slot-scope="scope">{{scope.row.createTime | formateTime('{y}-{m}-{d} {h}:{i}')
+        <template slot-scope="scope">{{scope.row.createTime | formateTime()
           }}
         </template>
       </el-table-column>
       <el-table-column align="center" prop="updateTime" label="更新时间">
-        <template slot-scope="scope">{{scope.row.updateTime | formateTime('{y}-{m}-{d} {h}:{i}')
+        <template slot-scope="scope">{{scope.row.updateTime | formateTime()
           }}
         </template>
       </el-table-column>
@@ -207,14 +208,7 @@
 <!--            <el-button type="text" @click="goDetail(scope.row.id , 2)">编辑-->
 <!--            </el-button>-->
           </div>
-          <el-button type="text" @click="goDel(scope.row.id)">删除
-          </el-button>
-          <el-button type="text" @click="changeStatus(scope.row.id, 0)"
-                     v-if="scope.row.dataStatus == 1">停用
-          </el-button>
-          <el-button type="text" @click="changeStatus(scope.row.id, 1)"
-                     v-if="scope.row.dataStatus == 0">启用
-          </el-button>
+
         </template>
       </el-table-column>
     </el-table>
@@ -291,8 +285,8 @@ export default {
     this.listSysDict()
   },
   methods: {
-    changeStatus(id, dataStatus) {
-      goodsOrderApi.changeStatus({ id, dataStatus }).then(res => {
+    changeStatus(row) {
+      goodsOrderApi.changeStatus(row).then(res => {
         if (res.subCode === 1000) {
           this.$message.success(res.subMsg)
         } else {

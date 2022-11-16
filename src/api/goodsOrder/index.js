@@ -36,6 +36,12 @@ export const goodsOrderApi = {
     method: 'post',
     data: body
   }),
+  // 出售
+  sellGoods: (body) => request({
+    url: '/gw/op/v1/goodsOrder/sellGoods',
+    method: 'post',
+    data: body
+  }),
   // 更新
   update: (body) => request({
     url: '/gw/op/v1/goodsOrder',

@@ -98,30 +98,6 @@ export const constantRoutes = [
       }
     ]
   },
-  // 权限管理
-  {
-    path: '/authority',
-    component: Layout,
-    meta: { title: '权限管理', leftMenuId: 1 },
-    redirect: '/authority/role',
-    children: [
-      {
-        path: 'role',
-        name: 'role',
-        component: () => import('@/views/systemManage/authority/role'),
-        meta: { title: '角色权限' },
-        children: [
-          {
-            path: 'add',
-            name: 'addRole',
-            component: () => import('@/views/systemManage/authority/addRole'),
-            meta: { title: '新增', routerId: 3 },
-            hidden: true
-          }
-        ]
-      }
-    ]
-  },
   // 员工管理
   {
     path: '/staff',
@@ -139,6 +115,30 @@ export const constantRoutes = [
             path: 'add',
             name: 'addAccount',
             component: () => import('@/views/systemManage/staff/addAccount'),
+            meta: { title: '新增', routerId: 3 },
+            hidden: true
+          }
+        ]
+      }
+    ]
+  },
+  // 权限管理
+  {
+    path: '/authority',
+    component: Layout,
+    meta: { title: '权限管理', leftMenuId: 1 },
+    redirect: '/authority/role',
+    children: [
+      {
+        path: 'role',
+        name: 'role',
+        component: () => import('@/views/systemManage/authority/role'),
+        meta: { title: '角色权限' },
+        children: [
+          {
+            path: 'add',
+            name: 'addRole',
+            component: () => import('@/views/systemManage/authority/addRole'),
             meta: { title: '新增', routerId: 3 },
             hidden: true
           }

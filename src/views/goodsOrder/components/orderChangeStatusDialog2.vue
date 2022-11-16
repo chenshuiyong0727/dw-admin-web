@@ -1,38 +1,44 @@
 <template>
   <el-dialog
-    title="上架"
+    title="出售"
     :visible.sync="dialogVisible"
     width="40%"
     center
     @close="closDialog">
     <el-row class="form-flex">
-      <el-col :span="8" style="text-align: right"><span>尺码：</span></el-col>
+      <el-col :span="8" style="text-align: right"><span>图片：</span></el-col>
       <el-col :span="8" :offset="1">
-        <span>{{sizeData.size}}</span>
+        <img  v-if="orderData.imgUrl" :src="fileUrl+ orderData.imgUrl" class="userPic"  @click="avatarShow(orderData.imgUrl)" >
       </el-col>
     </el-row>
     <el-row class="form-flex">
-      <el-col :span="8" style="text-align: right"><span>当前库存：</span></el-col>
+      <el-col :span="8" style="text-align: right"><span>货号：</span></el-col>
       <el-col :span="8" :offset="1">
-        <span>{{sizeData.inventory}}</span>
+        <span>{{orderData.actNo}}</span>
+      </el-col>
+    </el-row>
+    <el-row class="form-flex">
+      <el-col :span="8" style="text-align: right"><span>尺码：</span></el-col>
+      <el-col :span="8" :offset="1">
+        <span>{{orderData.size}}</span>
       </el-col>
     </el-row>
     <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><span>入库价：</span></el-col>
       <el-col :span="8" :offset="1">
-        <span>{{sizeData.price}}</span>
+        <el-input v-model="orderData.price" size="small" ></el-input>
       </el-col>
     </el-row>
     <el-row class="form-flex">
-      <el-col :span="8" style="text-align: right"><i class="red">*</i><span>上架数量：</span></el-col>
+      <el-col :span="8" style="text-align: right"><i class="red">*</i><span>出售价格：</span></el-col>
       <el-col :span="8" :offset="1">
-        <el-input v-input-validation v-model="requestParam.num" size="small"></el-input>
+        <el-input v-model="requestParam.shelvesPrice" size="small" ></el-input>
       </el-col>
     </el-row>
     <el-row class="form-flex">
-      <el-col :span="8" style="text-align: right"><i class="red">*</i><span>上架价格：</span></el-col>
+      <el-col :span="8" style="text-align: right"><span>补贴价格：</span></el-col>
       <el-col :span="8" :offset="1">
-        <el-input v-input-validation v-model="requestParam.shelvesPrice" size="small"></el-input>
+        <el-input v-model="requestParam.subsidiesPrice" size="small" ></el-input>
       </el-col>
     </el-row>
     <el-row class="form-flex">
@@ -44,13 +50,13 @@
     <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><span>预估到手价：</span></el-col>
       <el-col :span="8" :offset="1">
-        <span>{{(requestParam.shelvesPrice - (requestParam.shelvesPrice * 0.075 + 38 + 8.5)) | numFilter}}</span>
+        <span>{{( requestParam.subsidiesPrice * 1 +  requestParam.shelvesPrice - (requestParam.shelvesPrice * 0.075 + 38 + 8.5)) | numFilter}}</span>
       </el-col>
     </el-row>
     <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><span>预估利润：</span></el-col>
       <el-col :span="8" :offset="1">
-        <span>{{(requestParam.shelvesPrice- (requestParam.shelvesPrice * 0.075 + 38 + 8.5) - sizeData.price - 10) | numFilter}}</span>
+        <span>{{(requestParam.subsidiesPrice * 1 + requestParam.shelvesPrice- (requestParam.shelvesPrice * 0.075 + 38 + 8.5) - orderData.price - 10) | numFilter}}</span>
       </el-col>
     </el-row>
     <span slot="footer" class="dialog-footer">
@@ -60,39 +66,47 @@
   </el-dialog>
 </template>
 <script>
-import { goodsInventoryApi } from '@/api/goodsInventory'
+import { goodsOrderApi } from '@/api/goodsOrder'
 export default {
   props: {
-    sizeData: {
+    orderData: {
       type: Object
     }
   },
   data() {
     return {
+      fileUrl: fileUrl,
       dialogVisible: true,
       requestParam: {
-        inventoryId: '',
-        type: 1,
-        num: '',
-        shelvesPrice: ''
+        id: '',
+        status: 3,
+        shelvesPrice: '',
+        subsidiesPrice: ''
       }
     }
   },
   mounted() {
-    this.requestParam.inventoryId = this.sizeData.id
-    this.requestParam.num = this.sizeData.inventory
-    this.requestParam.shelvesPrice = this.sizeData.dwPrice
+    this.requestParam.id = this.orderData.id
+    this.requestParam.shelvesPrice = this.orderData.shelvesPrice
+    this.requestParam.subsidiesPrice = this.orderData.subsidiesPrice
   },
   methods: {
+    avatarShow(e) {
+      if (!e) {
+        return
+      }
+      window.open(this.fileUrl + e)
+    },
     closDialog() {
       this.$emit('closDialog')
     },
     confirmHandle() {
-      if (this.requestParam.num > this.sizeData.inventory) {
+      if (this.requestParam.num > this.orderData.inventory) {
         this.$message.error('上架数量大于当前库存')
         return
       }
-      goodsInventoryApi.shelvesGoods(this.requestParam).then(res => {
+      // 出售
+      goodsOrderApi.sellGoods(this.requestParam).then(res => {
         if (res.subCode === 1000) {
           this.$message({
             message: '操作成功，即将返回',
