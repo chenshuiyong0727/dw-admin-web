@@ -197,11 +197,15 @@
       <el-table-column align="center" prop="status" label="状态">
         <template slot-scope="scope">{{ scope.row.status | dictToDescTypeValue(37) }}</template>
       </el-table-column>
+      <el-table-column align="center" prop="price" label="入库价"/>
       <el-table-column align="center" prop="shelvesPrice" label="原售价"/>
       <el-table-column align="center" prop="freight" label="运费"/>
       <el-table-column align="center" prop="poundage" label="手续费"/>
       <el-table-column align="center" prop="subsidiesPrice" label="补贴价"/>
       <el-table-column align="center" prop="theirPrice" label="到手价"/>
+      <el-table-column align="center" prop="" label="预估利润">
+        <template  v-if="scope.row.theirPrice && scope.row.price " slot-scope="scope">{{(scope.row.theirPrice - scope.row.price - 10 ) | numFilter}}</template>
+      </el-table-column>
       <el-table-column align="center" prop="address" label="地址"/>
       <el-table-column align="center" prop="waybillNo" label="运单编号"/>
       <el-table-column align="center" prop="sellTime" label="出售时间">

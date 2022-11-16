@@ -81,6 +81,7 @@ export default {
         id: '',
         status: 3,
         shelvesPrice: '',
+        theirPrice: '',
         subsidiesPrice: ''
       }
     }
@@ -101,11 +102,10 @@ export default {
       this.$emit('closDialog')
     },
     confirmHandle() {
-      if (this.requestParam.num > this.orderData.inventory) {
-        this.$message.error('上架数量大于当前库存')
-        return
-      }
+      let realVal = this.requestParam.subsidiesPrice * 1 + this.requestParam.shelvesPrice - (this.requestParam.shelvesPrice * 0.075 + 38 + 8.5)
+      this.requestParam.theirPrice = parseFloat(realVal).toFixed(2)
       // 出售
+      alert(this.requestParam.theirPrice)
       goodsOrderApi.sellGoods(this.requestParam).then(res => {
         if (res.subCode === 1000) {
           this.$message({
