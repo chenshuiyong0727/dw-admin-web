@@ -43,10 +43,11 @@
           <el-upload
             :disabled="type == 1"
             class="avatar-uploader"
-            action="/gw/op/v1/file/uploadFile"
+            :action="uploadPath"
             :show-file-list="false"
             :on-success="handleImageSuccess"
             :before-upload="beforeImageUpload"
+            :data="uploadData"
           >
             <img
               v-if="form.imgUrl"
@@ -136,7 +137,9 @@ export default {
         lazy: false,
         multiple: true
       },
+      uploadData: {},
       sizeList: [],
+      uploadPath: uploadPath,
       fileUrl: fileUrl,
       typeList: [],
 	    dataStatusList: [],
@@ -209,9 +212,15 @@ export default {
       window.open(this.fileUrl + e)
     },
     async handleImageSuccess(res, file) {
+      this.$message.success('上传成功')
       this.form.imgUrl = res.data
     },
     beforeImageUpload(file) {
+      if (!this.form.actNo) {
+        this.$message.error('请输入货号')
+        return false
+      }
+      this.uploadData = { actNo: this.form.actNo } // 上传携带的参数名
       const fileName = file.name
       const fileType = fileName.substring(fileName.lastIndexOf('.'))
       // jpeg,.png,.jpg,.bmp,.gif
