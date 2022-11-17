@@ -26,37 +26,46 @@
     <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><span>入库价：</span></el-col>
       <el-col :span="8" :offset="1">
-        <el-input v-model="orderData.price" size="small" ></el-input>
+        <span>{{orderData.price}}</span>
       </el-col>
     </el-row>
     <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><i class="red">*</i><span>出售价格：</span></el-col>
       <el-col :span="8" :offset="1">
-        <el-input v-model="requestParam.shelvesPrice" size="small" ></el-input>
-      </el-col>
-    </el-row>
-    <el-row class="form-flex">
-      <el-col :span="8" style="text-align: right"><span>补贴价格：</span></el-col>
-      <el-col :span="8" :offset="1">
-        <el-input v-model="requestParam.subsidiesPrice" size="small" ></el-input>
-      </el-col>
-    </el-row>
-    <el-row class="form-flex">
-      <el-col :span="8" style="text-align: right"><span>手续费：</span></el-col>
-      <el-col :span="8" :offset="1">
-        <span>{{(requestParam.shelvesPrice * 0.075 + 38 + 8.5) | numFilter}}</span>
+        <span>{{orderData.shelvesPrice}}</span>
       </el-col>
     </el-row>
     <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><span>预估到手价：</span></el-col>
       <el-col :span="8" :offset="1">
-        <span>{{( requestParam.subsidiesPrice * 1 +  requestParam.shelvesPrice - (requestParam.shelvesPrice * 0.075 + 38 + 8.5)) | numFilter}}</span>
+        <span>{{orderData.theirPrice}}</span>
       </el-col>
     </el-row>
     <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><span>预估利润：</span></el-col>
       <el-col :span="8" :offset="1">
-        <span>{{(requestParam.subsidiesPrice * 1 + requestParam.shelvesPrice- (requestParam.shelvesPrice * 0.075 + 38 + 8.5) - orderData.price - 10) | numFilter}}</span>
+        <span>{{(orderData.theirPrice - orderData.price - 10 ) | numFilter}}</span>
+      </el-col>
+    </el-row>
+    <el-row class="form-flex">
+      <el-col :span="8" style="text-align: right"><span>地址：</span></el-col>
+      <el-col :span="8" :offset="1">
+<!--        <el-input v-model="requestParam.addressId" size="small" ></el-input>-->
+        <el-select v-model="requestParam.addressId">
+<!--          <el-option label="地址" value=""></el-option>-->
+          <el-option
+            v-for="item in addressList"
+            :key="item.fieldValue"
+            :label="item.fieldName"
+            :value="item.fieldValue">
+          </el-option>
+        </el-select>
+      </el-col>
+    </el-row>
+    <el-row class="form-flex">
+      <el-col :span="8" style="text-align: right"><span>运单号：</span></el-col>
+      <el-col :span="8" :offset="1">
+        <el-input v-model="requestParam.waybillNo" size="small" ></el-input>
       </el-col>
     </el-row>
     <span slot="footer" class="dialog-footer">
@@ -77,19 +86,18 @@ export default {
     return {
       fileUrl: fileUrl,
       dialogVisible: true,
+      addressList: [],
       requestParam: {
         id: '',
-        status: 3,
-        shelvesPrice: '',
-        theirPrice: '',
-        subsidiesPrice: ''
+        status: 4,
+        waybillNo: '',
+        addressId: ''
       }
     }
   },
   mounted() {
+    this.listSysDict()
     this.requestParam.id = this.orderData.id
-    this.requestParam.shelvesPrice = this.orderData.shelvesPrice
-    this.requestParam.subsidiesPrice = this.orderData.subsidiesPrice
   },
   methods: {
     avatarShow(e) {
@@ -98,13 +106,15 @@ export default {
       }
       window.open(this.fileUrl + e)
     },
+    listSysDict() {
+      let sysDictList = sessionStorage.getItem('sysDictList') ? JSON.parse(
+        sessionStorage.getItem('sysDictList')) : []
+      this.addressList = sysDictList.filter(item => item.typeValue == 38)
+    },
     closDialog() {
       this.$emit('closDialog')
     },
     confirmHandle() {
-      let realVal = this.requestParam.subsidiesPrice * 1 + this.requestParam.shelvesPrice - (this.requestParam.shelvesPrice * 0.075 + 38 + 8.5)
-      this.requestParam.theirPrice = parseFloat(realVal).toFixed(2)
-      // 出售
       goodsOrderApi.sellGoods(this.requestParam).then(res => {
         if (res.subCode === 1000) {
           this.$message({

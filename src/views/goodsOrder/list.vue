@@ -106,9 +106,22 @@
             </div>
           </el-form-item>
         </el-col>
+<!--        <el-col :span="6">-->
+<!--          <el-form-item size="small">-->
+<!--            <el-input v-model.trim="queryParam.addressId" placeholder="地址编号"></el-input>-->
+<!--          </el-form-item>-->
+<!--        </el-col>-->
         <el-col :span="6">
-          <el-form-item size="small">
-            <el-input v-model.trim="queryParam.addressId" placeholder="地址编号"></el-input>
+          <el-form-item  size="small">
+            <el-select v-model="queryParam.addressId">
+              <el-option label="地址" value=""></el-option>
+              <el-option
+                v-for="item in addressList"
+                :key="item.fieldValue"
+                :label="item.fieldName"
+                :value="item.fieldValue">
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -206,7 +219,10 @@
       <el-table-column align="center" prop="" label="预估利润">
         <template  v-if="scope.row.theirPrice && scope.row.price " slot-scope="scope">{{(scope.row.theirPrice - scope.row.price - 10 ) | numFilter}}</template>
       </el-table-column>
-      <el-table-column align="center" prop="address" label="地址"/>
+<!--      <el-table-column align="center" prop="address" label="地址"/>-->
+      <el-table-column align="center" prop="addressId" label="状态">
+        <template slot-scope="scope">{{ scope.row.addressId | dictToDescTypeValue(38) }}</template>
+      </el-table-column>
       <el-table-column align="center" prop="waybillNo" label="运单编号"/>
       <el-table-column align="center" prop="sellTime" label="出售时间">
         <template slot-scope="scope">{{scope.row.sellTime | formateTime }}</template>
@@ -224,7 +240,7 @@
       </el-table-column>
       <el-table-column fixed="right" align="center" label="操作" width="100">
         <template slot-scope="scope">
-            <el-button type="text" @click="changeStatus(scope.row)" >交易成功</el-button>
+          <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status != 7">交易成功</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -290,6 +306,7 @@ export default {
         pageSize: 10,
         pageNum: 1
       },
+      addressList: [],
       statusList: [],
       dataStatusList: [],
       sellTime: '',
@@ -370,6 +387,7 @@ export default {
     listSysDict() {
       let sysDictList = sessionStorage.getItem('sysDictList') ? JSON.parse(
         sessionStorage.getItem('sysDictList')) : []
+      this.addressList = sysDictList.filter(item => item.typeValue == 38)
       this.statusList = sysDictList.filter(item => item.typeValue == 37)
       this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
     },

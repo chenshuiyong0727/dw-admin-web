@@ -228,7 +228,7 @@
 <!--            //  发货后取消	10-->
 <!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 0">上架</el-button>-->
 <!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="[1,9,10] .includes(scope.row.status)  ">上架</el-button>-->
-            <el-button type="text" @click="changeStatus(scope.row)" >待发货</el-button>
+            <el-button type="text" @click="changeStatus(scope.row)" >上架</el-button>
 <!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 3">已发货</el-button>-->
 <!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 4">已揽件</el-button>-->
 <!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 5">已收货</el-button>-->
@@ -299,7 +299,7 @@ export default {
         theirPriceFrom: '',
         theirPriceTo: '',
         addressId: '',
-  waybillNo: '',
+        waybillNo: '',
         createTimeFrom: '',
         createTimeTo: '',
         updateTimeFrom: '',
@@ -329,7 +329,8 @@ export default {
   },
   methods: {
     changeStatus(row) {
-      goodsOrderApi.changeStatus(row).then(res => {
+      row.status = 2
+      goodsOrderApi.sellGoods(row).then(res => {
         if (res.subCode === 1000) {
           this.$message.success(res.subMsg)
         } else {

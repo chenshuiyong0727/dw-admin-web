@@ -217,33 +217,7 @@
                        v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length">
         <template slot-scope="scope">
           <div>
-<!--            //  下架	1-->
-<!--            //  已上架	2-->
-<!--            //  待发货	3-->
-<!--            //  已发货	4-->
-<!--            //  已揽件	5-->
-<!--            //  已收货	6-->
-<!--            //  成功	7-->
-<!--            //  瑕疵	8-->
-<!--            //  取消	9-->
-<!--            //  发货后取消	10-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 0">上架</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="[1,9,10] .includes(scope.row.status)  ">上架</el-button>-->
-            <el-button type="text" @click="changeStatus(scope.row)" >待发货</el-button>
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 3">已发货</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 4">已揽件</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 5">已收货</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 6">成功</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 6">瑕疵</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">瑕疵</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">取消</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">发货后取消</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">已上架</el-button>-->
-
-<!--            <el-button type="text" @click="goDetail(scope.row.id , 1)">查看-->
-<!--            </el-button>-->
-<!--            <el-button type="text" @click="goDetail(scope.row.id , 2)">编辑-->
-<!--            </el-button>-->
+            <el-button type="text" @click="changeStatus(scope.row)" >上架</el-button>
           </div>
 
         </template>
@@ -299,7 +273,7 @@ export default {
         theirPriceFrom: '',
         theirPriceTo: '',
         addressId: '',
-  waybillNo: '',
+        waybillNo: '',
         createTimeFrom: '',
         createTimeTo: '',
         updateTimeFrom: '',
@@ -329,7 +303,8 @@ export default {
   },
   methods: {
     changeStatus(row) {
-      goodsOrderApi.changeStatus(row).then(res => {
+      row.status = 2
+      goodsOrderApi.sellGoods(row).then(res => {
         if (res.subCode === 1000) {
           this.$message.success(res.subMsg)
         } else {
@@ -479,7 +454,7 @@ export default {
         theirPriceFrom: '',
         theirPriceTo: '',
         addressId: '',
-  waybillNo: '',
+        waybillNo: '',
         createTimeFrom: '',
         createTimeTo: '',
         updateTimeFrom: '',

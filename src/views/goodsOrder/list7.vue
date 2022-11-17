@@ -99,7 +99,7 @@
             <el-input v-model.trim="queryParam.addressId" placeholder="地址编号"></el-input>
           </el-form-item>
         </el-col>
-<el-col :span="6">
+        <el-col :span="6">
           <el-form-item size="small">
             <el-input v-model.trim="queryParam.waybillNo" placeholder="运单编号"></el-input>
           </el-form-item>
@@ -213,41 +213,42 @@
           }}
         </template>
       </el-table-column>
-      <el-table-column fixed="right" align="center" label="操作" width="130"
-                       v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length">
-        <template slot-scope="scope">
-          <div>
-<!--            //  下架	1-->
-<!--            //  已上架	2-->
-<!--            //  待发货	3-->
-<!--            //  已发货	4-->
-<!--            //  已揽件	5-->
-<!--            //  已收货	6-->
-<!--            //  成功	7-->
-<!--            //  瑕疵	8-->
-<!--            //  取消	9-->
-<!--            //  发货后取消	10-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 0">上架</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="[1,9,10] .includes(scope.row.status)  ">上架</el-button>-->
-            <el-button type="text" @click="changeStatus(scope.row)" >待发货</el-button>
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 3">已发货</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 4">已揽件</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 5">已收货</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 6">成功</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 6">瑕疵</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">瑕疵</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">取消</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">发货后取消</el-button>-->
-<!--            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">已上架</el-button>-->
+<!--      <el-table-column fixed="right" align="center" label="操作" width="130"-->
+<!--                       v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length">-->
+<!--        <template slot-scope="scope">-->
+<!--          <div>-->
+<!--&lt;!&ndash;            //  下架	1&ndash;&gt;-->
+<!--&lt;!&ndash;            //  已上架	2&ndash;&gt;-->
+<!--&lt;!&ndash;            //  待发货	3&ndash;&gt;-->
+<!--&lt;!&ndash;            //  已发货	4&ndash;&gt;-->
+<!--&lt;!&ndash;            //  已揽件	5&ndash;&gt;-->
+<!--&lt;!&ndash;            //  已收货	6&ndash;&gt;-->
+<!--&lt;!&ndash;            //  成功	7&ndash;&gt;-->
+<!--&lt;!&ndash;            //  瑕疵	8&ndash;&gt;-->
+<!--&lt;!&ndash;            //  取消	9&ndash;&gt;-->
+<!--&lt;!&ndash;            //  发货后取消	10&ndash;&gt;-->
+<!--&lt;!&ndash;            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 0">上架</el-button>&ndash;&gt;-->
+<!--&lt;!&ndash;            <el-button type="text" @click="changeStatus(scope.row)" v-if="[1,9,10] .includes(scope.row.status)  ">上架</el-button>&ndash;&gt;-->
+<!--            <el-button type="text" @click="changeStatus(scope.row,7)" >成功</el-button>-->
+<!--            <el-button type="text" @click="changeStatus(scope.row,8)" >瑕疵</el-button>-->
+<!--&lt;!&ndash;            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 3">已发货</el-button>&ndash;&gt;-->
+<!--&lt;!&ndash;            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 4">已揽件</el-button>&ndash;&gt;-->
+<!--&lt;!&ndash;            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 5">已收货</el-button>&ndash;&gt;-->
+<!--&lt;!&ndash;            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 6">成功</el-button>&ndash;&gt;-->
+<!--&lt;!&ndash;            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 6">瑕疵</el-button>&ndash;&gt;-->
+<!--&lt;!&ndash;            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">瑕疵</el-button>&ndash;&gt;-->
+<!--&lt;!&ndash;            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">取消</el-button>&ndash;&gt;-->
+<!--&lt;!&ndash;            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">发货后取消</el-button>&ndash;&gt;-->
+<!--&lt;!&ndash;            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">已上架</el-button>&ndash;&gt;-->
 
-<!--            <el-button type="text" @click="goDetail(scope.row.id , 1)">查看-->
-<!--            </el-button>-->
-<!--            <el-button type="text" @click="goDetail(scope.row.id , 2)">编辑-->
-<!--            </el-button>-->
-          </div>
+<!--&lt;!&ndash;            <el-button type="text" @click="goDetail(scope.row.id , 1)">查看&ndash;&gt;-->
+<!--&lt;!&ndash;            </el-button>&ndash;&gt;-->
+<!--&lt;!&ndash;            <el-button type="text" @click="goDetail(scope.row.id , 2)">编辑&ndash;&gt;-->
+<!--&lt;!&ndash;            </el-button>&ndash;&gt;-->
+<!--          </div>-->
 
-        </template>
-      </el-table-column>
+<!--        </template>-->
+<!--      </el-table-column>-->
     </el-table>
     <el-row class="top-15">
       <el-pagination
@@ -328,8 +329,9 @@ export default {
     this.listSysDict()
   },
   methods: {
-    changeStatus(row) {
-      goodsOrderApi.changeStatus(row).then(res => {
+    changeStatus(row, status) {
+      row.status = status
+      goodsOrderApi.sellGoods(row).then(res => {
         if (res.subCode === 1000) {
           this.$message.success(res.subMsg)
         } else {

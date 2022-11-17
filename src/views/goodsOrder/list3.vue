@@ -216,7 +216,7 @@
                        v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length">
         <template slot-scope="scope">
           <div>
-            <el-button type="text" @click="changeStatusDialog(scope.row)">出售</el-button>
+            <el-button type="text" @click="changeStatusDialog(scope.row)">发货</el-button>
           </div>
         </template>
       </el-table-column>
@@ -238,7 +238,7 @@
         <img :src="fileUrl + imageZoom" alt="" width="100%" height="100%">
       </div>
     </div>
-    <order-change-status-dialog2
+    <order-change-status-dialog3
       v-if="isShowDialog "
       :orderData="orderData"
       @refreshPage="refreshPage"
@@ -251,12 +251,12 @@ import ThreeLevelRoute from '@/components/ThreeLevelRoute'
 import { goodsOrderApi } from '@/api/goodsOrder'
 import { permissionMixin } from '@/mixins/permissionMixin'
 import { getExport } from '@/api/exportFile'
-import orderChangeStatusDialog2 from './components/orderChangeStatusDialog2'
+import orderChangeStatusDialog3 from './components/orderChangeStatusDialog3'
 
 export default {
   mixins: [permissionMixin],
   components: {
-    orderChangeStatusDialog2,
+    orderChangeStatusDialog3,
     ThreeLevelRoute
   },
   data() {

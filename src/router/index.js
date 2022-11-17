@@ -280,7 +280,7 @@ export const constantRoutes = [
       {
         path: 'list8',
         name: 'list8',
-        component: () => import('@/views/goodsOrder/list7'),
+        component: () => import('@/views/goodsOrder/list8'),
         meta: { title: '瑕疵商品' }
       },
       {
