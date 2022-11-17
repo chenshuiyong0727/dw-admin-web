@@ -125,7 +125,7 @@ export default {
   data() {
     return {
       form: {
-      	type: 1,
+      	type: '01',
       	actNo: '',
       	name: '',
       	imgUrl: '',
@@ -278,7 +278,7 @@ export default {
     },
     resetHandle() {
       this.form = {
-        type: 1,
+        type: '01',
         actNo: '',
         name: '',
         imgUrl: '',
