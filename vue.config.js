@@ -6,12 +6,12 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 let BASE_URL = '/'
-switch (process.env.NODE_ENV) {
-  case 'staging':
-    // BASE_URL = config.publicPath.pro    //生产环境url
-    BASE_URL = '/hforg/' //测试环境url
-    break
-}
+// switch (process.env.NODE_ENV) {
+//   case 'staging':
+//     // BASE_URL = config.publicPath.pro    //生产环境url
+//     BASE_URL = '/hforg/' //测试环境url
+//     break
+// }
 const name = defaultSettings.title || '和家管理平台' // page title
 
 // If your port is set to 80,
