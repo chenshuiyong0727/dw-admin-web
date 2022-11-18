@@ -4,7 +4,7 @@
       <el-row class="query-form">
         <el-col :span="6">
           <el-form-item size="small">
-            <el-input v-model.trim="queryParam.id" placeholder="订单主键"></el-input>
+            <el-input v-model.trim="queryParam.keyword" placeholder="关键字 （货号、尺码）"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -12,11 +12,11 @@
             <el-input v-model.trim="queryParam.orderNo" placeholder="订单号"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
-          <el-form-item size="small">
-            <el-input v-model.trim="queryParam.inventoryId" placeholder="库存编号"></el-input>
-          </el-form-item>
-        </el-col>
+<!--        <el-col :span="6">-->
+<!--          <el-form-item size="small">-->
+<!--            <el-input v-model.trim="queryParam.inventoryId" placeholder="库存编号"></el-input>-->
+<!--          </el-form-item>-->
+<!--        </el-col>-->
         <el-col :span="6">
           <el-form-item size="small">
             <el-select v-model="queryParam.status">
@@ -106,11 +106,6 @@
             </div>
           </el-form-item>
         </el-col>
-<!--        <el-col :span="6">-->
-<!--          <el-form-item size="small">-->
-<!--            <el-input v-model.trim="queryParam.addressId" placeholder="地址编号"></el-input>-->
-<!--          </el-form-item>-->
-<!--        </el-col>-->
         <el-col :span="6">
           <el-form-item  size="small">
             <el-select v-model="queryParam.addressId">
@@ -198,7 +193,7 @@
 
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-      <el-table-column align="center" prop="id" label="订单主键"/>
+<!--      <el-table-column align="center" prop="id" label="订单主键"/>-->
       <el-table-column align="center" prop="orderNo" label="订单号"/>
       <el-table-column align="center" label="图片" width="120" >
         <template slot-scope="scope">
@@ -216,12 +211,13 @@
       <el-table-column align="center" prop="poundage" label="手续费"/>
       <el-table-column align="center" prop="subsidiesPrice" label="补贴价"/>
       <el-table-column align="center" prop="theirPrice" label="到手价"/>
+      <el-table-column align="center" prop="profits" label="实际利润"/>
       <el-table-column align="center" prop="" label="预估利润">
         <template  v-if="scope.row.theirPrice && scope.row.price " slot-scope="scope">{{(scope.row.theirPrice - scope.row.price - 10 ) | numFilter}}</template>
       </el-table-column>
 <!--      <el-table-column align="center" prop="address" label="地址"/>-->
-      <el-table-column align="center" prop="addressId" label="状态">
-        <template slot-scope="scope">{{ scope.row.addressId | dictToDescTypeValue(38) }}</template>
+      <el-table-column align="center" prop="addressId" label="地址">
+        <template  v-if="scope.row.addressId" slot-scope="scope">{{ scope.row.addressId | dictToDescTypeValue(38) }}</template>
       </el-table-column>
       <el-table-column align="center" prop="waybillNo" label="运单编号"/>
       <el-table-column align="center" prop="sellTime" label="出售时间">
@@ -240,7 +236,7 @@
       </el-table-column>
       <el-table-column fixed="right" align="center" label="操作" width="100">
         <template slot-scope="scope">
-          <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status != 7">交易成功</el-button>
+          <el-button type="text" @click="changeStatusDialog(scope.row)" >交易成功</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -261,6 +257,11 @@
         <img :src="fileUrl + imageZoom" alt="" width="100%" height="100%">
       </div>
     </div>
+    <order-change-status-dialog
+      v-if="isShowDialog "
+      :orderData="orderData"
+      @refreshPage="refreshPage"
+      @closDialog="closDialog"/>
   </three-level-route>
 </template>
 
@@ -269,19 +270,24 @@ import ThreeLevelRoute from '@/components/ThreeLevelRoute'
 import { goodsOrderApi } from '@/api/goodsOrder'
 import { permissionMixin } from '@/mixins/permissionMixin'
 import { getExport } from '@/api/exportFile'
+import orderChangeStatusDialog from './components/orderChangeStatusDialog'
 
 export default {
   mixins: [permissionMixin],
   components: {
+    orderChangeStatusDialog,
     ThreeLevelRoute
   },
   data() {
     return {
+      orderData: '',
+      isShowDialog: false,
       pictureZoomShow: false,
       imageZoom: '',
       fileUrl: fileUrl,
       queryParam: {
         id: '',
+        keyword: '',
         orderNo: '',
         inventoryId: '',
         status: '',
@@ -324,6 +330,17 @@ export default {
     this.listSysDict()
   },
   methods: {
+    changeStatusDialog(row) {
+      this.orderData = row
+      this.isShowDialog = true
+    },
+    closDialog() {
+      this.isShowDialog = false
+    },
+    refreshPage() {
+      this.isShowDialog = false
+      this.getPage()
+    },
     changeStatus(row) {
       goodsOrderApi.changeStatus(row).then(res => {
         if (res.subCode === 1000) {
@@ -464,6 +481,7 @@ export default {
     resetHandle() {
       this.queryParam = {
         id: '',
+        keyword: '',
         orderNo: '',
         inventoryId: '',
         status: '',

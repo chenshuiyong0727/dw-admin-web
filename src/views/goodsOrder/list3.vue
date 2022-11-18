@@ -12,11 +12,11 @@
             <el-input v-model.trim="queryParam.orderNo" placeholder="订单号"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
-          <el-form-item size="small">
-            <el-input v-model.trim="queryParam.inventoryId" placeholder="库存编号"></el-input>
-          </el-form-item>
-        </el-col>
+<!--        <el-col :span="6">-->
+<!--          <el-form-item size="small">-->
+<!--            <el-input v-model.trim="queryParam.inventoryId" placeholder="库存编号"></el-input>-->
+<!--          </el-form-item>-->
+<!--        </el-col>-->
         <el-col :span="6">
           <el-form-item size="small">
             <div>
@@ -172,7 +172,7 @@
 
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-      <el-table-column align="center" prop="id" label="订单主键"/>
+      <!--      <el-table-column align="center" prop="id" label="订单主键"/>-->
       <el-table-column align="center" prop="orderNo" label="订单号"/>
       <el-table-column align="center" label="图片" width="120">
         <template slot-scope="scope">
@@ -190,7 +190,8 @@
       <el-table-column align="center" prop="freight" label="运费"/>
       <el-table-column align="center" prop="poundage" label="手续费"/>
       <el-table-column align="center" prop="subsidiesPrice" label="补贴价"/>
-      <el-table-column align="center" prop="theirPrice" label="到手价"/>
+           <el-table-column align="center" prop="theirPrice" label="到手价"/>
+      <el-table-column align="center" prop="profits" label="实际利润"/>
       <el-table-column align="center" prop="" label="预估利润">
         <template  v-if="scope.row.theirPrice && scope.row.price " slot-scope="scope">{{(scope.row.theirPrice - scope.row.price - 10 ) | numFilter}}</template>
       </el-table-column>
