@@ -2,42 +2,52 @@
   <three-level-route>
     <div class="page-container container-flex">
       <div class="container-left" v-if="1==1">
-        <h5>商品列表</h5>
+<!--        <h5>商品列表</h5>-->
         <el-form ref="form">
           <el-row class="query-form">
             <el-col>
               <el-form-item size="small">
-                <el-input v-model.trim="queryParam1.keyword" placeholder="关键词 （货号、尺码）"></el-input>
+                <el-input v-model.trim="queryParam1.keyword" placeholder="关键词 （货号、尺码）">
+<!--                  <el-button type="primary"  slot="append" @click="search()" >查询</el-button>-->
+                </el-input>
+              </el-form-item>
+              <el-form-item size="small">
+                <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-search" @click="search">查询
+                </el-button>
+                <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-plus"
+                           @click="showInventoryDrawer()">新增库存
+                </el-button>
               </el-form-item>
             </el-col>
           </el-row>
 
-          <el-row type="flex" justify="center">
-            <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-search" @click="search">查询
-            </el-button>
-            <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-plus"
-                       @click="showInventoryDrawer()">新增库存
-            </el-button>
-          </el-row>
+<!--          <el-row type="flex" justify="center">-->
+<!--            <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-search" @click="search">查询-->
+<!--            </el-button>-->
+<!--            <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-plus"-->
+<!--                       @click="showInventoryDrawer()">新增库存-->
+<!--            </el-button>-->
+<!--          </el-row>-->
         </el-form>
 
-        <el-table style="margin-top: 20px" border :data="tableData1" @row-click="rowClick">
+        <el-table style="margin-top: 00px" border :data="tableData1" @row-click="rowClick">
 
           <el-table-column align="center" prop="actNo" label="货号" />
           <el-table-column align="center" label="图片"  >
             <template slot-scope="scope">
-              <img  v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"  @click="avatarShow(scope.row.imgUrl)" >
+              <img  v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic1"  @click="avatarShow(scope.row.imgUrl)" >
             </template>
           </el-table-column>
         </el-table>
         <el-row class="top-15">
           <el-pagination
-            @size-change="reSearchHandle"
-            @current-change="pageChangeHandle"
+            @size-change="reSearchHandle1"
+            @current-change="pageChangeHandle1"
             :current-page="queryParam1.pageNum"
-            :page-sizes="[10, 20, 50, 100]"
+            :pager-count="3"
+            :page-sizes="[5,10, 20, 50, 100]"
             :page-size="queryParam1.pageSize"
-            layout="total, prev, pager, next, jumper"
+            layout="total,  prev, pager, next"
             :total="totalCount1">
           </el-pagination>
         </el-row>
@@ -54,13 +64,29 @@
 <!--            &lt;!&ndash;            />&ndash;&gt;-->
 <!--          </div>-->
 <!--        </el-row>-->
-        <el-form ref="form">
-          <el-row type="flex" justify="center">
-            <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-plus"
-                       @click="goDetail()">新增尺码
-            </el-button>
+        <div
+          style="display: flex; justify-content: space-between; align-items: center;height: 50px;"
+        >
+<!--          <el-button type="primary" icon="el-icon-plus" @click="openDictModal">添加</el-button>-->
+          <el-row class="clearfix btm-distance">
+            <div class="overview">
+<!--                          <h5>{{actNo}}</h5>-->
+                          <img
+                            v-if="imgUrl"
+                            :src="fileUrl + imgUrl"
+                            style="width: 80px;height: 60px;"
+                            @click="avatarShow(imgUrl)"
+                          />
+            </div>
           </el-row>
-        </el-form>
+          <el-form ref="form">
+            <el-row type="flex" >
+              <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-plus"
+                         @click="goDetail()">新增尺码
+              </el-button>
+            </el-row>
+          </el-form>
+        </div>
         <el-table style="margin-top: 20px" border :data="tableData" >
 
           <el-table-column type="selection" width="55"></el-table-column>
@@ -103,7 +129,8 @@
           <el-table-column align="center" prop="" label="预计利润">
             <template v-if="scope.row.dwPrice" slot-scope="scope">
 <!--              style="color: red"-->
-              <span :style="(scope.row.dwPrice - (scope.row.dwPrice * 0.075 + 38 + 8.5) - scope.row.price - 10) > 50 ? 'color: red' : ''"
+              <span
+                :style="(scope.row.dwPrice - (scope.row.dwPrice * 0.075 + 38 + 8.5) - scope.row.price - 10) > 50 ? 'color: red' : ''"
               >
                 {{(scope.row.dwPrice - (scope.row.dwPrice * 0.075 + 38 + 8.5) - scope.row.price - 10) | numFilter}}
               </span>
@@ -169,7 +196,7 @@ export default {
       isShowDialog: false,
       queryParam1: {
         keyword: '',
-        pageSize: 10,
+        pageSize: 5,
         pageNum: 1
       },
       queryParam: {
@@ -181,6 +208,8 @@ export default {
       pictureZoomShow: false,
       fileUrl: fileUrl,
       dataStatusList: [],
+      imgUrl: '',
+      actNo: '',
       tableData: [],
       tableData1: [],
       totalCount1: 1,
@@ -209,12 +238,18 @@ export default {
     },
     goDetail() {
       // *** 根据真实路径配置地址
+      if (!this.queryParam.goodsId) {
+        this.$alert('没有选中数据')
+        return
+      }
       let goodsId = this.queryParam.goodsId
       this.$router.push({ path: '/goodsBase/goodsInventory/detail', query: { goodsId }})
     },
     rowClick(row) {
       console.info(row)
       this.pageGoods(row.id)
+      this.imgUrl = row.imgUrl
+      this.actNo = row.actNo
     },
     showInventoryDrawer() {
       this.$refs['inventory-detail-edit'].show()
@@ -225,6 +260,8 @@ export default {
           this.tableData1 = res.data ? res.data.list : []
           this.totalCount1 = res.data ? res.data.pageInfo.totalCount : 0
           this.pageGoods(this.tableData1[0].id)
+          this.imgUrl = this.tableData1[0].imgUrl
+          this.actNo = this.tableData1[0].actNo
         } else {
           this.$message.error(res.subMsg)
         }
@@ -250,12 +287,21 @@ export default {
     },
     pageChangeHandle(currentPage) {
       this.queryParam.pageNum = currentPage
-      this.getPage()
+      this.pageGoods()
     },
     reSearchHandle(size) {
       this.queryParam.pageSize = size
       this.queryParam.pageNum = 1
-      this.getPage()
+      this.pageGoods()
+    },
+    pageChangeHandle1(currentPage) {
+      this.queryParam1.pageNum = currentPage
+      this.page()
+    },
+    reSearchHandle1(size) {
+      this.queryParam1.pageSize = size
+      this.queryParam1.pageNum = 1
+      this.page()
     },
     goDel(id) {
       this.$confirm('是否删除', '提示', {
@@ -293,7 +339,7 @@ export default {
     //   console.info(row)
     // },
     search() {
-      this.queryParam.pageNum = 1
+      this.queryParam1.pageNum = 1
       this.page()
     }
   }
