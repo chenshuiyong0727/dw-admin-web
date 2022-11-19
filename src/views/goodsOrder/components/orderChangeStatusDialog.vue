@@ -56,7 +56,10 @@
     <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><span>到手价：</span></el-col>
       <el-col :span="8" :offset="1">
-        <el-input v-model="requestParam.theirPrice" size="small" ></el-input>
+        <el-input
+          v-model="requestParam.theirPrice"
+          @keyup.native="keyup1($event)"
+          size="small" ></el-input>
       </el-col>
     </el-row>
     <el-row class="form-flex">
@@ -120,10 +123,15 @@ export default {
     closDialog() {
       this.$emit('closDialog')
     },
+    keyup1() {
+      console.info('keyup1 ' + this.requestParam.theirPrice)
+      let profits = this.requestParam.theirPrice - this.requestParam.freight - this.requestParam.price
+      this.requestParam.profits = parseFloat(profits).toFixed(2)
+    },
     confirmHandle() {
       // 利润= 到手价-运费-原价
       let profits = this.requestParam.theirPrice - this.requestParam.freight - this.requestParam.price
-      this.requestParam.theirPrice = parseFloat(profits).toFixed(2)
+      this.requestParam.profits = parseFloat(profits).toFixed(2)
 
       // 出售
       goodsOrderApi.sellGoods(this.requestParam).then(res => {

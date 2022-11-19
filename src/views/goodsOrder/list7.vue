@@ -174,12 +174,12 @@
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
       <!--      <el-table-column align="center" prop="id" label="订单主键"/>-->
-      <el-table-column align="center" prop="orderNo" label="订单号"/>
-      <el-table-column align="center" label="图片" width="120" >
-        <template slot-scope="scope">
-          <img  v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"  @click="avatarShow(scope.row.imgUrl)" >
-        </template>
-      </el-table-column>
+<!--      <el-table-column align="center" prop="orderNo" label="订单号"/>-->
+<!--      <el-table-column align="center" label="图片" width="120" >-->
+<!--        <template slot-scope="scope">-->
+<!--          <img  v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"  @click="avatarShow(scope.row.imgUrl)" >-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column align="center" prop="actNo" label="货号"/>
       <el-table-column align="center" prop="size" label="尺码"/>
       <el-table-column align="center" prop="status" label="状态">
@@ -190,30 +190,30 @@
 
       <el-table-column align="center" prop="freight" label="运费"/>
       <el-table-column align="center" prop="poundage" label="手续费"/>
-      <el-table-column align="center" prop="subsidiesPrice" label="补贴价"/>
+<!--      <el-table-column align="center" prop="subsidiesPrice" label="补贴价"/>-->
            <el-table-column align="center" prop="theirPrice" label="到手价"/>
       <el-table-column align="center" prop="profits" label="实际利润"/>
       <el-table-column align="center" prop="" label="预估利润">
         <template  v-if="scope.row.theirPrice && scope.row.price " slot-scope="scope">{{(scope.row.theirPrice - scope.row.price - 10 ) | numFilter}}</template>
       </el-table-column>
-      <el-table-column align="center" prop="address" label="地址"/>
-            <el-table-column align="center" prop="waybillNo" label="运单编号"/>
-      <el-table-column align="center" prop="sellTime" label="出售时间">
-        <template slot-scope="scope">{{scope.row.sellTime | formateTime }}</template>
-      </el-table-column>
-      <el-table-column align="center" prop="successTime" label="交易成功时间">
-        <template slot-scope="scope">{{scope.row.successTime | formateTime() }}</template>
-      </el-table-column>
-      <el-table-column align="center" prop="createTime" label="创建时间">
-        <template slot-scope="scope">{{scope.row.createTime | formateTime()
-          }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" prop="updateTime" label="更新时间">
-        <template slot-scope="scope">{{scope.row.updateTime | formateTime()
-          }}
-        </template>
-      </el-table-column>
+<!--      <el-table-column align="center" prop="address" label="地址"/>-->
+<!--            <el-table-column align="center" prop="waybillNo" label="运单编号"/>-->
+<!--      <el-table-column align="center" prop="sellTime" label="出售时间">-->
+<!--        <template slot-scope="scope">{{scope.row.sellTime | formateTime }}</template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column align="center" prop="successTime" label="交易成功时间">-->
+<!--        <template slot-scope="scope">{{scope.row.successTime | formateTime() }}</template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column align="center" prop="createTime" label="创建时间">-->
+<!--        <template slot-scope="scope">{{scope.row.createTime | formateTime()-->
+<!--          }}-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column align="center" prop="updateTime" label="更新时间">-->
+<!--        <template slot-scope="scope">{{scope.row.updateTime | formateTime()-->
+<!--          }}-->
+<!--        </template>-->
+<!--      </el-table-column>-->
 <!--      <el-table-column fixed="right" align="center" label="操作" width="130"-->
 <!--                       v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length">-->
 <!--        <template slot-scope="scope">-->
