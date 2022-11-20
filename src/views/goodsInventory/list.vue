@@ -5,12 +5,48 @@
 <!--        <h5>商品列表</h5>-->
         <el-form ref="form">
           <el-row class="query-form">
-            <el-col>
+            <el-col :span="8">
+              <el-form-item size="small">
+                <el-select v-model="queryParam1.inventoryTo" @change="search">
+<!--                  <el-option label="状态" value=""></el-option>-->
+                  <el-option
+                    v-for="item in inventoryToList"
+                    :key="item.fieldValue"
+                    :label="item.fieldName"
+                    :value="+item.fieldValue">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+<!--              <el-form-item size="small">-->
+<!--                <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-search" @click="search">查询-->
+<!--                </el-button>-->
+<!--                <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-plus"-->
+<!--                           @click="showInventoryDrawer()">新增库存-->
+<!--                </el-button>-->
+<!--              </el-form-item>-->
+            </el-col>
+            <el-col :span="16">
               <el-form-item size="small">
                 <el-input v-model.trim="queryParam1.keyword" placeholder="关键词 （货号、尺码）">
 <!--                  <el-button type="primary"  slot="append" @click="search()" >查询</el-button>-->
                 </el-input>
               </el-form-item>
+<!--              <el-form-item size="small">-->
+<!--                <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-search" @click="search">查询-->
+<!--                </el-button>-->
+<!--                <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-plus"-->
+<!--                           @click="showInventoryDrawer()">新增库存-->
+<!--                </el-button>-->
+<!--              </el-form-item>-->
+            </el-col>
+          </el-row>
+          <el-row class="query-form">
+            <el-col>
+<!--              <el-form-item size="small">-->
+<!--                <el-input v-model.trim="queryParam1.keyword" placeholder="关键词 （货号、尺码）">-->
+<!--&lt;!&ndash;                  <el-button type="primary"  slot="append" @click="search()" >查询</el-button>&ndash;&gt;-->
+<!--                </el-input>-->
+<!--              </el-form-item>-->
               <el-form-item size="small">
                 <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-search" @click="search">查询
                 </el-button>
@@ -197,6 +233,7 @@ export default {
       queryParam1: {
         keyword: '',
         pageSize: 5,
+        inventoryTo: 1,
         pageNum: 1
       },
       queryParam: {
@@ -207,6 +244,9 @@ export default {
       },
       pictureZoomShow: false,
       fileUrl: fileUrl,
+      inventoryToList: [
+        { fieldValue: 1, fieldName: '现货' }, { fieldValue: 0, fieldName: '售空' }
+      ],
       dataStatusList: [],
       imgUrl: '',
       actNo: '',
