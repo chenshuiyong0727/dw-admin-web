@@ -120,13 +120,16 @@
               <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-plus"
                          @click="goDetail()">新增尺码
               </el-button>
+              <el-button type="primary" size="small" style="margin-right: 10px"
+                         @click="jumpactNo()">查看订单
+              </el-button>
             </el-row>
           </el-form>
         </div>
         <el-table style="margin-top: 20px" border :data="tableData" >
 
-          <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+<!--          <el-table-column type="selection" width="55"></el-table-column>-->
+<!--          <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>-->
           <el-table-column align="center" prop="size" width="50" label="尺码"/>
           <el-table-column align="center" prop="inventory" width="50" label="库存"/>
           <el-table-column align="center" prop="successCount" width="50" label="成功数"/>
@@ -168,7 +171,7 @@
           <el-table-column align="center" prop="createTime" label="入库时间">
             <template slot-scope="scope">{{scope.row.createTime | formateTime() }} </template>
           </el-table-column>
-          <el-table-column fixed="right" align="center" label="操作" width="140">
+          <el-table-column fixed="left" align="center" label="操作" width="140">
             <template slot-scope="scope">
               <el-button type="text" @click="update(scope.row)">修改</el-button>
               <el-button type="text" @click="goDel(scope.row.id)" >删除</el-button>
@@ -289,6 +292,14 @@ export default {
       }
       let goodsId = this.queryParam.goodsId
       this.$router.push({ path: '/goodsBase/goodsInventory/detail', query: { goodsId }})
+    },
+    jumpactNo() {
+      if (!this.actNo) {
+        this.$alert('没有选中数据')
+        return
+      }
+      let actNo = this.actNo
+      this.$router.push({ path: '/goodsOrder/list', query: { actNo }})
     },
     rowClick(row) {
       console.info(row)

@@ -334,6 +334,13 @@ export default {
       totalCount: 1
     }
   },
+  created() {
+    const { actNo } = this.$route.query
+    this.queryParam.keyword = actNo
+    if (this.queryParam.keyword) {
+      this.getPage()
+    }
+  },
   mounted() {
     this.getPage()
     this.listSysDict()
