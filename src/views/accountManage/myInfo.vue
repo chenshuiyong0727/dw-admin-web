@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
     <h5 class="cancel-top">个人信息</h5>
-    
+
     <el-row class="form-flex">
       <el-col :span="2">姓名：</el-col>
       <el-col :span="22">{{userInfo.userRealName || '--'}}</el-col>
@@ -30,7 +30,7 @@
       <el-col :span="2">邮箱：</el-col>
       <el-col :span="22">{{userInfo.userEmail + '@hj-health.cn' || '--'}}</el-col>
     </el-row>
-    
+
     <h5>账号信息</h5>
     <el-row class="form-flex">
       <el-col :span="2">账号：</el-col>
@@ -78,7 +78,7 @@ export default {
       queryParam: {
         pageSize: 10,
         pageNum: 1,
-        id: getCookieByName('user_id')
+        id: localStorage.getItem('user_id')
       },
       tableData: [],
       totalCount: 0
@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     getOpSysUserAccountInfoById() {
-      systemContainerApi.getOpSysUserAccountInfoById({id: getCookieByName('user_id')}).then(res => {
+      systemContainerApi.getOpSysUserAccountInfoById({id: localStorage.getItem('user_id')}).then(res => {
         if (res.subCode === 1000) {
           this.userInfo = res.data
         } else {

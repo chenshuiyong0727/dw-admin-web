@@ -164,10 +164,10 @@ export default {
     },
 
     listSysDict() {
-      let sysDictList = sessionStorage.getItem('sysDictList') ? JSON.parse(sessionStorage.getItem('sysDictList')) : []
+      let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(localStorage.getItem('sysDictList')) : []
       this.authList = sysDictList.filter(item => item.typeValue == DICT_KEYS.AUTHTYPE)
       this.opList = sysDictList.filter(item => item.typeValue == DICT_KEYS.OPTYPE)
-      this.systemList = sessionStorage.getItem('systemList') ? JSON.parse(sessionStorage.getItem('systemList')) : []
+      this.systemList = localStorage.getItem('systemList') ? JSON.parse(localStorage.getItem('systemList')) : []
       if (this.systemList) {
         this.systemList = this.systemList.filter(item => item.systemId != 3 && item.systemId != 4)
       }
@@ -321,7 +321,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        let userId = getCookieByName('user_id')
+        let userId = localStorage.getItem('user_id')
         systemContainerApi.updateUserStatus({id, dataStatus: dataStatus == 0 ? 1 : 0, sysUserId: userId}).then(res => {
           if (res.subCode === 1000) {
             this.$message({

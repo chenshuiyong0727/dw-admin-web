@@ -161,7 +161,7 @@ export default {
     }
   },
   mounted() {
-    let sysDictList = sessionStorage.getItem('sysDictList') ? JSON.parse(sessionStorage.getItem('sysDictList')) : []
+    let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(localStorage.getItem('sysDictList')) : []
     this.authList = sysDictList.filter(item => item.typeValue == DICT_KEYS.AUTHTYPE)
     this.opList = sysDictList.filter(item => item.typeValue == DICT_KEYS.OPTYPE)
     if (this.systemId) {

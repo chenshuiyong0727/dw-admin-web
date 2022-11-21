@@ -154,7 +154,7 @@ export default {
       })
     },
     listSysDict() {
-      let sysDictList = sessionStorage.getItem('sysDictList') ? JSON.parse(sessionStorage.getItem('sysDictList')) : []
+      let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(localStorage.getItem('sysDictList')) : []
       this.typeList = sysDictList.filter(item => item.typeValue == 20221108)
       this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
     },

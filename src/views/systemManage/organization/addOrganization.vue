@@ -113,7 +113,7 @@ export default {
       } else {
         this.validNullArray = validNull(this.paramsObj, ['description', 'superiorDepartment'])
       }
-      this.paramsObj.userId = getCookieByName('user_id')
+      this.paramsObj.userId = localStorage.getItem('user_id')
       if (!this.validNullArray.length) {
         if (this.modifyId) {
           // 修改接口

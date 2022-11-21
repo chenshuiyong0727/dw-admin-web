@@ -20,7 +20,7 @@ export default {
   name: 'NoAuthority',
   data() {
     return {
-      loginName: sessionStorage.getItem('empName')
+      loginName: localStorage.getItem('empName')
     }
   },
   methods: {

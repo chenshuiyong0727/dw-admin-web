@@ -136,7 +136,7 @@ export default {
   },
   mounted() {
     if (!this.$route.meta.routerId) {
-      let sysDictList = sessionStorage.getItem('sysDictList') ? JSON.parse(sessionStorage.getItem('sysDictList')) : []
+      let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(localStorage.getItem('sysDictList')) : []
       this.postsList = sysDictList.filter(item => item.typeValue == DICT_KEYS.JOB)
       this.listDropDownDepartments()
       // this.listDropDownPosts()
@@ -218,7 +218,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        let userId = getCookieByName('user_id')
+        let userId = localStorage.getItem('user_id')
         systemContainerApi.updatePostStatus({id, dataStatus: dataStatus == 0 ? 1 : 0, userId}).then(res => {
           if (res.subCode === 1000) {
             this.$message({

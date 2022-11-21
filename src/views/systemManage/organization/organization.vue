@@ -233,7 +233,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        systemContainerApi.updateDeptStatus({ id, dataStatus: dataStatus == 0 ? 1 : 0, userId: getCookieByName('user_id') }).then(res => {
+        systemContainerApi.updateDeptStatus({ id, dataStatus: dataStatus == 0 ? 1 : 0, userId: localStorage.getItem('user_id') }).then(res => {
           if (res.subCode === 1000) {
             this.$message({
               type: 'success',

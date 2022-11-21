@@ -184,7 +184,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        let userId = getCookieByName('user_id')
+        let userId = localStorage.getItem('user_id')
         systemContainerApi.updateRoleStatus({id, dataStatus: dataStatus == 0 ? 1 : 0, userId}).then(res => {
           if (res.subCode === 1000) {
             this.$message({

@@ -4,24 +4,24 @@ import DICT_KEYS from '@/utils/staticEnum'
 import { parseTime } from './index'
 
 // let sysDictList = []
-// if (sessionStorage.getItem('sysDictList')) {
-//   sysDictList = JSON.parse(sessionStorage.getItem('sysDictList'))
+// if (localStorage.getItem('sysDictList')) {
+//   sysDictList = JSON.parse(localStorage.getItem('sysDictList'))
 // } else {
 //   commonApi.listSysDict().then(res => {
 //     if (res.subCode === 1000) {
 //       sysDictList = res.data
-//       sessionStorage.setItem('sysDictList', JSON.stringify(res.data))
+//       localStorage.setItem('sysDictList', JSON.stringify(res.data))
 //     } else {
 //       this.$message.error(res.subMsg)
 //     }
 //   })
 // }
-let sysDictList = sessionStorage.getItem('sysDictList') ? JSON.parse(sessionStorage.getItem('sysDictList')) : []
+let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(localStorage.getItem('sysDictList')) : []
 if (!sysDictList.length) {
   commonApi.listSysDict().then(res => {
     if (res.subCode === 1000) {
       sysDictList = res.data
-      sessionStorage.setItem('sysDictList', JSON.stringify(res.data))
+      localStorage.setItem('sysDictList', JSON.stringify(res.data))
     } else {
       this.$message.error(res.subMsg)
     }

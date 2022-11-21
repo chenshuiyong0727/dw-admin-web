@@ -142,7 +142,7 @@ export function decrypt(word, secret_key) {
  * 按钮权限: post-添加 put-修改 delete-删除 get-单个查询 query-列表查询 export-导出 import-导入 batch_delete-批量删除 batch_modify-批量修改 reset-查询重置
  */
 export function getButtonPermission(pageRouter) {
-  const functionList = sessionStorage.getItem('functionList') ? JSON.parse(sessionStorage.getItem('functionList')) : []
+  const functionList = localStorage.getItem('functionList') ? JSON.parse(localStorage.getItem('functionList')) : []
   let currentLocationPath = ''
   functionList.filter((item) => {
     if (item.route === pageRouter) {
@@ -221,14 +221,14 @@ export function isTokenExpire(time) {
 
 /**
  * 多层级对象合并覆盖
- * @param {*} target 
- * @returns 
+ * @param {*} target
+ * @returns
  */
 export function objMerge(target = {}, source = {}) {
   let obj = target
   if (typeof target != 'object' || typeof source != 'object') {
     return source
-  } 
+  }
   for (let key in source) {
     if (target.hasOwnProperty(key)) {
       obj[key] = objMerge(target[key], source[key])
@@ -241,7 +241,7 @@ export function objMerge(target = {}, source = {}) {
 
 /**
  * 生成w唯一标识标准的uuid，且使用了随机种子
- * @returns 
+ * @returns
  */
 export function uuid() {
   let d = new Date().getTime()
@@ -258,18 +258,18 @@ export function uuid() {
 
 /**
  * 判断是否是基本数据类型
- * @param value 
+ * @param value
  */
  function isPrimitive(value){
-  return (typeof value === 'string' || 
-  typeof value === 'number' || 
+  return (typeof value === 'string' ||
+  typeof value === 'number' ||
   typeof value === 'symbol' ||
   typeof value === 'boolean')
 }
 
 /**
  * 判断是否是一个js对象
- * @param value 
+ * @param value
  */
 function isObject(value){
   return Object.prototype.toString.call(value) === "[object Object]"
@@ -277,7 +277,7 @@ function isObject(value){
 
 /**
  * 深拷贝一个值
- * @param value 
+ * @param value
  */
 export function cloneDeep(value){
 
@@ -308,7 +308,7 @@ export function cloneDeep(value){
         }
       }
     })
-    return res;  
+    return res;
   }
 
   return baseClone(value)

@@ -39,7 +39,7 @@ export default {
     //   console.log(tab, event);
     // },
     modifyPwd() {
-      let userId = getCookieByName('user_id')
+      let userId = localStorage.getItem('user_id')
       systemContainerApi.updateUserPwd({ ...this.param, id: userId}).then(async res => {
         if (res.subCode === 1000) {
           this.$message({

@@ -9,7 +9,7 @@ export const getExport = (url,body, method = 'post') => {
       method,
       responseType: 'blob',
       headers: {
-        'tokenAuth': getCookieByName('org_token_auth')
+        'tokenAuth': localStorage.getItem('org_token_auth')
       }
     }).then(res => {
       if (res.status === 200) {

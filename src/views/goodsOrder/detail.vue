@@ -164,8 +164,8 @@ export default {
       }
     },
     listSysDict() {
-      let sysDictList = sessionStorage.getItem('sysDictList') ? JSON.parse(
-        sessionStorage.getItem('sysDictList')) : []
+      let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
+        localStorage.getItem('sysDictList')) : []
       this.statusList = sysDictList.filter(item => item.typeValue == 37)
       this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
     },

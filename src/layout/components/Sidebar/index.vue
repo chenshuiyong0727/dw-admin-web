@@ -44,9 +44,9 @@ export default {
           return item.meta.leftMenuId === matched[0].meta.leftMenuId
         }
       })
-      
+
       // 权限路由组合
-      const fuctionList = sessionStorage.getItem('functionList') ? JSON.parse(sessionStorage.getItem('functionList')) : []
+      const fuctionList = localStorage.getItem('functionList') ? JSON.parse(localStorage.getItem('functionList')) : []
       const leftMenu = fuctionList.filter(item => item.functionType === 1 && item.operationType != 'node' && item.operationType != 'icon')
       let authRouter = []
       // 组合左侧一级路由

@@ -233,7 +233,7 @@ export default {
         roleName: this.roleName,
         systemId: this.systemId,
         functions: this.$refs.tree.getCheckedKeys().concat(this.$refs.tree.getHalfCheckedKeys()),
-        userId: getCookieByName('user_id')
+        userId: localStorage.getItem('user_id')
       }
       if (!param.functions || param.functions.length == 0) {
         return this.$message.error('请选择权限')

@@ -186,7 +186,7 @@
     })
   },
   listSysDict() {
-    let sysDictList = sessionStorage.getItem('sysDictList') ? JSON.parse(sessionStorage.getItem('sysDictList')) : []
+    let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(localStorage.getItem('sysDictList')) : []
     this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
   },
   pageChangeHandle(currentPage) {

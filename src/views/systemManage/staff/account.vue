@@ -22,7 +22,7 @@
             <el-input v-model.trim="queryParam.postName" maxlength="15" placeholder="查询岗位"></el-input>
           </el-form-item>
         </el-col>
-      
+
         <el-col :span="6">
           <el-form-item label="" size="small">
             <el-select v-model="queryParam.gender">
@@ -185,7 +185,7 @@ export default {
       //     this.$message.error(res.subMsg)
       //   }
       // })
-      this.genderList = sessionStorage.getItem('sysDictList') ? JSON.parse(sessionStorage.getItem('sysDictList')).filter(item => item.typeValue == DICT_KEYS.SEX) : []
+      this.genderList = localStorage.getItem('sysDictList') ? JSON.parse(localStorage.getItem('sysDictList')).filter(item => item.typeValue == DICT_KEYS.SEX) : []
     },
     resetPwd(id) {
       systemContainerApi.resetUserPwd({id}).then(res => {
@@ -193,7 +193,7 @@ export default {
           this.$alert('<p>账号：'+res.data.userAccount+'</p><p>密码：'+res.data.passWord+'</p>', '重置密码', {
             dangerouslyUseHTMLString: true,
             showConfirmButton: false,
-          
+
           })
         }
       })
@@ -229,7 +229,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        let userId = getCookieByName('user_id')
+        let userId = localStorage.getItem('user_id')
         systemContainerApi.updateUserStatus({id, dataStatus: dataStatus == 0 ? 1 : 0, sysUserId: userId}).then(res => {
           if (res.subCode === 1000) {
             this.$message({

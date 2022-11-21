@@ -107,8 +107,8 @@ export default {
       window.open(this.fileUrl + e)
     },
     listSysDict() {
-      let sysDictList = sessionStorage.getItem('sysDictList') ? JSON.parse(
-        sessionStorage.getItem('sysDictList')) : []
+      let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
+        localStorage.getItem('sysDictList')) : []
       this.addressList = sysDictList.filter(item => item.typeValue == 38)
     },
     closDialog() {

@@ -158,7 +158,7 @@ export default {
           this.$message.error(res.subMsg)
         }
       })
-      let systemList = sessionStorage.getItem('systemList') ? JSON.parse(sessionStorage.getItem('systemList')) : []
+      let systemList = localStorage.getItem('systemList') ? JSON.parse(localStorage.getItem('systemList')) : []
       let options = []
       for (let i = 0; i < systemList.length; i++) {
         systemContainerApi.listDropDownRoles({ systemId: systemList[i].systemId }, false).then (res => {
@@ -187,7 +187,7 @@ export default {
       //     this.$message.error(res.subMsg)
       //   }
       // })
-      let sysDictList = sessionStorage.getItem('sysDictList') ? JSON.parse(sessionStorage.getItem('sysDictList')) : []
+      let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(localStorage.getItem('sysDictList')) : []
       this.genderList = sysDictList.filter(item => item.typeValue == DICT_KEYS.SEX)
       this.employeeTypeList = sysDictList.filter(item => item.typeValue == DICT_KEYS.EMPLOYEE)
     },
@@ -227,7 +227,7 @@ export default {
       } else if (!this.param.roleIds.length) {
         return this.$message.error('请选择角色')
       }
-      this.param.sysUserId = getCookieByName('user_id')
+      this.param.sysUserId = localStorage.getItem('user_id')
       // this.param.customerCare = this.param.customerCare ? 1 : 0
       if (this.modifyId) {
         // 修改接口

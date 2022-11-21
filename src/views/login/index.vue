@@ -63,9 +63,9 @@
       </el-form>
     </div>
 
-    <div class="bullshit__info">
-      <a href="https://beian.miit.gov.cn/" target="_blank">闽ICP备16027237号-3</a>
-    </div>
+<!--    <div class="bullshit__info">-->
+<!--      <a href="https://beian.miit.gov.cn/" target="_blank">闽ICP备16027237号-3</a>-->
+<!--    </div>-->
   </div>
 
 </template>
@@ -75,6 +75,7 @@ import { userContainerApi } from '@/api/user'
 import { GVerify } from '@/utils/code'
 import { encrypt, deepCopy } from '@/utils'
 import { initSysDict } from '@/utils/initRequest'
+import { getCookieByName,setCookieByName } from '@/utils/auth'
 export default {
   name: 'Login',
   data() {
@@ -95,21 +96,22 @@ export default {
       redirect: undefined,
       verifyCodeObj: '',
       secretKey: '',
-      redirectUrl: '',
-      systemId: 0,
+      // redirectUrl: '',
+      // systemId: 0,
       isShowVerifyCode: false
     }
   },
   watch: {
-    $route: {
-      handler: function(route) {
-        this.redirectUrl = route.query && route.query.redirectUrl
-        this.systemId = route.query && route.query.systemId
-      },
-      immediate: true
-    }
+    // $route: {
+    //   // handler: function(route) {
+    //   //   // this.redirectUrl = route.query && route.query.redirectUrl
+    //   //   // this.systemId = route.query && route.query.systemId
+    //   // },
+    //   immediate: true
+    // }
   },
   created() {
+    this.autoLogin()
     this.keyupSubmit()
   },
   mounted() {
@@ -169,9 +171,30 @@ export default {
         }
       })
     },
+    autoLogin() {
+      const hasToken = localStorage.getItem('org_token_auth')
+      console.info(hasToken)
+      // const hasToken = localStorage.getItem('org_token_auth')
+      if (hasToken) {
+        this.gotopath()
+      }
+    },
+    gotopath() {
+      initSysDict().then(() => {
+        let functionList = JSON.parse(localStorage.getItem('functionList'))
+        console.info(functionList)
+        const allRouter = functionList.filter(item => item.functionType == '1' && item.route)
+        allRouter.sort((a, b) => {
+          return a.sort - b.sort
+        })
+        const isHasRouterAuth = functionList.filter(item => item.functionType == '1' && item.route && item.route == this.redirect)
+        if (!isHasRouterAuth.length) {
+          this.redirect = allRouter[0].route
+        }
+        this.$router.push({ path: '/goodsBase' || this.redirect })
+      })
+    },
     handleLogin() {
-   // this.$refs.loginForm.validate(valid => {
-     // if (valid) {
       if (!this.loginForm.loginAccount) {
         return this.$message.error('请先输入用户名')
       }
@@ -190,24 +213,19 @@ export default {
         this.loading = false
         if (res.data) {
           // 初始化字典
-          initSysDict().then(() => {
-            const functionList = JSON.parse(sessionStorage.getItem('functionList'))
-            const allRouter = functionList.filter(item => item.functionType == '1' && item.route)
-            allRouter.sort((a, b) => {
-              return a.sort - b.sort
-            })
-            const isHasRouterAuth = functionList.filter(item => item.functionType == '1' && item.route && item.route == this.redirect)
-            if (!isHasRouterAuth.length) {
-              this.redirect = allRouter[0].route
-            }
-            this.$router.push({ path: '/goodsBase' || this.redirect })
-            // this.$router.push({ path: this.redirect || '/systemClass' })
-            // if (this.redirectUrl && this.systemId && this.systemId != 0) {
-            //   this.$router.push({ path: '/systemClass', query: { redirectUrl: this.redirectUrl, systemId: this.systemId }})
-            // } else {
-            //   this.$router.push('/systemClass')
-            // }
-          })
+          this.gotopath()
+          // initSysDict().then(() => {
+          //   const functionList = JSON.parse(localStorage.getItem('functionList'))
+          //   const allRouter = functionList.filter(item => item.functionType == '1' && item.route)
+          //   allRouter.sort((a, b) => {
+          //     return a.sort - b.sort
+          //   })
+          //   const isHasRouterAuth = functionList.filter(item => item.functionType == '1' && item.route && item.route == this.redirect)
+          //   if (!isHasRouterAuth.length) {
+          //     this.redirect = allRouter[0].route
+          //   }
+          //   this.$router.push({ path: '/goodsBase' || this.redirect })
+          // })
         } else {
           this.$message.error(res.subMsg)
           this.refreshCodeHandle()
@@ -215,20 +233,7 @@ export default {
       }).catch(() => {
         this.loading = false
       })
-    // } else {
-    //   this.$message.error('账号密码不能为空')
-    //   return false
-    // }
- // })
     }
-    // handleCheckLogin() {
-    //   userContainerApi.logincheck({}).then(res => {
-    //     if (res.subCode === 104) {
-    //       console.info(res.subMsg)
-    //       this.$store.dispatch('user/logout')
-    //     }
-    //   })
-    // }
   }
 }
 </script>

@@ -18,8 +18,9 @@ router.beforeEach(async(to, from, next) => {
   document.title = getPageTitle(to.meta.title)
 
   // determine whether the user has logged in
-  const hasToken = getCookieByName('org_token_auth')
-  const functionList = JSON.parse(sessionStorage.getItem('functionList'))
+  const hasToken = localStorage.getItem('org_token_auth')
+  const functionList = JSON.parse(localStorage.getItem('functionList'))
+  console.info('path -' + to.path)
   if (hasToken && functionList) {
     if (to.path === '/login') {
       // if is logged in, redirect to the home page

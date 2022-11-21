@@ -65,7 +65,7 @@ export default {
       pathList,
       isShowTodayMsgDialog: false,
       topMenu: [],
-      userName: getCookieByName('user_name')
+      userName: localStorage.getItem('user_name')
     }
   },
   computed: {
@@ -92,7 +92,7 @@ export default {
     }
   },
   mounted() {
-    const functionList = sessionStorage.getItem('functionList') ? JSON.parse(sessionStorage.getItem('functionList')) : []
+    const functionList = localStorage.getItem('functionList') ? JSON.parse(localStorage.getItem('functionList')) : []
     const nodeMenu = functionList.filter(item => item.operationType === 'node' || item.operationType === 'icon')
     for (let i = 0; i < this.pathList.length; i++) {
       for (let j = 0; j < nodeMenu.length; j++) {
@@ -113,7 +113,7 @@ export default {
           menuTitle = this.pathList[i].title
         }
       }
-      const functionList = sessionStorage.getItem('functionList') ? JSON.parse(sessionStorage.getItem('functionList')) : []
+      const functionList = localStorage.getItem('functionList') ? JSON.parse(localStorage.getItem('functionList')) : []
       const nodeLocationPath = functionList.filter(item => item.functionLabel == menuTitle && (item.operationType === 'node' || item.operationType === 'icon'))
       for (let i = 0; i < functionList.length; i++) {
         if (functionList[i].locationPath.indexOf(`${nodeLocationPath[0].locationPath}:`) > -1 && (functionList[i].operationType == 'list' || functionList[i].operationType == 'sub_list') && functionList[i].route) {

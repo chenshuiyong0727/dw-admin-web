@@ -77,7 +77,7 @@ export default {
     }
   },
   mounted() {
-    let sysDictList = sessionStorage.getItem('sysDictList') ? JSON.parse(sessionStorage.getItem('sysDictList')) : []
+    let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(localStorage.getItem('sysDictList')) : []
     this.typeList = sysDictList.filter(item => item.typeValue == DICT_KEYS.JOB)
     this.listDropDownDepartments()
     this.listTreeDepartments()
@@ -108,7 +108,7 @@ export default {
       })
     },
     confirmHandle() {
-      this.queryParam.userId = getCookieByName('user_id')
+      this.queryParam.userId = localStorage.getItem('user_id')
       if (!this.queryParam.name) {
         return this.$message.error('请填写岗位名称')
       } else if (!this.queryParam.description) {

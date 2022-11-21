@@ -5,8 +5,8 @@ import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
   return {
-    token: getCookieByName('org_token_auth'),
-    // sessionId: getCookieByName('sessionId'),
+    token: localStorage.getItem('org_token_auth'),
+    // sessionId: localStorage.getItem('sessionId'),
     name: '',
     avatar: '',
     userId: ''
@@ -49,19 +49,20 @@ const actions = {
       userContainerApi.login({ ...userInfo }).then(response => {
         if (response.data) {
           const { data } = response
-          sessionStorage.setItem('functionList', JSON.stringify(data.functionList))
-          sessionStorage.setItem('tokenExpireTime', data.tokenExpireTime)
-          sessionStorage.setItem('projectList', JSON.stringify(data.projectList))
-          sessionStorage.setItem('systemList', JSON.stringify(data.systemList))
+          localStorage.setItem('functionList', JSON.stringify(data.functionList))
+          localStorage.setItem('org_token_auth', data.token)
+          localStorage.setItem('tokenExpireTime', data.tokenExpireTime)
+          localStorage.setItem('projectList', JSON.stringify(data.projectList))
+          localStorage.setItem('systemList', JSON.stringify(data.systemList))
           commit('SET_TOKEN', data.token)
           // commit('SET_SESSION_ID', data.sessionId)
           commit('SET_USER_ID', data.userId)
           commit('SET_NAME', data.userAccount)
-          setCookieByName('org_token_auth', data.token)
-          // setCookieByName('session_id', data.sessionId)
-          setCookieByName('refresh_org_token_auth', data.refreshToken)
-          setCookieByName('user_id', data.userId)
-          setCookieByName('user_name', data.userAccount)
+          // localStorage.setItem('org_token_auth', data.token)
+          // localStorage.setItem('session_id', data.sessionId)
+          localStorage.setItem('refresh_org_token_auth', data.refreshToken)
+          localStorage.setItem('user_id', data.userId)
+          localStorage.setItem('user_name', data.userAccount)
         }
         resolve(response)
       }).catch(error => {
@@ -79,7 +80,7 @@ const actions = {
           removeCookieByName('refresh_org_token_auth')
           removeCookieByName('user_id')
           resetRouter()
-          sessionStorage.clear() // remove all session
+          localStorage.clear() // remove all session
           commit('RESET_STATE')
           resolve()
         }
