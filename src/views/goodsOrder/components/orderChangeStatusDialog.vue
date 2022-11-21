@@ -35,19 +35,28 @@
     <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><i class="red">*</i><span>出售价格：</span></el-col>
       <el-col :span="8" :offset="1">
-        <el-input v-model="requestParam.shelvesPrice" size="small" ></el-input>
+        <el-input
+          @keyup.native="keyup1($event)"
+          v-model="requestParam.shelvesPrice"
+          size="small" ></el-input>
       </el-col>
     </el-row>
     <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><span>补贴价格：</span></el-col>
       <el-col :span="8" :offset="1">
-        <el-input v-model="requestParam.subsidiesPrice" size="small" ></el-input>
+        <el-input
+          @keyup.native="keyup1($event)"
+          v-model="requestParam.subsidiesPrice"
+          size="small" ></el-input>
       </el-col>
     </el-row>
     <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><span>手续费：</span></el-col>
       <el-col :span="8" :offset="1">
-        <el-input v-model="requestParam.poundage" size="small" ></el-input>
+        <el-input
+          @keyup.native="keyup1($event)"
+          v-model="requestParam.poundage"
+          size="small" ></el-input>
       </el-col>
     </el-row>
     <el-row class="form-flex">
@@ -71,7 +80,9 @@
     <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><span>利润：</span></el-col>
       <el-col :span="8" :offset="1">
-        <el-input v-model="requestParam.profits" size="small" ></el-input>
+        <el-input
+          @keyup.native="keyup1($event)"
+          v-model="requestParam.profits" size="small" ></el-input>
       </el-col>
     </el-row>
     <span slot="footer" class="dialog-footer">
