@@ -171,6 +171,7 @@
           <el-table-column align="center" prop="createTime" label="入库时间">
             <template slot-scope="scope">{{scope.row.createTime | formateTime() }} </template>
           </el-table-column>
+          <el-table-column align="center" prop="id" label="编号"/>
           <el-table-column fixed="left" align="center" label="操作" width="140">
             <template slot-scope="scope">
               <el-button type="text" @click="update(scope.row)">修改</el-button>
