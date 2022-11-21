@@ -4,7 +4,7 @@
       <el-row class="query-form">
         <el-col :span="6">
           <el-form-item size="small">
-            <el-input v-model.trim="queryParam.id" placeholder="订单主键"></el-input>
+            <el-input v-model.trim="queryParam.keyword" placeholder="关键字 （货号、尺码）"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -180,7 +180,7 @@
                @click="avatarShow(scope.row.imgUrl)">
         </template>
       </el-table-column>
-            <el-table-column  align="center" prop="actNo" label="货号"  >
+            <el-table-column  align="center"  width="100" prop="actNo" label="货号"  >
         <template slot-scope="scope">
           <a style="color: #20a0ff"  @click="jumpactNo(scope.row.actNo)" > {{ scope.row.actNo }}</a>
         </template>
@@ -274,6 +274,7 @@ export default {
       queryParam: {
         id: '',
         orderNo: '',
+        keyword: '',
         inventoryId: '',
         status: 3,
         shelvesPriceFrom: '',
@@ -468,6 +469,7 @@ export default {
       this.queryParam = {
         id: '',
         orderNo: '',
+        keyword: '',
         inventoryId: '',
         status: 3,
         shelvesPriceFrom: '',

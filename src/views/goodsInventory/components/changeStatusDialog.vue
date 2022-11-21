@@ -18,6 +18,12 @@
       </el-col>
     </el-row>
     <el-row class="form-flex">
+      <el-col :span="8" style="text-align: right"><span>已上架数量：</span></el-col>
+      <el-col :span="8" :offset="1">
+        <span>{{sizeData.galleryCount}}</span>
+      </el-col>
+    </el-row>
+    <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><span>入库价：</span></el-col>
       <el-col :span="8" :offset="1">
         <span>{{sizeData.price}}</span>
@@ -26,7 +32,9 @@
     <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><i class="red">*</i><span>上架数量：</span></el-col>
       <el-col :span="8" :offset="1">
-        <el-input v-input-validation v-model="requestParam.num" size="small"></el-input>
+        <el-input-number
+          :max="sizeData.inventory - sizeData.galleryCount"
+          v-input-validation v-model="requestParam.num" size="small"></el-input-number>
       </el-col>
     </el-row>
     <el-row class="form-flex">
@@ -80,7 +88,7 @@ export default {
   },
   mounted() {
     this.requestParam.inventoryId = this.sizeData.id
-    this.requestParam.num = this.sizeData.inventory
+    this.requestParam.num = this.sizeData.inventory - this.sizeData.galleryCount
     this.requestParam.shelvesPrice = this.sizeData.dwPrice
   },
   methods: {
