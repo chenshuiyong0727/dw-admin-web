@@ -180,7 +180,11 @@
           <img  v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"  @click="avatarShow(scope.row.imgUrl)" >
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="actNo" label="货号"/>
+            <el-table-column  align="center" prop="actNo" label="货号"  >
+        <template slot-scope="scope">
+          <a style="color: #20a0ff"  @click="jumpactNo(scope.row.actNo)" > {{ scope.row.actNo }}</a>
+        </template>
+      </el-table-column>
       <el-table-column align="center" prop="size" label="尺码"/>
       <el-table-column align="center" prop="status" label="状态">
         <template slot-scope="scope">{{ scope.row.status | dictToDescTypeValue(37) }}</template>
@@ -217,7 +221,8 @@
                        v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length">
         <template slot-scope="scope">
           <div>
-            <el-button type="text" @click="changeStatusDialog(scope.row)" >出售</el-button>
+            <el-button type="text" @click="changeStatusDialog(scope.row, 3)" >出售</el-button>
+            <el-button type="text" @click="changeStatusDialog(scope.row, 2)" >修改出售金额</el-button>
           </div>
         </template>
       </el-table-column>
@@ -310,7 +315,8 @@ export default {
     this.listSysDict()
   },
   methods: {
-    changeStatusDialog(row) {
+    changeStatusDialog(row, status) {
+      row.status = status
       this.orderData = row
       this.isShowDialog = true
     },
@@ -399,6 +405,9 @@ export default {
     goDetail(id, type) {
       // *** 根据真实路径配置地址
       this.$router.push({ path: '/goodsOrder/list/detail', query: { id, type } })
+    },
+    jumpactNo(actNo) {
+      this.$router.push({ path: '/goodsBase/goodsInventory', query: { actNo }})
     },
     goDel(id) {
       goodsOrderApi.delById(id).then(res => {

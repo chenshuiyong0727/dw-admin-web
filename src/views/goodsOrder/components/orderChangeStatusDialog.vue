@@ -26,7 +26,10 @@
     <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><span>入库价：</span></el-col>
       <el-col :span="8" :offset="1">
-        <el-input v-model="requestParam.price" size="small" ></el-input>
+        <el-input
+          @keyup.native="keyup1($event)"
+          v-model="requestParam.price"
+          size="small" ></el-input>
       </el-col>
     </el-row>
     <el-row class="form-flex">
@@ -50,7 +53,10 @@
     <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><span>运费：</span></el-col>
       <el-col :span="8" :offset="1">
-        <el-input v-model="requestParam.freight" size="small" ></el-input>
+        <el-input
+          v-model="requestParam.freight"
+          @keyup.native="keyup1($event)"
+          size="small" ></el-input>
       </el-col>
     </el-row>
     <el-row class="form-flex">
@@ -105,12 +111,27 @@ export default {
     this.requestParam.shelvesPrice = this.orderData.shelvesPrice
     this.requestParam.subsidiesPrice = this.orderData.subsidiesPrice
     this.requestParam.freight = this.orderData.freight
-    let poundage = this.requestParam.shelvesPrice * 0.075 + 38 + 8.5
-    this.requestParam.poundage = parseFloat(poundage).toFixed(2)
-    let realVal = this.requestParam.subsidiesPrice * 1 + this.requestParam.shelvesPrice - (this.requestParam.shelvesPrice * 0.075 + 38 + 8.5)
-    this.requestParam.theirPrice = parseFloat(realVal).toFixed(2)
-    let profits = this.requestParam.theirPrice - this.requestParam.freight - this.requestParam.price
-    this.requestParam.profits = parseFloat(profits).toFixed(2)
+    // let poundage = this.requestParam.shelvesPrice * 0.075 + 38 + 8.5
+    // this.requestParam.poundage = parseFloat(poundage).toFixed(2)
+    if (!this.orderData.poundage) {
+      let poundage = this.requestParam.shelvesPrice * 0.075 + 38 + 8.5
+      this.requestParam.poundage = parseFloat(poundage).toFixed(2)
+    } else {
+      this.requestParam.poundage = this.orderData.poundage
+    }
+    if (!this.orderData.theirPrice) {
+      let theirPrice = this.requestParam.subsidiesPrice * 1 + this.requestParam.shelvesPrice - (this.requestParam.shelvesPrice * 0.075 + 38 + 8.5)
+      this.requestParam.theirPrice = parseFloat(theirPrice).toFixed(2)
+    } else {
+      this.requestParam.theirPrice = this.orderData.theirPrice
+    }
+    if (!this.orderData.profits) {
+      let profits = this.requestParam.theirPrice - this.requestParam.freight - this.requestParam.price
+      this.requestParam.profits = parseFloat(profits).toFixed(2)
+    } else {
+      this.requestParam.profits = this.orderData.profits
+    }
+
     // this.requestParam.profits = this.requestParam.theirPrice - this.requestParam.freight - this.requestParam.price
   },
   methods: {
@@ -124,7 +145,7 @@ export default {
       this.$emit('closDialog')
     },
     keyup1() {
-      console.info('keyup1 ' + this.requestParam.theirPrice)
+      // console.info('keyup1 ' + this.requestParam.theirPrice)
       let profits = this.requestParam.theirPrice - this.requestParam.freight - this.requestParam.price
       this.requestParam.profits = parseFloat(profits).toFixed(2)
     },

@@ -90,6 +90,7 @@ export default {
     this.requestParam.id = this.orderData.id
     this.requestParam.shelvesPrice = this.orderData.shelvesPrice
     this.requestParam.subsidiesPrice = this.orderData.subsidiesPrice
+    this.requestParam.status = this.orderData.status
   },
   methods: {
     avatarShow(e) {

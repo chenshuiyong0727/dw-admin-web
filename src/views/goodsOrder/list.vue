@@ -200,7 +200,11 @@
           <img  v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"  @click="avatarShow(scope.row.imgUrl)" >
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="actNo" label="货号"/>
+      <el-table-column  align="center" prop="actNo" label="货号"  >
+        <template slot-scope="scope">
+          <a style="color: #20a0ff"  @click="jumpactNo(scope.row.actNo)" > {{ scope.row.actNo }}</a>
+        </template>
+      </el-table-column>
       <el-table-column align="center" prop="size" label="尺码"/>
       <el-table-column align="center" prop="status" label="状态">
         <template slot-scope="scope">{{ scope.row.status | dictToDescTypeValue(37) }}</template>
@@ -212,6 +216,11 @@
       <el-table-column align="center" prop="subsidiesPrice" label="补贴价"/>
       <el-table-column align="center" prop="theirPrice" label="到手价"/>
       <el-table-column align="center" prop="profits" label="实际利润"/>
+      <el-table-column align="center" prop="" label="利润比">
+        <template
+          v-if="scope.row.profits && scope.row.price "
+          slot-scope="scope">{{(scope.row.profits / scope.row.price  ) * 100 | numFilter}} %</template>
+      </el-table-column>
       <el-table-column align="center" prop="" label="预估利润">
         <template  v-if="scope.row.theirPrice && scope.row.price " slot-scope="scope">{{(scope.row.theirPrice - scope.row.price - 10 ) | numFilter}}</template>
       </el-table-column>
@@ -420,6 +429,9 @@ export default {
     goDetail(id, type) {
       // *** 根据真实路径配置地址
       this.$router.push({ path: '/goodsOrder/list/detail', query: { id, type } })
+    },
+    jumpactNo(actNo) {
+      this.$router.push({ path: '/goodsBase/goodsInventory', query: { actNo }})
     },
     goDel(id) {
       goodsOrderApi.delById(id).then(res => {

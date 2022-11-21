@@ -127,17 +127,10 @@
 
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-          <!--        <el-table-column align="center" prop="id" label="库存编号" />-->
           <el-table-column align="center" prop="size" width="50" label="尺码"/>
           <el-table-column align="center" prop="inventory" width="50" label="库存"/>
-<!--          <el-table-column align="center" prop="price" label="入库价"/>-->
-<!--          <el-table-column align="center" prop="inventory" label="库存">-->
-<!--            <template scope="scope">-->
-<!--              <div class="input-box">-->
-<!--                <el-input size="small"  v-model="scope.row.inventory"></el-input>-->
-<!--              </div>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
+          <el-table-column align="center" prop="successCount" width="50" label="成功数"/>
+          <el-table-column align="center" prop="galleryCount" width="50" label="上架数"/>
           <el-table-column align="center" prop="price" label="入库价">
             <template scope="scope">
               <div class="input-box">
@@ -146,7 +139,7 @@
             </template>
           </el-table-column>
           <el-table-column align="center" prop="" label="总入库价">
-            <template  slot-scope="scope">{{scope.row.price * scope.row.inventory }}</template>
+            <template  slot-scope="scope">{{scope.row.price * (scope.row.inventory + scope.row.successCount)}}</template>
           </el-table-column>
 <!--          <el-table-column align="center" prop="dwPrice" label="得物价"/>-->
           <el-table-column align="center" prop="dwPrice" label="得物价">
@@ -179,7 +172,10 @@
             <template slot-scope="scope">
               <el-button type="text" @click="update(scope.row)">修改</el-button>
               <el-button type="text" @click="goDel(scope.row.id)" >删除</el-button>
-              <el-button type="text" @click="changeStatusDialog(scope.row)">上架</el-button>
+              <el-button
+                type="text"
+                         v-if="scope.row.inventory > scope.row.galleryCount"
+                         @click="changeStatusDialog(scope.row)">上架</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -254,6 +250,15 @@ export default {
       tableData1: [],
       totalCount1: 1,
       totalCount: 1
+    }
+  },
+  created() {
+    const { actNo } = this.$route.query
+    // this.goodsId = goodsId
+    this.queryParam1.keyword = actNo
+    if (this.queryParam1.keyword) {
+      this.page()
+      // this.getDetailById(this.goodsId)
     }
   },
   mounted() {
