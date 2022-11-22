@@ -2,13 +2,11 @@
   <three-level-route>
     <div class="page-container container-flex">
       <div class="container-left" v-if="1==1">
-<!--        <h5>商品列表</h5>-->
         <el-form ref="form">
           <el-row class="query-form">
             <el-col :span="8">
               <el-form-item size="small">
                 <el-select v-model="queryParam1.inventoryTo" @change="search">
-<!--                  <el-option label="状态" value=""></el-option>-->
                   <el-option
                     v-for="item in inventoryToList"
                     :key="item.fieldValue"
@@ -17,53 +15,28 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-<!--              <el-form-item size="small">-->
-<!--                <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-search" @click="search">查询-->
-<!--                </el-button>-->
-<!--                <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-plus"-->
-<!--                           @click="showInventoryDrawer()">新增库存-->
-<!--                </el-button>-->
-<!--              </el-form-item>-->
             </el-col>
             <el-col :span="16">
               <el-form-item size="small">
                 <el-input v-model.trim="queryParam1.keyword" placeholder="关键词 （货号、尺码）">
-<!--                  <el-button type="primary"  slot="append" @click="search()" >查询</el-button>-->
                 </el-input>
               </el-form-item>
-<!--              <el-form-item size="small">-->
-<!--                <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-search" @click="search">查询-->
-<!--                </el-button>-->
-<!--                <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-plus"-->
-<!--                           @click="showInventoryDrawer()">新增库存-->
-<!--                </el-button>-->
-<!--              </el-form-item>-->
             </el-col>
           </el-row>
           <el-row class="query-form">
             <el-col>
-<!--              <el-form-item size="small">-->
-<!--                <el-input v-model.trim="queryParam1.keyword" placeholder="关键词 （货号、尺码）">-->
-<!--&lt;!&ndash;                  <el-button type="primary"  slot="append" @click="search()" >查询</el-button>&ndash;&gt;-->
-<!--                </el-input>-->
-<!--              </el-form-item>-->
               <el-form-item size="small">
-                <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-search" @click="search">查询
+                <el-button type="primary" size="small" @click="search">查询
                 </el-button>
-                <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-plus"
+                <el-button type="primary" size="small"
                            @click="showInventoryDrawer()">新增库存
+                </el-button>
+                <el-button type="primary" size="small"
+                           @click="viewAll()">库存明细
                 </el-button>
               </el-form-item>
             </el-col>
           </el-row>
-
-<!--          <el-row type="flex" justify="center">-->
-<!--            <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-search" @click="search">查询-->
-<!--            </el-button>-->
-<!--            <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-plus"-->
-<!--                       @click="showInventoryDrawer()">新增库存-->
-<!--            </el-button>-->
-<!--          </el-row>-->
         </el-form>
 
         <el-table style="margin-top: 00px" border :data="tableData1" @row-click="rowClick">
@@ -71,7 +44,7 @@
           <el-table-column align="center" prop="actNo" label="货号" />
           <el-table-column align="center" label="图片"  >
             <template slot-scope="scope">
-              <img  v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic1"  @click="avatarShow(scope.row.imgUrl)" >
+              <img  v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"  @click="avatarShow(scope.row.imgUrl)" >
             </template>
           </el-table-column>
         </el-table>
@@ -89,24 +62,11 @@
         </el-row>
       </div>
       <div class="container-right">
-<!--        <el-row class="clearfix btm-distance">-->
-<!--          <div class="overview">-->
-<!--&lt;!&ndash;            <h5>{{form.actNo}}</h5>&ndash;&gt;-->
-<!--            &lt;!&ndash;            <img&ndash;&gt;-->
-<!--            &lt;!&ndash;              v-if="form.imgUrl"&ndash;&gt;-->
-<!--            &lt;!&ndash;              :src="fileUrl + form.imgUrl"&ndash;&gt;-->
-<!--            &lt;!&ndash;              style="width: 100px;height: 100px;"&ndash;&gt;-->
-<!--            &lt;!&ndash;              @click="avatarShow(form.imgUrl)"&ndash;&gt;-->
-<!--            &lt;!&ndash;            />&ndash;&gt;-->
-<!--          </div>-->
-<!--        </el-row>-->
         <div
           style="display: flex; justify-content: space-between; align-items: center;height: 50px;"
         >
-<!--          <el-button type="primary" icon="el-icon-plus" @click="openDictModal">添加</el-button>-->
           <el-row class="clearfix btm-distance">
             <div class="overview">
-<!--                          <h5>{{actNo}}</h5>-->
                           <img
                             v-if="imgUrl"
                             :src="fileUrl + imgUrl"
@@ -128,8 +88,6 @@
         </div>
         <el-table style="margin-top: 20px" border :data="tableData" >
 
-<!--          <el-table-column type="selection" width="55"></el-table-column>-->
-<!--          <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>-->
           <el-table-column align="center" prop="size" width="50" label="尺码"/>
           <el-table-column align="center" prop="inventory" width="50" label="库存"/>
           <el-table-column align="center" prop="successCount" width="50" label="成功数"/>
@@ -144,7 +102,6 @@
           <el-table-column align="center" prop="" label="总入库价">
             <template  slot-scope="scope">{{scope.row.price * (scope.row.inventory + scope.row.successCount)}}</template>
           </el-table-column>
-<!--          <el-table-column align="center" prop="dwPrice" label="得物价"/>-->
           <el-table-column align="center" prop="dwPrice" label="得物价">
             <template scope="scope">
               <div class="input-box">
@@ -311,6 +268,9 @@ export default {
     showInventoryDrawer() {
       this.$refs['inventory-detail-edit'].show()
     },
+    viewAll() {
+      this.$router.push({path: '/goodsBase/goodsInventory/dataDetail'})
+    },
     page() {
       goodsInventoryApi.page(this.queryParam1).then(res => {
         if (res.subCode === 1000) {
@@ -385,6 +345,7 @@ export default {
       }).then(() => {
         goodsInventoryApi.update(row).then(res => {
           if (res.subCode === 1000) {
+            this.$message.success(res.subMsg)
             this.pageGoods(row.goodsId)
           } else {
             this.$message.error(res.subMsg)

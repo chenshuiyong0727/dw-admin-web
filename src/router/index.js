@@ -215,7 +215,14 @@ export const constantRoutes = [
             component: () => import('@/views/goodsInventory/detail'),
             meta: { title: '详情', routerId: 3 },
             hidden: true
-          }
+          },
+          {
+            path: 'dataDetail',
+            name: 'dataDetail',
+            component: () => import('@/views/goodsInventory/dataDetail'),
+            meta: { title: '库存明细', routerId: 3 },
+            hidden: true
+          },
         ]
       }
     ]
