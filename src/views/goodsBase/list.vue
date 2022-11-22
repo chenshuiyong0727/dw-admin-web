@@ -80,9 +80,8 @@
 		          <el-button type="text" @click="goDetail(scope.row.id , 1)" v-permission:[buttonPermissionArr.listBtn]="['查看']">查看</el-button>
 		          <el-button type="text" @click="goDetail(scope.row.id , 2)" v-permission:[buttonPermissionArr.listBtn]="['编辑']">编辑</el-button>
             </div>
-	          <el-button type="text" @click="goDel(scope.row.id)" v-permission:[buttonPermissionArr.listBtn]="['删除']">删除</el-button>
-	          <el-button type="text" @click="changeStatus(scope.row.id, 0)" v-permission:[buttonPermissionArr.listBtn]="['更新状态']"  v-if="scope.row.dataStatus == 1">停用</el-button>
-	          <el-button type="text" @click="changeStatus(scope.row.id, 1)" v-permission:[buttonPermissionArr.listBtn]="['更新状态']" v-if="scope.row.dataStatus == 0">启用</el-button>
+<!--	          <el-button type="text" @click="goDel(scope.row.id)" v-permission:[buttonPermissionArr.listBtn]="['删除']">删除</el-button>-->
+	          <el-button type="text" @click="jumpactNo(scope.row)">查看库存</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -180,6 +179,16 @@ export default {
           this.$message.error(res.subMsg)
         }
       })
+    },
+    jumpactNo(row) {
+      let actNo = row.actNo
+      if (!actNo) {
+        this.$alert('没有选中数据')
+        return
+      }
+      this.$router.push({ path: '/goodsBase/goodsInventory', query: { actNo }})
+      //
+      // this.$router.push({ path: '/goodsOrder/list', query: { actNo }})
     },
     changeStatus(id, dataStatus ) {
       goodsBaseApi.changeStatus({ id, dataStatus}).then(res => {

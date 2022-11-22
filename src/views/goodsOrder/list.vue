@@ -245,7 +245,10 @@
       </el-table-column>
       <el-table-column fixed="right" align="center" label="操作" width="100">
         <template slot-scope="scope">
-          <el-button type="text" @click="changeStatusDialog(scope.row)" >交易成功</el-button>
+          <div>
+            <el-button type="text" @click="changeStatusDialog(scope.row)" >交易成功</el-button>
+          </div>
+          <el-button type="text" @click="changeStatusDialog1(scope.row)" >修改地址</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -271,6 +274,11 @@
       :orderData="orderData"
       @refreshPage="refreshPage"
       @closDialog="closDialog"/>
+    <order-change-status-dialog-add
+      v-if="isShowDialog1 "
+      :orderData="orderData1"
+      @refreshPage="refreshPage1"
+      @closDialog="closDialog1"/>
   </three-level-route>
 </template>
 
@@ -280,10 +288,12 @@ import { goodsOrderApi } from '@/api/goodsOrder'
 import { permissionMixin } from '@/mixins/permissionMixin'
 import { getExport } from '@/api/exportFile'
 import orderChangeStatusDialog from './components/orderChangeStatusDialog'
+import orderChangeStatusDialogAdd from './components/orderChangeStatusDialogAdd'
 
 export default {
   mixins: [permissionMixin],
   components: {
+    orderChangeStatusDialogAdd,
     orderChangeStatusDialog,
     ThreeLevelRoute
   },
@@ -291,6 +301,8 @@ export default {
     return {
       orderData: '',
       isShowDialog: false,
+      orderData1: '',
+      isShowDialog1: false,
       pictureZoomShow: false,
       imageZoom: '',
       fileUrl: fileUrl,
@@ -346,6 +358,17 @@ export default {
     this.listSysDict()
   },
   methods: {
+    changeStatusDialog1(row) {
+      this.orderData1 = row
+      this.isShowDialog1 = true
+    },
+    closDialog1() {
+      this.isShowDialog1 = false
+    },
+    refreshPage1() {
+      this.isShowDialog1= false
+      this.getPage()
+    },
     changeStatusDialog(row) {
       this.orderData = row
       this.isShowDialog = true
