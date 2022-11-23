@@ -89,7 +89,15 @@
         <el-table style="margin-top: 20px" border :data="tableData" >
 
           <el-table-column align="center" prop="size" width="50" label="尺码"/>
-          <el-table-column align="center" prop="inventory" width="50" label="库存"/>
+          <el-table-column align="center" prop=""  width="50" label="库存">
+            <template slot-scope="scope">
+                <span
+                  :style="scope.row.inventory > 0 ? 'color: #0fbe8f' : 'color: red'"
+                >
+              {{scope.row.inventory}}
+            </span>
+            </template>
+          </el-table-column>
           <el-table-column align="center" prop="successCount" width="50" label="成功数"/>
           <el-table-column align="center" prop="galleryCount" width="50" label="上架数"/>
           <el-table-column align="center" prop="price" label="入库价">
