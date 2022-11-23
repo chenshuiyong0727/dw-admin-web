@@ -35,7 +35,7 @@ export const pathList = [
   { title: '认知管理', topMenuId: 3 },
   { title: '运营管理', topMenuId: 4 },*/
   { title: '开发工具', topMenuId: 3 },
-  { title: '系统管理', topMenuId: 1 },
+  // { title: '系统管理', topMenuId: 1 },
   { title: '我的账号', topMenuId: 2, hidden: true }
 ]
 /**
@@ -60,94 +60,94 @@ export const constantRoutes = [
     hidden: true
   },
   // 组织管理
-  {
-    path: '/organization',
-    component: Layout,
-    meta: { title: '组织管理', leftMenuId: 1 },
-    redirect: '/organization/structure',
-    children: [
-      {
-        path: 'structure',
-        name: 'structure',
-        component: () => import('@/views/systemManage/organization/organization'),
-        meta: { title: '组织结构' },
-        children: [
-          {
-            path: 'add',
-            name: 'addOrganization',
-            component: () => import('@/views/systemManage/organization/addOrganization'),
-            meta: { title: '新增', routerId: 3 },
-            hidden: true
-          }
-        ]
-      },
-      {
-        path: 'job',
-        name: 'job',
-        component: () => import('@/views/systemManage/organization/job'),
-        meta: { title: '岗位管理' },
-        children: [
-          {
-            path: 'add',
-            name: 'addJob',
-            component: () => import('@/views/systemManage/organization/addJob'),
-            meta: { title: '新增', routerId: 3 },
-            hidden: true
-          }
-        ]
-      }
-    ]
-  },
+  // {
+  //   path: '/organization',
+  //   component: Layout,
+  //   meta: { title: '组织管理', leftMenuId: 1 },
+  //   redirect: '/organization/structure',
+  //   children: [
+  //     {
+  //       path: 'structure',
+  //       name: 'structure',
+  //       component: () => import('@/views/systemManage/organization/organization'),
+  //       meta: { title: '组织结构' },
+  //       children: [
+  //         {
+  //           path: 'add',
+  //           name: 'addOrganization',
+  //           component: () => import('@/views/systemManage/organization/addOrganization'),
+  //           meta: { title: '新增', routerId: 3 },
+  //           hidden: true
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       path: 'job',
+  //       name: 'job',
+  //       component: () => import('@/views/systemManage/organization/job'),
+  //       meta: { title: '岗位管理' },
+  //       children: [
+  //         {
+  //           path: 'add',
+  //           name: 'addJob',
+  //           component: () => import('@/views/systemManage/organization/addJob'),
+  //           meta: { title: '新增', routerId: 3 },
+  //           hidden: true
+  //         }
+  //       ]
+  //     }
+  //   ]
+  // },
   // 员工管理
-  {
-    path: '/staff',
-    component: Layout,
-    meta: { title: '员工管理', leftMenuId: 1 },
-    redirect: '/staff/account',
-    children: [
-      {
-        path: 'account',
-        name: 'account',
-        component: () => import('@/views/systemManage/staff/account'),
-        meta: { title: '账号管理' },
-        children: [
-          {
-            path: 'add',
-            name: 'addAccount',
-            component: () => import('@/views/systemManage/staff/addAccount'),
-            meta: { title: '新增', routerId: 3 },
-            hidden: true
-          }
-        ]
-      }
-    ]
-  },
+  // {
+  //   path: '/staff',
+  //   component: Layout,
+  //   meta: { title: '员工管理', leftMenuId: 1 },
+  //   redirect: '/staff/account',
+  //   children: [
+  //     {
+  //       path: 'account',
+  //       name: 'account',
+  //       component: () => import('@/views/systemManage/staff/account'),
+  //       meta: { title: '账号管理' },
+  //       children: [
+  //         {
+  //           path: 'add',
+  //           name: 'addAccount',
+  //           component: () => import('@/views/systemManage/staff/addAccount'),
+  //           meta: { title: '新增', routerId: 3 },
+  //           hidden: true
+  //         }
+  //       ]
+  //     }
+  //   ]
+  // },
   // 权限管理
-  {
-    path: '/authority',
-    component: Layout,
-    meta: { title: '权限管理', leftMenuId: 1 },
-    redirect: '/authority/role',
-    children: [
-      {
-        path: 'role',
-        name: 'role',
-        component: () => import('@/views/systemManage/authority/role'),
-        meta: { title: '角色权限' },
-        children: [
-          {
-            path: 'add',
-            name: 'addRole',
-            component: () => import('@/views/systemManage/authority/addRole'),
-            meta: { title: '新增', routerId: 3 },
-            hidden: true
-          }
-        ]
-      }
-    ]
-  },
+  // {
+  //   path: '/authority',
+  //   component: Layout,
+  //   meta: { title: '权限管理', leftMenuId: 1 },
+  //   redirect: '/authority/role',
+  //   children: [
+  //     {
+  //       path: 'role',
+  //       name: 'role',
+  //       component: () => import('@/views/systemManage/authority/role'),
+  //       meta: { title: '角色权限' },
+  //       children: [
+  //         {
+  //           path: 'add',
+  //           name: 'addRole',
+  //           component: () => import('@/views/systemManage/authority/addRole'),
+  //           meta: { title: '新增', routerId: 3 },
+  //           hidden: true
+  //         }
+  //       ]
+  //     }
+  //   ]
+  // },
   // 菜单管理
-  {
+/*  {
     path: '/menu',
     component: Layout,
     meta: { title: '菜单管理', leftMenuId: 1 },
@@ -160,7 +160,7 @@ export const constantRoutes = [
         meta: { title: '菜单列表' }
       }
     ]
-  },
+  },*/
   // 我的账号
   {
     path: '/myAccount',
@@ -222,7 +222,7 @@ export const constantRoutes = [
             component: () => import('@/views/goodsInventory/dataDetail'),
             meta: { title: '库存明细', routerId: 3 },
             hidden: true
-          },
+          }
         ]
       }
     ]
@@ -300,19 +300,73 @@ export const constantRoutes = [
   },
   // 代码生成
   {
-    path: '/code',
+    path: '/',
     component: Layout,
-    meta: { title: '代码生成', leftMenuId: 3 },
+    meta: { title: '系统管理', leftMenuId: 3 },
     redirect: '/code/list',
     children: [
       {
-        path: 'list',
+        path: '/menu/list',
+        name: 'list',
+        component: () => import('@/views/systemManage/menu/list'),
+        meta: { title: '菜单列表' }
+      },
+      {
+        path: '/authority/role',
+        name: 'role',
+        component: () => import('@/views/systemManage/authority/role'),
+        meta: { title: '角色权限' }
+      },
+      {
+        path: '/authority/role/add',
+        name: 'addRole',
+        component: () => import('@/views/systemManage/authority/addRole'),
+        meta: { title: '新增' }
+      },
+      {
+        path: '/organization/structure',
+        name: 'structure',
+        component: () => import('@/views/systemManage/organization/organization'),
+        meta: { title: '组织结构' }
+      },
+      {
+        path: '/organization/structure/add',
+        name: 'addOrganization',
+        component: () => import('@/views/systemManage/organization/addOrganization'),
+        meta: { title: '新增', routerId: 3 }
+      },
+      {
+        path: '/organization/job',
+        name: 'job',
+        component: () => import('@/views/systemManage/organization/job'),
+        meta: { title: '岗位管理' }
+      },
+      {
+        path: '/organization/job/add',
+        name: 'addJob',
+        component: () => import('@/views/systemManage/organization/addJob'),
+        meta: { title: '新增', routerId: 3 }
+      },
+      {
+        path: '/staff/account',
+        name: 'account',
+        component: () => import('@/views/systemManage/staff/account'),
+        meta: { title: '账号管理' }
+      },
+      {
+        path: '/staff/account/add',
+        name: 'account',
+        component: () => import('@/views/systemManage/staff/addAccount'),
+        meta: { title: '新增' }
+      },
+      {
+        path: '/code/list',
         name: 'list',
         component: () => import('@/views/codeCreate/index'),
         meta: { title: '代码生成器' }
       },
       {
-        path: 'dist',
+        path: '/code/dist',
         name: 'dist',
         component: () => import('@/views/dictManage/dictList'),
         meta: { title: '字典管理' }
