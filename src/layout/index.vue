@@ -1,7 +1,7 @@
 <template>
   <div :class="classObj" class="app-wrapper">
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
-    <top-bar />
+<!--    <top-bar />-->
     <div class="app-main">
       <sidebar class="sidebar-container" />
       <div class="main-container">
