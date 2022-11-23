@@ -34,8 +34,8 @@
       </el-row>
     </el-form>
     <el-table style="margin-top: 20px" border :data="tableData">
-      <el-table-column align="center" prop="actNo" label="货号" />
-      <el-table-column align="center" label="图片"  >
+      <el-table-column align="center" prop="actNo" width="100" fixed="left" label="货号" />
+      <el-table-column align="center" label="图片"  fixed="left"  >
         <template slot-scope="scope">
           <img  v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"  @click="avatarShow(scope.row.imgUrl)" >
         </template>
@@ -94,7 +94,7 @@
         <template slot-scope="scope">{{scope.row.createTime | formateTime() }}</template>
       </el-table-column>
       <el-table-column align="center" prop="id" label="编号"/>
-      <el-table-column fixed="left" align="center" label="操作" width="140">
+      <el-table-column fixed="right" align="center" label="操作" width="140">
         <template slot-scope="scope">
           <el-button type="text" @click="update(scope.row)">修改</el-button>
           <el-button type="text" @click="goDel(scope.row.id)">删除</el-button>
