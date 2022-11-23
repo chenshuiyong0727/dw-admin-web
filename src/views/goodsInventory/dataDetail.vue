@@ -4,14 +4,15 @@
       <el-row class="query-form">
         <el-col :span="6">
           <el-form-item size="small">
-            <el-select v-model="inventory" @change="change1">
+            <el-select v-model="queryParam.inventory" @change="change1" >
               <el-option
                 v-for="item in inventoryToList"
                 :key="item.fieldValue"
                 :label="item.fieldName"
                 :value="+item.fieldValue">
               </el-option>
-            </el-select>          </el-form-item>
+            </el-select>
+          </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item size="small">
@@ -146,6 +147,7 @@ export default {
       isShowDialog: false,
       queryParam: {
         id: '',
+        inventory: 1,
         inventoryFrom: '',
         inventoryTo: '',
         size: '',
@@ -156,9 +158,9 @@ export default {
       },
       pictureZoomShow: false,
       fileUrl: fileUrl,
-      inventory: 1,
+      // inventory: 1,
       inventoryToList: [
-        { fieldValue: 1, fieldName: '现货' }, { fieldValue: 0, fieldName: '售空' }
+        { fieldValue: 1, fieldName: '现货' }, { fieldValue: 0, fieldName: '售空' }, { fieldValue: 2, fieldName: '未上架' }
       ],
       dataStatusList: [],
       imgUrl: '',
@@ -205,12 +207,15 @@ export default {
       this.$router.push({ path: '/goodsOrder/list', query: { actNo }})
     },
     pageGoods() {
-      if (this.inventory == 1) {
+      if (this.queryParam.inventory == 1) {
         this.queryParam.inventoryFrom = 1
         this.queryParam.inventoryTo = ''
-      } else {
+      } else if (this.queryParam.inventory == 0) {
         this.queryParam.inventoryFrom = ''
         this.queryParam.inventoryTo = 0
+      } else {
+        this.queryParam.inventoryFrom = ''
+        this.queryParam.inventoryTo = ''
       }
       goodsInventoryApi.pageGoods(this.queryParam).then(res => {
         if (res.subCode === 1000) {
@@ -269,12 +274,15 @@ export default {
       })
     },
     change1() {
-      if (this.inventory == 1) {
+      if (this.queryParam.inventory == 1) {
         this.queryParam.inventoryFrom = 1
         this.queryParam.inventoryTo = ''
-      } else {
+      } else if (this.queryParam.inventory == 0) {
         this.queryParam.inventoryFrom = ''
         this.queryParam.inventoryTo = 0
+      } else {
+        this.queryParam.inventoryFrom = ''
+        this.queryParam.inventoryTo = ''
       }
       this.pageGoods()
     },
@@ -285,6 +293,7 @@ export default {
     resetHandle() {
       this.queryParam = {
         id: '',
+        inventory: 1,
         inventoryFrom: '',
         inventoryTo: '',
         size: '',
@@ -293,7 +302,6 @@ export default {
         pageSize: 10,
         pageNum: 1
       }
-      this.inventory = 1
       this.getPage()
     }
   }

@@ -210,7 +210,7 @@ export default {
       pictureZoomShow: false,
       fileUrl: fileUrl,
       inventoryToList: [
-        { fieldValue: 1, fieldName: '现货' }, { fieldValue: 0, fieldName: '售空' }
+        { fieldValue: 1, fieldName: '现货' }, { fieldValue: 0, fieldName: '售空' }, { fieldValue: 2, fieldName: '未上架' }
       ],
       dataStatusList: [],
       imgUrl: '',
