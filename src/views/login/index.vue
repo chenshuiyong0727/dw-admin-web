@@ -191,7 +191,7 @@ export default {
         if (!isHasRouterAuth.length) {
           this.redirect = allRouter[0].route
         }
-        this.$router.push({ path: '/goodsBase' || this.redirect })
+        this.$router.push({ path: '/homePage' || this.redirect })
       })
     },
     handleLogin() {

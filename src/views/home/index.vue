@@ -108,8 +108,8 @@
             </div>
           </div>
         </el-col>
-        <el-col :span="4" @click="jumpactOrder(7)">
-          <div class="out-border">
+        <el-col :span="4">
+          <div class="out-border"  @click="jumpactOrder(7)">
             <div class="layout-title">平均利润</div>
             <div class="color-main address-content">
               <span class="color-danger">{{form.profitsAverage}}</span>
@@ -134,22 +134,22 @@
         </el-col>
         <el-col :span="4">
           <div class="out-border" @click="jumpactOrder(7)">
-            <div class="layout-title">运费均价</div>
+            <div class="layout-title" >运费均价</div>
             <div class="color-main address-content">
               <span >{{form.freightAverage}}</span>
             </div>
           </div>
         </el-col>
-        <el-col :span="4" @click="jumpactOrder(7)">
-          <div class="out-border">
+        <el-col :span="4" >
+          <div class="out-border" @click="jumpactOrder(7)">
             <div class="layout-title">成本均价</div>
             <div class="color-main address-content">
               <span >{{form.costAverage}}</span>
             </div>
           </div>
         </el-col>
-        <el-col :span="4" @click="jumpactOrder(7)">
-          <div class="out-border">
+        <el-col :span="4">
+          <div class="out-border" @click="jumpactOrder(7)">
             <div class="layout-title">实际利润比例</div>
             <div class="color-main address-content">
               <span >{{form.profitsProportion}}%</span>
