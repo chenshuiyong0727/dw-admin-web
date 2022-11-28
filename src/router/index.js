@@ -56,7 +56,7 @@ export const constantRoutes = [
   },
   {
     path: '/',
-    redirect: '/goodsBase',
+    redirect: '/homePage',
     hidden: true
   },
   // 组织管理
@@ -179,6 +179,20 @@ export const constantRoutes = [
         name: 'changePassword',
         component: () => import('@/views/accountManage/changePassword'),
         meta: { title: '修改密码' }
+      }
+    ]
+  },
+  {
+    path: '/',
+    component: Layout,
+    meta: { title: '首页', leftMenuId: 3 },
+    redirect: '/homePage',
+    children: [
+      {
+        path: 'homePage',
+        name: 'homePage',
+        component: () => import('@/views/home/index'),
+        meta: { title: '首页' }
       }
     ]
   },

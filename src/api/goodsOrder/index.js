@@ -47,6 +47,10 @@ export const goodsOrderApi = {
     url: '/gw/op/v1/goodsOrder',
     method: 'put',
     data: body
+  }),
+  indexData: () => request({
+    url: '/gw/op/v1/goodsOrder/indexData',
+    method: 'get'
   })
 
 }

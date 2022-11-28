@@ -222,7 +222,8 @@
                        v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length">
         <template slot-scope="scope">
           <div>
-            <el-button type="text" @click="changeStatus(scope.row,7)" >成功</el-button>
+            <el-button type="text" @click="changeStatusDialog(scope.row)" >成功</el-button>
+<!--            <el-button type="text" @click="changeStatus(scope.row,7)" >成功</el-button>-->
             <el-button type="text" @click="changeStatus(scope.row,8)" >瑕疵</el-button>
           </div>
         </template>
@@ -245,6 +246,11 @@
         <img :src="fileUrl + imageZoom" alt="" width="100%" height="100%">
       </div>
     </div>
+    <order-change-status-dialog
+      v-if="isShowDialog "
+      :orderData="orderData"
+      @refreshPage="refreshPage"
+      @closDialog="closDialog"/>
   </three-level-route>
 </template>
 
@@ -253,14 +259,18 @@ import ThreeLevelRoute from '@/components/ThreeLevelRoute'
 import { goodsOrderApi } from '@/api/goodsOrder'
 import { permissionMixin } from '@/mixins/permissionMixin'
 import { getExport } from '@/api/exportFile'
+import orderChangeStatusDialog from './components/orderChangeStatusDialog'
 
 export default {
   mixins: [permissionMixin],
   components: {
+    orderChangeStatusDialog,
     ThreeLevelRoute
   },
   data() {
     return {
+      orderData: '',
+      isShowDialog: false,
       pictureZoomShow: false,
       imageZoom: '',
       fileUrl: fileUrl,
@@ -279,7 +289,7 @@ export default {
         theirPriceFrom: '',
         theirPriceTo: '',
         addressId: '',
-  waybillNo: '',
+        waybillNo: '',
         createTimeFrom: '',
         createTimeTo: '',
         updateTimeFrom: '',
@@ -308,6 +318,17 @@ export default {
     this.listSysDict()
   },
   methods: {
+    changeStatusDialog(row) {
+      this.orderData = row
+      this.isShowDialog = true
+    },
+    closDialog() {
+      this.isShowDialog = false
+    },
+    refreshPage() {
+      this.isShowDialog = false
+      this.getPage()
+    },
     changeStatus(row, status) {
       row.status = status
       goodsOrderApi.sellGoods(row).then(res => {
