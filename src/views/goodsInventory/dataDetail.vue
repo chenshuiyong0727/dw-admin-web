@@ -42,16 +42,6 @@
         </template>
       </el-table-column>
       <el-table-column align="center" prop="size" width="50" label="尺码" />
-      <el-table-column align="center" prop="inventory" width="50" label="库存" />
-      <el-table-column align="center" prop="successCount" width="80" label="成功数" />
-      <el-table-column align="center" prop="" label="总数(库存+成功数)" >
-        <template slot-scope="scope">{{scope.row.inventory + scope.row.successCount}}
-        </template>
-      </el-table-column>
-<!--      <el-table-column align="center" prop="" label="总数(库存+成功数)">-->
-<!--        <template slot-scope="scope">{{scope.row.inventory + scope.row.successCount}}-->
-<!--        </template>-->
-      <el-table-column align="center" prop="galleryCount" width="80" label="上架数" />
       <el-table-column align="center" prop="price" label="入库价">
         <template scope="scope">
           <div class="input-box">
@@ -59,26 +49,11 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="" label="总入库价">
-        <template slot-scope="scope">{{scope.row.price * (scope.row.inventory +
-          scope.row.successCount)}}
-        </template>
-      </el-table-column>
       <el-table-column align="center" prop="dwPrice" label="得物价" >
         <template scope="scope">
           <div class="input-box">
             <el-input size="small" v-model="scope.row.dwPrice"></el-input>
           </div>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" prop="" label="手续费" >
-        <template v-if="scope.row.dwPrice" slot-scope="scope">{{(scope.row.dwPrice * 0.075 + 38 +
-          8.5) | numFilter}}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" prop="" label="到手单价" >
-        <template v-if="scope.row.dwPrice" slot-scope="scope">{{(scope.row.dwPrice -
-          (scope.row.dwPrice * 0.075 + 38 + 8.5)) | numFilter}}
         </template>
       </el-table-column>
       <el-table-column align="center" prop="" label="预计利润" >
@@ -89,6 +64,28 @@
           >
                 {{(scope.row.dwPrice - (scope.row.dwPrice * 0.075 + 38 + 8.5) - scope.row.price - 10) | numFilter}}
               </span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" prop="inventory" width="50" label="库存" />
+      <el-table-column align="center" prop="successCount" width="80" label="成功数" />
+      <el-table-column align="center" prop="" label="总数(库存+成功数)" >
+        <template slot-scope="scope">{{scope.row.inventory + scope.row.successCount}}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" prop="galleryCount" width="80" label="上架数" />
+      <el-table-column align="center" prop="" label="总入库价">
+        <template slot-scope="scope">{{scope.row.price * (scope.row.inventory +
+          scope.row.successCount)}}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" prop="" label="手续费" >
+        <template v-if="scope.row.dwPrice" slot-scope="scope">{{(scope.row.dwPrice * 0.075 + 38 +
+          8.5) | numFilter}}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" prop="" label="到手单价" >
+        <template v-if="scope.row.dwPrice" slot-scope="scope">{{(scope.row.dwPrice -
+          (scope.row.dwPrice * 0.075 + 38 + 8.5)) | numFilter}}
         </template>
       </el-table-column>
       <el-table-column align="center" prop="createTime" label="入库时间">
@@ -302,7 +299,7 @@ export default {
         pageSize: 10,
         pageNum: 1
       }
-      this.getPage()
+      this.search()
     }
   }
 }

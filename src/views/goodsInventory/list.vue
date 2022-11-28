@@ -40,8 +40,11 @@
         </el-form>
 
         <el-table style="margin-top: 00px" border :data="tableData1" @row-click="rowClick">
-
-          <el-table-column align="center" prop="actNo" label="货号" />
+          <el-table-column  align="center"  prop="actNo" label="货号"  >
+            <template slot-scope="scope">
+              <a style="color: #20a0ff" @click="viewAll(scope.row.actNo)"> {{ scope.row.actNo }}</a>
+            </template>
+          </el-table-column>
           <el-table-column align="center" label="图片"  >
             <template slot-scope="scope">
               <img  v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"  @click="avatarShow(scope.row.imgUrl)" >
@@ -276,8 +279,10 @@ export default {
     showInventoryDrawer() {
       this.$refs['inventory-detail-edit'].show()
     },
-    viewAll() {
-      this.$router.push({path: '/goodsBase/goodsInventory/dataDetail'})
+    viewAll(actNo) {
+      this.$router.push({ path: '/goodsBase/goodsInventory/dataDetail', query: { actNo }})
+      //
+      // this.$router.push({path: '/goodsBase/goodsInventory/dataDetail'})
     },
     page() {
       goodsInventoryApi.page(this.queryParam1).then(res => {
