@@ -247,6 +247,7 @@
         <template slot-scope="scope">
           <div>
             <el-button type="text" @click="changeStatusDialog(scope.row)" >交易成功</el-button>
+            <el-button type="text" v-if="scope.row.status == 2" @click="changeStatusDialog2(scope.row)" >出售</el-button>
           </div>
           <el-button type="text" @click="changeStatusDialog1(scope.row)" >修改地址</el-button>
         </template>
@@ -279,6 +280,11 @@
       :orderData="orderData1"
       @refreshPage="refreshPage1"
       @closDialog="closDialog1"/>
+    <order-change-status-dialog2
+      v-if="isShowDialog2 "
+      :orderData="orderData2"
+      @refreshPage="refreshPage2"
+      @closDialog="closDialog2"/>
   </three-level-route>
 </template>
 
@@ -288,6 +294,7 @@ import { goodsOrderApi } from '@/api/goodsOrder'
 import { permissionMixin } from '@/mixins/permissionMixin'
 import { getExport } from '@/api/exportFile'
 import orderChangeStatusDialog from './components/orderChangeStatusDialog'
+import orderChangeStatusDialog2 from './components/orderChangeStatusDialog2'
 import orderChangeStatusDialogAdd from './components/orderChangeStatusDialogAdd'
 
 export default {
@@ -295,6 +302,7 @@ export default {
   components: {
     orderChangeStatusDialogAdd,
     orderChangeStatusDialog,
+    orderChangeStatusDialog2,
     ThreeLevelRoute
   },
   data() {
@@ -303,6 +311,8 @@ export default {
       isShowDialog: false,
       orderData1: '',
       isShowDialog1: false,
+      orderData2: '',
+      isShowDialog2: false,
       pictureZoomShow: false,
       imageZoom: '',
       fileUrl: fileUrl,
@@ -366,7 +376,7 @@ export default {
       this.isShowDialog1 = false
     },
     refreshPage1() {
-      this.isShowDialog1= false
+      this.isShowDialog1 = false
       this.getPage()
     },
     changeStatusDialog(row) {
@@ -378,6 +388,18 @@ export default {
     },
     refreshPage() {
       this.isShowDialog = false
+      this.getPage()
+    },
+    changeStatusDialog2(row) {
+      row.status = 3
+      this.orderData2 = row
+      this.isShowDialog2 = true
+    },
+    closDialog2() {
+      this.isShowDialog2 = false
+    },
+    refreshPage2() {
+      this.isShowDialog2 = false
       this.getPage()
     },
     changeStatus(row) {
