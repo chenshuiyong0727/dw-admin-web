@@ -107,16 +107,21 @@
 
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-      <el-table-column align="center" prop="id" label="其他收支编号"/>
+<!--      <el-table-column align="center" prop="id" label="其他收支编号"/>-->
       <el-table-column align="center" prop="type" label="类型">
         <template slot-scope="scope">{{ scope.row.type | dictToDescTypeValue(39) }}</template>
       </el-table-column>
-      <el-table-column align="center" prop="actNo" label="货号"/>
+      <el-table-column align="center" prop="price" label="金额"/>
       <el-table-column align="center" prop="name" label="商品名称"/>
-      <el-table-column align="center" prop="imgUrl" label="图片地址"/>
+<!--      <el-table-column align="center" prop="imgUrl" label="图片地址"/>-->
+      <el-table-column align="center" label="图片"  width="120">
+        <template slot-scope="scope">
+          <img  v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"  @click="avatarShow(scope.row.imgUrl)" >
+        </template>
+      </el-table-column>
+      <el-table-column align="center" prop="actNo" label="货号"/>
       <el-table-column align="center" prop="brand" label="品牌"/>
       <el-table-column align="center" prop="remark" label="备注"/>
-      <el-table-column align="center" prop="price" label="金额"/>
       <el-table-column align="center" prop="createTime" label="创建时间">
         <template slot-scope="scope">{{scope.row.createTime | formateTime('{y}-{m}-{d} {h}:{i}')
           }}
@@ -163,6 +168,11 @@
         :total="totalCount">
       </el-pagination>
     </el-row>
+    <div class="popContainer" v-if="pictureZoomShow" @click="pictureZoomShow = false">
+      <div class="imageShow">
+        <img :src="fileUrl + imageZoom" alt="" width="100%" height="100%">
+      </div>
+    </div>
   </three-level-route>
 </template>
 
@@ -194,6 +204,8 @@ export default {
         pageSize: 10,
         pageNum: 1
       },
+      pictureZoomShow: false,
+      fileUrl: fileUrl,
       typeList: [],
       dataStatusList: [],
       createTime: '',
@@ -209,6 +221,10 @@ export default {
     this.listSysDict()
   },
   methods: {
+    avatarShow(e) {
+      this.imageZoom = e
+      this.pictureZoomShow = true
+    },
     createTimeChange() {
       if (this.createTime) {
         this.queryParam.createTimeFrom = this.createTime[0]
