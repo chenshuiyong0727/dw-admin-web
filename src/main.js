@@ -46,12 +46,12 @@ new Vue({
   render: h => h(App),
   created () {
     // 解决vuex的state数据在页面刷新时会被重置的问题，持久化数据
-    // 在页面加载时读取sessionStorage里的状态信息
+    // 在页面加载时读取localStorage里的状态信息
     if (localStorage.getItem("store")) {
       let store = localStorage.getItem("store")
       this.$store.replaceState(objMerge(JSON.parse(store == null ? '' : store), this.$store.state ))
     }
-    // 在页面刷新时将vuex里的信息保存到sessionStorage里
+    // 在页面刷新时将vuex里的信息保存到localStorage里
     window.addEventListener("beforeunload", (event) => {
       let state = JSON.stringify(this.$store.state)
       localStorage.setItem("store", state == null ? '' : state)

@@ -309,6 +309,21 @@ export const constantRoutes = [
         name: 'list9',
         component: () => import('@/views/goodsOrder/list9'),
         meta: { title: '已下架商品' }
+      },
+      {
+        path: 'goodsOther',
+        name: 'goodsOther',
+        component: () => import('@/views/goodsOther/list'),
+        meta: { title: '其他收支' },
+        children: [
+          {
+            path: 'detail',
+            name: 'detail',
+            component: () => import('@/views/goodsOther/detail'),
+            meta: { title: '详情', routerId: 3 },
+            hidden: true
+          }
+        ]
       }
     ]
   },

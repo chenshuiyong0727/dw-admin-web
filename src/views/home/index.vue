@@ -101,7 +101,7 @@
           </div>
         </el-col>
         <el-col :span="4">
-          <div class="out-border">
+          <div class="out-border" @click="goodsOther()">
             <div class="layout-title">其他收支</div>
             <div class="color-main address-content">
               <span >{{form.otherRevenue}}</span>
@@ -265,6 +265,9 @@ export default {
     },
     jumpactNo() {
       this.$router.push({ path: '/goodsBase/goodsInventory'})
+    },
+    goodsOther() {
+      this.$router.push({path: '/goodsOrder/goodsOther'})
     },
     jumpGoods() {
       this.$router.push({ path: '/goodsBase/list'})
