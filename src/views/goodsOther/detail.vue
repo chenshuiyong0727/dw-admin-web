@@ -31,13 +31,6 @@
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
-          <el-form-item  prop="actNo" label="货号" >
-            <el-input v-model="form.actNo" :disabled="type == 1 "></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row class="form-flex">
-        <el-col :span="10">
           <el-form-item  prop="name" label="商品名称" >
             <el-input v-model="form.name" :disabled="type == 1 "></el-input>
           </el-form-item>
@@ -45,11 +38,18 @@
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
-          <el-form-item  prop="imgUrl" label="图片地址" >
-            <el-input v-model="form.imgUrl" :disabled="type == 1 "></el-input>
+          <el-form-item  prop="actNo" label="货号" >
+            <el-input v-model="form.actNo" :disabled="type == 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
+<!--      <el-row class="form-flex">-->
+<!--        <el-col :span="10">-->
+<!--          <el-form-item  prop="imgUrl" label="图片地址" >-->
+<!--            <el-input v-model="form.imgUrl" :disabled="type == 1 "></el-input>-->
+<!--          </el-form-item>-->
+<!--        </el-col>-->
+<!--      </el-row>-->
       <el-row>
         <el-form-item label="图片" >
           <el-upload
@@ -112,7 +112,7 @@ export default {
   data() {
     return {
       form: {
-    type: '',
+    type: 2,
     actNo: '',
     name: '',
     imgUrl: '',
@@ -209,6 +209,9 @@ export default {
       this.$refs['form'].validate(async(valid) => {
         if (!valid) {
           return false
+        }
+        if (this.form.price > 0 && this.form.type == 2) {
+          this.form.price = 0 - this.form.price
         }
         if (this.type == 2) {
           goodsOtherApi.update(this.form).then(res => {

@@ -274,13 +274,19 @@ export default {
       this.$router.push({ path: '/goodsOrder/goodsOther/detail', query: { id, type } })
     },
     goDel(id) {
-      goodsOtherApi.delById(id).then(res => {
-        if (res.subCode === 1000) {
-          this.$message.success(res.subMsg)
-          this.getPage()
-        } else {
-          this.$message.error(res.subMsg)
-        }
+      this.$confirm('是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        goodsOtherApi.delById(id).then(res => {
+          if (res.subCode === 1000) {
+            this.$message.success(res.subMsg)
+            this.getPage()
+          } else {
+            this.$message.error(res.subMsg)
+          }
+        })
       })
     },
     changeStatus(id, dataStatus) {
