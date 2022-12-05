@@ -180,7 +180,7 @@
           <img  v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"  @click="avatarShow(scope.row.imgUrl)" >
         </template>
       </el-table-column>
-            <el-table-column  align="center"  width="100" prop="actNo" label="货号"  >
+      <el-table-column  align="center"  width="100" prop="actNo" label="货号"  >
         <template slot-scope="scope">
           <a style="color: #20a0ff"  @click="jumpactNo(scope.row.actNo)" > {{ scope.row.actNo }}</a>
         </template>

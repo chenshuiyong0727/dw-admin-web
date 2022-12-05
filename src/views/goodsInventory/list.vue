@@ -94,8 +94,9 @@
           <el-table-column align="center" prop="size" width="50" label="尺码"/>
           <el-table-column align="center" prop=""  width="50" label="库存">
             <template slot-scope="scope">
-                <span
-                  :style="scope.row.inventory > 0 ? 'color: #0fbe8f' : 'color: red'"
+              <!--                  :style="scope.row.inventory > 0 ? 'color: #0fbe8f' : 'color: red'"-->
+              <span
+                  :class="scope.row.inventory > 0 ? 'color-danger' : 'color-success'"
                 >
               {{scope.row.inventory}}
             </span>

@@ -218,11 +218,99 @@
         </el-row>
       </div>
     </div>
+    <div class="statistics-layout">
+      <div class="layout-title">订单统计</div>
+        <el-col :span="4">
+          <div style="padding: 20px">
+            <div>
+              <div style="color: #909399;font-size: 14px">本月订单总数</div>
+              <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderData.successNum}}</div>
+              <div>
+<!--                (本期数-同期数)/同期数*100%-->
+                <span
+                  :class="orderData.successNumRate<0 ? 'color-danger' : 'color-success'"
+                  style="font-size: 14px"> {{orderData.successNumRate}} %</span>
+                <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
+              </div>
+            </div>
+            <div style="margin-top: 50px;">
+              <div style="color: #909399;font-size: 14px">本月利润</div>
+              <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderData.profitsAmount}}</div>
+              <div>
+                <span
+                  :class="orderData.profitsAmountRate<0 ? 'color-danger' : 'color-success'"
+                  style="font-size: 14px">{{orderData.profitsAmountRate}} %</span>
+                <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
+              </div>
+            </div>
+            <div style="margin-top: 50px;">
+              <div style="color: #909399;font-size: 14px">本月销售总额</div>
+              <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderData.orderAmount}}</div>
+              <div>
+                <span
+                  :class="orderData.orderAmountRate<0 ? 'color-danger' : 'color-success'"
+                      style="font-size: 14px">{{orderData.orderAmountRate}} %</span>
+                <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
+              </div>
+            </div>
+<!--            <div style="margin-top: 20px;">-->
+<!--              <div style="color: #909399;font-size: 14px">本周销售总额</div>-->
+<!--              <div style="color: #606266;font-size: 24px;padding: 10px 0">50000</div>-->
+<!--              <div>-->
+<!--                <span class="color-danger" style="font-size: 14px">-10%</span>-->
+<!--                <span style="color: #C0C4CC;font-size: 14px">同比上周</span>-->
+<!--              </div>-->
+<!--            </div>-->
+          </div>
+        </el-col>
+      <el-row>
+        <el-col :span="20">
+          <div style="padding: 10px;border-left:1px solid #DCDFE6">
+            <el-date-picker
+              style="float: right;z-index: 1"
+              size="small"
+              v-model="createTime"
+              type="monthrange"
+              align="right"
+              unlink-panels
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              @change="handleDateChange"
+             >
+            </el-date-picker>
+            <div>
+              <ve-line
+                :data="chartData"
+                :legend-visible="false"
+                :loading="loading"
+                :data-empty="dataEmpty"
+                :settings="chartSettings"></ve-line>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
   </div>
 </template>
 
 <script>
+import {str2Date} from '@/utils/date';
 import { goodsOrderApi } from '@/api/goodsOrder'
+// const DATA_FROM_BACKEND = {
+//   columns: ['date', 'orderNum','orderPrice'],
+//   rows: [
+//     {date: '2022-03', orderNum: 8, orderPrice: 2273.59},
+//     {date: '2022-04', orderNum: 7, orderPrice: 3113.83},
+//     {date: '2022-05', orderNum: 16, orderPrice: 7537.75},
+//     {date: '2022-06', orderNum: 9, orderPrice: 2847.87},
+//     {date: '2022-07', orderNum: 16, orderPrice: 4902.25},
+//     {date: '2022-08', orderNum: 14, orderPrice: 2250.92},
+//     {date: '2022-09', orderNum: 10, orderPrice: 4268.72},
+//     {date: '2022-10', orderNum: 23, orderPrice: 2273.59},
+//     {date: '2022-11', orderNum: 52, orderPrice: 24925.27},
+//   ]
+// };
 export default {
   name: 'homePage',
   data() {
@@ -230,13 +318,73 @@ export default {
       form: {
       },
       orderIofo: {
-      }
+      },
+      queryParam: {
+        createTimeFrom: '',
+        createTimeTo: ''
+      },
+      createTime: '',
+      chartSettings: {
+        xAxisType: 'time',
+        area:false,
+        axisSite: { right: ['profitsAmount'] },
+        labelAlias: {
+          'successNum': '订单数',
+          'orderAmount': '订单金额',
+          'profitsAmount': '利润'
+        }},
+      chartData: {
+        columns: ['months', 'successNum','orderAmount','profitsAmount'],
+        rows: []
+      },
+      orderData: {
+      },
+      loading: false,
+      dataEmpty: false
     }
   },
   created() {
+    // this.initOrderCountDate();
     this.getData()
+    this.getData1()
   },
   methods: {
+    handleDateChange() {
+      if (this.createTime) {
+        this.queryParam.createTimeFrom = this.createTime[0]
+        this.queryParam.createTimeTo = this.createTime[1]
+      } else {
+        this.queryParam.createTimeFrom = null
+        this.queryParam.createTimeTo = null
+      }
+      this.getData1()
+    },
+    // initOrderCountDate(){
+    //   let start = new Date()
+    //   start.setFullYear(2018)
+    //   start.setMonth(10)
+    //   start.setDate(1)
+    //   const end = new Date()
+    //   end.setTime(start.getTime() + 1000 * 60 * 60 * 24 * 7)
+    //   this.orderCountDate=[start,end]
+    // },
+    getData1() {
+      goodsOrderApi.indexOrderData(this.queryParam).then(res => {
+        if (res.subCode === 1000) {
+          this.dataEmpty = false
+          this.loading = false
+          this.chartData.rows = res.data.rows
+          this.orderData = res.data
+          if (this.orderData) {
+            this.orderData.successNumRate = parseFloat((this.orderData.successNum - this.orderData.successNumLast) / this.orderData.successNumLast * 100 ).toFixed(2)
+            this.orderData.profitsAmountRate = parseFloat((this.orderData.profitsAmount - this.orderData.profitsAmountLast) / this.orderData.profitsAmountLast * 100 ).toFixed(2)
+            this.orderData.orderAmountRate = parseFloat((this.orderData.orderAmount - this.orderData.orderAmountLast) / this.orderData.orderAmountLast * 100 ).toFixed(2)
+          }
+        } else {
+          this.$message.error(res.subMsg)
+        }
+      })
+    },
     getData() {
       goodsOrderApi.indexData().then(res => {
         if (res.subCode === 1000) {
@@ -251,7 +399,7 @@ export default {
             this.form.freightAverage = parseFloat(this.form.freight / this.form.successNum).toFixed(2)
             this.form.profitsAverage = parseFloat(this.form.profitsAmount / this.form.successNum).toFixed(2)
           }
-          this.form.costAverage = this.form.inboundAverage / 1 + this.form.freightAverage / 1
+          this.form.costAverage = parseFloat(this.form.inboundAverage / 1 + this.form.freightAverage / 1).toFixed(2)
           this.form.inventoryRatio = parseFloat(this.form.inventoryNum / this.form.goodsPutInNum * 100).toFixed(2)
           this.form.profitsProportion = parseFloat(this.form.profitsAverage / this.form.costAverage * 100).toFixed(2)
         } else {
@@ -374,8 +522,5 @@ export default {
 .address-content{
   padding: 20px;
   font-size: 18px
-}
-.color-danger {
-  color: #F56C6C;
 }
 </style>

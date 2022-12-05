@@ -17,6 +17,7 @@ import '@/permission' // permission control
 
 import '@/directive'
 import '@/utils/filter'
+import VCharts from 'v-charts-v2'
 
 import { objMerge } from '@/utils'
 /**
@@ -36,6 +37,7 @@ import { objMerge } from '@/utils'
 // Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
 Vue.use(ElementUI)
+Vue.use(VCharts)
 
 Vue.config.productionTip = false
 

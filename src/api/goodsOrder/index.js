@@ -51,6 +51,10 @@ export const goodsOrderApi = {
   indexData: () => request({
     url: '/gw/op/v1/goodsOrder/indexData',
     method: 'get'
+  }),
+  indexOrderData: (body) => request({
+    url: '/gw/op/v1/goodsOrder/indexOrderData',
+    method: 'get',
+    params: body
   })
-
 }
