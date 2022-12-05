@@ -24,6 +24,15 @@
       </el-col>
     </el-row>
     <el-row class="form-flex">
+      <el-col :span="8" style="text-align: right"><span>运费：</span></el-col>
+      <el-col :span="8" :offset="1">
+        <el-input
+          v-model="requestParam.freight"
+          @keyup.native="keyup1($event)"
+          size="small" ></el-input>
+      </el-col>
+    </el-row>
+    <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><span>地址：</span></el-col>
       <el-col :span="8" :offset="1">
         <el-select v-model="requestParam.addressId">
@@ -64,6 +73,7 @@ export default {
       requestParam: {
         id: '',
         waybillNo: '',
+        freight: '',
         addressId: ''
       }
     }
@@ -71,6 +81,7 @@ export default {
   mounted() {
     this.listSysDict()
     this.requestParam.id = this.orderData.id
+    this.requestParam.freight = this.orderData.freight
     this.requestParam.waybillNo = this.orderData.waybillNo
     this.requestParam.addressId = this.orderData.addressId
   },
