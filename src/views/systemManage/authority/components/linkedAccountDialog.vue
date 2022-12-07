@@ -5,8 +5,8 @@
     width="40%"
     center
     @close="closDialog">
-   
-    <el-table border :data="tableData">
+
+    <el-table height="600" border :data="tableData">
       <el-table-column align="center" prop="userAccount" label="账号" show-overflow-tooltip />
       <el-table-column align="center" prop="userRealName" label="员工姓名" />
       <el-table-column align="center" prop="dataStatus" :formatter="statusFormat" label="状态" />

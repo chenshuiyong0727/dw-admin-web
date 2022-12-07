@@ -70,7 +70,7 @@
       </el-form>
 
       <el-form ref="tableForm" :model="{ tableForm: tableFormCur }">
-        <el-table :data="tableFormCur" @selection-change="setSelectRows" border>
+        <el-table height="600" :data="tableFormCur" @selection-change="setSelectRows" border>
           <el-table-column
             show-overflow-tooltip
             type="selection"

@@ -2,7 +2,7 @@
   <div style="margin-top: 15px" class="step-main">
     <div class="step-content">
       <el-form ref="tableForm" :model="{ tableForm: tableFormCur }">
-        <el-table :data="tableFormCur" border>
+        <el-table height="600" :data="tableFormCur" border>
           <el-table-column
             show-overflow-tooltip
             prop="fieldName"

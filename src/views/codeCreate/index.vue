@@ -31,7 +31,7 @@
         </el-form>
       </div>
     </div>
-    <el-table :data="list" @selection-change="setSelectRows">
+    <el-table height="600" :data="list" @selection-change="setSelectRows">
       <el-table-column
         align="center"
         show-overflow-tooltip
@@ -100,7 +100,7 @@
       width="60%"
       @close="closeDataBase"
     >
-      <el-table :data="dataBaseList" @selection-change="setSelectDataBaseRows">
+      <el-table height="600" :data="dataBaseList" @selection-change="setSelectDataBaseRows">
         <el-table-column
           align="center"
           show-overflow-tooltip

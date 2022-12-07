@@ -34,7 +34,7 @@
         </el-col>
       </el-row>
     </el-form>
-    <el-table style="margin-top: 20px" border :data="tableData">
+    <el-table height="600" style="margin-top: 20px" border :data="tableData">
       <el-table-column align="center" prop="actNo" width="100" fixed="left" label="货号" />
       <el-table-column align="center" label="图片"  fixed="left"  >
         <template slot-scope="scope">

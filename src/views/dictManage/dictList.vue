@@ -33,7 +33,7 @@
       </el-form>
     </div>
 
-    <el-table ref="dictTable" :data="list" :highlight-current-row="true">
+    <el-table height="600" ref="dictTable" :data="list" :highlight-current-row="true">
       <el-table-column
         width="400"
         align="center"

@@ -45,7 +45,7 @@
             </el-button>
           </el-row>
         </el-form>
-        <el-table style="margin-top: 20px" border :data="tableData">
+        <el-table height="600" style="margin-top: 20px" border :data="tableData">
 
 <!--          <el-table-column type="selection" width="55"></el-table-column>-->
           <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>

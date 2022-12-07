@@ -100,7 +100,7 @@
     <el-row v-if="buttonPermissionArr.upBtn && buttonPermissionArr.upBtn.length" class="btm-distance">
       <el-button type="primary" size="small" @click="addHandle" v-permission:[buttonPermissionArr.upBtn]="['新增']">新增</el-button>
     </el-row>
-    <el-table border :data="tableData" v-loading="loading">
+    <el-table height="600" border :data="tableData" v-loading="loading">
       <el-table-column align="center" prop="levelOneDepartmentName" label="一级部门" />
       <el-table-column align="center" prop="levelTwoDepartmentName" label="二级部门" />
       <el-table-column align="center" prop="levelThreeDepartmentName" label="三级部门" />

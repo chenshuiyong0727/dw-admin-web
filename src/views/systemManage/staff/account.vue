@@ -77,7 +77,7 @@
     <el-row v-if="buttonPermissionArr.upBtn && buttonPermissionArr.upBtn.length" class="btm-distance">
       <el-button v-permission:[buttonPermissionArr.upBtn]="['新增']" type="primary" size="small" @click="addHandle">新增</el-button>
     </el-row>
-    <el-table border :data="tableData">
+    <el-table height="600" border :data="tableData">
       <el-table-column align="center" prop="userRealName" label="员工名称" />
       <el-table-column align="center" prop="userAccount" label="账号" />
       <el-table-column align="center" prop="gender" label="性别">

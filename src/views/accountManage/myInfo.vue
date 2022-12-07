@@ -46,7 +46,7 @@
     </el-row>
     <h5>登录信息</h5>
     <div class="login-ip-sty">
-      <el-table border :data="tableData" class="table" :header-cell-style="{background: 'rgb(64, 158, 255)', color: '#fff'}">
+      <el-table height="600" border :data="tableData" class="table" :header-cell-style="{background: 'rgb(64, 158, 255)', color: '#fff'}">
         <el-table-column fixed align="center" prop="updateTime" label="时间">
           <template slot-scope="scope">{{scope.row.updateTime | formateTime}}</template>
         </el-table-column>
