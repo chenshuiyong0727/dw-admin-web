@@ -92,9 +92,9 @@
         <el-table style="margin-top: 20px" border :data="tableData" >
 
           <el-table-column align="center" prop="size" width="50" label="尺码"/>
-          <el-table-column align="center" prop=""  width="50" label="库存">
+          <el-table-column align="center" prop="oldInventory" width="50" label="原始库存"/>
+          <el-table-column align="center" prop=""  width="50" label="剩余库存">
             <template slot-scope="scope">
-              <!--                  :style="scope.row.inventory > 0 ? 'color: #0fbe8f' : 'color: red'"-->
               <span
                   :class="scope.row.inventory > 0 ? 'color-danger' : 'color-success'"
                 >
@@ -111,9 +111,9 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="" label="总入库价">
-            <template  slot-scope="scope">{{scope.row.price * (scope.row.inventory + scope.row.successCount)}}</template>
-          </el-table-column>
+<!--          <el-table-column align="center" prop="" label="总入库价">-->
+<!--            <template  slot-scope="scope">{{scope.row.price * (scope.row.inventory + scope.row.successCount)}}</template>-->
+<!--          </el-table-column>-->
           <el-table-column align="center" prop="dwPrice" label="得物价">
             <template scope="scope">
               <div class="input-box">
@@ -129,13 +129,15 @@
           </el-table-column>
           <el-table-column align="center" prop="" label="预计利润">
             <template v-if="scope.row.dwPrice" slot-scope="scope">
-<!--              style="color: red"-->
               <span
                 :style="(scope.row.dwPrice - (scope.row.dwPrice * 0.075 + 38 + 8.5) - scope.row.price - 10) > 50 ? 'color: red' : ''"
               >
                 {{(scope.row.dwPrice - (scope.row.dwPrice * 0.075 + 38 + 8.5) - scope.row.price - 10) | numFilter}}
               </span>
             </template>
+          </el-table-column>
+          <el-table-column align="center" prop="" label="总入库价">
+            <template  slot-scope="scope">{{scope.row.price * scope.row.oldInventory}}</template>
           </el-table-column>
           <el-table-column align="center" prop="createTime" label="入库时间">
             <template slot-scope="scope">{{scope.row.createTime | formateTime() }} </template>

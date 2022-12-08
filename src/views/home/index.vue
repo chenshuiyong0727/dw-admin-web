@@ -14,7 +14,7 @@
           <div class="out-border" @click="jumpactNo()">
             <div class="layout-title">库存比例</div>
             <div class="color-main address-content">
-              <span v-if="form.inventoryNum  &&form.goodsPutInNum" >{{form.inventoryRatio}}%</span>
+              <span v-if="form.inventoryNum  && form.goodsPutInNum" >{{form.inventoryRatio}}%</span>
               <span v-else > 0%</span>
             </div>
           </div>
@@ -393,7 +393,6 @@ export default {
           if (this.form.inventoryCost && this.form.inventoryNum) {
             this.form.inboundAverage = parseFloat(this.form.inventoryCost / this.form.inventoryNum).toFixed(2)
           }
-          this.form.goodsPutInNum = this.form.inventoryNum + this.form.successNum
           if (this.form.successNum) {
             this.form.orderAmountAverage = parseFloat(this.form.orderAmount / this.form.successNum).toFixed(2)
             this.form.freightAverage = parseFloat(this.form.freight / this.form.successNum).toFixed(2)
