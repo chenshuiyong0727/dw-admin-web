@@ -69,18 +69,48 @@
           style="display: flex; justify-content: space-between; align-items: center;height: 50px;"
         >
           <el-row class="clearfix btm-distance">
-            <div class="overview">
+            <div>
                           <img
                             v-if="imgUrl"
                             :src="fileUrl + imgUrl"
-                            style="width: 80px;height: 60px;"
+                            style="width: 80px;height: 75px;border-radius: 10px;"
                             @click="avatarShow(imgUrl)"
                           />
             </div>
           </el-row>
+          <el-row class="clearfix btm-distance" style="padding-left: 5px;">
+            <div class="overview" >
+              <p><strong>库存数量</strong></p>
+              <p>已完成</p>
+            </div>
+          </el-row>
+          <el-row class="clearfix btm-distance">
+            <div class="overview">
+              <p><strong>库存成本</strong></p>
+              <p>已完成</p>
+            </div>
+          </el-row>
+          <el-row class="clearfix btm-distance">
+            <div class="overview">
+              <p><strong>市值利润</strong></p>
+              <p>已完成</p>
+            </div>
+          </el-row>
+          <el-row class="clearfix btm-distance">
+            <div class="overview">
+              <p><strong>实际利润</strong></p>
+              <p>已完成</p>
+            </div>
+          </el-row>
+          <el-row class="clearfix btm-distance">
+            <div class="overview">
+              <p><strong>利润比例</strong></p>
+              <p>已完成</p>
+            </div>
+          </el-row>
           <el-form ref="form">
             <el-row type="flex" >
-              <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-plus"
+              <el-button type="primary" size="small" style="margin-right: 10px"
                          @click="goDetail()">新增尺码
               </el-button>
               <el-button type="primary" size="small" style="margin-right: 10px"
@@ -432,6 +462,28 @@ export default {
   .no-data p {
     text-align: center;
     padding-top: 100px;
+  }
+
+  .overview {
+    padding: 10px 10px;
+    border-radius: 5px;
+    background: #eee;
+/*    height: 135px;
+    width: 195px;*/
+    margin-right: 15px;
+    float: left;
+    strong {
+      /*font-size: 16px;*/
+      color: #111;
+      padding-bottom: 5px;
+      display: inline-block;
+    }
+    p {
+      line-height: 25px;
+    }
+  }
+  a {
+    color: #409EFF;
   }
 </style>
 
