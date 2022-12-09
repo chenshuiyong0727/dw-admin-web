@@ -59,7 +59,7 @@
             :pager-count="3"
             :page-sizes="[5,10, 20, 50, 100]"
             :page-size="queryParam1.pageSize"
-            layout="total,  prev, pager, next"
+            layout="total, pager,jumper"
             :total="totalCount1">
           </el-pagination>
         </el-row>
@@ -81,31 +81,31 @@
           <el-row class="clearfix btm-distance" style="padding-left: 5px;">
             <div class="overview" >
               <p><strong>库存数量</strong></p>
-              <p>已完成</p>
+              <p>{{inventoryData.inventory}} / {{inventoryData.oldInventory}}   </p>
             </div>
           </el-row>
           <el-row class="clearfix btm-distance">
             <div class="overview">
               <p><strong>库存成本</strong></p>
-              <p>已完成</p>
+              <p>{{inventoryData.price}}</p>
             </div>
           </el-row>
           <el-row class="clearfix btm-distance">
             <div class="overview">
-              <p><strong>市值利润</strong></p>
-              <p>已完成</p>
+              <p><strong>入库金额</strong></p>
+              <p>{{inventoryData.inputPrice}}</p>
             </div>
           </el-row>
           <el-row class="clearfix btm-distance">
             <div class="overview">
               <p><strong>实际利润</strong></p>
-              <p>已完成</p>
+              <p>{{inventoryData.profits}}</p>
             </div>
           </el-row>
           <el-row class="clearfix btm-distance">
             <div class="overview">
               <p><strong>利润比例</strong></p>
-              <p>已完成</p>
+              <p>{{(inventoryData.profits / inventoryData.inputPrice  ) * 100 | numFilter}} %</p>
             </div>
           </el-row>
           <el-form ref="form">
@@ -173,7 +173,7 @@
             <template slot-scope="scope">{{scope.row.createTime | formateTime() }} </template>
           </el-table-column>
           <el-table-column align="center" prop="id" label="编号"/>
-          <el-table-column fixed="left" align="center" label="操作" width="140">
+          <el-table-column fixed="right" align="center" label="操作" width="140">
             <template slot-scope="scope">
               <el-button type="text" @click="update(scope.row)">修改</el-button>
               <el-button type="text" @click="goDel(scope.row.id)" >删除</el-button>
@@ -254,7 +254,14 @@ export default {
       tableData: [],
       tableData1: [],
       totalCount1: 1,
-      totalCount: 1
+      totalCount: 1 ,
+      inventoryData: {
+        profits: '',
+        inventory: '',
+        oldInventory: '',
+        inventoryCost: '',
+        dwPrice: ''
+      }
     }
   },
   created() {
@@ -338,6 +345,7 @@ export default {
         if (res.subCode === 1000) {
           this.tableData = res.data ? res.data.list : []
           this.totalCount = res.data ? res.data.pageInfo.totalCount : 0
+          this.inventoryData = res.data.goodsInventoryPageVo ? res.data.goodsInventoryPageVo : this.inventoryData
         } else {
           this.$message.error(res.subMsg)
         }
