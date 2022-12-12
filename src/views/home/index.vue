@@ -36,7 +36,7 @@
           </div>
         </el-col>
         <el-col :span="4">
-          <div class="out-border" @click="jumpactNo()">
+          <div class="out-border" @click="jumpPutIn()">
             <div class="layout-title" >入库商品总数</div>
             <div class="color-main address-content">
               <span >{{form.goodsPutInNum}}</span>
@@ -44,7 +44,7 @@
           </div>
         </el-col>
         <el-col :span="4">
-          <div class="out-border" @click="jumpactNo()">
+          <div class="out-border" @click="jumpPutIn()">
             <div class="layout-title">入库总额</div>
             <div class="color-main address-content">
               <span >{{form.inventoryAmount}}</span>
@@ -60,7 +60,7 @@
 <!--          </div>-->
 <!--        </el-col>-->
         <el-col :span="4">
-          <div class="out-border" @click="jumpactOrder(7)">
+          <div class="out-border" @click="jumpSellList()">
             <div class="layout-title">利润总额</div>
             <div class="color-main address-content">
               <span class="color-danger">{{form.profitsAmount}}</span>
@@ -68,7 +68,7 @@
           </div>
         </el-col>
         <el-col :span="4">
-          <div class="out-border" @click="jumpactOrder(7)">
+          <div class="out-border" @click="jumpSellList()">
             <div class="layout-title">交易成功数</div>
             <div class="color-main address-content">
               <span >{{form.successNum}}</span>
@@ -76,7 +76,7 @@
           </div>
         </el-col>
         <el-col :span="4">
-          <div class="out-border" @click="jumpactOrder(7)">
+          <div class="out-border" @click="jumpSellList()">
             <div class="layout-title">成功总额</div>
             <div class="color-main address-content">
               <span >{{form.orderAmount}}</span>
@@ -108,7 +108,7 @@
           </div>
         </el-col>
         <el-col :span="4">
-          <div class="out-border"  @click="jumpactOrder(7)">
+          <div class="out-border"  @click="jumpSellList()">
             <div class="layout-title">平均利润</div>
             <div class="color-main address-content">
               <span class="color-danger">{{form.profitsAverage}}</span>
@@ -116,7 +116,7 @@
           </div>
         </el-col>
         <el-col :span="4">
-          <div class="out-border" @click="jumpactNo()">
+          <div class="out-border" @click="jumpPutIn()">
             <div class="layout-title">库存均价</div>
             <div class="color-main address-content">
               <span >{{form.inboundAverage}}</span>
@@ -124,7 +124,7 @@
           </div>
         </el-col>
         <el-col :span="4">
-          <div class="out-border" @click="jumpactOrder(7)">
+          <div class="out-border" @click="jumpSellList()">
             <div class="layout-title">成功均价</div>
             <div class="color-main address-content">
               <span >{{form.orderAmountAverage}}</span>
@@ -411,6 +411,12 @@ export default {
     },
     jumpactNo() {
       this.$router.push({ path: '/goodsBase/goodsInventory'})
+    },
+    jumpPutIn() {
+      this.$router.push({ path: '/report/putInStorage'})
+    },
+    jumpSellList() {
+      this.$router.push({ path: '/report/sellList'})
     },
     goodsOther() {
       this.$router.push({path: '/goodsOrder/goodsOther'})
