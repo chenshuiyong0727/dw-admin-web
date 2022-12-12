@@ -5,7 +5,7 @@
         <img v-if="logo" :src="logo" class="sidebar-logo">
         <h1 v-else class="sidebar-title">{{ title }} </h1>
       </router-link> -->
-      <router-link key="expand" class="sidebar-logo-link" to="/goodsBase/list">
+      <router-link key="expand" class="sidebar-logo-link" to="/homePage">
         <!-- <img src="../../resources/assets/images/logo.jpeg"> -->
         <!-- <div>
           <h5>和家健脑</h5>

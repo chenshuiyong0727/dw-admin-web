@@ -327,6 +327,20 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/report',
+    component: Layout,
+    meta: { title: '报表', leftMenuId: 3 },
+    redirect: '/report/putInStorage',
+    children: [
+      {
+        path: 'putInStorage',
+        name: 'putInStorage',
+        component: () => import('@/views/report/list'),
+        meta: { title: '入库报表' }
+      }
+    ]
+  },
   // 代码生成
   {
     path: '/',
