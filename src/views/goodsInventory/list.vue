@@ -329,9 +329,16 @@ export default {
         if (res.subCode === 1000) {
           this.tableData1 = res.data ? res.data.list : []
           this.totalCount1 = res.data ? res.data.pageInfo.totalCount : 0
-          this.pageGoods(this.tableData1[0].id)
-          this.imgUrl = this.tableData1[0].imgUrl
-          this.actNo = this.tableData1[0].actNo
+          if (this.totalCount1 == 0) {
+            if (this.queryParam1.inventoryTo == 1) {
+              this.queryParam1.inventoryTo = 0
+              this.page()
+            }
+          } else {
+            this.imgUrl = this.tableData1[0].imgUrl
+            this.actNo = this.tableData1[0].actNo
+            this.pageGoods(this.tableData1[0].id)
+          }
         } else {
           this.$message.error(res.subMsg)
         }
