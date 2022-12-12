@@ -38,55 +38,48 @@
             :style="scope.row.months == '合计' ? 'font-weight: bold' : ''"> {{ scope.row.months }}</span>
         </template>
       </el-table-column>
-      <el-table-column  align="center"  width="100" label="入库数"  >
+      <el-table-column  align="center"  width="100" label="销售数"  >
         <template slot-scope="scope">
           <span
             :style="scope.row.months == '合计' ? 'font-weight: bold' : ''"> {{ scope.row.successNum }}</span>
         </template>
       </el-table-column>
-      <el-table-column  align="center"  width="100" label="入库总额"  >
+      <el-table-column  align="center"  width="100" label="销售金额"  >
         <template slot-scope="scope">
           <span
             :style="scope.row.months == '合计' ? 'font-weight: bold' : ''"> {{ scope.row.orderAmount }}</span>
         </template>
       </el-table-column>
-      <el-table-column  align="center"  width="100" label="市价总额"  >
+      <el-table-column  align="center"  width="100" label="利润"  >
         <template slot-scope="scope">
           <span
             :style="scope.row.months == '合计' ? 'font-weight: bold' : ''"> {{ scope.row.profitsAmount }}</span>
         </template>
       </el-table-column>
-      <el-table-column  align="center"  width="100" label="入库均价"  >
+      <el-table-column  align="center"  width="100" label="销售均价"  >
         <template slot-scope="scope">
           <span v-if ="scope.row.successNum"
-            :style="scope.row.months == '合计' ? 'font-weight: bold' : ''">
+                :style="scope.row.months == '合计' ? 'font-weight: bold' : ''">
               {{scope.row.orderAmount / scope.row.successNum  | numFilter}}
           </span>
           <span v-else
-            :style="scope.row.months == '合计' ? 'font-weight: bold' : ''">
+                :style="scope.row.months == '合计' ? 'font-weight: bold' : ''">
              0
           </span>
         </template>
       </el-table-column>
-      <el-table-column  align="center"  width="100" label="市价均价"  >
+      <el-table-column  align="center"  width="100" label="利润均价"  >
         <template slot-scope="scope">
           <span v-if ="scope.row.successNum"
-            :style="scope.row.months == '合计' ? 'font-weight: bold' : ''">
+                :style="scope.row.months == '合计' ? 'font-weight: bold' : ''">
               {{scope.row.profitsAmount / scope.row.successNum  | numFilter}}
           </span>
           <span v-else
-            :style="scope.row.months == '合计' ? 'font-weight: bold' : ''">
+                :style="scope.row.months == '合计' ? 'font-weight: bold' : ''">
              0
           </span>
         </template>
       </el-table-column>
-<!--      <el-table-column  align="center"  width="100" label="市价均价"  >-->
-<!--        <template slot-scope="scope">-->
-<!--          <span-->
-<!--            :style="scope.row.months == '合计' ? 'font-weight: bold' : ''">  {{scope.row.profitsAmount / scope.row.successNum  | numFilter}}</span>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-
     </el-table>
 <!--    <el-row class="top-15">-->
 <!--      <el-pagination-->
@@ -139,7 +132,7 @@ export default {
       }
     },
     getPage() {
-      reportApi.putInStorage(this.queryParam).then(res => {
+      reportApi.sellList(this.queryParam).then(res => {
         if (res.subCode === 1000) {
           this.tableData = res.data ? res.data : []
         } else {

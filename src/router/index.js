@@ -338,6 +338,12 @@ export const constantRoutes = [
         name: 'putInStorage',
         component: () => import('@/views/report/list'),
         meta: { title: '入库报表' }
+      },
+      {
+        path: 'sellList',
+        name: 'sellList',
+        component: () => import('@/views/report/sellList'),
+        meta: { title: '销售报表' }
       }
     ]
   },

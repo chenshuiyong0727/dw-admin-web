@@ -12,6 +12,14 @@
         </el-col>
         <el-col :span="4">
           <div class="out-border" @click="jumpactNo()">
+            <div class="layout-title">库存成本</div>
+            <div class="color-main address-content">
+              <span >{{form.inventoryCost}}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="4">
+          <div class="out-border" @click="jumpactNo()">
             <div class="layout-title">库存比例</div>
             <div class="color-main address-content">
               <span v-if="form.inventoryNum  && form.goodsPutInNum" >{{form.inventoryRatio}}%</span>
@@ -36,18 +44,10 @@
           </div>
         </el-col>
         <el-col :span="4">
-          <div class="out-border" @click="jumpactOrder(7)">
-            <div class="layout-title">交易成功数</div>
-            <div class="color-main address-content">
-              <span >{{form.successNum}}</span>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="4">
           <div class="out-border" @click="jumpactNo()">
-            <div class="layout-title">库存成本</div>
+            <div class="layout-title">入库总额</div>
             <div class="color-main address-content">
-              <span >{{form.inventoryCost}}</span>
+              <span >{{form.inventoryAmount}}</span>
             </div>
           </div>
         </el-col>
@@ -68,14 +68,13 @@
           </div>
         </el-col>
         <el-col :span="4">
-          <div class="out-border" @click="jumpactNo()">
-            <div class="layout-title">市值利润</div>
+          <div class="out-border" @click="jumpactOrder(7)">
+            <div class="layout-title">交易成功数</div>
             <div class="color-main address-content">
-              <span >{{form.marketValue - form.inventoryCost}}</span>
+              <span >{{form.successNum}}</span>
             </div>
           </div>
         </el-col>
-
         <el-col :span="4">
           <div class="out-border" @click="jumpactOrder(7)">
             <div class="layout-title">成功总额</div>
