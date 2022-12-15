@@ -40,7 +40,8 @@
         </el-form>
 
         <el-table style="margin-top: 00px" border :data="tableData1" @row-click="rowClick">
-          <el-table-column  align="center"  prop="actNo" label="货号"  >
+          <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+          <el-table-column  align="center"  prop="actNo"  width="100"  label="货号"  >
             <template slot-scope="scope">
               <a style="color: #20a0ff" @click="viewAll(scope.row.actNo)"> {{ scope.row.actNo }}</a>
             </template>
@@ -51,15 +52,15 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-row class="top-15">
+        <el-row>
           <el-pagination
             @size-change="reSearchHandle1"
             @current-change="pageChangeHandle1"
             :current-page="queryParam1.pageNum"
             :pager-count="3"
-            :page-sizes="[5,10, 20, 50, 100]"
+            :page-sizes="[5,10, 20, 50, 100, 200]"
             :page-size="queryParam1.pageSize"
-            layout="total, pager,jumper"
+            layout="total, sizes, pager,jumper"
             :total="totalCount1">
           </el-pagination>
         </el-row>

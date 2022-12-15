@@ -41,22 +41,22 @@
           <img  v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"  @click="avatarShow(scope.row.imgUrl)" >
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="size" width="50" label="尺码" />
-      <el-table-column align="center" prop="price" label="入库价">
+      <el-table-column align="center" prop="size" width="50" label="尺码" sortable/>
+      <el-table-column align="center" prop="price" label="入库价" sortable>
         <template scope="scope">
           <div class="input-box">
             <el-input size="small" v-model="scope.row.price"></el-input>
           </div>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="dwPrice" label="得物价" >
+      <el-table-column align="center" prop="dwPrice" label="得物价"  sortable>
         <template scope="scope">
           <div class="input-box">
             <el-input size="small" v-model="scope.row.dwPrice"></el-input>
           </div>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="" label="预计利润" >
+      <el-table-column align="center" prop="" label="预计利润" sortable>
         <template v-if="scope.row.dwPrice" slot-scope="scope">
           <!--              style="color: red"-->
           <span
@@ -66,33 +66,29 @@
               </span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="oldInventory" width="50" label="原始库存" />
-      <el-table-column align="center" prop="inventory" width="50" label="剩余库存" />
-      <el-table-column align="center" prop="successCount" width="80" label="成功数" />
-      <el-table-column align="center" prop="" label="总数(库存+成功数)" >
-        <template slot-scope="scope">{{scope.row.inventory + scope.row.successCount}}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" prop="" label="总数(库存+成功数)" >
+      <el-table-column align="center" prop="oldInventory" width="50" label="原始库存" sortable/>
+      <el-table-column align="center" prop="inventory" width="50" label="剩余库存" sortable/>
+      <el-table-column align="center" prop="successCount" width="80" label="成功数" sortable/>
+      <el-table-column align="center" prop="" label="总数(库存+成功数)" sortable>
         <template slot-scope="scope">{{scope.row.oldInventory}}
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="galleryCount" width="80" label="上架数" />
+      <el-table-column align="center" prop="galleryCount" width="80" label="上架数" sortable/>
       <el-table-column align="center" prop="" label="总入库价">
         <template slot-scope="scope">{{scope.row.price * scope.row.oldInventory }}
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="" label="手续费" >
+      <el-table-column align="center" prop="" label="手续费" sortable>
         <template v-if="scope.row.dwPrice" slot-scope="scope">{{(scope.row.dwPrice * 0.075 + 38 +
           8.5) | numFilter}}
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="" label="到手单价" >
+      <el-table-column align="center" prop="" label="到手单价" sortable sortable>
         <template v-if="scope.row.dwPrice" slot-scope="scope">{{(scope.row.dwPrice -
           (scope.row.dwPrice * 0.075 + 38 + 8.5)) | numFilter}}
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="createTime" label="入库时间">
+      <el-table-column align="center" prop="createTime" label="入库时间" sortable>
         <template slot-scope="scope">{{scope.row.createTime | formateTime() }}</template>
       </el-table-column>
       <el-table-column align="center" prop="id" label="编号"/>
