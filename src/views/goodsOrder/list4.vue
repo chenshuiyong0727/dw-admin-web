@@ -94,8 +94,16 @@
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item size="small">
-            <el-input v-model.trim="queryParam.addressId" placeholder="地址编号"></el-input>
+          <el-form-item  size="small">
+            <el-select v-model="queryParam.addressId">
+              <el-option label="地址" value=""></el-option>
+              <el-option
+                v-for="item in addressList"
+                :key="item.fieldValue"
+                :label="item.fieldName"
+                :value="item.fieldValue">
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-col>
 <el-col :span="6">
@@ -290,6 +298,7 @@ export default {
         pageSize: 10,
         pageNum: 1
       },
+      addressList: [],
       statusList: [],
       dataStatusList: [],
       sellTime: '',
@@ -371,6 +380,7 @@ export default {
     listSysDict() {
       let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
         localStorage.getItem('sysDictList')) : []
+      this.addressList = sysDictList.filter(item => item.typeValue == 38)
       this.statusList = sysDictList.filter(item => item.typeValue == 37)
       this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
     },
