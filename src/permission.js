@@ -3,7 +3,6 @@ import store from './store'
 import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
-import { getCookieByName } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
@@ -32,7 +31,8 @@ router.beforeEach(async(to, from, next) => {
         NProgress.done()
         return
       }
-      const isHasRouterAuth = functionList.filter(item => item.route && item.route == to.path)
+      const isHasRouterAuth = functionList.filter(
+        item => item.route && item.route == to.path)
       if (!isHasRouterAuth.length) {
         // 如果当前路由没有权限，则跳转到无权限页面，否则继续往下
         next('/noAuthority')

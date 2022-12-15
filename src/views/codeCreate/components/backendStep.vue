@@ -57,7 +57,8 @@
                 :rules="columnRules.javaType"
                 class="el-form-item-table"
               >
-                <el-input :disabled="scope.row.javaType === 'Integer'" v-model="scope.row.javaType" />
+                <el-input :disabled="scope.row.javaType === 'Integer'"
+                          v-model="scope.row.javaType"/>
               </el-form-item>
             </template>
           </el-table-column>
@@ -124,13 +125,16 @@
         style="display: flex; justify-content: flex-end; margin-top: 30px"
       >
         <el-button @click="prev" type="primary" style="margin-right: 10px"
-        >上一步</el-button
+        >上一步
+        </el-button
         >
         <el-button disabled type="primary" style="margin-right: 10px"
-        >下一步</el-button
+        >下一步
+        </el-button
         >
         <el-button type="primary" @click="close" style="margin-right: 10px"
-        >取消</el-button
+        >取消
+        </el-button
         >
         <el-button type="primary" @click="updateCode">完成</el-button>
       </el-button-group>
@@ -146,20 +150,20 @@
         type: String,
         default: () => {
           return ''
-        },
+        }
       },
       tableFormCur: {
         type: Array,
         default: () => {
           return []
-        },
+        }
       },
       dictList: {
         type: Array,
         default: () => {
           return []
-        },
-      },
+        }
+      }
     },
     data() {
       const validateDictCode = (rule, value, callback) => {
@@ -174,101 +178,101 @@
         options2: [
           {
             value: 'IS_NOT_NULL',
-            label: '不能为空',
+            label: '不能为空'
           },
           {
             value: 'IS_INTEGER',
-            label: '整数',
+            label: '整数'
           },
           {
             value: 'IS_DECIMAL',
-            label: '浮点数',
+            label: '浮点数'
           },
           {
             value: 'IS_PRIMES',
-            label: '质数_素数',
+            label: '质数_素数'
           },
           {
             value: 'IS_LETTER',
-            label: '纯字母',
+            label: '纯字母'
           },
           {
             value: 'IS_UPPER_CASE',
-            label: '大写',
+            label: '大写'
           },
           {
             value: 'IS_LOWER_CASE',
-            label: '小写',
+            label: '小写'
           },
           {
             value: 'IS_IP',
-            label: 'Ip',
+            label: 'Ip'
           },
           {
             value: 'IS_IPV4',
-            label: 'Ipv4',
+            label: 'Ipv4'
           },
           {
             value: 'IS_IPV6',
-            label: 'Ipv6',
+            label: 'Ipv6'
           },
           {
             value: 'IS_MONEY',
-            label: '金额',
+            label: '金额'
           },
           {
             value: 'IS_EMAIL',
-            label: '邮箱',
+            label: '邮箱'
           },
           {
             value: 'IS_MOBILE',
-            label: '手机号',
+            label: '手机号'
           },
           {
             value: 'IS_CITIZENID',
-            label: '18位身份证',
+            label: '18位身份证'
           },
           {
             value: 'IS_CHINESE',
-            label: '汉字',
+            label: '汉字'
           },
           {
             value: 'IS_GENERAL',
-            label: '字母数字和下划线',
+            label: '字母数字和下划线'
           },
           {
             value: 'IS_GENERAL_WITH_CHINESE',
-            label: '汉字或字母或数字或下划线',
+            label: '汉字或字母或数字或下划线'
           },
           {
             value: 'IS_ZIPCODE',
-            label: '邮编',
+            label: '邮编'
           },
           {
             value: 'URL',
-            label: 'URL',
+            label: 'URL'
           },
           {
             value: 'IS_MAC',
-            label: 'MAC地址',
+            label: 'MAC地址'
           },
           {
             value: 'IS_PLATE_NUMBER',
-            label: '中国车牌',
+            label: '中国车牌'
           },
           {
             value: 'IS_SECURITY_PASSWORD',
-            label: '安全密码',
-          },
+            label: '安全密码'
+          }
         ],
         columnRules: {
           javaType: [
-            { required: true, message: '请选择Java类型', trigger: 'change' },
+            { required: true, message: '请选择Java类型', trigger: 'change' }
           ],
           dictTypeCode: [
-            { required: true, validator: validateDictCode, trigger: 'blur' },
-          ],
-        },
+            { required: true, validator: validateDictCode, trigger: 'blur' }
+          ]
+        }
       }
     },
     methods: {
@@ -286,8 +290,8 @@
             return false
           }
         })
-      },
-    },
+      }
+    }
   }
 </script>
 

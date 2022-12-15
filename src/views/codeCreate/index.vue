@@ -2,7 +2,7 @@
   <div class="hello">
     <div style="display: flex; justify-content: space-between">
       <div class="left">
-        <el-button icon="el-icon-delete"  type="danger" @click="deleteItems"> 批量删除 </el-button>
+        <el-button icon="el-icon-delete" type="danger" @click="deleteItems"> 批量删除</el-button>
         <el-button type="primary" @click="openDataBaseDialog">
           从数据库导入
         </el-button>
@@ -10,7 +10,8 @@
           :disabled="selectRows.length !== 1"
           type="primary"
           @click="showCode"
-          >生成代码</el-button
+        >生成代码
+        </el-button
         >
       </div>
       <div class="right">
@@ -93,7 +94,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <Edit ref="edit" />
+    <Edit ref="edit"/>
     <el-dialog
       title="导入数据库表"
       :visible.sync="dataBaseVisible"
@@ -167,50 +168,51 @@
 </template>
 
 <script>
-import { createCodeApi } from '@/api/createCode'
-import CodeGenerate from './components/codeGenerate.vue'
-import Edit from './components/tableEdit.vue'
-export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String,
-  },
-  components: {
-    Edit,
-    CodeGenerate,
-  },
-  data() {
-    return {
-      dataBaseTotal: 0,
-      codeDetailId: '',
-      tableNames: '',
-      layout: 'total, sizes, prev, pager, next, jumper',
-      generateCodeDialog: false,
-      dataBaseVisible: false,
-      total: 0,
-      selectRows: '',
-      selectDataBaseRows: '',
-      list: [],
-      queryForm: {
-        pageNum: 1,
-        pageSize: 10,
-        tableName: '',
-      },
-      databaseForm: {
-        pageNum: 1,
-        pageSize: 10,
-      },
-      dataBaseList: [],
-    }
-  },
-  created() {
-    this.getCodeList(this.queryForm)
-  },
-  methods: {
-    getCodeList(query) {
-      createCodeApi
+  import { createCodeApi } from '@/api/createCode'
+  import CodeGenerate from './components/codeGenerate.vue'
+  import Edit from './components/tableEdit.vue'
+
+  export default {
+    name: 'HelloWorld',
+    props: {
+      msg: String
+    },
+    components: {
+      Edit,
+      CodeGenerate
+    },
+    data() {
+      return {
+        dataBaseTotal: 0,
+        codeDetailId: '',
+        tableNames: '',
+        layout: 'total, sizes, prev, pager, next, jumper',
+        generateCodeDialog: false,
+        dataBaseVisible: false,
+        total: 0,
+        selectRows: '',
+        selectDataBaseRows: '',
+        list: [],
+        queryForm: {
+          pageNum: 1,
+          pageSize: 10,
+          tableName: ''
+        },
+        databaseForm: {
+          pageNum: 1,
+          pageSize: 10
+        },
+        dataBaseList: []
+      }
+    },
+    created() {
+      this.getCodeList(this.queryForm)
+    },
+    methods: {
+      getCodeList(query) {
+        createCodeApi
         .getCodeList({
-          ...query,
+          ...query
         })
         .then((res) => {
           if (res.subCode === 1000) {
@@ -220,36 +222,36 @@ export default {
             this.$message.error(res.subMsg)
           }
         })
-    },
-    queryData() {
-      this.queryForm.pageNum = 1
-      this.getCodeList(this.queryForm)
-    },
-    handleDataBaseSizeChange(val) {
-      this.databaseForm.pageSize = val
-      this.getDataBaseList(this.databaseForm)
-    },
-    handleDataBaseCurrentChange(val) {
-      this.databaseForm.pageNum = val
-      this.getDataBaseList(this.databaseForm)
-    },
-    handleSizeChange(val) {
-      this.queryForm.pageSize = val
-      this.getCodeList(this.queryForm)
-    },
-    handleCurrentChange(val) {
-      this.queryForm.pageNum = val
-      this.getCodeList(this.queryForm)
-    },
-    closeDialog() {
-      this.generateCodeDialog = false
-    },
-    showCode() {
-      this.generateCodeDialog = true
-      this.codeDetailId = this.selectRows && this.selectRows[0].id
-    },
-    confirm() {
-      createCodeApi
+      },
+      queryData() {
+        this.queryForm.pageNum = 1
+        this.getCodeList(this.queryForm)
+      },
+      handleDataBaseSizeChange(val) {
+        this.databaseForm.pageSize = val
+        this.getDataBaseList(this.databaseForm)
+      },
+      handleDataBaseCurrentChange(val) {
+        this.databaseForm.pageNum = val
+        this.getDataBaseList(this.databaseForm)
+      },
+      handleSizeChange(val) {
+        this.queryForm.pageSize = val
+        this.getCodeList(this.queryForm)
+      },
+      handleCurrentChange(val) {
+        this.queryForm.pageNum = val
+        this.getCodeList(this.queryForm)
+      },
+      closeDialog() {
+        this.generateCodeDialog = false
+      },
+      showCode() {
+        this.generateCodeDialog = true
+        this.codeDetailId = this.selectRows && this.selectRows[0].id
+      },
+      confirm() {
+        createCodeApi
         .confirmInsert({ tableNames: this.tableNames })
         .then((res) => {
           if (res.subCode === 1000) {
@@ -257,9 +259,9 @@ export default {
             this.getCodeList(this.queryForm)
           }
         })
-    },
-    getDataBaseList(query) {
-      createCodeApi
+      },
+      getDataBaseList(query) {
+        createCodeApi
         .getDataBaseList({
           ...query
         })
@@ -271,89 +273,91 @@ export default {
             this.$message.error(res.subMsg)
           }
         })
-    },
-    openDataBaseDialog() {
-      this.dataBaseVisible = true
-      this.getDataBaseList(this.databaseForm)
-    },
-    closeDataBase() {
-      this.dataBaseVisible = false
-    },
-    deleteItems() {
-      if (this.selectRows.length == 0) {
-        this.$alert('没有选中数据')
-        return
-      }
-      this.$confirm(`是否继续?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }).then(() => {
-        createCodeApi.deleteCodeItems(this.selectRows).then((res) => {
-          if (res.subCode === 1000) {
-            this.getCodeList(this.queryForm)
-          } else {
-            this.$message.error(res.subMsg)
-          }
+      },
+      openDataBaseDialog() {
+        this.dataBaseVisible = true
+        this.getDataBaseList(this.databaseForm)
+      },
+      closeDataBase() {
+        this.dataBaseVisible = false
+      },
+      deleteItems() {
+        if (this.selectRows.length == 0) {
+          this.$alert('没有选中数据')
+          return
+        }
+        this.$confirm(`是否继续?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          createCodeApi.deleteCodeItems(this.selectRows).then((res) => {
+            if (res.subCode === 1000) {
+              this.getCodeList(this.queryForm)
+            } else {
+              this.$message.error(res.subMsg)
+            }
+          })
         })
-      })
-    },
-    removeItem(row) {
-      const { id } = row
-      if (this.selectRows.length == 0) {
-        this.$alert('没有选中数据')
-        return
-      }
-      this.$confirm('是否确认删除该项', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }).then(() => {
-        createCodeApi.deleteCodeItem(id).then((res) => {
-          if (res.subCode === 1000) {
-            this.$message({
-              message: '删除成功',
-              type: 'success',
-            })
-            this.getCodeList(this.queryForm)
-          } else {
-            this.$message.error(res.subMsg)
-          }
+      },
+      removeItem(row) {
+        const { id } = row
+        if (this.selectRows.length == 0) {
+          this.$alert('没有选中数据')
+          return
+        }
+        this.$confirm('是否确认删除该项', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          createCodeApi.deleteCodeItem(id).then((res) => {
+            if (res.subCode === 1000) {
+              this.$message({
+                message: '删除成功',
+                type: 'success'
+              })
+              this.getCodeList(this.queryForm)
+            } else {
+              this.$message.error(res.subMsg)
+            }
+          })
         })
-      })
-    },
-    handleUpdate(row) {
-      if (row.id) {
-        this.$refs['edit'].showEdit(row)
-      }
-    },
-    setSelectDataBaseRows(val) {
-      this.selectDataBaseRows = val
-      this.tableNames = this.selectDataBaseRows
+      },
+      handleUpdate(row) {
+        if (row.id) {
+          this.$refs['edit'].showEdit(row)
+        }
+      },
+      setSelectDataBaseRows(val) {
+        this.selectDataBaseRows = val
+        this.tableNames = this.selectDataBaseRows
         .map((item) => {
           return item.tableName
         })
         .join(',')
-    },
-    setSelectRows(val) {
-      this.selectRows = val
-    },
-  },
-}
+      },
+      setSelectRows(val) {
+        this.selectRows = val
+      }
+    }
+  }
 </script>
 
 
 <style scoped>
-::v-deep .el-table th {
-  background-color: #f5f7fa;
-}
-::v-deep.el-table thead {
-  color: #606266;
-  font-weight: 400;
-  font-size: 14px;
-}
-::v-deep .el-table td,
-.el-table th {
-  text-align: center;
-}
+  ::v-deep .el-table th {
+    background-color: #f5f7fa;
+  }
+
+  ::v-deep.el-table thead {
+    color: #606266;
+    font-weight: 400;
+    font-size: 14px;
+  }
+
+  ::v-deep .el-table td,
+  .el-table th {
+    text-align: center;
+  }
 </style>

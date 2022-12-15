@@ -1,7 +1,6 @@
 import axios from 'axios'
-import { getCookieByName } from '@/utils/auth'
 
-export const getExport = (url,body, method = 'post') => {
+export const getExport = (url, body, method = 'post') => {
   return new Promise((resolve) => {
     axios({
       url,
@@ -13,7 +12,9 @@ export const getExport = (url,body, method = 'post') => {
       }
     }).then(res => {
       if (res.status === 200) {
-        const fileName  = res.headers['content-disposition'] ? decodeURI(res.headers['content-disposition'].split(";")[1].split("=")[1].split("utf-8'zh_cn'")[1]) : '工单.xls'
+        const fileName = res.headers['content-disposition'] ? decodeURI(
+          res.headers['content-disposition'].split(';')[1].split('=')[1].split(
+            'utf-8\'zh_cn\'')[1]) : '工单.xls'
         fileDownload(res.data, fileName)
         resolve()
       } else {
@@ -22,7 +23,7 @@ export const getExport = (url,body, method = 'post') => {
     })
   })
 }
-const fileDownload = (data, fileName)=>{
+const fileDownload = (data, fileName) => {
   const blob = new Blob([data], {
     type: 'application/octet-stream'
   })

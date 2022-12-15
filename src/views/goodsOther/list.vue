@@ -103,20 +103,22 @@
       </el-row>
     </el-form>
 
-    <el-table height="600" style="margin-top: 20px" border :data="tableData" @selection-change="selected">
+    <el-table height="600" style="margin-top: 20px" border :data="tableData"
+              @selection-change="selected">
 
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-<!--      <el-table-column align="center" prop="id" label="其他收支编号"/>-->
+      <!--      <el-table-column align="center" prop="id" label="其他收支编号"/>-->
       <el-table-column align="center" prop="type" label="类型">
         <template slot-scope="scope">{{ scope.row.type | dictToDescTypeValue(39) }}</template>
       </el-table-column>
       <el-table-column align="center" prop="price" label="金额"/>
       <el-table-column align="center" prop="name" label="商品名称"/>
-<!--      <el-table-column align="center" prop="imgUrl" label="图片地址"/>-->
-      <el-table-column align="center" label="图片"  width="120">
+      <!--      <el-table-column align="center" prop="imgUrl" label="图片地址"/>-->
+      <el-table-column align="center" label="图片" width="120">
         <template slot-scope="scope">
-          <img  v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"  @click="avatarShow(scope.row.imgUrl)" >
+          <img v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"
+               @click="avatarShow(scope.row.imgUrl)">
         </template>
       </el-table-column>
       <el-table-column align="center" prop="actNo" label="货号"/>
@@ -177,194 +179,194 @@
 </template>
 
 <script>
-import ThreeLevelRoute from '@/components/ThreeLevelRoute'
-import { goodsOtherApi } from '@/api/goodsOther'
-import { permissionMixin } from '@/mixins/permissionMixin'
-import { getExport } from '@/api/exportFile'
+  import ThreeLevelRoute from '@/components/ThreeLevelRoute'
+  import { goodsOtherApi } from '@/api/goodsOther'
+  import { permissionMixin } from '@/mixins/permissionMixin'
+  import { getExport } from '@/api/exportFile'
 
-export default {
-  mixins: [permissionMixin],
-  components: {
-    ThreeLevelRoute
-  },
-  data() {
-    return {
-      queryParam: {
-        type: '',
-        actNo: '',
-        name: '',
-        brand: '',
-        remark: '',
-        priceFrom: '',
-        priceTo: '',
-        createTimeFrom: '',
-        createTimeTo: '',
-        updateTimeFrom: '',
-        updateTimeTo: '',
-        pageSize: 10,
-        pageNum: 1
+  export default {
+    mixins: [permissionMixin],
+    components: {
+      ThreeLevelRoute
+    },
+    data() {
+      return {
+        queryParam: {
+          type: '',
+          actNo: '',
+          name: '',
+          brand: '',
+          remark: '',
+          priceFrom: '',
+          priceTo: '',
+          createTimeFrom: '',
+          createTimeTo: '',
+          updateTimeFrom: '',
+          updateTimeTo: '',
+          pageSize: 10,
+          pageNum: 1
+        },
+        pictureZoomShow: false,
+        fileUrl: fileUrl,
+        typeList: [],
+        dataStatusList: [],
+        createTime: '',
+        updateTime: '',
+        selectedId: [],
+        ids: [],
+        tableData: [],
+        totalCount: 1
+      }
+    },
+    mounted() {
+      this.getPage()
+      this.listSysDict()
+    },
+    methods: {
+      avatarShow(e) {
+        this.imageZoom = e
+        this.pictureZoomShow = true
       },
-      pictureZoomShow: false,
-      fileUrl: fileUrl,
-      typeList: [],
-      dataStatusList: [],
-      createTime: '',
-      updateTime: '',
-      selectedId: [],
-      ids: [],
-      tableData: [],
-      totalCount: 1
-    }
-  },
-  mounted() {
-    this.getPage()
-    this.listSysDict()
-  },
-  methods: {
-    avatarShow(e) {
-      this.imageZoom = e
-      this.pictureZoomShow = true
-    },
-    createTimeChange() {
-      if (this.createTime) {
-        this.queryParam.createTimeFrom = this.createTime[0]
-        this.queryParam.createTimeTo = this.createTime[1]
-      } else {
-        this.queryParam.createTimeFrom = null
-        this.queryParam.createTimeTo = null
-      }
-    },
-    updateTimeChange() {
-      if (this.updateTime) {
-        this.queryParam.updateTimeFrom = this.updateTime[0]
-        this.queryParam.updateTimeTo = this.updateTime[1]
-      } else {
-        this.queryParam.updateTimeFrom = null
-        this.queryParam.updateTimeTo = null
-      }
-    },
-    getPage() {
-      goodsOtherApi.page(this.queryParam).then(res => {
-        if (res.subCode === 1000) {
-          this.tableData = res.data ? res.data.list : []
-          this.totalCount = res.data ? res.data.pageInfo.totalCount : 0
+      createTimeChange() {
+        if (this.createTime) {
+          this.queryParam.createTimeFrom = this.createTime[0]
+          this.queryParam.createTimeTo = this.createTime[1]
         } else {
-          this.$message.error(res.subMsg)
+          this.queryParam.createTimeFrom = null
+          this.queryParam.createTimeTo = null
         }
-      })
-    },
-    listSysDict() {
-      let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
-        localStorage.getItem('sysDictList')) : []
-      debugger
-      this.typeList = sysDictList.filter(item => item.typeValue == 39)
-      this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
-    },
-    pageChangeHandle(currentPage) {
-      this.queryParam.pageNum = currentPage
-      this.getPage()
-    },
-    reSearchHandle(size) {
-      this.queryParam.pageSize = size
-      this.queryParam.pageNum = 1
-      this.getPage()
-    },
-    goDetail(id, type) {
-      // *** 根据真实路径配置地址
-      this.$router.push({ path: '/goodsOrder/goodsOther/detail', query: { id, type } })
-    },
-    goDel(id) {
-      this.$confirm('是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        goodsOtherApi.delById(id).then(res => {
+      },
+      updateTimeChange() {
+        if (this.updateTime) {
+          this.queryParam.updateTimeFrom = this.updateTime[0]
+          this.queryParam.updateTimeTo = this.updateTime[1]
+        } else {
+          this.queryParam.updateTimeFrom = null
+          this.queryParam.updateTimeTo = null
+        }
+      },
+      getPage() {
+        goodsOtherApi.page(this.queryParam).then(res => {
           if (res.subCode === 1000) {
-            this.$message.success(res.subMsg)
-            this.getPage()
+            this.tableData = res.data ? res.data.list : []
+            this.totalCount = res.data ? res.data.pageInfo.totalCount : 0
           } else {
             this.$message.error(res.subMsg)
           }
         })
-      })
-    },
-    changeStatus(id, dataStatus) {
-      goodsOtherApi.changeStatus({ id, dataStatus }).then(res => {
-        if (res.subCode === 1000) {
-          this.$message.success(res.subMsg)
-        } else {
-          this.$message.error(res.subMsg)
-        }
+      },
+      listSysDict() {
+        let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
+          localStorage.getItem('sysDictList')) : []
+        debugger
+        this.typeList = sysDictList.filter(item => item.typeValue == 39)
+        this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
+      },
+      pageChangeHandle(currentPage) {
+        this.queryParam.pageNum = currentPage
         this.getPage()
-      })
-    },
-    search() {
-      this.queryParam.pageNum = 1
-      this.getPage()
-    },
-    selected(val) {
-      this.selectedId = val
-      let temp = []
-      for (let i = 0; i < this.selectedId.length; i++) {
-        temp.push(this.selectedId[i].id)
-      }
-      this.ids = temp
-    },
-    batchdelete() {
-      if (this.ids.length == 0) {
-        this.$alert('没有选中数据')
-        return
-      }
-      this.$confirm('是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        goodsOtherApi.batchdelete(this.ids).then(res => {
+      },
+      reSearchHandle(size) {
+        this.queryParam.pageSize = size
+        this.queryParam.pageNum = 1
+        this.getPage()
+      },
+      goDetail(id, type) {
+        // *** 根据真实路径配置地址
+        this.$router.push({ path: '/goodsOrder/goodsOther/detail', query: { id, type } })
+      },
+      goDel(id) {
+        this.$confirm('是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          goodsOtherApi.delById(id).then(res => {
+            if (res.subCode === 1000) {
+              this.$message.success(res.subMsg)
+              this.getPage()
+            } else {
+              this.$message.error(res.subMsg)
+            }
+          })
+        })
+      },
+      changeStatus(id, dataStatus) {
+        goodsOtherApi.changeStatus({ id, dataStatus }).then(res => {
           if (res.subCode === 1000) {
             this.$message.success(res.subMsg)
-            this.getPage()
           } else {
             this.$message.error(res.subMsg)
           }
+          this.getPage()
         })
-      })
-    },
-    exportHandle() {
-      let data = {}
-      if (this.ids.length > 0) {
-        data.ids = this.ids
-      } else {
-        this.$message.success('未勾选数据，导出符合条件的所有数据')
-        data = {
-          ...this.queryParam
+      },
+      search() {
+        this.queryParam.pageNum = 1
+        this.getPage()
+      },
+      selected(val) {
+        this.selectedId = val
+        let temp = []
+        for (let i = 0; i < this.selectedId.length; i++) {
+          temp.push(this.selectedId[i].id)
         }
+        this.ids = temp
+      },
+      batchdelete() {
+        if (this.ids.length == 0) {
+          this.$alert('没有选中数据')
+          return
+        }
+        this.$confirm('是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          goodsOtherApi.batchdelete(this.ids).then(res => {
+            if (res.subCode === 1000) {
+              this.$message.success(res.subMsg)
+              this.getPage()
+            } else {
+              this.$message.error(res.subMsg)
+            }
+          })
+        })
+      },
+      exportHandle() {
+        let data = {}
+        if (this.ids.length > 0) {
+          data.ids = this.ids
+        } else {
+          this.$message.success('未勾选数据，导出符合条件的所有数据')
+          data = {
+            ...this.queryParam
+          }
+        }
+        getExport('/gw/op/v1/goodsOther/export', data, 'post', '其他收支列表').then(() => {
+          this.$emit('refresh')
+        })
+      },
+      resetHandle() {
+        this.queryParam = {
+          type: '',
+          actNo: '',
+          name: '',
+          brand: '',
+          remark: '',
+          priceFrom: '',
+          priceTo: '',
+          createTimeFrom: '',
+          createTimeTo: '',
+          updateTimeFrom: '',
+          updateTimeTo: '',
+          pageSize: 10,
+          pageNum: 1
+        }
+        this.createTime = ''
+        this.updateTime = ''
+        this.getPage()
       }
-      getExport('/gw/op/v1/goodsOther/export', data, 'post', '其他收支列表').then(() => {
-        this.$emit('refresh')
-      })
-    },
-    resetHandle() {
-      this.queryParam = {
-        type: '',
-        actNo: '',
-        name: '',
-        brand: '',
-        remark: '',
-        priceFrom: '',
-        priceTo: '',
-        createTimeFrom: '',
-        createTimeTo: '',
-        updateTimeFrom: '',
-        updateTimeTo: '',
-        pageSize: 10,
-        pageNum: 1
-      }
-      this.createTime = ''
-      this.updateTime = ''
-      this.getPage()
     }
   }
-}
 </script>

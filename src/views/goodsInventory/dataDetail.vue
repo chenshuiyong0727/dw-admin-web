@@ -4,7 +4,7 @@
       <el-row class="query-form">
         <el-col :span="6">
           <el-form-item size="small">
-            <el-select v-model="queryParam.inventory" @change="change1" >
+            <el-select v-model="queryParam.inventory" @change="change1">
               <el-option
                 v-for="item in inventoryToList"
                 :key="item.fieldValue"
@@ -35,10 +35,11 @@
       </el-row>
     </el-form>
     <el-table height="600" style="margin-top: 20px" border :data="tableData">
-      <el-table-column align="center" prop="actNo" width="100" fixed="left" label="货号" />
-      <el-table-column align="center" label="图片"  fixed="left"  >
+      <el-table-column align="center" prop="actNo" width="100" fixed="left" label="货号"/>
+      <el-table-column align="center" label="图片" fixed="left">
         <template slot-scope="scope">
-          <img  v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"  @click="avatarShow(scope.row.imgUrl)" >
+          <img v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"
+               @click="avatarShow(scope.row.imgUrl)">
         </template>
       </el-table-column>
       <el-table-column align="center" prop="size" width="50" label="尺码" sortable/>
@@ -49,7 +50,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="dwPrice" label="得物价"  sortable>
+      <el-table-column align="center" prop="dwPrice" label="得物价" sortable>
         <template scope="scope">
           <div class="input-box">
             <el-input size="small" v-model="scope.row.dwPrice"></el-input>
@@ -130,179 +131,180 @@
 </template>
 
 <script>
-import { goodsInventoryApi } from '@/api/goodsInventory'
-import changeStatusDialog from './components/changeStatusDialog'
+  import { goodsInventoryApi } from '@/api/goodsInventory'
+  import changeStatusDialog from './components/changeStatusDialog'
 
-export default {
-  components: {
-    changeStatusDialog
-  },
-  data() {
-    return {
-      sizeData: '',
-      imageZoom: '',
-      isShowDialog: false,
-      queryParam: {
-        id: '',
-        inventory: 1,
-        inventoryFrom: '',
-        inventoryTo: '',
-        size: '',
+  export default {
+    components: {
+      changeStatusDialog
+    },
+    data() {
+      return {
+        sizeData: '',
+        imageZoom: '',
+        isShowDialog: false,
+        queryParam: {
+          id: '',
+          inventory: 1,
+          inventoryFrom: '',
+          inventoryTo: '',
+          size: '',
+          actNo: '',
+          goodsId: '',
+          pageSize: 10,
+          pageNum: 1
+        },
+        pictureZoomShow: false,
+        fileUrl: fileUrl,
+        // inventory: 1,
+        inventoryToList: [
+          { fieldValue: 1, fieldName: '现货' }, { fieldValue: 0, fieldName: '售空' },
+          { fieldValue: 2, fieldName: '未上架' }
+        ],
+        dataStatusList: [],
+        imgUrl: '',
         actNo: '',
-        goodsId: '',
-        pageSize: 10,
-        pageNum: 1
+        tableData: [],
+        tableData1: [],
+        totalCount1: 1,
+        totalCount: 1
+      }
+    },
+    created() {
+      const { actNo } = this.$route.query
+      this.queryParam.actNo = actNo
+      if (this.queryParam.actNo) {
+        this.pageGoods()
+      }
+    },
+    mounted() {
+      this.pageGoods()
+      this.listSysDict()
+    },
+    methods: {
+      changeStatusDialog(row) {
+        this.sizeData = row
+        this.isShowDialog = true
       },
-      pictureZoomShow: false,
-      fileUrl: fileUrl,
-      // inventory: 1,
-      inventoryToList: [
-        { fieldValue: 1, fieldName: '现货' }, { fieldValue: 0, fieldName: '售空' }, { fieldValue: 2, fieldName: '未上架' }
-      ],
-      dataStatusList: [],
-      imgUrl: '',
-      actNo: '',
-      tableData: [],
-      tableData1: [],
-      totalCount1: 1,
-      totalCount: 1
-    }
-  },
-  created() {
-    const { actNo } = this.$route.query
-    this.queryParam.actNo = actNo
-    if (this.queryParam.actNo) {
-      this.pageGoods()
-    }
-  },
-  mounted() {
-    this.pageGoods()
-    this.listSysDict()
-  },
-  methods: {
-    changeStatusDialog(row) {
-      this.sizeData = row
-      this.isShowDialog = true
-    },
-    closDialog() {
-      this.isShowDialog = false
-    },
-    refreshPage() {
-      this.isShowDialog = false
-      this.pageGoods()
-    },
-    avatarShow(e) {
-      this.imageZoom = e
-      this.pictureZoomShow = true
-    },
-    jumpactNo() {
-      if (!this.actNo) {
-        this.$alert('没有选中数据')
-        return
-      }
-      let actNo = this.actNo
-      this.$router.push({ path: '/goodsOrder/list', query: { actNo }})
-    },
-    pageGoods() {
-      if (this.queryParam.inventory == 1) {
-        this.queryParam.inventoryFrom = 1
-        this.queryParam.inventoryTo = ''
-      } else if (this.queryParam.inventory == 0) {
-        this.queryParam.inventoryFrom = ''
-        this.queryParam.inventoryTo = 0
-      } else {
-        this.queryParam.inventoryFrom = ''
-        this.queryParam.inventoryTo = ''
-      }
-      goodsInventoryApi.pageGoods(this.queryParam).then(res => {
-        if (res.subCode === 1000) {
-          this.tableData = res.data ? res.data.list : []
-          this.totalCount = res.data ? res.data.pageInfo.totalCount : 0
-        } else {
-          this.$message.error(res.subMsg)
+      closDialog() {
+        this.isShowDialog = false
+      },
+      refreshPage() {
+        this.isShowDialog = false
+        this.pageGoods()
+      },
+      avatarShow(e) {
+        this.imageZoom = e
+        this.pictureZoomShow = true
+      },
+      jumpactNo() {
+        if (!this.actNo) {
+          this.$alert('没有选中数据')
+          return
         }
-      })
-    },
-    listSysDict() {
-      let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
-        localStorage.getItem('sysDictList')) : []
-      this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
-    },
-    pageChangeHandle(currentPage) {
-      this.queryParam.pageNum = currentPage
-      this.pageGoods()
-    },
-    reSearchHandle(size) {
-      this.queryParam.pageSize = size
-      this.queryParam.pageNum = 1
-      this.pageGoods()
-    },
-    goDel(id) {
-      this.$confirm('是否删除', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        goodsInventoryApi.delById(id).then(res => {
+        let actNo = this.actNo
+        this.$router.push({ path: '/goodsOrder/list', query: { actNo } })
+      },
+      pageGoods() {
+        if (this.queryParam.inventory == 1) {
+          this.queryParam.inventoryFrom = 1
+          this.queryParam.inventoryTo = ''
+        } else if (this.queryParam.inventory == 0) {
+          this.queryParam.inventoryFrom = ''
+          this.queryParam.inventoryTo = 0
+        } else {
+          this.queryParam.inventoryFrom = ''
+          this.queryParam.inventoryTo = ''
+        }
+        goodsInventoryApi.pageGoods(this.queryParam).then(res => {
           if (res.subCode === 1000) {
-            this.$message.success(res.subMsg)
-            this.pageGoods()
+            this.tableData = res.data ? res.data.list : []
+            this.totalCount = res.data ? res.data.pageInfo.totalCount : 0
           } else {
             this.$message.error(res.subMsg)
           }
         })
-      })
-    },
-    update(row) {
-      console.info(row)
-      this.$confirm('是否修改', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        goodsInventoryApi.update(row).then(res => {
-          if (res.subCode === 1000) {
-            this.$message.success(res.subMsg)
-            this.pageGoods(row.goodsId)
-          } else {
-            this.$message.error(res.subMsg)
-          }
+      },
+      listSysDict() {
+        let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
+          localStorage.getItem('sysDictList')) : []
+        this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
+      },
+      pageChangeHandle(currentPage) {
+        this.queryParam.pageNum = currentPage
+        this.pageGoods()
+      },
+      reSearchHandle(size) {
+        this.queryParam.pageSize = size
+        this.queryParam.pageNum = 1
+        this.pageGoods()
+      },
+      goDel(id) {
+        this.$confirm('是否删除', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          goodsInventoryApi.delById(id).then(res => {
+            if (res.subCode === 1000) {
+              this.$message.success(res.subMsg)
+              this.pageGoods()
+            } else {
+              this.$message.error(res.subMsg)
+            }
+          })
         })
-      })
-    },
-    change1() {
-      if (this.queryParam.inventory == 1) {
-        this.queryParam.inventoryFrom = 1
-        this.queryParam.inventoryTo = ''
-      } else if (this.queryParam.inventory == 0) {
-        this.queryParam.inventoryFrom = ''
-        this.queryParam.inventoryTo = 0
-      } else {
-        this.queryParam.inventoryFrom = ''
-        this.queryParam.inventoryTo = ''
+      },
+      update(row) {
+        console.info(row)
+        this.$confirm('是否修改', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          goodsInventoryApi.update(row).then(res => {
+            if (res.subCode === 1000) {
+              this.$message.success(res.subMsg)
+              this.pageGoods(row.goodsId)
+            } else {
+              this.$message.error(res.subMsg)
+            }
+          })
+        })
+      },
+      change1() {
+        if (this.queryParam.inventory == 1) {
+          this.queryParam.inventoryFrom = 1
+          this.queryParam.inventoryTo = ''
+        } else if (this.queryParam.inventory == 0) {
+          this.queryParam.inventoryFrom = ''
+          this.queryParam.inventoryTo = 0
+        } else {
+          this.queryParam.inventoryFrom = ''
+          this.queryParam.inventoryTo = ''
+        }
+        this.pageGoods()
+      },
+      search() {
+        this.queryParam.pageNum = 1
+        this.pageGoods()
+      },
+      resetHandle() {
+        this.queryParam = {
+          id: '',
+          inventory: 1,
+          inventoryFrom: '',
+          inventoryTo: '',
+          size: '',
+          actNo: '',
+          goodsId: '',
+          pageSize: 10,
+          pageNum: 1
+        }
+        this.search()
       }
-      this.pageGoods()
-    },
-    search() {
-      this.queryParam.pageNum = 1
-      this.pageGoods()
-    },
-    resetHandle() {
-      this.queryParam = {
-        id: '',
-        inventory: 1,
-        inventoryFrom: '',
-        inventoryTo: '',
-        size: '',
-        actNo: '',
-        goodsId: '',
-        pageSize: 10,
-        pageNum: 1
-      }
-      this.search()
     }
   }
-}
 </script>
 
 <style lang="scss" scoped>

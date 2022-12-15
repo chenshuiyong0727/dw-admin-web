@@ -109,7 +109,7 @@
                 :rules="columnRules.fieldType"
                 class="el-form-item-table"
               >
-                <el-input v-model="scope.row.fieldType" style="width: 100%" />
+                <el-input v-model="scope.row.fieldType" style="width: 100%"/>
               </el-form-item>
             </template>
           </el-table-column>
@@ -188,13 +188,16 @@
         style="display: flex; justify-content: flex-end; margin-top: 30px"
       >
         <el-button disabled type="primary" style="margin-right: 10px"
-        >上一步</el-button
+        >上一步
+        </el-button
         >
         <el-button type="primary" style="margin-right: 10px" @click="next"
-        >下一步</el-button
+        >下一步
+        </el-button
         >
         <el-button @click="close" type="primary" style="margin-right: 10px"
-        >取消</el-button
+        >取消
+        </el-button
         >
         <el-button disabled type="primary">完成</el-button>
       </el-button-group>
@@ -207,6 +210,7 @@
     const reg = /^\w+$/
     return reg.test(str)
   }
+
   export default {
     name: 'TableDataSteps',
     props: {
@@ -214,14 +218,14 @@
         type: Object,
         default: () => {
           return {}
-        },
+        }
       },
       tableFormCur: {
         type: Array,
         default: () => {
           return []
-        },
-      },
+        }
+      }
     },
     data() {
       const validateTableName = (rule, value, callback) => {
@@ -246,34 +250,34 @@
         columnRules: {
           fieldName: [
             { required: true, message: '请选择字段名称', trigger: 'blur' },
-            { required: true, trigger: 'blur', validator: validateName },
+            { required: true, trigger: 'blur', validator: validateName }
           ],
           fieldType: [
-            { required: true, message: '请选择字段类型', trigger: 'change' },
+            { required: true, message: '请选择字段类型', trigger: 'change' }
           ],
           fieldComments: [
-            { required: true, message: '请输入字段描述', trigger: 'blur' },
-          ],
+            { required: true, message: '请输入字段描述', trigger: 'blur' }
+          ]
         },
         options: [
           {
             value: 'form',
-            label: '表单',
-          },
+            label: '表单'
+          }
         ],
         options2: [{ value: 'mysql', label: 'MySQL' }],
         rules: {
           tableName: [
-            { required: true, trigger: 'blur', validator: validateTableName },
+            { required: true, trigger: 'blur', validator: validateTableName }
           ],
           tableType: [
-            { required: true, trigger: 'change', message: '请选择表类型' },
+            { required: true, trigger: 'change', message: '请选择表类型' }
           ],
           jdbcType: [
-            { required: true, trigger: 'change', message: '请选择数据库类型' },
+            { required: true, trigger: 'change', message: '请选择数据库类型' }
           ],
-          comments: [{ required: true, trigger: 'blur', message: '请输入描述' }],
-        },
+          comments: [{ required: true, trigger: 'blur', message: '请输入描述' }]
+        }
       }
     },
 
@@ -286,8 +290,8 @@
       },
       setSelectRows(val) {
         this.selectRows = val
-      },
-    },
+      }
+    }
   }
 </script>
 

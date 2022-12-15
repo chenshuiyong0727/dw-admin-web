@@ -27,82 +27,82 @@
   </el-dialog>
 </template>
 <script>
-import { systemContainerApi } from '@/api/systemManage'
-export default {
-  props: {
-    pageType: {
-      type: Number,
-      default: 1 // 1=>新增 2=>修改
-    },
-    departmentId: {
-      type: String,
-      default: ''
-    },
-    departmentTreeData: {
-      type: Array,
-      default: () => []
-    }
-  },
-  data() {
-    return {
-      dialogVisible: true,
-      // departmentTreeData: [],
-      defaultProps: {
-        children: 'child',
-        label: 'name'
+
+  export default {
+    props: {
+      pageType: {
+        type: Number,
+        default: 1 // 1=>新增 2=>修改
       },
-      departmentMsg: '',
-      checkedKeys: [],
-    }
-  },
-  mounted() {
-    // this.listTreeDepartments()
-    if (this.pageType == 2) {
-      this.checkedKeys.push(this.departmentId)
-    }
-  },
-  methods: {
-    closDialog() {
-      this.$emit('closDialog')
+      departmentId: {
+        type: String,
+        default: ''
+      },
+      departmentTreeData: {
+        type: Array,
+        default: () => []
+      }
     },
-    // checkChangeHandle(data, checked, node) {
-    //   // 设置单选
-    //   if (checked) {
-    //     this.$refs.tree.setCheckedNodes([data])
-    //   }
-    // },
-    getValueHandle(value) {
-      // 获取选中值
-      //this.$refs.tree.setCheckedKeys([])
-      let checkVal = value.id
-      this.$refs.tree.setCheckedKeys([checkVal])
+    data() {
+      return {
+        dialogVisible: true,
+        // departmentTreeData: [],
+        defaultProps: {
+          children: 'child',
+          label: 'name'
+        },
+        departmentMsg: '',
+        checkedKeys: []
+      }
     },
-    confirmHandle() {
-      // let parentDepMsg = {}
-      // if (this.$refs.tree.getCheckedNodes().length && this.$refs.tree.getHalfCheckedNodes().length) {
-      //   parentDepMsg = this.$refs.tree.getHalfCheckedNodes().filter(item => item.id == this.$refs.tree.getCheckedNodes()[0].superiorDepartment)[0]
+    mounted() {
+      // this.listTreeDepartments()
+      if (this.pageType == 2) {
+        this.checkedKeys.push(this.departmentId)
+      }
+    },
+    methods: {
+      closDialog() {
+        this.$emit('closDialog')
+      },
+      // checkChangeHandle(data, checked, node) {
+      //   // 设置单选
+      //   if (checked) {
+      //     this.$refs.tree.setCheckedNodes([data])
+      //   }
+      // },
+      getValueHandle(value) {
+        // 获取选中值
+        //this.$refs.tree.setCheckedKeys([])
+        let checkVal = value.id
+        this.$refs.tree.setCheckedKeys([checkVal])
+      },
+      confirmHandle() {
+        // let parentDepMsg = {}
+        // if (this.$refs.tree.getCheckedNodes().length && this.$refs.tree.getHalfCheckedNodes().length) {
+        //   parentDepMsg = this.$refs.tree.getHalfCheckedNodes().filter(item => item.id == this.$refs.tree.getCheckedNodes()[0].superiorDepartment)[0]
+        // }
+        this.departmentMsg = this.$refs.tree.getCheckedNodes()[0]
+        this.$emit('getDepartmentMsg', this.departmentMsg)
+        this.dialogVisible = false
+      }
+      // listTreeDepartments() {
+      //   systemContainerApi.listTreeDepartments().then(res => {
+      //     if (res.data) {
+      //       this.departmentTreeData = res.data
+      //       if (this.pageType == 2) {
+      //         this.checkedKeys.push(this.departmentId)
+      //       }
+      //     } else {
+      //       this.$message.error(res.subMsg)
+      //     }
+      //   })
       // }
-      this.departmentMsg = this.$refs.tree.getCheckedNodes()[0]
-      this.$emit('getDepartmentMsg', this.departmentMsg)
-      this.dialogVisible = false
-    },
-    // listTreeDepartments() {
-    //   systemContainerApi.listTreeDepartments().then(res => {
-    //     if (res.data) {
-    //       this.departmentTreeData = res.data
-    //       if (this.pageType == 2) {
-    //         this.checkedKeys.push(this.departmentId)
-    //       }
-    //     } else {
-    //       this.$message.error(res.subMsg)
-    //     }
-    //   })
-    // }
+    }
   }
-}
 </script>
 <style lang="scss" scoped>
-  ::v-deep .el-dialog__header,::v-deep .el-dialog__body {
+  ::v-deep .el-dialog__header, ::v-deep .el-dialog__body {
     border-bottom: 1px solid #ddd;
   }
 </style>

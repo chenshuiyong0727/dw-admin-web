@@ -7,6 +7,7 @@ import Cookies from 'js-cookie'
 export function getCookieByName(cookieName) {
   return Cookies.get(cookieName)
 }
+
 // export function getToken() {
 //   return Cookies.get(TokenKey)
 // }
@@ -20,6 +21,7 @@ export function getCookieByName(cookieName) {
 export function setCookieByName(cookieName, cookieValue) {
   return Cookies.set(cookieName, cookieValue)
 }
+
 // export function setToken(token) {
 //   return Cookies.set(TokenKey, token)
 // }
@@ -33,6 +35,7 @@ export function setCookieByName(cookieName, cookieValue) {
 export function removeCookieByName(cookieName) {
   return Cookies.remove(cookieName)
 }
+
 // export function removeToken() {
 //   return Cookies.remove(TokenKey)
 // }

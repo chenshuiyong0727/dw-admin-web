@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+
 export const commonApi = {
   // 获取系统数据字典
   listSysDict: (body) => request({

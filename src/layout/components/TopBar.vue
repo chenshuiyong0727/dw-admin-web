@@ -17,7 +17,8 @@
         @select="handleSelect"
       >
         <template v-for="path in topMenu">
-          <el-menu-item v-if="!path.hidden" :key="path.topMenuId" :index="path.topMenuId.toString()">
+          <el-menu-item v-if="!path.hidden" :key="path.topMenuId"
+                        :index="path.topMenuId.toString()">
             {{ path.title }}
           </el-menu-item>
         </template>
@@ -27,9 +28,9 @@
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img src="../../resources/assets/images/default_user.png" class="user-avatar">
-<!--          <img src="../../resources/assets/images/header.jpg" class="user-avatar">-->
+          <!--          <img src="../../resources/assets/images/header.jpg" class="user-avatar">-->
           <span class="user-name">{{ name ? name : userName ? userName : '系统用户' }}</span>
-          <i class="el-icon-caret-bottom" />
+          <i class="el-icon-caret-bottom"/>
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/myAccount">
@@ -48,92 +49,98 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    <wait-work-msg-dialog v-if="isShowTodayMsgDialog" />
+    <wait-work-msg-dialog v-if="isShowTodayMsgDialog"/>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { pathList } from '@/router'
-import variables from '@/resources/styles/variables.scss'
-import { getCookieByName } from '@/utils/auth'
-export default {
-  components: {
-  },
-  data() {
-    return {
-      pathList,
-      isShowTodayMsgDialog: false,
-      topMenu: [],
-      userName: localStorage.getItem('user_name')
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'sidebar',
-      'avatar',
-      'name',
-      'unreadMsg'
-    ]),
-    activeMenu() {
-      const { matched } = this.$route
-      const currentRouter = this.$router.options.routes.filter((item) => {
-        if (item.meta && item.meta.leftMenuId) {
-          return item.meta.leftMenuId == matched[0].meta.leftMenuId
-        }
-      })
-      return currentRouter.length ? currentRouter[0].meta.leftMenuId.toString() : ''
-    },
-    variables() {
-      return variables
-    },
-    isCollapse() {
-      return !this.sidebar.opened
-    }
-  },
-  mounted() {
-    const functionList = localStorage.getItem('functionList') ? JSON.parse(localStorage.getItem('functionList')) : []
-    const nodeMenu = functionList.filter(item => item.operationType === 'node' || item.operationType === 'icon')
-    for (let i = 0; i < this.pathList.length; i++) {
-      for (let j = 0; j < nodeMenu.length; j++) {
-        if (this.pathList[i].title === nodeMenu[j].functionLabel) {
-          this.topMenu.push(pathList[i])
-        }
+  import { mapGetters } from 'vuex'
+  import { pathList } from '@/router'
+  import variables from '@/resources/styles/variables.scss'
+
+  export default {
+    components: {},
+    data() {
+      return {
+        pathList,
+        isShowTodayMsgDialog: false,
+        topMenu: [],
+        userName: localStorage.getItem('user_name')
       }
-    }
-  //  this.queryTodayMsgUpcoming()
-  },
-  methods: {
-    handleSelect(topMenuId) {
-      let menuTitle = ''
-      let currentRouterArr = []
-      // let currentRouter = ''
+    },
+    computed: {
+      ...mapGetters([
+        'sidebar',
+        'avatar',
+        'name',
+        'unreadMsg'
+      ]),
+      activeMenu() {
+        const { matched } = this.$route
+        const currentRouter = this.$router.options.routes.filter((item) => {
+          if (item.meta && item.meta.leftMenuId) {
+            return item.meta.leftMenuId == matched[0].meta.leftMenuId
+          }
+        })
+        return currentRouter.length ? currentRouter[0].meta.leftMenuId.toString() : ''
+      },
+      variables() {
+        return variables
+      },
+      isCollapse() {
+        return !this.sidebar.opened
+      }
+    },
+    mounted() {
+      const functionList = localStorage.getItem('functionList') ? JSON.parse(
+        localStorage.getItem('functionList')) : []
+      const nodeMenu = functionList.filter(
+        item => item.operationType === 'node' || item.operationType === 'icon')
       for (let i = 0; i < this.pathList.length; i++) {
-        if (this.pathList[i].topMenuId == topMenuId) {
-          menuTitle = this.pathList[i].title
+        for (let j = 0; j < nodeMenu.length; j++) {
+          if (this.pathList[i].title === nodeMenu[j].functionLabel) {
+            this.topMenu.push(pathList[i])
+          }
         }
       }
-      const functionList = localStorage.getItem('functionList') ? JSON.parse(localStorage.getItem('functionList')) : []
-      const nodeLocationPath = functionList.filter(item => item.functionLabel == menuTitle && (item.operationType === 'node' || item.operationType === 'icon'))
-      for (let i = 0; i < functionList.length; i++) {
-        if (functionList[i].locationPath.indexOf(`${nodeLocationPath[0].locationPath}:`) > -1 && (functionList[i].operationType == 'list' || functionList[i].operationType == 'sub_list') && functionList[i].route) {
-          // currentRouter = functionList[i]
-          // break
-          currentRouterArr.push(functionList[i])
+      //  this.queryTodayMsgUpcoming()
+    },
+    methods: {
+      handleSelect(topMenuId) {
+        let menuTitle = ''
+        let currentRouterArr = []
+        // let currentRouter = ''
+        for (let i = 0; i < this.pathList.length; i++) {
+          if (this.pathList[i].topMenuId == topMenuId) {
+            menuTitle = this.pathList[i].title
+          }
         }
+        const functionList = localStorage.getItem('functionList') ? JSON.parse(
+          localStorage.getItem('functionList')) : []
+        const nodeLocationPath = functionList.filter(
+          item => item.functionLabel == menuTitle && (item.operationType === 'node'
+            || item.operationType === 'icon'))
+        for (let i = 0; i < functionList.length; i++) {
+          if (functionList[i].locationPath.indexOf(`${nodeLocationPath[0].locationPath}:`) > -1
+            && (functionList[i].operationType == 'list' || functionList[i].operationType
+              == 'sub_list') && functionList[i].route) {
+            // currentRouter = functionList[i]
+            // break
+            currentRouterArr.push(functionList[i])
+          }
+        }
+        currentRouterArr.sort((a, b) => {
+          return a.sort - b.sort
+        })
+        // this.$router.push({ path: currentRouter ? currentRouter.route : '/' })
+        this.$router.push({ path: currentRouterArr[0] ? currentRouterArr[0].route : '/' })
+      },
+      async logout() {
+        await this.$store.dispatch('user/logout')
+        this.$router.push(`/login`)
       }
-      currentRouterArr.sort((a, b) => {
-        return a.sort - b.sort
-      })
-      // this.$router.push({ path: currentRouter ? currentRouter.route : '/' })
-      this.$router.push({ path: currentRouterArr[0] ? currentRouterArr[0].route : '/' })
-    },
-    async logout() {
-      await this.$store.dispatch('user/logout')
-      this.$router.push(`/login`)
-    },
+    }
   }
-}
 </script>
 
 <style lang="scss" scoped>
@@ -144,34 +151,42 @@ export default {
     align-items: center;
     background-color: #384a61;
     color: #fff;
+
     .left-logo {
       width: 210px;
       display: flex;
       align-items: center;
+
       img {
         width: 50px;
         height: 50px;
         border-radius: 50%;
         margin: 0 10px 0 20px;
       }
+
       h5 {
         margin: 0;
         font-size: 16px;
       }
+
       p {
         margin: 0;
         padding-top: 5px;
         font-size: 14px;
       }
     }
+
     .middle-menu {
       flex: 1 1;
       padding-left: 50px;
+
       .el-menu {
         background-color: #384a61;
       }
+
       .el-menu.el-menu--horizontal {
         display: flex;
+
         .el-menu-item {
           font-size: 16px;
           font-weight: bold;
@@ -179,33 +194,41 @@ export default {
         }
       }
     }
+
     .right-menu {
       // width: 230px;
       text-align: right;
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       .notification {
         font-size: 24px;
         margin-top: 10px;
       }
+
       .notifi-top {
         margin-top: 5px;
       }
+
       .doc-sty {
         margin: 0 20px;
       }
+
       .avatar-container {
         margin-right: 30px;
         color: #fff;
+
         .avatar-wrapper {
           position: relative;
           display: flex;
           align-items: center;
           cursor: pointer;
+
           .user-name {
             padding-left: 5px;
           }
+
           .user-avatar {
             width: 40px;
             height: 40px;
@@ -220,6 +243,7 @@ export default {
           }
         }
       }
+
       .el-icon-document {
         font-size: 26px;
         margin-left: 5px;

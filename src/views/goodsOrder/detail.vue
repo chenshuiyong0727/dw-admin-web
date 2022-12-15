@@ -100,110 +100,111 @@
   </div>
 </template>
 <script>
-import { goodsOrderApi } from '@/api/goodsOrder'
-export default {
-  data() {
-    return {
-      form: {
+  import { goodsOrderApi } from '@/api/goodsOrder'
+
+  export default {
+    data() {
+      return {
+        form: {
+          id: '',
+          orderNo: '',
+          inventoryId: '',
+          status: '',
+          shelvesPrice: '',
+          freight: '',
+          poundage: '',
+          theirPrice: '',
+          addressId: '',
+          waybillNo: ''
+        },
+        statusList: [],
+        dataStatusList: [],
+        type: '',
         id: '',
-        orderNo: '',
-        inventoryId: '',
-        status: '',
-        shelvesPrice: '',
-        freight: '',
-        poundage: '',
-        theirPrice: '',
-        addressId: '',
-        waybillNo: ''
-      },
-      statusList: [],
-      dataStatusList: [],
-      type: '',
-      id: '',
-      rules: {
-        id: [
-          { required: true, trigger: 'blur', message: '订单主键非空' }
-        ],
-        orderNo: [
-          { required: true, trigger: 'blur', message: '订单号非空' }
-        ],
-        inventoryId: [
-          { required: true, trigger: 'blur', message: '库存编号非空' }
-        ],
-        status: [
-          { required: true, trigger: 'blur', message: '状态非空' }
-        ],
-        shelvesPrice: [
-          { required: true, trigger: 'blur', message: '原售价非空' }
-        ]
+        rules: {
+          id: [
+            { required: true, trigger: 'blur', message: '订单主键非空' }
+          ],
+          orderNo: [
+            { required: true, trigger: 'blur', message: '订单号非空' }
+          ],
+          inventoryId: [
+            { required: true, trigger: 'blur', message: '库存编号非空' }
+          ],
+          status: [
+            { required: true, trigger: 'blur', message: '状态非空' }
+          ],
+          shelvesPrice: [
+            { required: true, trigger: 'blur', message: '原售价非空' }
+          ]
+        }
       }
-    }
-  },
-  created() {
-    const { id, type } = this.$route.query
-    this.id = id
-    this.type = type
-    this.form.id = id
-    if (this.id) {
-      this.getDetailById(this.id)
-    }
-  },
-  mounted() {
-    this.listSysDict()
-  },
-  methods: {
-    getDetailById(id) {
-      if (id) {
-        goodsOrderApi.getDetailById(id).then(res => {
-          if (res.subCode === 1000) {
-            this.form = res.data ? res.data : {}
+    },
+    created() {
+      const { id, type } = this.$route.query
+      this.id = id
+      this.type = type
+      this.form.id = id
+      if (this.id) {
+        this.getDetailById(this.id)
+      }
+    },
+    mounted() {
+      this.listSysDict()
+    },
+    methods: {
+      getDetailById(id) {
+        if (id) {
+          goodsOrderApi.getDetailById(id).then(res => {
+            if (res.subCode === 1000) {
+              this.form = res.data ? res.data : {}
+            } else {
+              this.$message.error(res.subMsg)
+            }
+          })
+        }
+      },
+      listSysDict() {
+        let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
+          localStorage.getItem('sysDictList')) : []
+        this.statusList = sysDictList.filter(item => item.typeValue == 37)
+        this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
+      },
+      goBack() {
+        // *** 根据真实路径配置地址
+        this.$router.push({ path: '/goodsOrder/list' })
+      },
+      goEdit() {
+        this.type = 2
+      },
+      submit() {
+        this.$refs['form'].validate(async(valid) => {
+          if (!valid) {
+            return false
+          }
+          if (this.type == 2) {
+            goodsOrderApi.update(this.form).then(res => {
+              if (res.subCode === 1000) {
+                this.$message.success('操作成功')
+                this.goBack()
+              } else {
+                this.$message.error(res.subMsg)
+              }
+            })
           } else {
-            this.$message.error(res.subMsg)
+            goodsOrderApi.add(this.form).then(res => {
+              if (res.subCode === 1000) {
+                this.$message.success('操作成功')
+                this.goBack()
+              } else {
+                this.$message.error(res.subMsg)
+              }
+            })
           }
         })
       }
-    },
-    listSysDict() {
-      let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
-        localStorage.getItem('sysDictList')) : []
-      this.statusList = sysDictList.filter(item => item.typeValue == 37)
-      this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
-    },
-    goBack() {
-      // *** 根据真实路径配置地址
-      this.$router.push({ path: '/goodsOrder/list' })
-    },
-    goEdit() {
-      this.type = 2
-    },
-    submit() {
-      this.$refs['form'].validate(async(valid) => {
-        if (!valid) {
-          return false
-        }
-        if (this.type == 2) {
-          goodsOrderApi.update(this.form).then(res => {
-            if (res.subCode === 1000) {
-              this.$message.success('操作成功')
-              this.goBack()
-            } else {
-              this.$message.error(res.subMsg)
-            }
-          })
-        } else {
-          goodsOrderApi.add(this.form).then(res => {
-            if (res.subCode === 1000) {
-              this.$message.success('操作成功')
-              this.goBack()
-            } else {
-              this.$message.error(res.subMsg)
-            }
-          })
-        }
-      })
     }
   }
-}
 </script>
 <style>
   h5 {

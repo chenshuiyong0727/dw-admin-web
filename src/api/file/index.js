@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+
 export const fileApi = {
   // 获取详情
   // getImgUrl: (actNo) => request({

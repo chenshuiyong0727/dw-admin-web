@@ -50,6 +50,7 @@
 
 .el-table {
   font-size: 12px;
+
   &.cell-ellipsis {
     .cell {
       word-break: break-all;
@@ -60,6 +61,7 @@
       -webkit-box-orient: vertical;
     }
   }
+
   td:last-child {
     .cell {
       -webkit-line-clamp: 10;
@@ -70,12 +72,15 @@
 .el-row.query-form {
   display: flex;
   flex-wrap: wrap;
+
   .el-form-item {
     width: 80%;
+
     .el-select, .el-date-editor {
       width: 100%;
     }
   }
+
   .el-cascader {
     width: 80%;
   }
@@ -84,10 +89,12 @@
 .el-image-viewer__close {
   color: #fff;
 }
+
 .el-tooltip__popper {
   max-width: 500px;
 }
-.el-tooltip__popper,.el-tooltip__popper.is-dar {
+
+.el-tooltip__popper, .el-tooltip__popper.is-dar {
   line-height: 23px;
 }
 

@@ -174,13 +174,16 @@
         style="display: flex; justify-content: flex-end; margin-top: 30px"
       >
         <el-button type="primary" @click="prev" style="margin-right: 10px"
-        >上一步</el-button
+        >上一步
+        </el-button
         >
         <el-button @click="next" type="primary" style="margin-right: 10px"
-        >下一步</el-button
+        >下一步
+        </el-button
         >
         <el-button type="primary" style="margin-right: 10px" @click="close"
-        >取消</el-button
+        >取消
+        </el-button
         >
         <el-button disabled type="primary">完成</el-button>
       </el-button-group>
@@ -205,7 +208,7 @@
       val === 'NULL'
     )
   }
-  import { createCodeApi } from '@/api/createCode'
+
   export default {
     name: 'FrontendStep',
     props: {
@@ -213,53 +216,53 @@
         type: String,
         default: () => {
           return ''
-        },
+        }
       },
       tableFormCur: {
         type: Array,
         default: () => {
           return []
-        },
-      },
+        }
+      }
     },
     data() {
       return {
         options: [
           {
             value: '0',
-            label: '文本框',
+            label: '文本框'
           },
           {
             value: '1',
-            label: '文本域',
+            label: '文本域'
           },
           {
             value: '2',
-            label: '字典选择',
+            label: '字典选择'
           },
           {
             value: '3',
-            label: '时间控件',
+            label: '时间控件'
           },
           {
             value: '4',
-            label: '日期控件',
+            label: '日期控件'
           }
         ],
         options2: [
           {
             value: 'EQ',
-            label: '全值匹配',
+            label: '全值匹配'
           },
           {
             value: 'RANGE',
-            label: '范围匹配',
+            label: '范围匹配'
           },
           {
             value: 'LIKE',
-            label: '模糊匹配',
-          },
-        ],
+            label: '模糊匹配'
+          }
+        ]
       }
     },
     methods: {
@@ -306,8 +309,8 @@
             el.queryType = ''
           }
         }
-      },
-    },
+      }
+    }
   }
 </script>
 

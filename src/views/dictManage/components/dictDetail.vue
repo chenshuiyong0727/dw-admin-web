@@ -105,47 +105,48 @@
         ></el-pagination>
       </el-col>
     </el-row>
-    <dictEdit @updateData="updateData" :id="id" ref="dict-detail-edit" />
+    <dictEdit @updateData="updateData" :id="id" ref="dict-detail-edit"/>
   </el-drawer>
 </template>
 
 <script>
-import { dictListApi } from '@/api/dictManage'
-import dictEdit from './dictEdit'
-import { createCodeApi } from '@/api/createCode'
-export default {
-  name: 'DictManagement',
-  components: { dictEdit },
-  data() {
-    return {
-      fieldName: '',
-      fieldValue: '',
-      id: '',
-      title: '',
-      dictDetailVisible: false,
-      userInfo: null,
-      list: null,
-      layout: 'total, sizes, prev, pager, next, jumper',
-      total: 0,
-      queryForm: {
-        pageNum: 1,
-        pageSize: 10,
+  import { dictListApi } from '@/api/dictManage'
+  import dictEdit from './dictEdit'
+  import { createCodeApi } from '@/api/createCode'
+
+  export default {
+    name: 'DictManagement',
+    components: { dictEdit },
+    data() {
+      return {
         fieldName: '',
+        fieldValue: '',
+        id: '',
+        title: '',
+        dictDetailVisible: false,
+        userInfo: null,
+        list: null,
+        layout: 'total, sizes, prev, pager, next, jumper',
+        total: 0,
+        queryForm: {
+          pageNum: 1,
+          pageSize: 10,
+          fieldName: ''
+        }
+      }
+    },
+    methods: {
+      show(row) {
+        this.dictDetailVisible = true
+        this.id = row.id
+        this.title = row.typeName
+        this.getCodeData()
       },
-    }
-  },
-  methods: {
-    show(row) {
-      this.dictDetailVisible = true
-      this.id = row.id
-      this.title = row.typeName
-      this.getCodeData()
-    },
-    updateData() {
-      this.getCodeData()
-    },
-    getCodeData() {
-      createCodeApi
+      updateData() {
+        this.getCodeData()
+      },
+      getCodeData() {
+        createCodeApi
         .getListById({
           typeId: this.id,
           fieldName: this.fieldName ? this.filedName : this.queryForm.fieldName,
@@ -160,68 +161,69 @@ export default {
             this.$message.error(res.subMsg)
           }
         })
-    },
-    close() {
-      this.list = null
-      this.title = ''
-      this.filedName = ''
-      this.dictDetailVisible = false
-    },
-    handleInsert() {
-      this.$refs['dict-detail-edit'].showInsert()
-    },
-    handleUpdate(row) {
-      if (row.id) {
-        this.$refs['dict-detail-edit'].showUpdate(row)
-      }
-    },
-    handleDelete(row) {
-      console.log(row)
-      if (row.id) {
-        const { id } = row
-        this.$confirm('是否确认删除该项', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-        }).then(() => {
-          dictListApi.deleteDict(id).then((res) => {
-            if (res.subCode === 1000) {
-              this.getCodeData()
-            } else {
-              this.$message.error(res.subMsg)
-            }
+      },
+      close() {
+        this.list = null
+        this.title = ''
+        this.filedName = ''
+        this.dictDetailVisible = false
+      },
+      handleInsert() {
+        this.$refs['dict-detail-edit'].showInsert()
+      },
+      handleUpdate(row) {
+        if (row.id) {
+          this.$refs['dict-detail-edit'].showUpdate(row)
+        }
+      },
+      handleDelete(row) {
+        console.log(row)
+        if (row.id) {
+          const { id } = row
+          this.$confirm('是否确认删除该项', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            dictListApi.deleteDict(id).then((res) => {
+              if (res.subCode === 1000) {
+                this.getCodeData()
+              } else {
+                this.$message.error(res.subMsg)
+              }
+            })
           })
-        })
+        }
+      },
+      handleSizeChange(val) {
+        this.queryForm.pageSize = val
+        this.getCodeData()
+      },
+      handleCurrentChange(val) {
+        this.queryForm.pageNum = val
+        this.getCodeData()
+      },
+      queryData() {
+        this.queryForm.pageNum = 1
+        this.getCodeData(this.queryForm)
       }
-    },
-    handleSizeChange(val) {
-      this.queryForm.pageSize = val
-      this.getCodeData()
-    },
-    handleCurrentChange(val) {
-      this.queryForm.pageNum = val
-      this.getCodeData()
-    },
-    queryData() {
-      this.queryForm.pageNum = 1
-      this.getCodeData(this.queryForm)
-    },
-  },
-}
+    }
+  }
 </script>
 <style lang="scss" scoped>
-.dictDetail-container {
-  .container {
-    padding-left: 15px;
-  }
-  .container-title {
-    font-size: 16px;
-    font-weight: bold;
-  }
+  .dictDetail-container {
+    .container {
+      padding-left: 15px;
+    }
 
-  .container-title-tag {
-    font-size: 15px;
-    font-weight: bold;
+    .container-title {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .container-title-tag {
+      font-size: 15px;
+      font-weight: bold;
+    }
   }
-}
 </style>

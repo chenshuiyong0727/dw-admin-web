@@ -1,36 +1,38 @@
 <template>
   <div class="page-container">
-    <el-row type="flex"  justify="space-between" class="top-flex" >
-      <h5  v-if="type == 1">详情</h5>
-      <h5  v-if="type == 2">编辑</h5>
-      <h5  v-if="type == 3">新增</h5>
-      <el-button size="small" style="margin-right: 10px ; margin-bottom: 10px" @click="goBack()">返回列表</el-button>
+    <el-row type="flex" justify="space-between" class="top-flex">
+      <h5 v-if="type == 1">详情</h5>
+      <h5 v-if="type == 2">编辑</h5>
+      <h5 v-if="type == 3">新增</h5>
+      <el-button size="small" style="margin-right: 10px ; margin-bottom: 10px" @click="goBack()">
+        返回列表
+      </el-button>
     </el-row>
-    <el-form ref="form" :model="form"  :rules="rules" label-width="150px">
+    <el-form ref="form" :model="form" :rules="rules" label-width="150px">
       <el-row class="form-flex">
         <el-col :span="10">
-          <el-form-item  prop="id" label="库存编号"    class="is-required" >
+          <el-form-item prop="id" label="库存编号" class="is-required">
             <el-input v-model="form.id" :disabled="type == 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
-          <el-form-item  prop="goodsId" label="商品编号"    class="is-required" >
+          <el-form-item prop="goodsId" label="商品编号" class="is-required">
             <el-input v-model="form.goodsId" :disabled="type == 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
-          <el-form-item  prop="sizeId" label="尺码编号"    class="is-required" >
+          <el-form-item prop="sizeId" label="尺码编号" class="is-required">
             <el-input v-model="form.sizeId" :disabled="type == 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
-          <el-form-item  prop="inventory" label="库存"    class="is-required" >
+          <el-form-item prop="inventory" label="库存" class="is-required">
             <el-input v-model="form.inventory" :disabled="type == 1 "></el-input>
           </el-form-item>
         </el-col>
@@ -38,10 +40,10 @@
       <el-form-item>
         <el-button-group v-if="type != 1">
           <el-button type="primary" @click="submit()">提交</el-button>
-          <el-button  @click="goBack()">取消</el-button>
+          <el-button @click="goBack()">取消</el-button>
         </el-button-group>
         <el-button-group v-else>
-          <el-button  type="primary"  @click="goEdit">编辑</el-button>
+          <el-button type="primary" @click="goEdit">编辑</el-button>
         </el-button-group>
       </el-form-item>
     </el-form>
@@ -49,34 +51,34 @@
 </template>
 <script>
   import { goodsInventoryApi } from '@/api/goodsInventory'
-  import { validatorRule } from '@/utils/validateRlue'
+
   export default {
     data() {
       return {
         form: {
-      id: '',
-      goodsId: '',
-      sizeId: '',
-      inventory: '',
-    },
-      dataStatusList: [],
-      type: '',
+          id: '',
+          goodsId: '',
+          sizeId: '',
+          inventory: ''
+        },
+        dataStatusList: [],
+        type: '',
         id: '',
         rules: {
-        id: [
-        { required: true, trigger: 'blur', message: '库存编号非空' },
-      ],
-        goodsId: [
-        { required: true, trigger: 'blur', message: '商品编号非空' },
-      ],
-        sizeId: [
-        { required: true, trigger: 'blur', message: '尺码编号非空' },
-      ],
-        inventory: [
-        { required: true, trigger: 'blur', message: '库存非空' },
-      ]
+          id: [
+            { required: true, trigger: 'blur', message: '库存编号非空' }
+          ],
+          goodsId: [
+            { required: true, trigger: 'blur', message: '商品编号非空' }
+          ],
+          sizeId: [
+            { required: true, trigger: 'blur', message: '尺码编号非空' }
+          ],
+          inventory: [
+            { required: true, trigger: 'blur', message: '库存非空' }
+          ]
+        }
       }
-    }
     },
     created() {
       const { id, type } = this.$route.query
@@ -103,12 +105,13 @@
         }
       },
       listSysDict() {
-        let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(localStorage.getItem('sysDictList')) : []
+        let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
+          localStorage.getItem('sysDictList')) : []
         this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
       },
       goBack() {
         // *** 根据真实路径配置地址
-        this.$router.push({path: '/goodsBase/goodsInventory'})
+        this.$router.push({ path: '/goodsBase/goodsInventory' })
       },
       goEdit() {
         this.type = 2

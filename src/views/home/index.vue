@@ -14,7 +14,7 @@
           <div class="out-border" @click="jumpactNo()">
             <div class="layout-title">库存成本</div>
             <div class="color-main address-content">
-              <span >{{form.inventoryCost}}</span>
+              <span>{{form.inventoryCost}}</span>
             </div>
           </div>
         </el-col>
@@ -22,8 +22,8 @@
           <div class="out-border" @click="jumpactNo()">
             <div class="layout-title">库存比例</div>
             <div class="color-main address-content">
-              <span v-if="form.inventoryNum  && form.goodsPutInNum" >{{form.inventoryRatio}}%</span>
-              <span v-else > 0%</span>
+              <span v-if="form.inventoryNum  && form.goodsPutInNum">{{form.inventoryRatio}}%</span>
+              <span v-else> 0%</span>
             </div>
           </div>
         </el-col>
@@ -31,15 +31,15 @@
           <div class="out-border" @click="jumpGoods()">
             <div class="layout-title">商品款式总数</div>
             <div class="color-main address-content">
-              <span >{{form.goodsNum}}</span>
+              <span>{{form.goodsNum}}</span>
             </div>
           </div>
         </el-col>
         <el-col :span="4">
           <div class="out-border" @click="jumpPutIn()">
-            <div class="layout-title" >入库商品总数</div>
+            <div class="layout-title">入库商品总数</div>
             <div class="color-main address-content">
-              <span >{{form.goodsPutInNum}}</span>
+              <span>{{form.goodsPutInNum}}</span>
             </div>
           </div>
         </el-col>
@@ -47,18 +47,18 @@
           <div class="out-border" @click="jumpPutIn()">
             <div class="layout-title">入库总额</div>
             <div class="color-main address-content">
-              <span >{{form.inventoryAmount}}</span>
+              <span>{{form.inventoryAmount}}</span>
             </div>
           </div>
         </el-col>
-<!--        <el-col :span="4">-->
-<!--          <div class="out-border" @click="jumpactNo()">-->
-<!--            <div class="layout-title">市值总价</div>-->
-<!--            <div class="color-main address-content">-->
-<!--              <span >{{form.marketValue}}</span>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </el-col>-->
+        <!--        <el-col :span="4">-->
+        <!--          <div class="out-border" @click="jumpactNo()">-->
+        <!--            <div class="layout-title">市值总价</div>-->
+        <!--            <div class="color-main address-content">-->
+        <!--              <span >{{form.marketValue}}</span>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </el-col>-->
         <el-col :span="4">
           <div class="out-border" @click="jumpSellList()">
             <div class="layout-title">利润总额</div>
@@ -71,7 +71,7 @@
           <div class="out-border" @click="jumpSellList()">
             <div class="layout-title">交易成功数</div>
             <div class="color-main address-content">
-              <span >{{form.successNum}}</span>
+              <span>{{form.successNum}}</span>
             </div>
           </div>
         </el-col>
@@ -79,7 +79,7 @@
           <div class="out-border" @click="jumpSellList()">
             <div class="layout-title">成功总额</div>
             <div class="color-main address-content">
-              <span >{{form.orderAmount}}</span>
+              <span>{{form.orderAmount}}</span>
             </div>
           </div>
         </el-col>
@@ -87,7 +87,7 @@
           <div class="out-border" @click="jumpactOrder(7)">
             <div class="layout-title">总运费</div>
             <div class="color-main address-content">
-              <span >{{form.freight}}</span>
+              <span>{{form.freight}}</span>
             </div>
           </div>
         </el-col>
@@ -95,7 +95,7 @@
           <div class="out-border" @click="jumpactOrder(7)">
             <div class="layout-title">手续费</div>
             <div class="color-main address-content">
-              <span >{{form.poundage}}</span>
+              <span>{{form.poundage}}</span>
             </div>
           </div>
         </el-col>
@@ -103,12 +103,12 @@
           <div class="out-border" @click="goodsOther()">
             <div class="layout-title">其他收支</div>
             <div class="color-main address-content">
-              <span >{{form.otherRevenue}}</span>
+              <span>{{form.otherRevenue}}</span>
             </div>
           </div>
         </el-col>
         <el-col :span="4">
-          <div class="out-border"  @click="jumpSellList()">
+          <div class="out-border" @click="jumpSellList()">
             <div class="layout-title">平均利润</div>
             <div class="color-main address-content">
               <span class="color-danger">{{form.profitsAverage}}</span>
@@ -119,7 +119,7 @@
           <div class="out-border" @click="jumpPutIn()">
             <div class="layout-title">库存均价</div>
             <div class="color-main address-content">
-              <span >{{form.inboundAverage}}</span>
+              <span>{{form.inboundAverage}}</span>
             </div>
           </div>
         </el-col>
@@ -127,23 +127,23 @@
           <div class="out-border" @click="jumpSellList()">
             <div class="layout-title">成功均价</div>
             <div class="color-main address-content">
-              <span >{{form.orderAmountAverage}}</span>
+              <span>{{form.orderAmountAverage}}</span>
             </div>
           </div>
         </el-col>
         <el-col :span="4">
           <div class="out-border" @click="jumpactOrder(7)">
-            <div class="layout-title" >运费均价</div>
+            <div class="layout-title">运费均价</div>
             <div class="color-main address-content">
-              <span >{{form.freightAverage}}</span>
+              <span>{{form.freightAverage}}</span>
             </div>
           </div>
         </el-col>
-        <el-col :span="4" >
+        <el-col :span="4">
           <div class="out-border" @click="jumpactOrder(7)">
             <div class="layout-title">成本均价</div>
             <div class="color-main address-content">
-              <span >{{form.costAverage}}</span>
+              <span>{{form.costAverage}}</span>
             </div>
           </div>
         </el-col>
@@ -151,7 +151,7 @@
           <div class="out-border" @click="jumpactOrder(7)">
             <div class="layout-title">实际利润比例</div>
             <div class="color-main address-content">
-              <span >{{form.profitsProportion}}%</span>
+              <span>{{form.profitsProportion}}%</span>
             </div>
           </div>
         </el-col>
@@ -162,9 +162,9 @@
       <div class="un-handle-content">
         <el-row :gutter="20">
           <el-col :span="8">
-            <div class="un-handle-item"  @click="jumpactOrder(2)">
+            <div class="un-handle-item" @click="jumpactOrder(2)">
               <span class="font-medium">已上架商品</span>
-              <span style="float: right" >({{orderIofo.count2}})</span>
+              <span style="float: right">({{orderIofo.count2}})</span>
             </div>
           </el-col>
           <el-col :span="8">
@@ -181,7 +181,7 @@
               <span class="font-medium">已发货商品</span>
               <span
                 style="float: right"
-                    :class="orderIofo.count4 > 0 ? 'color-danger' : ''"
+                :class="orderIofo.count4 > 0 ? 'color-danger' : ''"
               >({{orderIofo.count4}})</span>
             </div>
           </el-col>
@@ -219,49 +219,53 @@
     </div>
     <div class="statistics-layout">
       <div class="layout-title">订单统计</div>
-        <el-col :span="4">
-          <div style="padding: 20px">
-            <div>
-              <div style="color: #909399;font-size: 14px">本月订单总数</div>
-              <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderData.successNum}}</div>
-              <div>
-<!--                (本期数-同期数)/同期数*100%-->
-                <span
-                  :class="orderData.successNumRate<0 ? 'color-danger' : 'color-success'"
-                  style="font-size: 14px"> {{orderData.successNumRate}} %</span>
-                <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
-              </div>
+      <el-col :span="4">
+        <div style="padding: 20px">
+          <div>
+            <div style="color: #909399;font-size: 14px">本月订单总数</div>
+            <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderData.successNum}}
             </div>
-            <div style="margin-top: 50px;">
-              <div style="color: #909399;font-size: 14px">本月利润</div>
-              <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderData.profitsAmount}}</div>
-              <div>
+            <div>
+              <!--                (本期数-同期数)/同期数*100%-->
+              <span
+                :class="orderData.successNumRate<0 ? 'color-danger' : 'color-success'"
+                style="font-size: 14px"> {{orderData.successNumRate}} %</span>
+              <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
+            </div>
+          </div>
+          <div style="margin-top: 50px;">
+            <div style="color: #909399;font-size: 14px">本月利润</div>
+            <div style="color: #606266;font-size: 24px;padding: 10px 0">
+              {{orderData.profitsAmount}}
+            </div>
+            <div>
                 <span
                   :class="orderData.profitsAmountRate<0 ? 'color-danger' : 'color-success'"
                   style="font-size: 14px">{{orderData.profitsAmountRate}} %</span>
-                <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
-              </div>
+              <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
             </div>
-            <div style="margin-top: 50px;">
-              <div style="color: #909399;font-size: 14px">本月销售总额</div>
-              <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderData.orderAmount}}</div>
-              <div>
+          </div>
+          <div style="margin-top: 50px;">
+            <div style="color: #909399;font-size: 14px">本月销售总额</div>
+            <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderData.orderAmount}}
+            </div>
+            <div>
                 <span
                   :class="orderData.orderAmountRate<0 ? 'color-danger' : 'color-success'"
-                      style="font-size: 14px">{{orderData.orderAmountRate}} %</span>
-                <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
-              </div>
+                  style="font-size: 14px">{{orderData.orderAmountRate}} %</span>
+              <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
             </div>
-<!--            <div style="margin-top: 20px;">-->
-<!--              <div style="color: #909399;font-size: 14px">本周销售总额</div>-->
-<!--              <div style="color: #606266;font-size: 24px;padding: 10px 0">50000</div>-->
-<!--              <div>-->
-<!--                <span class="color-danger" style="font-size: 14px">-10%</span>-->
-<!--                <span style="color: #C0C4CC;font-size: 14px">同比上周</span>-->
-<!--              </div>-->
-<!--            </div>-->
           </div>
-        </el-col>
+          <!--            <div style="margin-top: 20px;">-->
+          <!--              <div style="color: #909399;font-size: 14px">本周销售总额</div>-->
+          <!--              <div style="color: #606266;font-size: 24px;padding: 10px 0">50000</div>-->
+          <!--              <div>-->
+          <!--                <span class="color-danger" style="font-size: 14px">-10%</span>-->
+          <!--                <span style="color: #C0C4CC;font-size: 14px">同比上周</span>-->
+          <!--              </div>-->
+          <!--            </div>-->
+        </div>
+      </el-col>
       <el-row>
         <el-col :span="20">
           <div style="padding: 10px;border-left:1px solid #DCDFE6">
@@ -276,7 +280,7 @@
               start-placeholder="开始日期"
               end-placeholder="结束日期"
               @change="handleDateChange"
-             >
+            >
             </el-date-picker>
             <div>
               <ve-line
@@ -294,237 +298,249 @@
 </template>
 
 <script>
-import {str2Date} from '@/utils/date';
-import { goodsOrderApi } from '@/api/goodsOrder'
-// const DATA_FROM_BACKEND = {
-//   columns: ['date', 'orderNum','orderPrice'],
-//   rows: [
-//     {date: '2022-03', orderNum: 8, orderPrice: 2273.59},
-//     {date: '2022-04', orderNum: 7, orderPrice: 3113.83},
-//     {date: '2022-05', orderNum: 16, orderPrice: 7537.75},
-//     {date: '2022-06', orderNum: 9, orderPrice: 2847.87},
-//     {date: '2022-07', orderNum: 16, orderPrice: 4902.25},
-//     {date: '2022-08', orderNum: 14, orderPrice: 2250.92},
-//     {date: '2022-09', orderNum: 10, orderPrice: 4268.72},
-//     {date: '2022-10', orderNum: 23, orderPrice: 2273.59},
-//     {date: '2022-11', orderNum: 52, orderPrice: 24925.27},
-//   ]
-// };
-export default {
-  name: 'homePage',
-  data() {
-    return {
-      form: {
-      },
-      orderIofo: {
-      },
-      queryParam: {
-        createTimeFrom: '',
-        createTimeTo: ''
-      },
-      createTime: '',
-      chartSettings: {
-        xAxisType: 'time',
-        area:false,
-        axisSite: { right: ['profitsAmount'] },
-        labelAlias: {
-          'successNum': '订单数',
-          'orderAmount': '订单金额',
-          'profitsAmount': '利润'
-        }},
-      chartData: {
-        columns: ['months', 'successNum','orderAmount','profitsAmount'],
-        rows: []
-      },
-      orderData: {
-      },
-      loading: false,
-      dataEmpty: false
-    }
-  },
-  created() {
-    // this.initOrderCountDate();
-    this.getData()
-    this.getData1()
-  },
-  methods: {
-    handleDateChange() {
-      if (this.createTime) {
-        this.queryParam.createTimeFrom = this.createTime[0]
-        this.queryParam.createTimeTo = this.createTime[1]
-      } else {
-        this.queryParam.createTimeFrom = null
-        this.queryParam.createTimeTo = null
+  import { goodsOrderApi } from '@/api/goodsOrder'
+  // const DATA_FROM_BACKEND = {
+  //   columns: ['date', 'orderNum','orderPrice'],
+  //   rows: [
+  //     {date: '2022-03', orderNum: 8, orderPrice: 2273.59},
+  //     {date: '2022-04', orderNum: 7, orderPrice: 3113.83},
+  //     {date: '2022-05', orderNum: 16, orderPrice: 7537.75},
+  //     {date: '2022-06', orderNum: 9, orderPrice: 2847.87},
+  //     {date: '2022-07', orderNum: 16, orderPrice: 4902.25},
+  //     {date: '2022-08', orderNum: 14, orderPrice: 2250.92},
+  //     {date: '2022-09', orderNum: 10, orderPrice: 4268.72},
+  //     {date: '2022-10', orderNum: 23, orderPrice: 2273.59},
+  //     {date: '2022-11', orderNum: 52, orderPrice: 24925.27},
+  //   ]
+  // };
+  export default {
+    name: 'homePage',
+    data() {
+      return {
+        form: {},
+        orderIofo: {},
+        queryParam: {
+          createTimeFrom: '',
+          createTimeTo: ''
+        },
+        createTime: '',
+        chartSettings: {
+          xAxisType: 'time',
+          area: false,
+          axisSite: { right: ['profitsAmount'] },
+          labelAlias: {
+            'successNum': '订单数',
+            'orderAmount': '订单金额',
+            'profitsAmount': '利润'
+          }
+        },
+        chartData: {
+          columns: ['months', 'successNum', 'orderAmount', 'profitsAmount'],
+          rows: []
+        },
+        orderData: {},
+        loading: false,
+        dataEmpty: false
       }
+    },
+    created() {
+      // this.initOrderCountDate();
+      this.getData()
       this.getData1()
     },
-    // initOrderCountDate(){
-    //   let start = new Date()
-    //   start.setFullYear(2018)
-    //   start.setMonth(10)
-    //   start.setDate(1)
-    //   const end = new Date()
-    //   end.setTime(start.getTime() + 1000 * 60 * 60 * 24 * 7)
-    //   this.orderCountDate=[start,end]
-    // },
-    getData1() {
-      goodsOrderApi.indexOrderData(this.queryParam).then(res => {
-        if (res.subCode === 1000) {
-          this.dataEmpty = false
-          this.loading = false
-          this.chartData.rows = res.data.rows
-          this.orderData = res.data
-          if (this.orderData) {
-            this.orderData.successNumRate = parseFloat((this.orderData.successNum - this.orderData.successNumLast) / this.orderData.successNumLast * 100 ).toFixed(2)
-            this.orderData.profitsAmountRate = parseFloat((this.orderData.profitsAmount - this.orderData.profitsAmountLast) / this.orderData.profitsAmountLast * 100 ).toFixed(2)
-            this.orderData.orderAmountRate = parseFloat((this.orderData.orderAmount - this.orderData.orderAmountLast) / this.orderData.orderAmountLast * 100 ).toFixed(2)
-          }
+    methods: {
+      handleDateChange() {
+        if (this.createTime) {
+          this.queryParam.createTimeFrom = this.createTime[0]
+          this.queryParam.createTimeTo = this.createTime[1]
         } else {
-          this.$message.error(res.subMsg)
+          this.queryParam.createTimeFrom = null
+          this.queryParam.createTimeTo = null
         }
-      })
-    },
-    getData() {
-      goodsOrderApi.indexData().then(res => {
-        if (res.subCode === 1000) {
-          this.form = res.data ? res.data.commonDto : {}
-          this.orderIofo = res.data ? res.data.countDto : {}
-          if (this.form.inventoryCost && this.form.inventoryNum) {
-            this.form.inboundAverage = parseFloat(this.form.inventoryCost / this.form.inventoryNum).toFixed(2)
+        this.getData1()
+      },
+      // initOrderCountDate(){
+      //   let start = new Date()
+      //   start.setFullYear(2018)
+      //   start.setMonth(10)
+      //   start.setDate(1)
+      //   const end = new Date()
+      //   end.setTime(start.getTime() + 1000 * 60 * 60 * 24 * 7)
+      //   this.orderCountDate=[start,end]
+      // },
+      getData1() {
+        goodsOrderApi.indexOrderData(this.queryParam).then(res => {
+          if (res.subCode === 1000) {
+            this.dataEmpty = false
+            this.loading = false
+            this.chartData.rows = res.data.rows
+            this.orderData = res.data
+            if (this.orderData) {
+              this.orderData.successNumRate = parseFloat(
+                (this.orderData.successNum - this.orderData.successNumLast)
+                / this.orderData.successNumLast * 100).toFixed(2)
+              this.orderData.profitsAmountRate = parseFloat(
+                (this.orderData.profitsAmount - this.orderData.profitsAmountLast)
+                / this.orderData.profitsAmountLast * 100).toFixed(2)
+              this.orderData.orderAmountRate = parseFloat(
+                (this.orderData.orderAmount - this.orderData.orderAmountLast)
+                / this.orderData.orderAmountLast * 100).toFixed(2)
+            }
+          } else {
+            this.$message.error(res.subMsg)
           }
-          if (this.form.successNum) {
-            this.form.orderAmountAverage = parseFloat(this.form.orderAmount / this.form.successNum).toFixed(2)
-            this.form.freightAverage = parseFloat(this.form.freight / this.form.successNum).toFixed(2)
-            this.form.profitsAverage = parseFloat(this.form.profitsAmount / this.form.successNum).toFixed(2)
+        })
+      },
+      getData() {
+        goodsOrderApi.indexData().then(res => {
+          if (res.subCode === 1000) {
+            this.form = res.data ? res.data.commonDto : {}
+            this.orderIofo = res.data ? res.data.countDto : {}
+            if (this.form.inventoryCost && this.form.inventoryNum) {
+              this.form.inboundAverage = parseFloat(
+                this.form.inventoryCost / this.form.inventoryNum).toFixed(2)
+            }
+            if (this.form.successNum) {
+              this.form.orderAmountAverage = parseFloat(
+                this.form.orderAmount / this.form.successNum).toFixed(2)
+              this.form.freightAverage = parseFloat(
+                this.form.freight / this.form.successNum).toFixed(2)
+              this.form.profitsAverage = parseFloat(
+                this.form.profitsAmount / this.form.successNum).toFixed(2)
+            }
+            this.form.costAverage = parseFloat(
+              this.form.inboundAverage / 1 + this.form.freightAverage / 1).toFixed(2)
+            this.form.inventoryRatio = parseFloat(
+              this.form.inventoryNum / this.form.goodsPutInNum * 100).toFixed(2)
+            this.form.profitsProportion = parseFloat(
+              this.form.profitsAverage / this.form.costAverage * 100).toFixed(2)
+          } else {
+            this.$message.error(res.subMsg)
           }
-          this.form.costAverage = parseFloat(this.form.inboundAverage / 1 + this.form.freightAverage / 1).toFixed(2)
-          this.form.inventoryRatio = parseFloat(this.form.inventoryNum / this.form.goodsPutInNum * 100).toFixed(2)
-          this.form.profitsProportion = parseFloat(this.form.profitsAverage / this.form.costAverage * 100).toFixed(2)
-        } else {
-          this.$message.error(res.subMsg)
-        }
-      })
-    },
-    jumpactOrder(type) {
-      let path = '/goodsOrder/list' + type
-      this.$router.push({ path: path })
-    },
-    jumpactNo() {
-      this.$router.push({ path: '/goodsBase/goodsInventory'})
-    },
-    jumpPutIn() {
-      this.$router.push({ path: '/report/putInStorage'})
-    },
-    jumpSellList() {
-      this.$router.push({ path: '/report/sellList'})
-    },
-    goodsOther() {
-      this.$router.push({path: '/goodsOrder/goodsOther'})
-    },
-    jumpGoods() {
-      this.$router.push({ path: '/goodsBase/list'})
-    },
+        })
+      },
+      jumpactOrder(type) {
+        let path = '/goodsOrder/list' + type
+        this.$router.push({ path: path })
+      },
+      jumpactNo() {
+        this.$router.push({ path: '/goodsBase/goodsInventory' })
+      },
+      jumpPutIn() {
+        this.$router.push({ path: '/report/putInStorage' })
+      },
+      jumpSellList() {
+        this.$router.push({ path: '/report/sellList' })
+      },
+      goodsOther() {
+        this.$router.push({ path: '/goodsOrder/goodsOther' })
+      },
+      jumpGoods() {
+        this.$router.push({ path: '/goodsBase/list' })
+      }
+    }
   }
-}
 </script>
 
 <style scoped>
-.app-container {
-  margin-top: 0px;
-  margin-left: 20px;
-  margin-right: 150px;
-}
+  .app-container {
+    margin-top: 0px;
+    margin-left: 20px;
+    margin-right: 150px;
+  }
 
-.address-layout {
-}
+  .address-layout {
+  }
 
-.total-layout {
-  margin-top: 20px;
-}
+  .total-layout {
+    margin-top: 20px;
+  }
 
-.total-frame {
-  border: 1px solid #DCDFE6;
-  padding: 20px;
-  height: 100px;
-}
+  .total-frame {
+    border: 1px solid #DCDFE6;
+    padding: 20px;
+    height: 100px;
+  }
 
-.total-icon {
-  color: #409EFF;
-  width: 60px;
-  height: 60px;
-}
+  .total-icon {
+    color: #409EFF;
+    width: 60px;
+    height: 60px;
+  }
 
-.total-title {
-  position: relative;
-  font-size: 16px;
-  color: #909399;
-  left: 70px;
-  top: -50px;
-}
+  .total-title {
+    position: relative;
+    font-size: 16px;
+    color: #909399;
+    left: 70px;
+    top: -50px;
+  }
 
-.total-value {
-  position: relative;
-  font-size: 18px;
-  color: #606266;
-  left: 70px;
-  top: -40px;
-}
+  .total-value {
+    position: relative;
+    font-size: 18px;
+    color: #606266;
+    left: 70px;
+    top: -40px;
+  }
 
-.un-handle-layout {
-  margin-top: 20px;
-  border: 1px solid #DCDFE6;
-}
+  .un-handle-layout {
+    margin-top: 20px;
+    border: 1px solid #DCDFE6;
+  }
 
-.layout-title {
-  color: #606266;
-  padding: 15px 20px;
-  background: #F2F6FC;
-  font-weight: bold;
-}
+  .layout-title {
+    color: #606266;
+    padding: 15px 20px;
+    background: #F2F6FC;
+    font-weight: bold;
+  }
 
-.un-handle-content {
-  padding: 20px 40px;
-}
+  .un-handle-content {
+    padding: 20px 40px;
+  }
 
-.un-handle-item {
-  cursor: pointer;
-  border-bottom: 1px solid #EBEEF5;
-  padding: 10px;
-}
+  .un-handle-item {
+    cursor: pointer;
+    border-bottom: 1px solid #EBEEF5;
+    padding: 10px;
+  }
 
-.overview-layout {
-  margin-top: 20px;
-}
+  .overview-layout {
+    margin-top: 20px;
+  }
 
-.overview-item-value {
-  font-size: 24px;
-  text-align: center;
-}
+  .overview-item-value {
+    font-size: 24px;
+    text-align: center;
+  }
 
-.overview-item-title {
-  margin-top: 10px;
-  text-align: center;
-}
+  .overview-item-title {
+    margin-top: 10px;
+    text-align: center;
+  }
 
-.out-border {
-  cursor: pointer;
-  border: 1px solid #DCDFE6;
-  margin-bottom: 30px;
-}
+  .out-border {
+    cursor: pointer;
+    border: 1px solid #DCDFE6;
+    margin-bottom: 30px;
+  }
 
-.statistics-layout {
-  margin-top: 20px;
-  border: 1px solid #DCDFE6;
-}
-.mine-layout {
-  position: absolute;
-  right: 140px;
-  top: 107px;
-  width: 250px;
-  height: 235px;
-}
-.address-content{
-  padding: 20px;
-  font-size: 18px
-}
+  .statistics-layout {
+    margin-top: 20px;
+    border: 1px solid #DCDFE6;
+  }
+
+  .mine-layout {
+    position: absolute;
+    right: 140px;
+    top: 107px;
+    width: 250px;
+    height: 235px;
+  }
+
+  .address-content {
+    padding: 20px;
+    font-size: 18px
+  }
 </style>

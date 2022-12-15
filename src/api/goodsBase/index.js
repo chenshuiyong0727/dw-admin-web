@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+
 export const goodsBaseApi = {
   // 获取数据列表
   page: (body) => request({

@@ -56,105 +56,106 @@
 </template>
 
 <script>
-import { dictListApi } from '@/api/dictManage'
-import { createCodeApi } from '@/api/createCode'
-import tableDataStep from './tableDataSteps'
-import backEndStep from './backendStep'
-import frontEndStep from './frontendStep'
-export default {
-  name: 'TableEdit',
-  components: {
-    tableDataStep,
-    backEndStep,
-    frontEndStep,
-  },
-  data() {
-    return {
-      dictList: [],
-      id: '',
-      baseForm: {},
-      tableFormCur: [],
-      stepArray: [
-        { title: '数据库表设置' },
-        { title: '前端展示设置' },
-        { title: '后端实体设置' },
-      ],
-      title: '',
-      dialogFormVisible: false,
-      direction: 'horizontal',
-      active: 1,
-    }
-  },
-  methods: {
-    showEdit(row) {
-      if (!row) {
-        this.title = '代码生成 - 添加'
-      } else {
-        const { id } = row
-        this.id = id
-        this.title = '代码生成 - 编辑'
+  import { dictListApi } from '@/api/dictManage'
+  import { createCodeApi } from '@/api/createCode'
+  import tableDataStep from './tableDataSteps'
+  import backEndStep from './backendStep'
+  import frontEndStep from './frontendStep'
+
+  export default {
+    name: 'TableEdit',
+    components: {
+      tableDataStep,
+      backEndStep,
+      frontEndStep
+    },
+    data() {
+      return {
+        dictList: [],
+        id: '',
+        baseForm: {},
+        tableFormCur: [],
+        stepArray: [
+          { title: '数据库表设置' },
+          { title: '前端展示设置' },
+          { title: '后端实体设置' }
+        ],
+        title: '',
+        dialogFormVisible: false,
+        direction: 'horizontal',
+        active: 1
       }
-      this.dialogFormVisible = true
-      this.getData(this.id)
-      this.getDictList()
     },
-    // 关闭
-    close() {
-      this.dialogFormVisible = false
-      this.active = 1
-    },
-    next(firstObj) {
-      this.active = this.active + 1
-      this.formObj = firstObj
-    },
-    prevFront() {
-      this.active = this.active - 1
-    },
-    nextFront() {
-      this.active = this.active + 1
-    },
-    lastPrev() {
-      this.active = this.active - 1
-    },
-    getDictList() {
-      dictListApi.getCodeList({ pageNum: 1, pageSize: 1000 }).then((res) => {
-        if (res.subCode === 1000) {
-          this.dictList = res.data ? res.data.list : []
-          this.dictList = this.dictList.map((item) => {
-            return { value: item.typeValue, label: item.typeName }
-          })
+    methods: {
+      showEdit(row) {
+        if (!row) {
+          this.title = '代码生成 - 添加'
         } else {
-          this.$message.error(res.subMsg)
+          const { id } = row
+          this.id = id
+          this.title = '代码生成 - 编辑'
         }
-      })
-    },
-    updateAll() {
-      createCodeApi
+        this.dialogFormVisible = true
+        this.getData(this.id)
+        this.getDictList()
+      },
+      // 关闭
+      close() {
+        this.dialogFormVisible = false
+        this.active = 1
+      },
+      next(firstObj) {
+        this.active = this.active + 1
+        this.formObj = firstObj
+      },
+      prevFront() {
+        this.active = this.active - 1
+      },
+      nextFront() {
+        this.active = this.active + 1
+      },
+      lastPrev() {
+        this.active = this.active - 1
+      },
+      getDictList() {
+        dictListApi.getCodeList({ pageNum: 1, pageSize: 1000 }).then((res) => {
+          if (res.subCode === 1000) {
+            this.dictList = res.data ? res.data.list : []
+            this.dictList = this.dictList.map((item) => {
+              return { value: item.typeValue, label: item.typeName }
+            })
+          } else {
+            this.$message.error(res.subMsg)
+          }
+        })
+      },
+      updateAll() {
+        createCodeApi
         .updateCode({ columnList: this.tableFormCur, ...this.baseForm })
         .then((res) => {
           if (res.subCode === 1000) {
             this.$message({
               message: '编辑成功',
-              type: 'success',
+              type: 'success'
             })
             this.dialogFormVisible = false
           } else {
             this.$message.error(res.subMsg)
           }
         })
-    },
-    getData(id) {
-      createCodeApi.getCodeDetailById({ id }).then((res) => {
-        if (res.subCode === 1000) {
-          this.tableFormCur = res.data ? res.data.columnList1 : []
-          this.baseForm = res.data ? res.data.genTableDto : {}
-        } else {
-          this.$message.error(res.subMsg)
-        }
-      })
-    },
-  },
-}
+      },
+      getData(id) {
+        createCodeApi.getCodeDetailById({ id }).then((res) => {
+          if (res.subCode === 1000) {
+            this.tableFormCur = res.data ? res.data.columnList1 : []
+            this.baseForm = res.data ? res.data.genTableDto : {}
+          } else {
+            this.$message.error(res.subMsg)
+          }
+        })
+      }
+    }
+  }
 </script>
 
 

@@ -41,14 +41,15 @@
 
         <el-table style="margin-top: 00px" border :data="tableData1" @row-click="rowClick">
           <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-          <el-table-column  align="center"  prop="actNo"  width="100"  label="货号"  >
+          <el-table-column align="center" prop="actNo" width="100" label="货号">
             <template slot-scope="scope">
               <a style="color: #20a0ff" @click="viewAll(scope.row.actNo)"> {{ scope.row.actNo }}</a>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="图片"  >
+          <el-table-column align="center" label="图片">
             <template slot-scope="scope">
-              <img  v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"  @click="avatarShow(scope.row.imgUrl)" >
+              <img v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"
+                   @click="avatarShow(scope.row.imgUrl)">
             </template>
           </el-table-column>
         </el-table>
@@ -71,18 +72,18 @@
         >
           <el-row class="clearfix btm-distance">
             <div>
-                          <img
-                            v-if="imgUrl"
-                            :src="fileUrl + imgUrl"
-                            style="width: 80px;height: 75px;border-radius: 10px;"
-                            @click="avatarShow(imgUrl)"
-                          />
+              <img
+                v-if="imgUrl"
+                :src="fileUrl + imgUrl"
+                style="width: 80px;height: 75px;border-radius: 10px;"
+                @click="avatarShow(imgUrl)"
+              />
             </div>
           </el-row>
           <el-row class="clearfix btm-distance" style="padding-left: 5px;">
-            <div class="overview" >
+            <div class="overview">
               <p><strong>库存数量</strong></p>
-              <p>{{inventoryData.inventory}} / {{inventoryData.oldInventory}}   </p>
+              <p>{{inventoryData.inventory}} / {{inventoryData.oldInventory}} </p>
             </div>
           </el-row>
           <el-row class="clearfix btm-distance">
@@ -106,11 +107,11 @@
           <el-row class="clearfix btm-distance">
             <div class="overview">
               <p><strong>利润比例</strong></p>
-              <p>{{(inventoryData.profits / inventoryData.inputPrice  ) * 100 | numFilter}} %</p>
+              <p>{{(inventoryData.profits / inventoryData.inputPrice ) * 100 | numFilter}} %</p>
             </div>
           </el-row>
           <el-form ref="form">
-            <el-row type="flex" >
+            <el-row type="flex">
               <el-button type="primary" size="small" style="margin-right: 10px"
                          @click="goDetail()">新增尺码
               </el-button>
@@ -120,15 +121,15 @@
             </el-row>
           </el-form>
         </div>
-        <el-table style="margin-top: 20px" border :data="tableData" >
+        <el-table style="margin-top: 20px" border :data="tableData">
 
           <el-table-column align="center" prop="size" width="50" label="尺码"/>
           <el-table-column align="center" prop="oldInventory" width="50" label="原始库存"/>
-          <el-table-column align="center" prop=""  width="50" label="剩余库存">
+          <el-table-column align="center" prop="" width="50" label="剩余库存">
             <template slot-scope="scope">
               <span
-                  :class="scope.row.inventory > 0 ? 'color-danger' : 'color-success'"
-                >
+                :class="scope.row.inventory > 0 ? 'color-danger' : 'color-success'"
+              >
               {{scope.row.inventory}}
             </span>
             </template>
@@ -138,25 +139,29 @@
           <el-table-column align="center" prop="price" label="入库价">
             <template scope="scope">
               <div class="input-box">
-                <el-input size="small"  v-model="scope.row.price"></el-input>
+                <el-input size="small" v-model="scope.row.price"></el-input>
               </div>
             </template>
           </el-table-column>
-<!--          <el-table-column align="center" prop="" label="总入库价">-->
-<!--            <template  slot-scope="scope">{{scope.row.price * (scope.row.inventory + scope.row.successCount)}}</template>-->
-<!--          </el-table-column>-->
+          <!--          <el-table-column align="center" prop="" label="总入库价">-->
+          <!--            <template  slot-scope="scope">{{scope.row.price * (scope.row.inventory + scope.row.successCount)}}</template>-->
+          <!--          </el-table-column>-->
           <el-table-column align="center" prop="dwPrice" label="得物价">
             <template scope="scope">
               <div class="input-box">
-                <el-input size="small"  v-model="scope.row.dwPrice"></el-input>
+                <el-input size="small" v-model="scope.row.dwPrice"></el-input>
               </div>
             </template>
           </el-table-column>
           <el-table-column align="center" prop="" label="手续费">
-            <template v-if="scope.row.dwPrice" slot-scope="scope">{{(scope.row.dwPrice * 0.075 + 38 + 8.5) | numFilter}}</template>
+            <template v-if="scope.row.dwPrice" slot-scope="scope">{{(scope.row.dwPrice * 0.075 + 38
+              + 8.5) | numFilter}}
+            </template>
           </el-table-column>
           <el-table-column align="center" prop="" label="到手单价">
-            <template v-if="scope.row.dwPrice" slot-scope="scope">{{(scope.row.dwPrice - (scope.row.dwPrice * 0.075 + 38 + 8.5)) | numFilter}}</template>
+            <template v-if="scope.row.dwPrice" slot-scope="scope">{{(scope.row.dwPrice -
+              (scope.row.dwPrice * 0.075 + 38 + 8.5)) | numFilter}}
+            </template>
           </el-table-column>
           <el-table-column align="center" prop="" label="预计利润">
             <template v-if="scope.row.dwPrice" slot-scope="scope">
@@ -168,20 +173,21 @@
             </template>
           </el-table-column>
           <el-table-column align="center" prop="" label="总入库价">
-            <template  slot-scope="scope">{{scope.row.price * scope.row.oldInventory}}</template>
+            <template slot-scope="scope">{{scope.row.price * scope.row.oldInventory}}</template>
           </el-table-column>
           <el-table-column align="center" prop="createTime" label="入库时间">
-            <template slot-scope="scope">{{scope.row.createTime | formateTime() }} </template>
+            <template slot-scope="scope">{{scope.row.createTime | formateTime() }}</template>
           </el-table-column>
           <el-table-column align="center" prop="id" label="编号"/>
           <el-table-column fixed="right" align="center" label="操作" width="140">
             <template slot-scope="scope">
               <el-button type="text" @click="update(scope.row)">修改</el-button>
-              <el-button type="text" @click="goDel(scope.row.id)" >删除</el-button>
+              <el-button type="text" @click="goDel(scope.row.id)">删除</el-button>
               <el-button
                 type="text"
-                         v-if="scope.row.inventory > scope.row.galleryCount"
-                         @click="changeStatusDialog(scope.row)">上架</el-button>
+                v-if="scope.row.inventory > scope.row.galleryCount"
+                @click="changeStatusDialog(scope.row)">上架
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -197,7 +203,7 @@
           </el-pagination>
         </el-row>
       </div>
-      <inventoryDetail ref="inventory-detail-edit"  />
+      <inventoryDetail ref="inventory-detail-edit"/>
     </div>
     <!-- </three-level-route> -->
     <div class="popContainer" v-if="pictureZoomShow" @click="pictureZoomShow = false">
@@ -214,216 +220,218 @@
 </template>
 
 <script>
-import ThreeLevelRoute from '@/components/ThreeLevelRoute'
-import { goodsInventoryApi } from '@/api/goodsInventory'
-import { permissionMixin } from '@/mixins/permissionMixin'
-import InventoryDetail from './components/inventoryDetail'
-import changeStatusDialog from './components/changeStatusDialog'
+  import ThreeLevelRoute from '@/components/ThreeLevelRoute'
+  import { goodsInventoryApi } from '@/api/goodsInventory'
+  import { permissionMixin } from '@/mixins/permissionMixin'
+  import InventoryDetail from './components/inventoryDetail'
+  import changeStatusDialog from './components/changeStatusDialog'
 
-export default {
-  mixins: [permissionMixin],
-  components: {
-    ThreeLevelRoute,
-    changeStatusDialog,
-    InventoryDetail
-  },
-  data() {
-    return {
-      sizeData: '',
-      imageZoom: '',
-      isShowDialog: false,
-      queryParam1: {
-        keyword: '',
-        pageSize: 5,
-        inventoryTo: 1,
-        pageNum: 1
-      },
-      queryParam: {
-        id: '',
-        goodsId: '',
-        pageSize: 10,
-        pageNum: 1
-      },
-      pictureZoomShow: false,
-      fileUrl: fileUrl,
-      inventoryToList: [
-        { fieldValue: 1, fieldName: '现货' }, { fieldValue: 0, fieldName: '售空' }, { fieldValue: 2, fieldName: '未上架' }
-      ],
-      dataStatusList: [],
-      imgUrl: '',
-      actNo: '',
-      tableData: [],
-      tableData1: [],
-      totalCount1: 1,
-      totalCount: 1 ,
-      inventoryData: {
-        profits: '',
-        inventory: '',
-        oldInventory: '',
-        inventoryCost: '',
-        dwPrice: ''
+  export default {
+    mixins: [permissionMixin],
+    components: {
+      ThreeLevelRoute,
+      changeStatusDialog,
+      InventoryDetail
+    },
+    data() {
+      return {
+        sizeData: '',
+        imageZoom: '',
+        isShowDialog: false,
+        queryParam1: {
+          keyword: '',
+          pageSize: 5,
+          inventoryTo: 1,
+          pageNum: 1
+        },
+        queryParam: {
+          id: '',
+          goodsId: '',
+          pageSize: 10,
+          pageNum: 1
+        },
+        pictureZoomShow: false,
+        fileUrl: fileUrl,
+        inventoryToList: [
+          { fieldValue: 1, fieldName: '现货' }, { fieldValue: 0, fieldName: '售空' },
+          { fieldValue: 2, fieldName: '未上架' }
+        ],
+        dataStatusList: [],
+        imgUrl: '',
+        actNo: '',
+        tableData: [],
+        tableData1: [],
+        totalCount1: 1,
+        totalCount: 1,
+        inventoryData: {
+          profits: '',
+          inventory: '',
+          oldInventory: '',
+          inventoryCost: '',
+          dwPrice: ''
+        }
       }
-    }
-  },
-  created() {
-    const { actNo } = this.$route.query
-    // this.goodsId = goodsId
-    this.queryParam1.keyword = actNo
-    if (this.queryParam1.keyword) {
+    },
+    created() {
+      const { actNo } = this.$route.query
+      // this.goodsId = goodsId
+      this.queryParam1.keyword = actNo
+      if (this.queryParam1.keyword) {
+        this.page()
+        // this.getDetailById(this.goodsId)
+      }
+    },
+    mounted() {
       this.page()
-      // this.getDetailById(this.goodsId)
-    }
-  },
-  mounted() {
-    this.page()
-    this.listSysDict()
-  },
-  methods: {
-    changeStatusDialog(row) {
-      this.sizeData = row
-      this.isShowDialog = true
+      this.listSysDict()
     },
-    closDialog() {
-      this.isShowDialog = false
-    },
-    refreshPage() {
-      this.isShowDialog = false
-      this.pageGoods()
-    },
-    avatarShow(e) {
-      this.imageZoom = e
-      this.pictureZoomShow = true
-    },
-    goDetail() {
-      // *** 根据真实路径配置地址
-      if (!this.queryParam.goodsId) {
-        this.$alert('没有选中数据')
-        return
-      }
-      let goodsId = this.queryParam.goodsId
-      this.$router.push({ path: '/goodsBase/goodsInventory/detail', query: { goodsId }})
-    },
-    jumpactNo() {
-      if (!this.actNo) {
-        this.$alert('没有选中数据')
-        return
-      }
-      let actNo = this.actNo
-      this.$router.push({ path: '/goodsOrder/list', query: { actNo }})
-    },
-    rowClick(row) {
-      console.info(row)
-      this.pageGoods(row.id)
-      this.imgUrl = row.imgUrl
-      this.actNo = row.actNo
-    },
-    showInventoryDrawer() {
-      this.$refs['inventory-detail-edit'].show()
-    },
-    viewAll(actNo) {
-      this.$router.push({ path: '/goodsBase/goodsInventory/dataDetail', query: { actNo }})
-      //
-      // this.$router.push({path: '/goodsBase/goodsInventory/dataDetail'})
-    },
-    page() {
-      goodsInventoryApi.page(this.queryParam1).then(res => {
-        if (res.subCode === 1000) {
-          this.tableData1 = res.data ? res.data.list : []
-          this.totalCount1 = res.data ? res.data.pageInfo.totalCount : 0
-          if (this.totalCount1 == 0) {
-            if (this.queryParam1.inventoryTo == 1) {
-              this.queryParam1.inventoryTo = 0
-              this.page()
+    methods: {
+      changeStatusDialog(row) {
+        this.sizeData = row
+        this.isShowDialog = true
+      },
+      closDialog() {
+        this.isShowDialog = false
+      },
+      refreshPage() {
+        this.isShowDialog = false
+        this.pageGoods()
+      },
+      avatarShow(e) {
+        this.imageZoom = e
+        this.pictureZoomShow = true
+      },
+      goDetail() {
+        // *** 根据真实路径配置地址
+        if (!this.queryParam.goodsId) {
+          this.$alert('没有选中数据')
+          return
+        }
+        let goodsId = this.queryParam.goodsId
+        this.$router.push({ path: '/goodsBase/goodsInventory/detail', query: { goodsId } })
+      },
+      jumpactNo() {
+        if (!this.actNo) {
+          this.$alert('没有选中数据')
+          return
+        }
+        let actNo = this.actNo
+        this.$router.push({ path: '/goodsOrder/list', query: { actNo } })
+      },
+      rowClick(row) {
+        console.info(row)
+        this.pageGoods(row.id)
+        this.imgUrl = row.imgUrl
+        this.actNo = row.actNo
+      },
+      showInventoryDrawer() {
+        this.$refs['inventory-detail-edit'].show()
+      },
+      viewAll(actNo) {
+        this.$router.push({ path: '/goodsBase/goodsInventory/dataDetail', query: { actNo } })
+        //
+        // this.$router.push({path: '/goodsBase/goodsInventory/dataDetail'})
+      },
+      page() {
+        goodsInventoryApi.page(this.queryParam1).then(res => {
+          if (res.subCode === 1000) {
+            this.tableData1 = res.data ? res.data.list : []
+            this.totalCount1 = res.data ? res.data.pageInfo.totalCount : 0
+            if (this.totalCount1 == 0) {
+              if (this.queryParam1.inventoryTo == 1) {
+                this.queryParam1.inventoryTo = 0
+                this.page()
+              }
+            } else {
+              this.imgUrl = this.tableData1[0].imgUrl
+              this.actNo = this.tableData1[0].actNo
+              this.pageGoods(this.tableData1[0].id)
             }
           } else {
-            this.imgUrl = this.tableData1[0].imgUrl
-            this.actNo = this.tableData1[0].actNo
-            this.pageGoods(this.tableData1[0].id)
+            this.$message.error(res.subMsg)
           }
-        } else {
-          this.$message.error(res.subMsg)
+        })
+      },
+      pageGoods(goodsId) {
+        if (goodsId) {
+          this.queryParam.goodsId = goodsId
         }
-      })
-    },
-    pageGoods(goodsId) {
-      if (goodsId) {
-        this.queryParam.goodsId = goodsId
+        goodsInventoryApi.pageGoods(this.queryParam).then(res => {
+          if (res.subCode === 1000) {
+            this.tableData = res.data ? res.data.list : []
+            this.totalCount = res.data ? res.data.pageInfo.totalCount : 0
+            this.inventoryData = res.data.goodsInventoryPageVo ? res.data.goodsInventoryPageVo
+              : this.inventoryData
+          } else {
+            this.$message.error(res.subMsg)
+          }
+        })
+      },
+      listSysDict() {
+        let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
+          localStorage.getItem('sysDictList')) : []
+        this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
+      },
+      pageChangeHandle(currentPage) {
+        this.queryParam.pageNum = currentPage
+        this.pageGoods()
+      },
+      reSearchHandle(size) {
+        this.queryParam.pageSize = size
+        this.queryParam.pageNum = 1
+        this.pageGoods()
+      },
+      pageChangeHandle1(currentPage) {
+        this.queryParam1.pageNum = currentPage
+        this.page()
+      },
+      reSearchHandle1(size) {
+        this.queryParam1.pageSize = size
+        this.queryParam1.pageNum = 1
+        this.page()
+      },
+      goDel(id) {
+        this.$confirm('是否删除', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          goodsInventoryApi.delById(id).then(res => {
+            if (res.subCode === 1000) {
+              this.$message.success(res.subMsg)
+              this.pageGoods()
+            } else {
+              this.$message.error(res.subMsg)
+            }
+          })
+        })
+      },
+      update(row) {
+        console.info(row)
+        this.$confirm('是否修改', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          goodsInventoryApi.update(row).then(res => {
+            if (res.subCode === 1000) {
+              this.$message.success(res.subMsg)
+              this.pageGoods(row.goodsId)
+            } else {
+              this.$message.error(res.subMsg)
+            }
+          })
+        })
+      },
+      // changeStatus(row) {
+      //   console.info(row)
+      // },
+      search() {
+        this.queryParam1.pageNum = 1
+        this.page()
       }
-      goodsInventoryApi.pageGoods(this.queryParam).then(res => {
-        if (res.subCode === 1000) {
-          this.tableData = res.data ? res.data.list : []
-          this.totalCount = res.data ? res.data.pageInfo.totalCount : 0
-          this.inventoryData = res.data.goodsInventoryPageVo ? res.data.goodsInventoryPageVo : this.inventoryData
-        } else {
-          this.$message.error(res.subMsg)
-        }
-      })
-    },
-    listSysDict() {
-      let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
-        localStorage.getItem('sysDictList')) : []
-      this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
-    },
-    pageChangeHandle(currentPage) {
-      this.queryParam.pageNum = currentPage
-      this.pageGoods()
-    },
-    reSearchHandle(size) {
-      this.queryParam.pageSize = size
-      this.queryParam.pageNum = 1
-      this.pageGoods()
-    },
-    pageChangeHandle1(currentPage) {
-      this.queryParam1.pageNum = currentPage
-      this.page()
-    },
-    reSearchHandle1(size) {
-      this.queryParam1.pageSize = size
-      this.queryParam1.pageNum = 1
-      this.page()
-    },
-    goDel(id) {
-      this.$confirm('是否删除', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        goodsInventoryApi.delById(id).then(res => {
-          if (res.subCode === 1000) {
-            this.$message.success(res.subMsg)
-            this.pageGoods()
-          } else {
-            this.$message.error(res.subMsg)
-          }
-        })
-      })
-    },
-    update(row) {
-      console.info(row)
-      this.$confirm('是否修改', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        goodsInventoryApi.update(row).then(res => {
-          if (res.subCode === 1000) {
-            this.$message.success(res.subMsg)
-            this.pageGoods(row.goodsId)
-          } else {
-            this.$message.error(res.subMsg)
-          }
-        })
-      })
-    },
-    // changeStatus(row) {
-    //   console.info(row)
-    // },
-    search() {
-      this.queryParam1.pageNum = 1
-      this.page()
     }
   }
-}
 </script>
 
 <style lang="scss" scoped>
@@ -484,20 +492,23 @@ export default {
     padding: 10px 10px;
     border-radius: 5px;
     background: #eee;
-/*    height: 135px;
-    width: 195px;*/
+    /*    height: 135px;
+        width: 195px;*/
     margin-right: 15px;
     float: left;
+
     strong {
       /*font-size: 16px;*/
       color: #111;
       padding-bottom: 5px;
       display: inline-block;
     }
+
     p {
       line-height: 25px;
     }
   }
+
   a {
     color: #409EFF;
   }

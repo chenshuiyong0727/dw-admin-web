@@ -1,13 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import store from '@/store'
+/* Layout */
+import Layout from '@/layout'
 
 // import newWindowRouter from './newWindowRouter'
 
 Vue.use(Router)
-
-/* Layout */
-import Layout from '@/layout'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -30,10 +28,10 @@ import Layout from '@/layout'
 
 // 顶部导航菜单一级路由 从左到右顺序排列
 export const pathList = [
-/*  { title: '项目管理', topMenuId: 1 },
-  { title: '用户管理', topMenuId: 2 },
-  { title: '认知管理', topMenuId: 3 },
-  { title: '运营管理', topMenuId: 4 },*/
+  /*  { title: '项目管理', topMenuId: 1 },
+    { title: '用户管理', topMenuId: 2 },
+    { title: '认知管理', topMenuId: 3 },
+    { title: '运营管理', topMenuId: 4 },*/
   { title: '开发工具', topMenuId: 3 },
   // { title: '系统管理', topMenuId: 1 },
   { title: '我的账号', topMenuId: 2, hidden: true }
@@ -147,20 +145,20 @@ export const constantRoutes = [
   //   ]
   // },
   // 菜单管理
-/*  {
-    path: '/menu',
-    component: Layout,
-    meta: { title: '菜单管理', leftMenuId: 1 },
-    redirect: '/menu/list',
-    children: [
-      {
-        path: 'list',
-        name: 'list',
-        component: () => import('@/views/systemManage/menu/list'),
-        meta: { title: '菜单列表' }
-      }
-    ]
-  },*/
+  /*  {
+      path: '/menu',
+      component: Layout,
+      meta: { title: '菜单管理', leftMenuId: 1 },
+      redirect: '/menu/list',
+      children: [
+        {
+          path: 'list',
+          name: 'list',
+          component: () => import('@/views/systemManage/menu/list'),
+          meta: { title: '菜单列表' }
+        }
+      ]
+    },*/
   // 我的账号
   {
     path: '/myAccount',

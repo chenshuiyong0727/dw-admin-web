@@ -16,7 +16,8 @@ import { parseTime } from './index'
 //     }
 //   })
 // }
-let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(localStorage.getItem('sysDictList')) : []
+let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
+  localStorage.getItem('sysDictList')) : []
 if (!sysDictList.length) {
   commonApi.listSysDict().then(res => {
     if (res.subCode === 1000) {
@@ -28,11 +29,13 @@ if (!sysDictList.length) {
   })
 }
 Vue.filter('dictToDesc', (value, type) => {
-  let res = sysDictList.filter(item => item.typeValue == DICT_KEYS[type] && item.fieldValue == value)
+  let res = sysDictList.filter(
+    item => item.typeValue == DICT_KEYS[type] && item.fieldValue == value)
   return res.length ? res[0].fieldName : '--'
 })
 Vue.filter('dictToDescTypeValue', (value, type) => {
-  let res = sysDictList.filter(item => item.typeValue == type && item.fieldValue == value)
+  let res = sysDictList.filter(
+    item => item.typeValue == type && item.fieldValue == value)
   return res.length ? res[0].fieldName : '--'
 })
 Vue.filter('numFilter', (value) => {

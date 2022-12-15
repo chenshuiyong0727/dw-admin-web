@@ -44,7 +44,9 @@ export function parseTime(time, cFormat) {
   const time_str = format.replace(/{([ymdhisa])+}/g, (result, key) => {
     const value = formatObj[key]
     // Note: getDay() returns 0 on Sunday
-    if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value ] }
+    if (key === 'a') {
+      return ['日', '一', '二', '三', '四', '五', '六'][value]
+    }
     return value.toString().padStart(2, '0')
   })
   return time_str
@@ -122,7 +124,8 @@ export function param2Obj(url) {
 export function encrypt(word, secret_key) {
   let key = CryptoJS.enc.Utf8.parse(secret_key)
   let srcs = CryptoJS.enc.Utf8.parse(word)
-  let encrypted = CryptoJS.AES.encrypt(srcs, key, { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 })
+  let encrypted = CryptoJS.AES.encrypt(srcs, key,
+    { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 })
   return encrypted.toString()
 }
 
@@ -132,7 +135,8 @@ export function encrypt(word, secret_key) {
  */
 export function decrypt(word, secret_key) {
   let key = CryptoJS.enc.Utf8.parse(secret_key)
-  let decrypt = CryptoJS.AES.decrypt(word, key, { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 })
+  let decrypt = CryptoJS.AES.decrypt(word, key,
+    { mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7 })
   return CryptoJS.enc.Utf8.stringify(decrypt).toString()
 }
 
@@ -142,7 +146,8 @@ export function decrypt(word, secret_key) {
  * 按钮权限: post-添加 put-修改 delete-删除 get-单个查询 query-列表查询 export-导出 import-导入 batch_delete-批量删除 batch_modify-批量修改 reset-查询重置
  */
 export function getButtonPermission(pageRouter) {
-  const functionList = localStorage.getItem('functionList') ? JSON.parse(localStorage.getItem('functionList')) : []
+  const functionList = localStorage.getItem('functionList') ? JSON.parse(
+    localStorage.getItem('functionList')) : []
   let currentLocationPath = ''
   functionList.filter((item) => {
     if (item.route === pageRouter) {
@@ -245,14 +250,15 @@ export function objMerge(target = {}, source = {}) {
  */
 export function uuid() {
   let d = new Date().getTime()
-  if (window.performance && typeof window.performance.now === "function") {
+  if (window.performance && typeof window.performance.now === 'function') {
     d += performance.now()
   }
-  let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    let r = (d + Math.random() * 16) % 16 | 0
-    d = Math.floor(d / 16)
-    return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16)
-  })
+  let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
+    function(c) {
+      let r = (d + Math.random() * 16) % 16 | 0
+      d = Math.floor(d / 16)
+      return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16)
+    })
   return uuid
 }
 
@@ -260,55 +266,55 @@ export function uuid() {
  * 判断是否是基本数据类型
  * @param value
  */
- function isPrimitive(value){
+function isPrimitive(value) {
   return (typeof value === 'string' ||
-  typeof value === 'number' ||
-  typeof value === 'symbol' ||
-  typeof value === 'boolean')
+    typeof value === 'number' ||
+    typeof value === 'symbol' ||
+    typeof value === 'boolean')
 }
 
 /**
  * 判断是否是一个js对象
  * @param value
  */
-function isObject(value){
-  return Object.prototype.toString.call(value) === "[object Object]"
+function isObject(value) {
+  return Object.prototype.toString.call(value) === '[object Object]'
 }
 
 /**
  * 深拷贝一个值
  * @param value
  */
-export function cloneDeep(value){
+export function cloneDeep(value) {
 
   // 记录被拷贝的值，避免循环引用的出现
-  let memo = {};
+  let memo = {}
 
-  function baseClone(value){
-    let res;
+  function baseClone(value) {
+    let res
     // 如果是基本数据类型，则直接返回
-    if(isPrimitive(value)){
-      return value;
-    // 如果是引用数据类型，我们浅拷贝一个新值来代替原来的值
-    }else if(Array.isArray(value)){
-      res = [...value];
-    }else if(isObject(value)){
-      res = {...value};
+    if (isPrimitive(value)) {
+      return value
+      // 如果是引用数据类型，我们浅拷贝一个新值来代替原来的值
+    } else if (Array.isArray(value)) {
+      res = [...value]
+    } else if (isObject(value)) {
+      res = { ...value }
     }
 
     // 检测我们浅拷贝的这个对象的属性值有没有是引用数据类型。如果是，则递归拷贝
-    Reflect.ownKeys(res).forEach(key=>{
-      if(typeof res[key] === "object" && res[key]!== null){
+    Reflect.ownKeys(res).forEach(key => {
+      if (typeof res[key] === 'object' && res[key] !== null) {
         //此处我们用memo来记录已经被拷贝过的引用地址。以此来解决循环引用的问题
-        if(memo[res[key]]){
-          res[key] = memo[res[key]];
-        }else{
-          memo[res[key]] = res[key];
+        if (memo[res[key]]) {
+          res[key] = memo[res[key]]
+        } else {
+          memo[res[key]] = res[key]
           res[key] = baseClone(res[key])
         }
       }
     })
-    return res;
+    return res
   }
 
   return baseClone(value)

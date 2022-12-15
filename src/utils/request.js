@@ -1,17 +1,19 @@
 import axios from 'axios'
-import { MessageBox, Message } from 'element-ui'
+import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
-import { setCookieByName, getCookieByName } from '@/utils/auth'
 import { formatParams, isTokenExpire } from '@/utils'
-import { showLoading, hideLoading } from '@/components/Loading/loading'
+import { hideLoading, showLoading } from '@/components/Loading/loading'
 import { userContainerApi } from '@/api/user'
+
 let tokenMsg = ''
 let loading = true
 let isTokenRefreshing = false
 let subscribeArr = []
+
 function subscribeArrRefresh(cb) {
   subscribeArr.push(cb)
 }
+
 function reloadSubsubscribeArr(newToken) {
   subscribeArr.map(cb => cb(newToken))
 }
@@ -34,7 +36,8 @@ service.interceptors.request.use(
       showLoading()
     }
     // do something before request is sent
-    if (store.getters.token ? store.getters.token : localStorage.getItem('org_token_auth')) {
+    if (store.getters.token ? store.getters.token : localStorage.getItem(
+      'org_token_auth')) {
       // let each request carry token
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
@@ -55,7 +58,8 @@ service.interceptors.request.use(
       }
     }
     // 判断token是否即将过期
-    if (tokenExpireTime && isTokenExpire(tokenExpireTime) === 1 && config.url !== '/gw/op/v1/auth/token/refresh') {
+    if (tokenExpireTime && isTokenExpire(tokenExpireTime) === 1 && config.url
+      !== '/gw/op/v1/auth/token/refresh') {
       if (!isTokenRefreshing) {
         isTokenRefreshing = true
         let refreshParam = {
@@ -138,7 +142,7 @@ service.interceptors.response.use(
   /**
    * If you want to get http information such as headers or status
    * Please return  response => response
-  */
+   */
 
   /**
    * Determine the request status by custom code
@@ -191,7 +195,8 @@ service.interceptors.response.use(
       return {
         subCode: res.sub_code,
         subMsg: res.sub_msg,
-        data: res.data != null ? typeof(res.data) == 'string' ? JSON.parse(res.data) : res.data : null
+        data: res.data != null ? typeof (res.data) == 'string' ? JSON.parse(
+          res.data) : res.data : null
       }
     }
   },

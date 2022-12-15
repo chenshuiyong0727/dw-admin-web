@@ -1,39 +1,47 @@
-.step-container{
+.step-container {
   width: 650px;
   margin: 0 auto;
+
   h5 {
     font-size: 16px;
     margin-bottom: 20px;
   }
+
   h6 {
     font-size: 16px;
 
     margin: 30px 0 0 0;
     padding: 0 0 0 30px;
   }
+
   .tip {
     font-size: 16px;
     color: #555;
     font-weight: bold;
   }
+
   .list {
     margin-bottom: 50px;
+
     .option {
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px dashed #ccc;
     }
+
     .option > div:nth-child(1) {
       width: 80%;
     }
-    .el-icon-plus.btn-add,.el-icon-close.btn-delete {
+
+    .el-icon-plus.btn-add, .el-icon-close.btn-delete {
       font-size: 20px;
     }
   }
 
   .el-row {
     margin-bottom: 15px;
+
     .el-col {
       text-align: right;
     }
@@ -42,15 +50,18 @@
 
   .button {
     margin-top: 60px;
+
     .btn {
       margin-left: 30px;
     }
   }
 }
+
 .form-flex {
   display: flex;
   align-items: center;
 }
+
 .red {
   color: #f00;
   font-style: normal;
@@ -58,12 +69,15 @@
   padding-right: 5px;
   vertical-align: middle;
 }
+
 .color-danger {
   color: #F56C6C;
 }
+
 .color-success {
   color: #0fbe8f;
 }
+
 .city {
   border-radius: 15px;
   height: 62px;
@@ -76,6 +90,7 @@
   margin-bottom: 10px;
   display: inline-block;
 }
+
 .cityActive {
   border-radius: 15px;
   height: 62px;
@@ -88,11 +103,13 @@
   margin-bottom: 10px;
   display: inline-block;
 }
+
 .age-sty {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 //.userPic {
 //  width: 80px;
 //  height: 80px;
@@ -101,17 +118,19 @@
   width: 60px;
   height: 50px;
 }
-.popContainer{
+
+.popContainer {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0,0,0,0.3);
+  background: rgba(0, 0, 0, 0.3);
   z-index: 999;
   display: grid;
-  align-items:center;
+  align-items: center;
 }
+
 .imageShow {
   margin: auto;
   width: 520px;
@@ -122,6 +141,7 @@
   display: flex;
   align-items: stretch;
 }
+
 .container-left {
   width: 300px;
   min-height: calc(100vh - 140px);
@@ -131,6 +151,7 @@
   // float: left;
 
 }
+
 .container-right {
   // float: left;
   width: calc(100% - 300px);

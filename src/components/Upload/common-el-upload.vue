@@ -23,7 +23,7 @@
       v-if="showViewer"
       :z-index="9999"
       :on-close="closeViewer"
-      :url-list="imageSrcList" />
+      :url-list="imageSrcList"/>
   </el-row>
 </template>
 
@@ -31,21 +31,21 @@
   import axios from 'axios'
   import ElImageViewer from 'element-ui/packages/image/src/image-viewer'
   import { commonApi } from '@/api/common'
-  import { getCookieByName } from '@/utils/auth'
+
   export default {
     components: {
       ElImageViewer
     },
     props: {
-      limit:{
+      limit: {
         type: Number,
         default: 1
       },
-      disabled:{
+      disabled: {
         type: Boolean,
         default: false
       },
-      acceptType:{
+      acceptType: {
         type: String,
         default: () => '.jpg, .jpeg, .png'
       },
@@ -53,25 +53,25 @@
         type: Array,
         default: () => []
       },
-      fileSize:{
-        type:Number,
+      fileSize: {
+        type: Number,
         default: 10
       },
-      typeDesc:{
-        type:String,
-        default:'上传图片只支持PNG, JPG, JPEG格式!'
+      typeDesc: {
+        type: String,
+        default: '上传图片只支持PNG, JPG, JPEG格式!'
       },
       tip: {
         type: String,
         default: ''
       }
     },
-    data () {
+    data() {
       return {
         dialogImageUrl: '',
         showViewer: false,
-        hideELUpload:false,
-        fileList:[],
+        hideELUpload: false,
+        fileList: [],
         dialogVideoUrl: '',
         dialogWidth: '',
         imageSrcList: [],
@@ -83,31 +83,31 @@
       }
     },
     watch: {
-      uploadImgList: function(){
-        this.fileList = this.uploadImgList;
-        this.hideELUpload = this.disabled || this.fileList.length >= this.limit;
+      uploadImgList: function() {
+        this.fileList = this.uploadImgList
+        this.hideELUpload = this.disabled || this.fileList.length >= this.limit
       },
       limit: function() {
-        this.hideELUpload = this.disabled || this.fileList.length >= this.limit;
+        this.hideELUpload = this.disabled || this.fileList.length >= this.limit
       }
     },
     methods: {
-      beforeUpload (file) {
+      beforeUpload(file) {
         this.fileInfo = file
-        let index = file.name.lastIndexOf(".");
-        let suffix = file.name.substring(index,file.name.length).toLowerCase();
-        let isMarch = this.acceptType.indexOf(suffix) !== -1;
-        let overSize = file.size / 1024 / 1024 < this.fileSize;
+        let index = file.name.lastIndexOf('.')
+        let suffix = file.name.substring(index, file.name.length).toLowerCase()
+        let isMarch = this.acceptType.indexOf(suffix) !== -1
+        let overSize = file.size / 1024 / 1024 < this.fileSize
         if (!isMarch) {
           this.$message.error(this.typeDesc)
         }
         if (!overSize) {
-          this.$message.error('上传文件大小不能超过'+this.fileSize+'MB!')
+          this.$message.error('上传文件大小不能超过' + this.fileSize + 'MB!')
         }
         if (isMarch && overSize) {
-          this.hideELUpload = this.disabled || this.fileList.length + 1 >= this.limit;
+          this.hideELUpload = this.disabled || this.fileList.length + 1 >= this.limit
         }
-        let promise = commonApi.signature({fileName: file.name, businessType: 1}).then(res => {
+        let promise = commonApi.signature({ fileName: file.name, businessType: 1 }).then(res => {
           if (res.subCode === 1000) {
             this.uploadData = res.data
             this.url = res.data.url
@@ -122,9 +122,9 @@
         this.fileList = fileList
         this.hideELUpload = this.disabled || this.fileList.length >= this.limit
       },
-      handleRemove (file, fileList) {
+      handleRemove(file, fileList) {
         this.fileList = fileList
-        this.hideELUpload = this.disabled || this.fileList.length >= this.limit;
+        this.hideELUpload = this.disabled || this.fileList.length >= this.limit
       },
       handlePictureCardPreview(file) {
         let curr = false
@@ -139,9 +139,9 @@
         })
         this.showViewer = true
       },
-      uploadError(err, file, fileList){
-        this.hideELUpload = this.disabled || this.fileList.length >= this.limit;
-        this.$message.error('文件上传失败!');
+      uploadError(err, file, fileList) {
+        this.hideELUpload = this.disabled || this.fileList.length >= this.limit
+        this.$message.error('文件上传失败!')
       },
       closeViewer() {
         this.showViewer = false
@@ -152,7 +152,7 @@
             method: 'put',
             url: this.uploadData.url,
             headers: {
-              'Content-Type' : 'text/plain'
+              'Content-Type': 'text/plain'
             },
             data: this.fileInfo
           }
@@ -181,9 +181,9 @@
         })
       }
     },
-    mounted(){
-      this.fileList = this.uploadImgList;
-      this.hideELUpload = this.disabled || this.fileList.length >= this.limit;
+    mounted() {
+      this.fileList = this.uploadImgList
+      this.hideELUpload = this.disabled || this.fileList.length >= this.limit
     }
   }
 </script>
@@ -192,21 +192,24 @@
   .upload-sty > div {
     display: flex;
   }
+
   ::v-deep .hideELUpload .el-upload.el-upload--picture-card {
     display: none;
   }
-  .el-upload-list--picture-card .el-upload-list__item-actions .el-upload-list__item-delete{
+
+  .el-upload-list--picture-card .el-upload-list__item-actions .el-upload-list__item-delete {
     position: absolute !important;
   }
 
   .el-carousel__item {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  .carousel-image {
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .carousel-image {
+      max-width: 100%;
+      max-height: 100%;
+    }
   }
-}
 </style>

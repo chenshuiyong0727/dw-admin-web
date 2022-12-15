@@ -1,4 +1,3 @@
-
 const state = {
   showThreeRouter: false,
   unreadMsg: 0,
@@ -33,26 +32,33 @@ const mutations = {
 
 const actions = {
   changePageType({ commit }, data) {
-    commit('CHANGE_STATE', { key: Object.keys(data)[0], value: Object.values(data)[0] })
+    commit('CHANGE_STATE',
+      { key: Object.keys(data)[0], value: Object.values(data)[0] })
   },
   changeUnreadMsg({ commit }, data) {
-    commit('CHANGE_STATE', { key: Object.keys(data)[0], value: Object.values(data)[0] })
+    commit('CHANGE_STATE',
+      { key: Object.keys(data)[0], value: Object.values(data)[0] })
   },
   changeProjectTypeList({ commit }, data) {
-    commit('CHANGE_STATE', { key: Object.keys(data)[0], value: Object.values(data)[0] })
+    commit('CHANGE_STATE',
+      { key: Object.keys(data)[0], value: Object.values(data)[0] })
   },
   changeProjectLevelList({ commit }, data) {
-    commit('CHANGE_STATE', { key: Object.keys(data)[0], value: Object.values(data)[0] })
+    commit('CHANGE_STATE',
+      { key: Object.keys(data)[0], value: Object.values(data)[0] })
   },
   changeProjectStatusList({ commit }, data) {
-    commit('CHANGE_STATE', { key: Object.keys(data)[0], value: Object.values(data)[0] })
+    commit('CHANGE_STATE',
+      { key: Object.keys(data)[0], value: Object.values(data)[0] })
   },
   changeUserCareBubble({ commit }, data) {
-    commit('CHANGE_BUBBLE_STATE', { key: Object.keys(data)[0], value: Object.values(data)[0] })
+    commit('CHANGE_BUBBLE_STATE',
+      { key: Object.keys(data)[0], value: Object.values(data)[0] })
   },
   changeAuthorityRoute({ commit }, data) {
-    commit('CHANGE_STATE', { key: Object.keys(data)[0], value: Object.values(data)[0] })
-  },
+    commit('CHANGE_STATE',
+      { key: Object.keys(data)[0], value: Object.values(data)[0] })
+  }
 }
 
 export default {

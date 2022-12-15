@@ -30,76 +30,77 @@
 </template>
 
 <script>
-import { dictListApi } from '@/api/dictManage'
-export default {
-  name: 'DictModal',
-  data() {
-    return {
-      id: '',
-      form: {},
-      rules: {
-        typeValue: [{ required: true, trigger: 'blur', message: '请输入编号' }],
-        typeName: [{ required: true, trigger: 'blur', message: '请输入名称' }],
+  import { dictListApi } from '@/api/dictManage'
+
+  export default {
+    name: 'DictModal',
+    data() {
+      return {
+        id: '',
+        form: {},
+        rules: {
+          typeValue: [{ required: true, trigger: 'blur', message: '请输入编号' }],
+          typeName: [{ required: true, trigger: 'blur', message: '请输入名称' }]
+        },
+        title: '',
+        dialogFormVisible: false
+      }
+    },
+    methods: {
+      showEdit(row) {
+        if (!row) {
+          this.title = '添加'
+          this.form = {}
+        } else {
+          this.title = '编辑'
+          const { id } = row
+          this.id = id
+          dictListApi.getDictDetailById({ id: this.id }).then((res) => {
+            if (res.subCode === 1000) {
+              this.form = res.data ? res.data : {}
+            } else {
+              this.$message.error(res.subMsg)
+            }
+          })
+        }
+        this.dialogFormVisible = true
       },
-      title: '',
-      dialogFormVisible: false,
-    }
-  },
-  methods: {
-    showEdit(row) {
-      if (!row) {
-        this.title = '添加'
-        this.form = {}
-      } else {
-        this.title = '编辑'
-        const { id } = row
-        this.id = id
-        dictListApi.getDictDetailById({ id: this.id }).then((res) => {
-          if (res.subCode === 1000) {
-            this.form = res.data ? res.data : {}
-          } else {
-            this.$message.error(res.subMsg)
-          }
-        })
-      }
-      this.dialogFormVisible = true
-    },
-    // 关闭
-    close() {
-      this.dialogFormVisible = false
-    },
-    // 新增字典类型
-    save() {
-      // 添加字典的时候
-      if (this.title === '添加') {
-        this.$refs['form'].validate(async (valid) => {
-          if (valid) {
-            dictListApi.addDictItem({ ...this.form }).then((res) => {
-              if (res.subCode === 1000) {
-                this.$emit('updateData')
-              } else {
-                this.$message.error(res.subMsg)
-              }
-            })
-          }
-        })
-      }
-      // 编辑字典的时候
-      if (this.title === '编辑') {
-        this.$refs['form'].validate(async (valid) => {
-          if (valid) {
-            dictListApi
+      // 关闭
+      close() {
+        this.dialogFormVisible = false
+      },
+      // 新增字典类型
+      save() {
+        // 添加字典的时候
+        if (this.title === '添加') {
+          this.$refs['form'].validate(async(valid) => {
+            if (valid) {
+              dictListApi.addDictItem({ ...this.form }).then((res) => {
+                if (res.subCode === 1000) {
+                  this.$emit('updateData')
+                } else {
+                  this.$message.error(res.subMsg)
+                }
+              })
+            }
+          })
+        }
+        // 编辑字典的时候
+        if (this.title === '编辑') {
+          this.$refs['form'].validate(async(valid) => {
+            if (valid) {
+              dictListApi
               .updateDict({ ...this.form, id: this.id })
               .then((res) => {
                 this.$emit('updateData')
               })
-          }
-        })
+            }
+          })
+        }
+        this.dialogFormVisible = false
       }
-      this.dialogFormVisible = false
-    },
-  },
-}
+    }
+  }
 </script>
 
 

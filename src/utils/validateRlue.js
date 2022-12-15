@@ -1,28 +1,28 @@
 import {
   getMsg,
-  isGeneralWithChinese,
-  isNotNull,
-  isInteger,
-  isSecurityPassword,
+  isChinese,
+  isCitizenid,
   isDecimal,
-  isPrimes,
-  isLetter,
-  isUpperCase,
-  isLowerCase,
+  isEmail,
+  isGeneral,
+  isGeneralWithChinese,
+  isInteger,
   isIp,
   isIpv4,
   isIpv6,
-  isMoney,
-  isEmail,
-  isMobile,
-  isCitizenid,
-  isGeneral,
-  isZipCode,
-  isUrl,
+  isLetter,
+  isLowerCase,
   isMac,
+  isMobile,
+  isMoney,
+  isNotNull,
   isPlateNumber,
-  isChinese,
-} from "@/utils/valiargs";
+  isPrimes,
+  isSecurityPassword,
+  isUpperCase,
+  isUrl,
+  isZipCode
+} from '@/utils/valiargs'
 
 export const validatorRule = {
   /**
@@ -33,9 +33,9 @@ export const validatorRule = {
    */
   IS_NOT_NULL: (rule, value, callback) => {
     if (!isNotNull(value)) {
-      callback(new Error(getMsg("isNotNull")));
+      callback(new Error(getMsg('isNotNull')))
     } else {
-      callback();
+      callback()
     }
   },
   /**
@@ -46,9 +46,9 @@ export const validatorRule = {
    */
   IS_INTEGER: (rule, value, callback) => {
     if (value && !isInteger(value)) {
-      callback(new Error(getMsg("isInteger")));
+      callback(new Error(getMsg('isInteger')))
     } else {
-      callback();
+      callback()
     }
   },
   /**
@@ -59,9 +59,9 @@ export const validatorRule = {
    */
   IS_DECIMAL: (rule, value, callback) => {
     if (value && !isDecimal(value)) {
-      callback(new Error(getMsg("isDecimal")));
+      callback(new Error(getMsg('isDecimal')))
     } else {
-      callback();
+      callback()
     }
   },
   /**
@@ -72,9 +72,9 @@ export const validatorRule = {
    */
   IS_PRIMES: (rule, value, callback) => {
     if (value && !isPrimes(value)) {
-      callback(new Error(getMsg("isPrimes")));
+      callback(new Error(getMsg('isPrimes')))
     } else {
-      callback();
+      callback()
     }
   },
   /**
@@ -85,9 +85,9 @@ export const validatorRule = {
    */
   IS_LETTER: (rule, value, callback) => {
     if (value && !isLetter(value)) {
-      callback(new Error(getMsg("isLetter")));
+      callback(new Error(getMsg('isLetter')))
     } else {
-      callback();
+      callback()
     }
   },
   /**
@@ -98,9 +98,9 @@ export const validatorRule = {
    */
   IS_UPPER_CASE: (rule, value, callback) => {
     if (value && !isUpperCase(value)) {
-      callback(new Error(getMsg("isUpperCase")));
+      callback(new Error(getMsg('isUpperCase')))
     } else {
-      callback();
+      callback()
     }
   },
   /**
@@ -111,9 +111,9 @@ export const validatorRule = {
    */
   IS_LOWER_CASE: (rule, value, callback) => {
     if (value && !isLowerCase(value)) {
-      callback(new Error(getMsg("isLowerCase")));
+      callback(new Error(getMsg('isLowerCase')))
     } else {
-      callback();
+      callback()
     }
   },
   /**
@@ -124,9 +124,9 @@ export const validatorRule = {
    */
   IS_IP: (rule, value, callback) => {
     if (value && !isIp(value)) {
-      callback(new Error(getMsg("isIp")));
+      callback(new Error(getMsg('isIp')))
     } else {
-      callback();
+      callback()
     }
   },
   /**
@@ -137,9 +137,9 @@ export const validatorRule = {
    */
   IS_IPV4: (rule, value, callback) => {
     if (value && !isIpv4(value)) {
-      callback(new Error(getMsg("isIpv4")));
+      callback(new Error(getMsg('isIpv4')))
     } else {
-      callback();
+      callback()
     }
   },
   /**
@@ -150,9 +150,9 @@ export const validatorRule = {
    */
   IS_IPV6: (rule, value, callback) => {
     if (value && !isIpv6(value)) {
-      callback(new Error(getMsg("isIpv6")));
+      callback(new Error(getMsg('isIpv6')))
     } else {
-      callback();
+      callback()
     }
   },
   /**
@@ -163,9 +163,9 @@ export const validatorRule = {
    */
   IS_MONEY: (rule, value, callback) => {
     if (value && !isMoney(value)) {
-      callback(new Error(getMsg("isMoney")));
+      callback(new Error(getMsg('isMoney')))
     } else {
-      callback();
+      callback()
     }
   },
   /**
@@ -176,9 +176,9 @@ export const validatorRule = {
    */
   IS_EMAIL: (rule, value, callback) => {
     if (value && !isEmail(value)) {
-      callback(new Error(getMsg("isEmail")));
+      callback(new Error(getMsg('isEmail')))
     } else {
-      callback();
+      callback()
     }
   },
   /**
@@ -189,9 +189,9 @@ export const validatorRule = {
    */
   IS_MOBILE: (rule, value, callback) => {
     if (value && !isMobile(value)) {
-      callback(new Error(getMsg("isMobile")));
+      callback(new Error(getMsg('isMobile')))
     } else {
-      callback();
+      callback()
     }
   },
   /**
@@ -202,9 +202,9 @@ export const validatorRule = {
    */
   IS_CITIZENID: (rule, value, callback) => {
     if (value && !isCitizenid(value)) {
-      callback(new Error(getMsg("isCitizenid")));
+      callback(new Error(getMsg('isCitizenid')))
     } else {
-      callback();
+      callback()
     }
   },
   /**
@@ -215,9 +215,9 @@ export const validatorRule = {
    */
   IS_CHINESE: (rule, value, callback) => {
     if (value && !isChinese(value)) {
-      callback(new Error(getMsg("isChinese")));
+      callback(new Error(getMsg('isChinese')))
     } else {
-      callback();
+      callback()
     }
   },
   /**
@@ -228,9 +228,9 @@ export const validatorRule = {
    */
   IS_GENERAL: (rule, value, callback) => {
     if (value && !isGeneral(value)) {
-      callback(new Error(getMsg("isGeneral")));
+      callback(new Error(getMsg('isGeneral')))
     } else {
-      callback();
+      callback()
     }
   },
   /**
@@ -241,9 +241,9 @@ export const validatorRule = {
    */
   IS_GENERAL_WITH_CHINESE: (rule, value, callback) => {
     if (value && !isGeneralWithChinese(value)) {
-      callback(new Error(getMsg("isGeneralWithChinese")));
+      callback(new Error(getMsg('isGeneralWithChinese')))
     } else {
-      callback();
+      callback()
     }
   },
   /**
@@ -254,9 +254,9 @@ export const validatorRule = {
    */
   IS_ZIP_CODE: (rule, value, callback) => {
     if (value && !isZipCode(value)) {
-      callback(new Error(getMsg("isZipCode")));
+      callback(new Error(getMsg('isZipCode')))
     } else {
-      callback();
+      callback()
     }
   },
   /**
@@ -267,9 +267,9 @@ export const validatorRule = {
    */
   IS_URL: (rule, value, callback) => {
     if (value && !isUrl(value)) {
-      callback(new Error(getMsg("isUrl")));
+      callback(new Error(getMsg('isUrl')))
     } else {
-      callback();
+      callback()
     }
   },
   /**
@@ -280,9 +280,9 @@ export const validatorRule = {
    */
   IS_MAC: (rule, value, callback) => {
     if (value && !isMac(value)) {
-      callback(new Error(getMsg("isMac")));
+      callback(new Error(getMsg('isMac')))
     } else {
-      callback();
+      callback()
     }
   },
   /**
@@ -293,9 +293,9 @@ export const validatorRule = {
    */
   IS_PLATE_NUMBER: (rule, value, callback) => {
     if (value && !isPlateNumber(value)) {
-      callback(new Error(getMsg("isPlateNumber")));
+      callback(new Error(getMsg('isPlateNumber')))
     } else {
-      callback();
+      callback()
     }
   },
   /**
@@ -306,9 +306,9 @@ export const validatorRule = {
    */
   IS_SECURITY_PASSWORD: (rule, value, callback) => {
     if (value && !isSecurityPassword(value)) {
-      callback(new Error(getMsg("isSecurityPassword")));
+      callback(new Error(getMsg('isSecurityPassword')))
     } else {
-      callback();
+      callback()
     }
-  },
-};
+  }
+}

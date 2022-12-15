@@ -1,4 +1,5 @@
 import { getButtonPermission } from '@/utils'
+
 export const permissionMixin = {
   data() {
     return {

@@ -1,5 +1,5 @@
 import { userContainerApi } from '@/api/user'
-import { setCookieByName, removeCookieByName, getCookieByName } from '@/utils/auth'
+import { removeCookieByName } from '@/utils/auth'
 import { resetRouter } from '@/router'
 // import { encrypt } from '@/utils'
 
@@ -49,7 +49,8 @@ const actions = {
       userContainerApi.login({ ...userInfo }).then(response => {
         if (response.data) {
           const { data } = response
-          localStorage.setItem('functionList', JSON.stringify(data.functionList))
+          localStorage.setItem('functionList',
+            JSON.stringify(data.functionList))
           localStorage.setItem('org_token_auth', data.token)
           localStorage.setItem('tokenExpireTime', data.tokenExpireTime)
           localStorage.setItem('projectList', JSON.stringify(data.projectList))

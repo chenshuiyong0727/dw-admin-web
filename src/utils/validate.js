@@ -5,6 +5,7 @@
 export function isExternal(path) {
   return /^(https?:|mailto:|tel:)/.test(path)
 }
+
 /**
  * @param {obj} propObj 验证的字段
  * @param {Array} nonRequiredField 非必填字段

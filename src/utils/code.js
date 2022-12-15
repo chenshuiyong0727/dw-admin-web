@@ -1,4 +1,4 @@
-function GVerify (options) { // 创建一个图形验证码对象，接收options对象为参数
+function GVerify(options) { // 创建一个图形验证码对象，接收options对象为参数
   this.options = { // 默认options参数值
     id: '', // 容器Id
     canvasId: 'verifyCanvas', // canvas的ID
@@ -7,7 +7,7 @@ function GVerify (options) { // 创建一个图形验证码对象，接收option
     code: '',
     ruleCode: '2346'
   }
- 
+
   if (Object.prototype.toString.call(options) === '[object Object]') { // 判断传入参数类型
     for (var i in options) { // 根据传入的参数，修改默认参数值
       this.options[i] = options[i]
@@ -18,10 +18,10 @@ function GVerify (options) { // 创建一个图形验证码对象，接收option
   this._init()
   this.refresh(this.options.ruleCode)
 }
- 
+
 GVerify.prototype = {
   /** 初始化方法**/
-  _init: function () {
+  _init: function() {
     var con = document.getElementById(this.options.id)
     var canvas = document.createElement('canvas')
     canvas.id = this.options.canvasId
@@ -36,23 +36,24 @@ GVerify.prototype = {
     //   parent.refresh(parent.options.ruleCode)
     // }
   },
- 
+
   /** 生成验证码**/
-  refresh: function (code) {
+  refresh: function(code) {
     this.options.code = ''
     var canvas = document.getElementById(this.options.canvasId)
     if (canvas.getContext) {
       var ctx = canvas.getContext('2d')
     }
     ctx.textBaseline = 'middle'
-  
+
     ctx.fillStyle = randomColor(180, 240)
     ctx.fillRect(0, 0, this.options.width, this.options.height)
-    let codeArr = code.toString().split("")
+    let codeArr = code.toString().split('')
     for (var i = 1; i <= 4; i++) {
-      var txt = codeArr[i-1]
+      var txt = codeArr[i - 1]
       this.options.code += txt
-      ctx.font = randomNum(this.options.height / 2, this.options.height) + 'px SimHei' // 随机生成字体大小
+      ctx.font = randomNum(this.options.height / 2, this.options.height)
+        + 'px SimHei' // 随机生成字体大小
       ctx.fillStyle = randomColor(50, 160) // 随机生成字体颜色
       ctx.shadowOffsetX = randomNum(-3, 3)
       ctx.shadowOffsetY = randomNum(-3, 3)
@@ -73,21 +74,24 @@ GVerify.prototype = {
     for (var i = 0; i < 4; i++) {
       ctx.strokeStyle = randomColor(40, 180)
       ctx.beginPath()
-      ctx.moveTo(randomNum(0, this.options.width), randomNum(0, this.options.height))
-      ctx.lineTo(randomNum(0, this.options.width), randomNum(0, this.options.height))
+      ctx.moveTo(randomNum(0, this.options.width),
+        randomNum(0, this.options.height))
+      ctx.lineTo(randomNum(0, this.options.width),
+        randomNum(0, this.options.height))
       ctx.stroke()
     }
     /** 绘制干扰点**/
     for (var i = 0; i < this.options.width / 4; i++) {
       ctx.fillStyle = randomColor(0, 255)
       ctx.beginPath()
-      ctx.arc(randomNum(0, this.options.width), randomNum(0, this.options.height), 1, 0, 2 * Math.PI)
+      ctx.arc(randomNum(0, this.options.width),
+        randomNum(0, this.options.height), 1, 0, 2 * Math.PI)
       ctx.fill()
     }
   },
- 
+
   /** 验证验证码**/
-  validate: function (code) {
+  validate: function(code) {
     var code = code.toLowerCase()
     var v_code = this.options.code.toLowerCase()
     if (code == v_code) {
@@ -97,18 +101,20 @@ GVerify.prototype = {
     }
   }
 }
- /** 生成一个随机数**/
-function randomNum (min, max) {
+
+/** 生成一个随机数**/
+function randomNum(min, max) {
   return Math.floor(Math.random() * (max - min) + min)
 }
- /** 生成一个随机色**/
-function randomColor (min, max) {
+
+/** 生成一个随机色**/
+function randomColor(min, max) {
   var r = randomNum(min, max)
   var g = randomNum(min, max)
   var b = randomNum(min, max)
   return 'rgb(' + r + ',' + g + ',' + b + ')'
 }
- 
+
 export {
   GVerify
 }

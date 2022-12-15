@@ -41,60 +41,61 @@
 </template>
 
 <script>
-import { dictListApi } from '@/api/dictManage'
-export default {
-  name: 'DictDetailEdit',
-  props: {
-    id: {
-      type: String,
-      default: () => {
-        return ''
-      },
-    },
-  },
-  data() {
-    return {
-      form: {
-        sort: '',
-        fieldName: '',
-        sort: 1,
-        // 设置默认值
-        fieldValue: '',
-      },
-      rules: {
-        dictName: [{ required: true, trigger: 'blur', message: '请输入值' }],
-        dictValue: [{ required: true, trigger: 'blur', message: '请输入值' }],
-        sortNo: [{ required: true, trigger: 'blur', message: '请输入排序' }],
-      },
-      title: '',
-      dialogFormVisible: false,
-    }
-  },
-  methods: {
-    showInsert(row) {
-      this.title = '字典类型 - 添加'
-      this.dialogFormVisible = true
-    },
-    showUpdate(row) {
-      this.title = '字典类型 - 编辑'
-      this.dialogFormVisible = true
-      dictListApi.getInnerDictDetail({ id: row.id }).then((res) => {
-        if (res.subCode === 1000) {
-          this.form = res.data ? res.data : {}
-        } else {
-          this.$message.error(res.subMsg)
-        }
-      })
-    },
-    close() {
-      this.dialogFormVisible = false
-    },
+  import { dictListApi } from '@/api/dictManage'
 
-    save() {
-      if (this.title === '字典类型 - 添加') {
-        this.$refs['form'].validate(async (valid) => {
-          if (valid) {
-            dictListApi
+  export default {
+    name: 'DictDetailEdit',
+    props: {
+      id: {
+        type: String,
+        default: () => {
+          return ''
+        }
+      }
+    },
+    data() {
+      return {
+        form: {
+          sort: '',
+          fieldName: '',
+          sort: 1,
+          // 设置默认值
+          fieldValue: ''
+        },
+        rules: {
+          dictName: [{ required: true, trigger: 'blur', message: '请输入值' }],
+          dictValue: [{ required: true, trigger: 'blur', message: '请输入值' }],
+          sortNo: [{ required: true, trigger: 'blur', message: '请输入排序' }]
+        },
+        title: '',
+        dialogFormVisible: false
+      }
+    },
+    methods: {
+      showInsert(row) {
+        this.title = '字典类型 - 添加'
+        this.dialogFormVisible = true
+      },
+      showUpdate(row) {
+        this.title = '字典类型 - 编辑'
+        this.dialogFormVisible = true
+        dictListApi.getInnerDictDetail({ id: row.id }).then((res) => {
+          if (res.subCode === 1000) {
+            this.form = res.data ? res.data : {}
+          } else {
+            this.$message.error(res.subMsg)
+          }
+        })
+      },
+      close() {
+        this.dialogFormVisible = false
+      },
+
+      save() {
+        if (this.title === '字典类型 - 添加') {
+          this.$refs['form'].validate(async(valid) => {
+            if (valid) {
+              dictListApi
               .addDict({ ...this.form, typeId: this.id })
               .then((res) => {
                 if (res.subCode === 1000) {
@@ -103,18 +104,18 @@ export default {
                   this.$message.error(res.subMsg)
                 }
               })
-          }
-        })
-      }
-      this.dialogFormVisible = false
-      // // 编辑的时候
-      if (this.title === '字典类型 - 编辑') {
-        this.$refs['form'].validate(async (valid) => {
-          if (valid) {
-            dictListApi
+            }
+          })
+        }
+        this.dialogFormVisible = false
+        // // 编辑的时候
+        if (this.title === '字典类型 - 编辑') {
+          this.$refs['form'].validate(async(valid) => {
+            if (valid) {
+              dictListApi
               .updateInnerDict({
                 typeId: this.id,
-                ...this.form,
+                ...this.form
               })
               .then((res) => {
                 if (res.subCode === 1000) {
@@ -123,10 +124,10 @@ export default {
                   this.$message.error(res.subMsg)
                 }
               })
-          }
-        })
+            }
+          })
+        }
       }
-    },
-  },
-}
+    }
+  }
 </script>
