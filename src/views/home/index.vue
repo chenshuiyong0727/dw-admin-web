@@ -2,6 +2,14 @@
   <div class="app-container">
     <div class="address-layout">
       <el-row :gutter="20">
+        <el-col :span="6">
+          <div class="out-border" @click="jumpactNo()">
+            <div class="layout-title">日期</div>
+            <div class="color-main address-content">
+              <span>{{nowDate}} {{nowTime}}</span>
+            </div>
+          </div>
+        </el-col>
         <el-col :span="4">
           <div class="out-border" @click="jumpactNo()">
             <div class="layout-title">库存总数</div>
@@ -298,148 +306,154 @@
 </template>
 
 <script>
-  import { goodsOrderApi } from '@/api/goodsOrder'
-  // const DATA_FROM_BACKEND = {
-  //   columns: ['date', 'orderNum','orderPrice'],
-  //   rows: [
-  //     {date: '2022-03', orderNum: 8, orderPrice: 2273.59},
-  //     {date: '2022-04', orderNum: 7, orderPrice: 3113.83},
-  //     {date: '2022-05', orderNum: 16, orderPrice: 7537.75},
-  //     {date: '2022-06', orderNum: 9, orderPrice: 2847.87},
-  //     {date: '2022-07', orderNum: 16, orderPrice: 4902.25},
-  //     {date: '2022-08', orderNum: 14, orderPrice: 2250.92},
-  //     {date: '2022-09', orderNum: 10, orderPrice: 4268.72},
-  //     {date: '2022-10', orderNum: 23, orderPrice: 2273.59},
-  //     {date: '2022-11', orderNum: 52, orderPrice: 24925.27},
-  //   ]
-  // };
-  export default {
-    name: 'homePage',
-    data() {
-      return {
-        form: {},
-        orderIofo: {},
-        queryParam: {
-          createTimeFrom: '',
-          createTimeTo: ''
-        },
-        createTime: '',
-        chartSettings: {
-          xAxisType: 'time',
-          area: false,
-          axisSite: { right: ['profitsAmount'] },
-          labelAlias: {
-            'successNum': '订单数',
-            'orderAmount': '订单金额',
-            'profitsAmount': '利润'
-          }
-        },
-        chartData: {
-          columns: ['months', 'successNum', 'orderAmount', 'profitsAmount'],
-          rows: []
-        },
-        orderData: {},
-        loading: false,
-        dataEmpty: false
-      }
+import { goodsOrderApi } from '@/api/goodsOrder'
+export default {
+  name: 'homePage',
+  data() {
+    return {
+      form: {},
+      orderIofo: {},
+      queryParam: {
+        createTimeFrom: '',
+        createTimeTo: ''
+      },
+      createTime: '',
+      chartSettings: {
+        xAxisType: 'time',
+        area: false,
+        axisSite: { right: ['profitsAmount'] },
+        labelAlias: {
+          'successNum': '订单数',
+          'orderAmount': '订单金额',
+          'profitsAmount': '利润'
+        }
+      },
+      chartData: {
+        columns: ['months', 'successNum', 'orderAmount', 'profitsAmount'],
+        rows: []
+      },
+      nowDate: '',
+      nowTime: '',
+      nowWeek: '',
+      orderData: {},
+      loading: false,
+      dataEmpty: false
+    }
+  },
+  created() {
+    // this.initOrderCountDate();
+    this.getData()
+    this.getData1()
+    this.currentTime()
+  },
+  // 销毁定时器
+  beforeDestroy() {
+    if (this.formatDate) {
+      clearInterval(this.formatDate); // 在Vue实例销毁前，清除时间定时器
+    }
+  },
+  methods: {
+    currentTime() {
+      setInterval(this.formatDate, 500);
     },
-    created() {
-      // this.initOrderCountDate();
-      this.getData()
+    handleDateChange() {
+      if (this.createTime) {
+        this.queryParam.createTimeFrom = this.createTime[0]
+        this.queryParam.createTimeTo = this.createTime[1]
+      } else {
+        this.queryParam.createTimeFrom = null
+        this.queryParam.createTimeTo = null
+      }
       this.getData1()
     },
-    methods: {
-      handleDateChange() {
-        if (this.createTime) {
-          this.queryParam.createTimeFrom = this.createTime[0]
-          this.queryParam.createTimeTo = this.createTime[1]
+    formatDate() {
+      // 获取当前时间并打印
+      let myDate = new Date()
+      let wk = myDate.getDay()
+      let yy = String(myDate.getFullYear())
+      let mm = myDate.getMonth() + 1
+      let dd = String(myDate.getDate() < 10 ? '0' + myDate.getDate() : myDate.getDate())
+      let hou = String(myDate.getHours() < 10 ? '0' + myDate.getHours() : myDate.getHours())
+      let min = String(myDate.getMinutes() < 10 ? '0' + myDate.getMinutes() : myDate.getMinutes())
+      let sec = String(myDate.getSeconds() < 10 ? '0' + myDate.getSeconds() : myDate.getSeconds())
+      let weeks = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+      let week = weeks[wk]
+      this.nowDate = yy + '-' + mm + '-' + dd + ' '
+      this.nowTime = hou + ':' + min + ':' + sec
+      this.nowWeek = week
+    },
+    getData1() {
+      goodsOrderApi.indexOrderData(this.queryParam).then(res => {
+        if (res.subCode === 1000) {
+          this.dataEmpty = false
+          this.loading = false
+          this.chartData.rows = res.data.rows
+          this.orderData = res.data
+          if (this.orderData) {
+            this.orderData.successNumRate = parseFloat(
+              (this.orderData.successNum - this.orderData.successNumLast)
+              / this.orderData.successNumLast * 100).toFixed(2)
+            this.orderData.profitsAmountRate = parseFloat(
+              (this.orderData.profitsAmount - this.orderData.profitsAmountLast)
+              / this.orderData.profitsAmountLast * 100).toFixed(2)
+            this.orderData.orderAmountRate = parseFloat(
+              (this.orderData.orderAmount - this.orderData.orderAmountLast)
+              / this.orderData.orderAmountLast * 100).toFixed(2)
+          }
         } else {
-          this.queryParam.createTimeFrom = null
-          this.queryParam.createTimeTo = null
+          this.$message.error(res.subMsg)
         }
-        this.getData1()
-      },
-      // initOrderCountDate(){
-      //   let start = new Date()
-      //   start.setFullYear(2018)
-      //   start.setMonth(10)
-      //   start.setDate(1)
-      //   const end = new Date()
-      //   end.setTime(start.getTime() + 1000 * 60 * 60 * 24 * 7)
-      //   this.orderCountDate=[start,end]
-      // },
-      getData1() {
-        goodsOrderApi.indexOrderData(this.queryParam).then(res => {
-          if (res.subCode === 1000) {
-            this.dataEmpty = false
-            this.loading = false
-            this.chartData.rows = res.data.rows
-            this.orderData = res.data
-            if (this.orderData) {
-              this.orderData.successNumRate = parseFloat(
-                (this.orderData.successNum - this.orderData.successNumLast)
-                / this.orderData.successNumLast * 100).toFixed(2)
-              this.orderData.profitsAmountRate = parseFloat(
-                (this.orderData.profitsAmount - this.orderData.profitsAmountLast)
-                / this.orderData.profitsAmountLast * 100).toFixed(2)
-              this.orderData.orderAmountRate = parseFloat(
-                (this.orderData.orderAmount - this.orderData.orderAmountLast)
-                / this.orderData.orderAmountLast * 100).toFixed(2)
-            }
-          } else {
-            this.$message.error(res.subMsg)
+      })
+    },
+    getData() {
+      goodsOrderApi.indexData().then(res => {
+        if (res.subCode === 1000) {
+          this.form = res.data ? res.data.commonDto : {}
+          this.orderIofo = res.data ? res.data.countDto : {}
+          if (this.form.inventoryCost && this.form.inventoryNum) {
+            this.form.inboundAverage = parseFloat(
+              this.form.inventoryCost / this.form.inventoryNum).toFixed(2)
           }
-        })
-      },
-      getData() {
-        goodsOrderApi.indexData().then(res => {
-          if (res.subCode === 1000) {
-            this.form = res.data ? res.data.commonDto : {}
-            this.orderIofo = res.data ? res.data.countDto : {}
-            if (this.form.inventoryCost && this.form.inventoryNum) {
-              this.form.inboundAverage = parseFloat(
-                this.form.inventoryCost / this.form.inventoryNum).toFixed(2)
-            }
-            if (this.form.successNum) {
-              this.form.orderAmountAverage = parseFloat(
-                this.form.orderAmount / this.form.successNum).toFixed(2)
-              this.form.freightAverage = parseFloat(
-                this.form.freight / this.form.successNum).toFixed(2)
-              this.form.profitsAverage = parseFloat(
-                this.form.profitsAmount / this.form.successNum).toFixed(2)
-            }
-            this.form.costAverage = parseFloat(
-              this.form.inboundAverage / 1 + this.form.freightAverage / 1).toFixed(2)
-            this.form.inventoryRatio = parseFloat(
-              this.form.inventoryNum / this.form.goodsPutInNum * 100).toFixed(2)
-            this.form.profitsProportion = parseFloat(
-              this.form.profitsAverage / this.form.costAverage * 100).toFixed(2)
-          } else {
-            this.$message.error(res.subMsg)
+          if (this.form.successNum) {
+            this.form.orderAmountAverage = parseFloat(
+              this.form.orderAmount / this.form.successNum).toFixed(2)
+            this.form.freightAverage = parseFloat(
+              this.form.freight / this.form.successNum).toFixed(2)
+            this.form.profitsAverage = parseFloat(
+              this.form.profitsAmount / this.form.successNum).toFixed(2)
           }
-        })
-      },
-      jumpactOrder(type) {
-        let path = '/goodsOrder/list' + type
-        this.$router.push({ path: path })
-      },
-      jumpactNo() {
-        this.$router.push({ path: '/goodsBase/goodsInventory' })
-      },
-      jumpPutIn() {
-        this.$router.push({ path: '/report/putInStorage' })
-      },
-      jumpSellList() {
-        this.$router.push({ path: '/report/sellList' })
-      },
-      goodsOther() {
-        this.$router.push({ path: '/goodsOrder/goodsOther' })
-      },
-      jumpGoods() {
-        this.$router.push({ path: '/goodsBase/list' })
-      }
+          this.form.costAverage = parseFloat(
+            this.form.inboundAverage / 1 + this.form.freightAverage / 1).toFixed(2)
+          this.form.inventoryRatio = parseFloat(
+            this.form.inventoryNum / this.form.goodsPutInNum * 100).toFixed(2)
+          this.form.profitsProportion = parseFloat(
+            this.form.profitsAverage / this.form.costAverage * 100).toFixed(2)
+        } else {
+          this.$message.error(res.subMsg)
+        }
+      })
+    },
+    jumpactOrder(type) {
+      let path = '/goodsOrder/list' + type
+      this.$router.push({ path: path })
+    },
+    jumpactNo() {
+      this.$router.push({ path: '/goodsBase/goodsInventory' })
+    },
+    jumpPutIn() {
+      this.$router.push({ path: '/report/putInStorage' })
+    },
+    jumpSellList() {
+      this.$router.push({ path: '/report/sellList' })
+    },
+    goodsOther() {
+      this.$router.push({ path: '/goodsOrder/goodsOther' })
+    },
+    jumpGoods() {
+      this.$router.push({ path: '/goodsBase/list' })
     }
   }
+}
 </script>
 
 <style scoped>
