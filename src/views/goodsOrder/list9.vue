@@ -173,6 +173,9 @@
         <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-refresh"
                    v-permission:[buttonPermissionArr.searchBtn]="['查询']" @click="resetHandle">重置
         </el-button>
+        <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-download"
+                   v-permission:[buttonPermissionArr.searchBtn]="['导出']" @click="exportHandle">导出
+        </el-button>
       </el-row>
     </el-form>
 
