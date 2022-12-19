@@ -2,11 +2,19 @@
   <div class="app-container">
     <div class="address-layout">
       <el-row :gutter="20">
-        <el-col :span="6">
+<!--        <el-col :span="6">-->
+<!--          <div class="out-border" @click="jumpactNo()">-->
+<!--            <div class="layout-title">当前时间</div>-->
+<!--            <div class="color-main address-content">-->
+<!--              <span>{{nowDate}} {{nowTime}}</span>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </el-col>-->
+        <el-col :span="8">
           <div class="out-border" @click="jumpactNo()">
-            <div class="layout-title">日期</div>
+            <div class="layout-title">春节倒计时</div>
             <div class="color-main address-content">
-              <span>{{nowDate}} {{nowTime}}</span>
+              <span><strong class="color-danger"> {{countDay}}</strong> {{count}}</span>
             </div>
           </div>
         </el-col>
@@ -332,6 +340,9 @@ export default {
         columns: ['months', 'successNum', 'orderAmount', 'profitsAmount'],
         rows: []
       },
+      countDay: '0', // 倒计时
+      count: '', // 倒计时
+      seconds: 0, // 10天的秒数
       nowDate: '',
       nowTime: '',
       nowWeek: '',
@@ -341,10 +352,14 @@ export default {
     }
   },
   created() {
-    // this.initOrderCountDate();
     this.getData()
     this.getData1()
     this.currentTime()
+    let myDate = new Date().getTime()
+    let endTime = '2023-01-22 00:00:00'
+    let timestamp2 = Date.parse(new Date(endTime))
+    this.seconds = (timestamp2 - myDate) / 1000
+    this.time()
   },
   // 销毁定时器
   beforeDestroy() {
@@ -353,6 +368,24 @@ export default {
     }
   },
   methods: {
+    countDown() {
+      let d = parseInt(this.seconds / (24 * 60 * 60))
+      d = d < 10 ? '0' + d : d
+      let h = parseInt(this.seconds / (60 * 60) % 24);
+      h = h < 10 ? '0' + h : h
+      let m = parseInt(this.seconds / 60 % 60);
+      m = m < 10 ? '0' + m : m
+      let s = parseInt(this.seconds % 60);
+      s = s < 10 ? '0' + s : s
+      this.count = '天 ' + h + '时' + m + '分' + s + '秒'
+      this.countDay = d
+    },
+    time() {
+      setInterval(() => {
+        this.seconds -= 1
+        this.countDown()
+      }, 1000)
+    },
     currentTime() {
       setInterval(this.formatDate, 500);
     },
