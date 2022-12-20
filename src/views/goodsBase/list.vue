@@ -128,6 +128,7 @@
   export default {
     mixins: [permissionMixin],
     components: {
+      buttomButton,
       ThreeLevelRoute
     },
     data() {

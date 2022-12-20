@@ -26,7 +26,9 @@
       <el-button type="primary" size="small" @click="updateKeywordDialog">批量修改关键词</el-button>
       <el-button type="primary" size="small" @click="reload1()">重置</el-button>
     </el-row>
+    <buttomButton style="z-index: 9999" :tableRef="this.$refs['queryTable']"></buttomButton>
     <el-table
+      ref="queryTable"
       border
       :data="tableData"
       row-key="id"
@@ -76,9 +78,10 @@
   import copyDataDialog from './components/copyDataDialog'
   import addDataDialog from './components/addDataDialog'
   import DICT_KEYS from '@/utils/staticEnum'
+  import buttomButton from '@/components/buttomButton'
 
   export default {
-    components: { ThreeLevelRoute, addDataDialog, copyDataDialog },
+    components: { buttomButton,ThreeLevelRoute, addDataDialog, copyDataDialog },
     mixins: [permissionMixin],
     data() {
       return {
