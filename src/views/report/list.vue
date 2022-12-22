@@ -22,6 +22,8 @@
           <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-refresh"
                      @click="resetHandle">重置
           </el-button>
+          <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-download" @click="exportHandle">导出
+          </el-button>
         </el-col>
       </el-row>
     </el-form>
@@ -108,6 +110,7 @@
   import ThreeLevelRoute from '@/components/ThreeLevelRoute'
   import { reportApi } from '@/api/report'
   import { permissionMixin } from '@/mixins/permissionMixin'
+  import { getExport } from '@/api/exportFile'
 
   export default {
     mixins: [permissionMixin],
@@ -161,6 +164,20 @@
       search() {
         this.queryParam.pageNum = 1
         this.getPage()
+      },
+      exportHandle() {
+        // let data = {}
+        // if (this.ids.length > 0) {
+        //   data.ids = this.ids
+        // } else {
+        //   this.$message.success('未勾选数据，导出符合条件的所有数据')
+        //   data = {
+        //     ...this.queryParam
+        //   }
+        // }
+        getExport('/gw/op/v1/report/exportPutInStorage', this.queryParam, 'post', '入库报表').then(() => {
+          this.$emit('refresh')
+        })
       },
       resetHandle() {
         this.queryParam = {
