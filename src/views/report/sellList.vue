@@ -22,7 +22,7 @@
           <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-refresh"
                      @click="resetHandle">重置
           </el-button>
-          <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-download" @click="exportHandle">导出
+          <el-button type="primary" size="small" style="margin-right: 10px ;background-color: #0fbe8f" icon="el-icon-download" @click="exportHandle">导出
           </el-button>
         </el-col>
       </el-row>
