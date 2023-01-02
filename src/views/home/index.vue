@@ -354,11 +354,8 @@ export default {
   created() {
     this.getData()
     this.getData1()
-    this.currentTime()
-    let myDate = new Date().getTime()
-    let endTime = '2023-01-22 00:00:00'
-    let timestamp2 = Date.parse(new Date(endTime))
-    this.seconds = (timestamp2 - myDate) / 1000
+    // this.currentTime()
+    this.initTime()
     this.time()
   },
   // 销毁定时器
@@ -379,6 +376,12 @@ export default {
       s = s < 10 ? '0' + s : s
       this.count = '天 ' + h + '时' + m + '分' + s + '秒'
       this.countDay = d
+    },
+    initTime() {
+      let myDate = new Date().getTime()
+      let endTime = '2023-01-22 00:00:00'
+      let timestamp2 = Date.parse(new Date(endTime))
+      this.seconds = (timestamp2 - myDate) / 1000
     },
     time() {
       setInterval(() => {

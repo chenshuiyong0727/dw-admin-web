@@ -4,7 +4,12 @@
       <el-row class="query-form">
         <el-col :span="6">
           <el-form-item size="small">
-            <el-input v-model.trim="queryParam.keyword" placeholder="关键字 （货号、尺码）"></el-input>
+            <el-input v-model.trim="queryParam.keyword" placeholder="货号"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item size="small">
+            <el-input v-model.trim="queryParam.size" placeholder="尺码"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -314,6 +319,7 @@
           id: '',
           orderNo: '',
           keyword: '',
+          size: '',
           inventoryId: '',
           status: 7,
           shelvesPriceFrom: '',
@@ -501,6 +507,7 @@
           id: '',
           orderNo: '',
           keyword: '',
+          size: '',
           inventoryId: '',
           status: 7,
           shelvesPriceFrom: '',
