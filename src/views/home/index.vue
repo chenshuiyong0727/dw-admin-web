@@ -10,7 +10,7 @@
 <!--            </div>-->
 <!--          </div>-->
 <!--        </el-col>-->
-        <el-col :span="8">
+        <el-col  v-if="countDay > 0" :span="8">
           <div class="out-border" @click="jumpactNo()">
             <div class="layout-title">春节倒计时</div>
             <div class="color-main address-content">
@@ -367,14 +367,16 @@ export default {
   methods: {
     countDown() {
       let d = parseInt(this.seconds / (24 * 60 * 60))
-      d = d < 10 ? '0' + d : d
-      let h = parseInt(this.seconds / (60 * 60) % 24);
-      h = h < 10 ? '0' + h : h
-      let m = parseInt(this.seconds / 60 % 60);
-      m = m < 10 ? '0' + m : m
-      let s = parseInt(this.seconds % 60);
-      s = s < 10 ? '0' + s : s
-      this.count = '天 ' + h + '时' + m + '分' + s + '秒'
+      if (d > 0) {
+        // d = d < 10 ? '0' + d : d
+        let h = parseInt(this.seconds / (60 * 60) % 24);
+        h = h < 10 ? '0' + h : h
+        let m = parseInt(this.seconds / 60 % 60);
+        m = m < 10 ? '0' + m : m
+        let s = parseInt(this.seconds % 60);
+        s = s < 10 ? '0' + s : s
+        this.count = '天 ' + h + '时' + m + '分' + s + '秒'
+      }
       this.countDay = d
     },
     initTime() {

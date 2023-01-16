@@ -161,6 +161,13 @@
       },
       keyup1() {
         // console.info('keyup1 ' + this.requestParam.theirPrice)
+        let poundage = this.requestParam.shelvesPrice * 0.075 + 38 + 8.5
+        this.requestParam.poundage = parseFloat(poundage).toFixed(2)
+
+        let theirPrice = this.requestParam.subsidiesPrice * 1 + this.requestParam.shelvesPrice
+          - (this.requestParam.shelvesPrice * 0.075 + 38 + 8.5)
+        this.requestParam.theirPrice = parseFloat(theirPrice).toFixed(2)
+
         let profits = this.requestParam.theirPrice - this.requestParam.freight
           - this.requestParam.price
         this.requestParam.profits = parseFloat(profits).toFixed(2)
