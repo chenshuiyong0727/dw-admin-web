@@ -12,7 +12,8 @@ import '@/resources/icons' // icon
 import '@/permission' // permission control
 import '@/directive'
 import '@/utils/filter'
-import VCharts from 'v-charts-v2'
+// import VCharts from 'v-charts-v2'
+import VeLine from 'v-charts-v2/lib/line'
 
 import { objMerge } from '@/utils'
 // import locale from 'element-ui/lib/locale/lang/en' // lang i18n
@@ -34,8 +35,8 @@ import { objMerge } from '@/utils'
 // Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
 Vue.use(ElementUI)
-Vue.use(VCharts)
-
+// Vue.use(VCharts)
+Vue.component(VeLine.name, VeLine)
 Vue.config.productionTip = false
 
 new Vue({
