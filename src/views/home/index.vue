@@ -285,12 +285,16 @@
       <el-row>
         <el-col :span="20">
           <div style="padding: 10px;border-left:1px solid #DCDFE6">
+            <el-button :type="mouthLl" @click="profitData(1)"  round>月利润</el-button>
+            <el-button :type="dayLl" @click="profitData(0)" round>日利润</el-button>
+
             <el-date-picker
               style="float: right;z-index: 1"
               size="small"
               v-model="createTime"
-              type="monthrange"
+              :type="dateType"
               align="right"
+              value-format="yyyy-MM-dd"
               unlink-panels
               range-separator="至"
               start-placeholder="开始日期"
@@ -325,6 +329,9 @@ export default {
         createTimeFrom: '',
         createTimeTo: ''
       },
+      dateType: 'monthrange',
+      dayLl: 'default',
+      mouthLl: 'primary',
       createTime: '',
       chartSettings: {
         xAxisType: 'time',
@@ -365,6 +372,24 @@ export default {
     }
   },
   methods: {
+    profitData(dataType) {
+      this.createTime = ''
+      this.queryParam = {
+        dataType: dataType,
+        createTimeFrom: '',
+        createTimeTo: ''
+      }
+      if (dataType == 1) {
+        this.mouthLl = 'primary'
+        this.dayLl = 'default'
+        this.dateType = 'monthrange'
+      } else {
+        this.mouthLl = 'default'
+        this.dayLl = 'primary'
+        this.dateType = 'daterange'
+      }
+      this.getData1()
+    },
     countDown() {
       let d = parseInt(this.seconds / (24 * 60 * 60))
       if (d > 0) {
