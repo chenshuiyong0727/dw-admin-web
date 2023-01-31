@@ -10,7 +10,7 @@
 <!--            </div>-->
 <!--          </div>-->
 <!--        </el-col>-->
-        <el-col  v-if="countDay > 0" :span="8">
+        <el-col :span="8">
           <div class="out-border" @click="jumpactNo()">
             <div class="layout-title">春节倒计时</div>
             <div class="color-main address-content">
@@ -406,7 +406,7 @@ export default {
     },
     initTime() {
       let myDate = new Date().getTime()
-      let endTime = '2023-01-22 00:00:00'
+      let endTime = '2024/02/10 00:00:00'
       let timestamp2 = Date.parse(new Date(endTime))
       this.seconds = (timestamp2 - myDate) / 1000
     },
