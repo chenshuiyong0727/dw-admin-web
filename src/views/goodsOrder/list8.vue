@@ -263,7 +263,7 @@
     <!-- </three-level-route> -->
     <div class="popContainer" v-if="pictureZoomShow" @click="pictureZoomShow = false">
       <div class="imageShow">
-        <img :src="fileUrl + imageZoom" alt="" width="100%" height="100%">
+        <img :src="fileUrl + imageZoom" alt="" width="100%" >
       </div>
     </div>
   </three-level-route>

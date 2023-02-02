@@ -7,7 +7,7 @@
           <img
             v-if="form.imgUrl"
             :src="fileUrl + form.imgUrl"
-            style="width: 100px;height: 100px;"
+            style="width: 100px;"
             @click="avatarShow(form.imgUrl)"
           />
         </div>
@@ -99,6 +99,11 @@
         </el-table-column>
       </el-table>
     </div>
+    <div class="popContainer" v-if="pictureZoomShow" @click="pictureZoomShow = false">
+      <div class="imageShow">
+        <img :src="fileUrl + imageZoom" alt="" width="100%" >
+      </div>
+    </div>
   </div>
 </template>
 
@@ -118,6 +123,8 @@
           imgUrl: ''
         },
         activeIndex: [],
+        pictureZoomShow: false,
+        imageZoom: '',
         fileUrl: fileUrl,
         goodsId: '',
         unifiedPrice: '',
@@ -241,11 +248,15 @@
         console.log(this.tableData)
       },
       avatarShow(e) {
-        if (!e) {
-          return
-        }
-        window.open(this.fileUrl + e)
+        this.imageZoom = e
+        this.pictureZoomShow = true
       },
+      // avatarShow(e) {
+      //   if (!e) {
+      //     return
+      //   }
+      //   window.open(this.fileUrl + e)
+      // },
       getDetailById(id) {
         if (id) {
           goodsBaseApi.getDetailById(id).then(res => {

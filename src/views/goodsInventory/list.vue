@@ -18,7 +18,7 @@
             </el-col>
             <el-col :span="16">
               <el-form-item size="small">
-                <el-input v-model.trim="queryParam1.keyword" placeholder="关键词 （货号、尺码）">
+                <el-input v-model.trim="queryParam1.keyword" placeholder="货号">
                 </el-input>
               </el-form-item>
             </el-col>
@@ -80,7 +80,7 @@
               />
             </div>
           </el-row>
-          <el-row class="clearfix btm-distance" style="padding-left: 5px;">
+          <el-row class="clearfix btm-distance" style="padding-left: 15px;">
             <div class="overview">
               <p><strong>库存数量</strong></p>
               <p>{{inventoryData.inventory}} / {{inventoryData.oldInventory}} </p>
@@ -90,6 +90,12 @@
             <div class="overview">
               <p><strong>库存成本</strong></p>
               <p>{{inventoryData.price}}</p>
+            </div>
+          </el-row>
+          <el-row class="clearfix btm-distance">
+            <div class="overview">
+              <p><strong>市值总额</strong></p>
+              <p>{{inventoryData.dwPrice}}</p>
             </div>
           </el-row>
           <el-row class="clearfix btm-distance">
@@ -208,7 +214,7 @@
     <!-- </three-level-route> -->
     <div class="popContainer" v-if="pictureZoomShow" @click="pictureZoomShow = false">
       <div class="imageShow">
-        <img :src="fileUrl + imageZoom" alt="" width="100%" height="100%">
+        <img :src="fileUrl + imageZoom" alt="" width="100%" >
       </div>
     </div>
     <change-status-dialog
