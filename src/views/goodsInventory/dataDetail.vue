@@ -25,6 +25,19 @@
           </el-form-item>
         </el-col>
         <el-col :span="6">
+          <el-form-item size="small">
+            <el-date-picker
+              v-model="createTime"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="创建时间开始"
+              end-placeholder="创建时间结束"
+              @change="createTimeChange"
+              value-format="yyyy-MM-dd">
+            </el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
           <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-search"
                      @click="search">查询
           </el-button>
@@ -143,8 +156,11 @@
         sizeData: '',
         imageZoom: '',
         isShowDialog: false,
+        createTime: '',
         queryParam: {
           id: '',
+          createTimeFrom: '',
+          createTimeTo: '',
           inventory: 1,
           inventoryFrom: '',
           inventoryTo: '',
@@ -182,6 +198,15 @@
       this.listSysDict()
     },
     methods: {
+      createTimeChange() {
+        if (this.createTime) {
+          this.queryParam.createTimeFrom = this.createTime[0]
+          this.queryParam.createTimeTo = this.createTime[1]
+        } else {
+          this.queryParam.createTimeFrom = null
+          this.queryParam.createTimeTo = null
+        }
+      },
       changeStatusDialog(row) {
         this.sizeData = row
         this.isShowDialog = true
