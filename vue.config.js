@@ -45,16 +45,16 @@ module.exports = {
     disableHostCheck: true,
     proxy: {
       '/': {
-        target: `http://114.132.243.79:28087`,
+        // target: `http://114.132.243.79:28087`,
         // target: `https://org.yimed.cn/`,
         // target: `http://orgunit.server.com:28087`,
-        // target: `http://localhost:28087`,
+        target: `http://localhost:28087`,
         changeOrigin: true,
         pathRewrite: {
           '^/': ''
         }
-      },
-    },
+      }
+    }
       //before: require('./mock/mock-server.js')
   },
   configureWebpack: {

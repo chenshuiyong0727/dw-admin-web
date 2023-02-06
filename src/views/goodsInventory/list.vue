@@ -129,15 +129,45 @@
         </div>
         <el-table style="margin-top: 20px" border :data="tableData">
 
-          <el-table-column align="center" prop="size" width="50" label="尺码"/>
-          <el-table-column align="center" prop="oldInventory" width="50" label="原始库存"/>
-          <el-table-column align="center" prop="" width="50" label="剩余库存">
-            <template slot-scope="scope">
-              <span
-                :class="scope.row.inventory > 0 ? 'color-danger' : 'color-success'"
-              >
-              {{scope.row.inventory}}
-            </span>
+<!--          <el-table-column align="center" prop="size" width="50" label="尺码"/>-->
+          <el-table-column align="center" prop="size"  width="60" label="尺码">
+            <template scope="scope">
+              <el-button
+                type="text"
+                @click="changeStatusDialog1(scope.row)">{{scope.row.size}}
+              </el-button>
+            </template>
+          </el-table-column>
+<!--          <el-table-column align="center" prop="size" width="100" label="尺码">-->
+<!--            <template slot-scope="scope">-->
+<!--&lt;!&ndash;              <div class="input-box">&ndash;&gt;-->
+<!--&lt;!&ndash;                <el-input size="small" v-model="scope.row.price"></el-input>&ndash;&gt;-->
+<!--&lt;!&ndash;              </div>&ndash;&gt;-->
+<!--              <el-select v-model="scope.row.size">-->
+<!--&lt;!&ndash;              <el-select v-model="scope.row.size" @change="changeStatus(scope.row)">&ndash;&gt;-->
+<!--                <el-option-->
+<!--                  v-for="item in sizeList"-->
+<!--                  :key="item.id"-->
+<!--                  :label="item.size"-->
+<!--                  :value="+item.id">-->
+<!--                </el-option>-->
+<!--              </el-select>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
+<!--          <el-table-column align="center" prop="oldInventory" width="50" label="原始库存"/>-->
+<!--          <el-table-column align="center" prop="" width="50" label="剩余库存">-->
+          <el-table-column align="center" prop="oldInventory" label="原始库存">
+            <template scope="scope">
+              <div class="input-box">
+                <el-input size="small" v-model="scope.row.oldInventory"></el-input>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="inventory" label="剩余库存">
+            <template scope="scope">
+              <div class="input-box">
+                <el-input size="small" v-model="scope.row.inventory"></el-input>
+              </div>
             </template>
           </el-table-column>
           <el-table-column align="center" prop="successCount" width="50" label="成功数"/>
@@ -149,9 +179,6 @@
               </div>
             </template>
           </el-table-column>
-          <!--          <el-table-column align="center" prop="" label="总入库价">-->
-          <!--            <template  slot-scope="scope">{{scope.row.price * (scope.row.inventory + scope.row.successCount)}}</template>-->
-          <!--          </el-table-column>-->
           <el-table-column align="center" prop="dwPrice" label="得物价">
             <template scope="scope">
               <div class="input-box">
@@ -222,6 +249,12 @@
       :sizeData="sizeData"
       @refreshPage="refreshPage"
       @closDialog="closDialog"/>
+    <change-status-dialog1
+      v-if="isShowDialog1 "
+      :sizeData="sizeData1"
+      :sizeList="sizeList"
+      @refreshPage="refreshPage1"
+      @closDialog="closDialog1"/>
   </three-level-route>
 </template>
 
@@ -231,19 +264,25 @@
   import { permissionMixin } from '@/mixins/permissionMixin'
   import InventoryDetail from './components/inventoryDetail'
   import changeStatusDialog from './components/changeStatusDialog'
+  import changeStatusDialog1 from './components/changeStatusDialog1'
+  import { goodsBaseApi } from '@/api/goodsBase'
 
   export default {
     mixins: [permissionMixin],
     components: {
       ThreeLevelRoute,
       changeStatusDialog,
+      changeStatusDialog1,
       InventoryDetail
     },
     data() {
       return {
+        sizeList: '',
         sizeData: '',
+        sizeData1: '',
         imageZoom: '',
         isShowDialog: false,
+        isShowDialog1: false,
         queryParam1: {
           keyword: '',
           pageSize: 5,
@@ -290,8 +329,17 @@
     mounted() {
       this.page()
       this.listSysDict()
+      this.handleChange()
     },
     methods: {
+      handleChange() {
+        goodsBaseApi.listDropDownSizes({ type: '' }, false).then(res => {
+          console.info(res)
+          if (res.subCode === 1000) {
+            this.sizeList = res.data
+          }
+        })
+      },
       changeStatusDialog(row) {
         this.sizeData = row
         this.isShowDialog = true
@@ -299,8 +347,20 @@
       closDialog() {
         this.isShowDialog = false
       },
+      changeStatusDialog1(row) {
+        console.info(row)
+        this.sizeData1 = row
+        this.isShowDialog1 = true
+      },
+      closDialog1() {
+        this.isShowDialog1 = false
+      },
       refreshPage() {
         this.isShowDialog = false
+        this.pageGoods()
+      },
+      refreshPage1() {
+        this.isShowDialog1 = false
         this.pageGoods()
       },
       avatarShow(e) {
@@ -429,9 +489,9 @@
           })
         })
       },
-      // changeStatus(row) {
-      //   console.info(row)
-      // },
+      changeStatus(row) {
+        console.info(row)
+      },
       search() {
         this.queryParam1.pageNum = 1
         this.page()

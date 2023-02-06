@@ -47,7 +47,8 @@
         </el-col>
       </el-row>
     </el-form>
-    <el-table height="600" style="margin-top: 20px" border :data="tableData">
+    <buttomButton style="z-index: 9999" :tableRef="this.$refs['queryTable']"></buttomButton>
+    <el-table ref="queryTable" height="600" style="margin-top: 20px" border :data="tableData">
       <el-table-column align="center" prop="actNo" width="100" fixed="left" label="货号"/>
       <el-table-column align="center" label="图片" fixed="left">
         <template slot-scope="scope">
@@ -146,9 +147,11 @@
 <script>
   import { goodsInventoryApi } from '@/api/goodsInventory'
   import changeStatusDialog from './components/changeStatusDialog'
+  import buttomButton from '@/components/buttomButton'
 
   export default {
     components: {
+      buttomButton,
       changeStatusDialog
     },
     data() {
