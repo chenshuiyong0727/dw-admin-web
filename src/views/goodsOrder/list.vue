@@ -258,9 +258,10 @@
           }}
         </template>
       </el-table-column>
-      <el-table-column fixed="right" align="center" label="操作" width="100">
+      <el-table-column fixed="right" align="center" label="操作" width="120">
         <template slot-scope="scope">
           <div>
+            <el-button type="text" class="color-danger" @click="goDel(scope.row.id)">删除</el-button>
             <el-button type="text" @click="changeStatusDialog(scope.row)">交易成功</el-button>
             <el-button type="text" v-if="scope.row.status == 2"
                        @click="changeStatusDialog2(scope.row)">出售
@@ -505,17 +506,32 @@
       jumpactNo(actNo) {
         this.$router.push({ path: '/goodsBase/goodsInventory', query: { actNo } })
       },
+      // goDel(id) {
+      //   goodsOrderApi.delById(id).then(res => {
+      //     if (res.subCode === 1000) {
+      //       this.$message.success(res.subMsg)
+      //       this.getPage()
+      //     } else {
+      //       this.$message.error(res.subMsg)
+      //     }
+      //   })
+      // },
       goDel(id) {
-        goodsOrderApi.delById(id).then(res => {
-          if (res.subCode === 1000) {
-            this.$message.success(res.subMsg)
-            this.getPage()
-          } else {
-            this.$message.error(res.subMsg)
-          }
+        this.$confirm('是否删除', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          goodsOrderApi.delById(id).then(res => {
+            if (res.subCode === 1000) {
+              this.$message.success(res.subMsg)
+              this.getPage()
+            } else {
+              this.$message.error(res.subMsg)
+            }
+          })
         })
       },
-
       search() {
         this.queryParam.pageNum = 1
         this.getPage()

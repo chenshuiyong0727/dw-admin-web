@@ -215,7 +215,7 @@
           <el-table-column fixed="right" align="center" label="操作" width="140">
             <template slot-scope="scope">
               <el-button type="text" @click="update(scope.row)">修改</el-button>
-              <el-button type="text" @click="goDel(scope.row.id)">删除</el-button>
+              <el-button type="text" class="color-danger" @click="goDel(scope.row.id)">删除</el-button>
               <el-button
                 type="text"
                 v-if="scope.row.inventory > scope.row.galleryCount"
