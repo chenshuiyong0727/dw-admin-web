@@ -473,7 +473,10 @@
         })
       },
       update(row) {
-        console.info(row)
+        if (row.oldInventory < row.inventory) {
+          this.$message.error('原始库存小于剩余库存')
+          return
+        }
         this.$confirm('是否修改', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
