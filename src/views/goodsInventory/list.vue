@@ -479,6 +479,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
+          row.createTime = null
           goodsInventoryApi.update(row).then(res => {
             if (res.subCode === 1000) {
               this.$message.success(res.subMsg)
