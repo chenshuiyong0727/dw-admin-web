@@ -38,8 +38,9 @@
       <!--      -->
       <el-table-column align="center" width="100" label="月份">
         <template slot-scope="scope">
-          <span
-            :style="scope.row.months == '合计' ? 'font-weight: bold' : ''"> {{ scope.row.months }}</span>
+          <a
+            @click="jumpDetail(scope.row.months)"
+            :style="scope.row.months == '合计' ? 'font-weight: bold;' : 'color: #20a0ff;'"> {{ scope.row.months }}</a>
         </template>
       </el-table-column>
       <el-table-column align="center" width="100" label="入库数">
@@ -134,6 +135,9 @@
       this.getPage()
     },
     methods: {
+      jumpDetail(months) {
+        this.$router.push({ path: '/report/putInStorage/detail', query: { months }})
+      },
       createTimeChange() {
         if (this.createTime) {
           this.queryParam.createTimeFrom = this.createTime[0]

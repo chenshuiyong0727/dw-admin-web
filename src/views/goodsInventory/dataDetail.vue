@@ -159,7 +159,7 @@
         sizeData: '',
         imageZoom: '',
         isShowDialog: false,
-        createTime: '',
+        createTime: [],
         queryParam: {
           id: '',
           createTimeFrom: '',
@@ -183,6 +183,7 @@
         dataStatusList: [],
         imgUrl: '',
         actNo: '',
+        months: '',
         tableData: [],
         tableData1: [],
         totalCount1: 1,
@@ -190,10 +191,19 @@
       }
     },
     created() {
-      const { actNo } = this.$route.query
+      const { actNo, months } = this.$route.query
       this.queryParam.actNo = actNo
       if (this.queryParam.actNo) {
         this.pageGoods()
+      }
+      this.months = months
+      if (this.months) {
+        console.info(this.months)
+        this.createTime[0] = this.months
+        this.createTime[1] = this.months
+        this.queryParam.createTimeFrom = this.months
+        this.queryParam.createTimeTo = this.months
+        this.getPage()
       }
     },
     mounted() {

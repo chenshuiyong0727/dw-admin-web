@@ -368,7 +368,7 @@
         statusList: [],
         dataStatusList: [],
         sellTime: '',
-        successTime: '',
+        successTime: [],
         createTime: '',
         updateTime: '',
         selectedId: [],
@@ -378,9 +378,17 @@
       }
     },
     created() {
-      const { actNo } = this.$route.query
+      const { actNo , months } = this.$route.query
       this.queryParam.keyword = actNo
       if (this.queryParam.keyword) {
+        this.getPage()
+      }
+      this.months = months
+      if (this.months) {
+        this.successTime[0] = this.months
+        this.successTime[1] = this.months
+        this.queryParam.successTimeFrom = this.months
+        this.queryParam.successTimeTo = this.months
         this.getPage()
       }
     },

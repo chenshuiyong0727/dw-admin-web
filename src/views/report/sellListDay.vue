@@ -1,12 +1,12 @@
 <template>
-  <three-level-route>
+  <div class="page-container">
     <el-form ref="form">
       <el-row class="query-form">
         <el-col :span="6">
           <el-form-item size="small">
             <el-date-picker
               v-model="createTime"
-              type="monthrange"
+              type="daterange"
               range-separator="至"
               start-placeholder="时间开始"
               end-placeholder="时间结束"
@@ -38,8 +38,10 @@
       <!--      -->
       <el-table-column align="center" width="100" label="月份">
         <template slot-scope="scope">
+<!--          <span-->
+<!--            :style="scope.row.months == '合计' ? 'font-weight: bold' : ''"> {{ scope.row.months }}</span>-->
           <a
-            @click="jumpDetail(scope.row.months)"
+            @click="viewAll(scope.row.months)"
             :style="scope.row.months == '合计' ? 'font-weight: bold;' : 'color: #20a0ff;'"> {{ scope.row.months }}</a>
         </template>
       </el-table-column>
@@ -97,11 +99,10 @@
     <!--        :total="totalCount">-->
     <!--      </el-pagination>-->
     <!--    </el-row>-->
-  </three-level-route>
+  </div>
 </template>
 
 <script>
-  import ThreeLevelRoute from '@/components/ThreeLevelRoute'
   import { reportApi } from '@/api/report'
   import { permissionMixin } from '@/mixins/permissionMixin'
   import { getExport } from '@/api/exportFile'
@@ -109,7 +110,6 @@
   export default {
     mixins: [permissionMixin],
     components: {
-      ThreeLevelRoute
     },
     data() {
       return {
@@ -119,17 +119,51 @@
           pageSize: 10,
           pageNum: 1
         },
-        createTime: '',
+        months: '',
+        createTime: [],
         tableData: [],
         totalCount: 1
       }
     },
-    mounted() {
-      this.getPage()
+    created() {
+      const { months } = this.$route.query
+      this.months = months
+      if (this.months) {
+        this.months = this.months + '-01'
+        let to = this.getNextMonth(this.months)
+        this.createTime[0] = this.months
+        this.createTime[1] = to
+        this.queryParam.createTimeFrom = this.months
+        this.queryParam.createTimeTo = to
+        this.getPage()
+      }
     },
     methods: {
-      jumpDetail(months) {
-        this.$router.push({ path: '/report/sellList/detail', query: { months }})
+      viewAll(months) {
+        this.$router.push({ path: '/goodsOrder/list', query: { months } })
+      },
+      getNextMonth(date) {
+        let arr = date.split('-')
+        let year = arr[0] // 获取当前日期的年份
+        let month = arr[1] // 获取当前日期的月份
+        let day = arr[2] // 获取当前日期的日
+        let year2 = year
+        let month2 = parseInt(month) + 1
+        if (month2 === 13) {
+          year2 = parseInt(year2) + 1
+          month2 = 1
+        }
+        let day2 = day
+        let days2 = new Date(year2, month2, 0)
+        days2 = days2.getDate()
+        if (day2 > days2) {
+          day2 = days2
+        }
+        if (month2 < 10) {
+          month2 = '0' + month2
+        }
+        let m = year2 + '-' + month2 + '-' + day2
+        return m
       },
       createTimeChange() {
         if (this.createTime) {
@@ -141,7 +175,7 @@
         }
       },
       getPage() {
-        reportApi.sellList(this.queryParam).then(res => {
+        reportApi.sellListDay(this.queryParam).then(res => {
           if (res.subCode === 1000) {
             this.tableData = res.data ? res.data : []
           } else {
@@ -172,7 +206,7 @@
         //     ...this.queryParam
         //   }
         // }
-        getExport('/gw/op/v1/report/exportPutOutStorage', this.queryParam, 'post', '出库报表').then(() => {
+        getExport('/gw/op/v1/report/exportPutOutStorageDay', this.queryParam, 'post', this.months +'出库报表').then(() => {
           this.$emit('refresh')
         })
       },

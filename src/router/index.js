@@ -334,14 +334,32 @@ export const constantRoutes = [
       {
         path: 'putInStorage',
         name: 'putInStorage',
-        component: () => import('@/views/report/list'),
-        meta: { title: '入库报表' }
+        component: () => import('@/views/report/putInStorage'),
+        meta: { title: '入库报表' },
+        children: [
+          {
+            path: 'detail',
+            name: 'detail',
+            component: () => import('@/views/report/putInStorageDay'),
+            meta: { title: '详情', routerId: 3 },
+            hidden: true
+          }
+        ]
       },
       {
         path: 'sellList',
         name: 'sellList',
         component: () => import('@/views/report/sellList'),
-        meta: { title: '销售报表' }
+        meta: { title: '销售报表' },
+        children: [
+          {
+            path: 'detail',
+            name: 'detail',
+            component: () => import('@/views/report/sellListDay'),
+            meta: { title: '详情', routerId: 3 },
+            hidden: true
+          }
+        ]
       }
     ]
   },
