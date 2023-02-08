@@ -341,7 +341,14 @@ export const constantRoutes = [
             path: 'detail',
             name: 'detail',
             component: () => import('@/views/report/putInStorageDay'),
-            meta: { title: '详情', routerId: 3 },
+            meta: { title: '月份详情', routerId: 3 },
+            hidden: true
+          },
+          {
+            path: 'dayDetail',
+            name: 'dayDetail',
+            component: () => import('@/views/report/putInDetail'),
+            meta: { title: '日期详情', routerId: 3 },
             hidden: true
           }
         ]

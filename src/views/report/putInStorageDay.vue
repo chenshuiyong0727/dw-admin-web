@@ -16,7 +16,7 @@
             </el-date-picker>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="12">
           <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-search"
                      @click="search">查询
           </el-button>
@@ -26,6 +26,9 @@
           <el-button type="primary" size="small"
                      style="margin-right: 10px;background-color: #0fbe8f" icon="el-icon-download"
                      @click="exportHandle">导出
+          </el-button>
+          <el-button type="primary" size="small" style="margin-right: 10px"
+                     @click="returnPage">返回
           </el-button>
         </el-col>
       </el-row>
@@ -147,7 +150,7 @@ export default {
   },
   methods: {
     viewAll(months) {
-      this.$router.push({ path: '/goodsBase/goodsInventory/dataDetail', query: { months }})
+      this.$router.push({ path: '/report/putInStorage/dayDetail', query: { months }})
     },
     getNextMonth(date) {
       let arr = date.split('-')
@@ -217,6 +220,9 @@ export default {
         () => {
           this.$emit('refresh')
         })
+    },
+    returnPage() {
+      this.$router.go(-1)
     },
     resetHandle() {
       this.queryParam = {

@@ -15,7 +15,7 @@
             </el-date-picker>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="12">
           <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-search"
                      @click="search">查询
           </el-button>
@@ -23,6 +23,9 @@
                      @click="resetHandle">重置
           </el-button>
           <el-button type="primary" size="small" style="margin-right: 10px ;background-color: #0fbe8f" icon="el-icon-download" @click="exportHandle">导出
+          </el-button>
+          <el-button type="primary" size="small" style="margin-right: 10px"
+                     @click="returnPage">返回
           </el-button>
         </el-col>
       </el-row>
@@ -209,6 +212,9 @@
         getExport('/gw/op/v1/report/exportPutOutStorageDay', this.queryParam, 'post', this.months +'出库报表').then(() => {
           this.$emit('refresh')
         })
+      },
+      returnPage() {
+        this.$router.go(-1)
       },
       resetHandle() {
         this.queryParam = {

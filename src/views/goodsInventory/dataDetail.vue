@@ -84,10 +84,6 @@
       <el-table-column align="center" prop="oldInventory" width="50" label="原始库存" sortable/>
       <el-table-column align="center" prop="inventory" width="50" label="剩余库存" sortable/>
       <el-table-column align="center" prop="successCount" width="80" label="成功数" sortable/>
-      <el-table-column align="center" prop="" label="总数(库存+成功数)" sortable>
-        <template slot-scope="scope">{{scope.row.oldInventory}}
-        </template>
-      </el-table-column>
       <el-table-column align="center" prop="galleryCount" width="80" label="上架数" sortable/>
       <el-table-column align="center" prop="" label="总入库价">
         <template slot-scope="scope">{{scope.row.price * scope.row.oldInventory }}
