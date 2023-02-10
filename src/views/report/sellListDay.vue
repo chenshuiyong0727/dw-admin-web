@@ -143,7 +143,7 @@
     },
     methods: {
       viewAll(months) {
-        this.$router.push({ path: '/goodsOrder/list', query: { months } })
+        this.$router.push({ path: '/goodsOrder/list', query: { months }})
       },
       getNextMonth(date) {
         let arr = date.split('-')

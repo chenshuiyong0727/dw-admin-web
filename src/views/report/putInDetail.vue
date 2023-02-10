@@ -54,7 +54,7 @@
             </el-table-column>
       <el-table-column align="center" prop="size" label="尺码" sortable/>
       <el-table-column align="center" prop="price" label="入库价" sortable/>
-      <el-table-column align="center" prop="size"  label="得物价" sortable/>
+      <el-table-column align="center" prop="dwPrice"  label="得物价" sortable/>
       <el-table-column align="center" prop="" label="预计利润" sortable>
         <template v-if="scope.row.dwPrice" slot-scope="scope">
           <!--              style="color: red"-->

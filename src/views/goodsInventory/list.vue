@@ -389,6 +389,7 @@
         this.pageGoods(row.id)
         this.imgUrl = row.imgUrl
         this.actNo = row.actNo
+        this.queryParam1.keyword = row.actNo
       },
       showInventoryDrawer() {
         this.$refs['inventory-detail-edit'].show()

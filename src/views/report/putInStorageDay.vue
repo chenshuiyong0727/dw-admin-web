@@ -125,9 +125,7 @@ export default {
     return {
       queryParam: {
         createTimeFrom: '',
-        createTimeTo: '',
-        pageSize: 10,
-        pageNum: 1
+        createTimeTo: ''
       },
       months: '',
       createTime: [],
