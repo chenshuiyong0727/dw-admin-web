@@ -173,11 +173,22 @@
         this.requestParam.profits = parseFloat(profits).toFixed(2)
       },
       confirmHandle() {
+        if(!this.requestParam.freight) {
+          this.$message.error('请输入运费')
+          return
+        }
+        if(!this.requestParam.poundage) {
+          this.$message.error('请输入手续费')
+          return
+        }
+        if(!this.requestParam.theirPrice) {
+          this.$message.error('请输入到手价')
+          return
+        }
         // 利润= 到手价-运费-原价
         let profits = this.requestParam.theirPrice - this.requestParam.freight
           - this.requestParam.price
         this.requestParam.profits = parseFloat(profits).toFixed(2)
-
         // 出售
         goodsOrderApi.sellGoods(this.requestParam).then(res => {
           if (res.subCode === 1000) {
