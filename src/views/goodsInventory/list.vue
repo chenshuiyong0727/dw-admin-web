@@ -118,9 +118,6 @@
           </el-row>
           <el-form ref="form">
             <el-row >
-<!--              <el-button type="primary" size="small" style="margin-right: 5px"-->
-<!--                         @click="goDetail()">新增尺码-->
-<!--              </el-button>-->
               <el-button type="primary" size="small" style="margin-right: 5px"
                          @click="handleClick()">移动仓库
               </el-button>
