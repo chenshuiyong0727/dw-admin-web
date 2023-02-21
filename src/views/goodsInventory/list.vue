@@ -117,19 +117,34 @@
             </div>
           </el-row>
           <el-form ref="form">
-            <el-row type="flex">
-              <el-button type="primary" size="small" style="margin-right: 10px"
-                         @click="goDetail()">新增尺码
+            <el-row >
+<!--              <el-button type="primary" size="small" style="margin-right: 5px"-->
+<!--                         @click="goDetail()">新增尺码-->
+<!--              </el-button>-->
+              <el-button type="primary" size="small" style="margin-right: 5px"
+                         @click="handleClick()">移动仓库
               </el-button>
-              <el-button type="primary" size="small" style="margin-right: 10px"
-                         @click="jumpactNo()">查看订单
-              </el-button>
+              <el-dropdown trigger="click">
+            <span style="color: #409EFF" class="el-dropdown-link">
+              更多操作<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item
+                    type="text"
+                    @click.native="jumpactNo">
+                    查看订单</el-dropdown-item>
+                  <el-dropdown-item
+                    type="text"
+                    @click.native="goDetail">新增尺码</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </el-row>
           </el-form>
         </div>
-        <el-table style="margin-top: 20px" border :data="tableData">
+        <el-table style="margin-top: 20px" border :data="tableData" @selection-change="selected">
 
 <!--          <el-table-column align="center" prop="size" width="50" label="尺码"/>-->
+          <el-table-column type="selection" width="40"></el-table-column>
           <el-table-column align="center" prop="size"  width="60" label="尺码">
             <template scope="scope">
               <el-button
@@ -184,6 +199,11 @@
               <div class="input-box">
                 <el-input size="small" v-model="scope.row.dwPrice"></el-input>
               </div>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="warehouseId" label="仓库">
+            <template v-if="scope.row.warehouseId" slot-scope="scope">{{ scope.row.warehouseId |
+              dictToDescTypeValue(40) }}
             </template>
           </el-table-column>
           <el-table-column align="center" prop="" label="手续费">
@@ -249,6 +269,12 @@
       :sizeData="sizeData"
       @refreshPage="refreshPage"
       @closDialog="closDialog"/>
+    <change-status-dialog-2
+      v-if="isShowDialog2 "
+      :ids="ids"
+      :warehouseList="warehouseList"
+      @refreshPage="refreshPage2"
+      @closDialog="closDialog2"/>
     <change-status-dialog1
       v-if="isShowDialog1 "
       :sizeData="sizeData1"
@@ -265,6 +291,7 @@
   import InventoryDetail from './components/inventoryDetail'
   import changeStatusDialog from './components/changeStatusDialog'
   import changeStatusDialog1 from './components/changeStatusDialog1'
+  import changeStatusDialog2 from './components/changeStatusDialog2'
   import { goodsBaseApi } from '@/api/goodsBase'
 
   export default {
@@ -273,15 +300,24 @@
       ThreeLevelRoute,
       changeStatusDialog,
       changeStatusDialog1,
+      changeStatusDialog2,
       InventoryDetail
     },
     data() {
       return {
+        requestParam: {
+          ids: [],
+          warehouseId: 2
+        },
+        selectedId: [],
+        ids: [],
         sizeList: '',
+        warehouseList: '',
         sizeData: '',
         sizeData1: '',
         imageZoom: '',
         isShowDialog: false,
+        isShowDialog2: false,
         isShowDialog1: false,
         queryParam1: {
           keyword: '',
@@ -347,6 +383,20 @@
       closDialog() {
         this.isShowDialog = false
       },
+      selected(val) {
+        this.selectedId = val
+        let temp = []
+        for (let i = 0; i < this.selectedId.length; i++) {
+          temp.push(this.selectedId[i].id)
+        }
+        this.ids = temp
+      },
+      changeStatusDialog2() {
+        this.isShowDialog2 = true
+      },
+      closDialog2() {
+        this.isShowDialog2 = false
+      },
       changeStatusDialog1(row) {
         console.info(row)
         this.sizeData1 = row
@@ -357,6 +407,10 @@
       },
       refreshPage() {
         this.isShowDialog = false
+        this.pageGoods()
+      },
+      refreshPage2() {
+        this.isShowDialog2 = false
         this.pageGoods()
       },
       refreshPage1() {
@@ -370,15 +424,23 @@
       goDetail() {
         // *** 根据真实路径配置地址
         if (!this.queryParam.goodsId) {
-          this.$alert('没有选中数据')
+          this.$message.error('没有选中数据')
           return
         }
         let goodsId = this.queryParam.goodsId
         this.$router.push({ path: '/goodsBase/goodsInventory/detail', query: { goodsId } })
       },
+      handleClick() {
+        this.requestParam.ids = this.ids
+        if (!this.ids.length) {
+          this.$message.error('请选择尺码')
+          return
+        }
+        this.isShowDialog2 = true
+      },
       jumpactNo() {
         if (!this.actNo) {
-          this.$alert('没有选中数据')
+          this.$message.error('没有选中数据')
           return
         }
         let actNo = this.actNo
@@ -438,6 +500,8 @@
         let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
           localStorage.getItem('sysDictList')) : []
         this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
+        this.warehouseList = sysDictList.filter(item => item.typeValue == 40)
+        console.info(this.warehouseList)
       },
       pageChangeHandle(currentPage) {
         this.queryParam.pageNum = currentPage

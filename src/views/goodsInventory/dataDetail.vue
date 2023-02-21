@@ -16,6 +16,19 @@
         </el-col>
         <el-col :span="6">
           <el-form-item size="small">
+            <el-select v-model="queryParam.warehouseId">
+              <el-option label="仓库" value=""></el-option>
+              <el-option
+                v-for="item in warehouseList"
+                :key="item.fieldValue"
+                :label="item.fieldName"
+                :value="item.fieldValue">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item size="small">
             <el-input v-model.trim="queryParam.actNo" placeholder="货号"></el-input>
           </el-form-item>
         </el-col>
@@ -44,11 +57,15 @@
           <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-refresh"
                      @click="resetHandle">重置
           </el-button>
+          <el-button type="primary" size="small" style="margin-right: 10px"
+                     @click="handleClick">移动仓库
+          </el-button>
         </el-col>
       </el-row>
     </el-form>
     <buttomButton style="z-index: 9999" :tableRef="this.$refs['queryTable']"></buttomButton>
-    <el-table ref="queryTable" height="600" style="margin-top: 20px" border :data="tableData">
+    <el-table ref="queryTable" height="600" style="margin-top: 20px" border :data="tableData" @selection-change="selected">
+      <el-table-column type="selection" width="40"></el-table-column>
       <el-table-column align="center" prop="actNo" width="100" fixed="left" label="货号"/>
       <el-table-column align="center" label="图片" fixed="left">
         <template slot-scope="scope">
@@ -69,6 +86,11 @@
           <div class="input-box">
             <el-input size="small" v-model="scope.row.dwPrice"></el-input>
           </div>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" prop="warehouseId" label="仓库">
+        <template v-if="scope.row.warehouseId" slot-scope="scope">{{ scope.row.warehouseId |
+          dictToDescTypeValue(40) }}
         </template>
       </el-table-column>
       <el-table-column align="center" prop="" label="预计利润" sortable>
@@ -137,17 +159,25 @@
       :sizeData="sizeData"
       @refreshPage="refreshPage"
       @closDialog="closDialog"/>
+    <change-status-dialog-2
+      v-if="isShowDialog2 "
+      :ids="ids"
+      :warehouseList="warehouseList"
+      @refreshPage="refreshPage2"
+      @closDialog="closDialog2"/>
   </div>
 </template>
 
 <script>
   import { goodsInventoryApi } from '@/api/goodsInventory'
   import changeStatusDialog from './components/changeStatusDialog'
+  import changeStatusDialog2 from './components/changeStatusDialog2'
   import buttomButton from '@/components/buttomButton'
 
   export default {
     components: {
       buttomButton,
+      changeStatusDialog2,
       changeStatusDialog
     },
     data() {
@@ -158,6 +188,7 @@
         createTime: [],
         queryParam: {
           id: '',
+          warehouseId: '',
           createTimeFrom: '',
           createTimeTo: '',
           inventory: 1,
@@ -176,6 +207,14 @@
           { fieldValue: 1, fieldName: '现货' }, { fieldValue: 0, fieldName: '售空' },
           { fieldValue: 2, fieldName: '未上架' }
         ],
+        requestParam: {
+          ids: [],
+          warehouseId: 2
+        },
+        selectedId: [],
+        ids: [],
+        isShowDialog2: false,
+        warehouseList: '',
         dataStatusList: [],
         imgUrl: '',
         actNo: '',
@@ -194,7 +233,6 @@
       }
       this.months = months
       if (this.months) {
-        console.info(this.months)
         this.createTime[0] = this.months
         this.createTime[1] = this.months
         this.queryParam.createTimeFrom = this.months
@@ -207,6 +245,32 @@
       this.listSysDict()
     },
     methods: {
+      changeStatusDialog2() {
+        this.isShowDialog2 = true
+      },
+      closDialog2() {
+        this.isShowDialog2 = false
+      },
+      refreshPage2() {
+        this.isShowDialog2 = false
+        this.pageGoods()
+      },
+      selected(val) {
+        this.selectedId = val
+        let temp = []
+        for (let i = 0; i < this.selectedId.length; i++) {
+          temp.push(this.selectedId[i].id)
+        }
+        this.ids = temp
+      },
+      handleClick() {
+        this.requestParam.ids = this.ids
+        if (!this.ids.length) {
+          this.$message.error('请选择尺码')
+          return
+        }
+        this.isShowDialog2 = true
+      },
       createTimeChange() {
         if (this.createTime) {
           this.queryParam.createTimeFrom = this.createTime[0]
@@ -263,6 +327,7 @@
         let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
           localStorage.getItem('sysDictList')) : []
         this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
+        this.warehouseList = sysDictList.filter(item => item.typeValue == 40)
       },
       pageChangeHandle(currentPage) {
         this.queryParam.pageNum = currentPage
@@ -326,6 +391,7 @@
       resetHandle() {
         this.queryParam = {
           id: '',
+          warehouseId: '',
           inventory: 1,
           inventoryFrom: '',
           inventoryTo: '',
