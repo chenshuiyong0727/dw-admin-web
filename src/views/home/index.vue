@@ -171,6 +171,41 @@
             </div>
           </div>
         </el-col>
+
+        <el-col :span="4">
+          <div class="out-border" @click="goDataDetail(2)">
+            <div class="layout-title">云头库存</div>
+            <div class="color-main address-content">
+              <span>{{form.ytInventory}}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="4">
+          <div class="out-border" @click="goDataDetail(2)">
+            <div class="layout-title">云头货值</div>
+            <div class="color-main address-content">
+              <span>{{form.ytAmount}}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="4">
+          <div class="out-border" @click="goDataDetail(1)">
+            <div class="layout-title">前埔库存</div>
+            <div class="color-main address-content">
+              <span>{{form.qpInventory}}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="4">
+          <div class="out-border" @click="goDataDetail(1)">
+            <div class="layout-title">前埔货值</div>
+            <div class="color-main address-content">
+              <span>{{form.qpAmount}}</span>
+            </div>
+          </div>
+        </el-col>
+
+
       </el-row>
     </div>
     <div class="un-handle-layout">
@@ -499,6 +534,15 @@ export default {
     jumpactOrder(type) {
       let path = '/goodsOrder/list' + type
       this.$router.push({ path: path })
+    },
+    goDataDetail(warehouseId) {
+      // // *** 根据真实路径配置地址
+      // if (!this.queryParam.goodsId) {
+      //   this.$message.error('没有选中数据')
+      //   return
+      // }
+      // let goodsId = this.queryParam.goodsId
+      this.$router.push({ path: '/goodsBase/goodsInventory/dataDetail', query: { warehouseId }})
     },
     jumpactNo() {
       this.$router.push({ path: '/goodsBase/goodsInventory' })

@@ -22,7 +22,7 @@
                 v-for="item in warehouseList"
                 :key="item.fieldValue"
                 :label="item.fieldName"
-                :value="item.fieldValue">
+                :value="+item.fieldValue">
               </el-option>
             </el-select>
           </el-form-item>
@@ -226,9 +226,10 @@
       }
     },
     created() {
-      const { actNo, months } = this.$route.query
+      const { actNo, months, warehouseId } = this.$route.query
       this.queryParam.actNo = actNo
-      if (this.queryParam.actNo) {
+      this.queryParam.warehouseId = warehouseId
+      if (this.queryParam.actNo || this.queryParam.warehouseId) {
         this.pageGoods()
       }
       this.months = months
@@ -237,7 +238,7 @@
         this.createTime[1] = this.months
         this.queryParam.createTimeFrom = this.months
         this.queryParam.createTimeTo = this.months
-        this.getPage()
+        this.pageGoods()
       }
     },
     mounted() {
