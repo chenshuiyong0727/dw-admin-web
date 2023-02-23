@@ -108,14 +108,74 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row class="form-flex">
-        <el-col :span="10">
-          <el-table border :data="tableData">
-<!--            <el-table-column type="selection" width="55"></el-table-column>-->
+      <el-row>
+        <el-form-item label="图片" class="is-required">
+          <el-col :span="10">
+            <img
+              v-if="form.img"
+              :src="form.img"
+              style="width: 240px"
+              @click="avatarShow"
+            />
+          </el-col>
+        </el-form-item>
+      </el-row>
+      <el-row>
+        <el-col :span="11">
+          <h5>尺码列表</h5>
+          <el-table border :data="tableData"  @row-click="rowClick">
             <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-            <el-table-column align="center" prop="size" label="尺码" />
-            <el-table-column align="center" prop="price" label="价格" />
+            <el-table-column align="center" prop="size"  width="50" label="尺码" />
+            <el-table-column align="center" prop="price"  width="57" label="当前价" />
+            <el-table-column align="center" prop="oldInventory" width="71" label="原始库存" />
+            <el-table-column align="center" prop="inventory" width="71" label="当前库存" />
+            <el-table-column align="center" prop="inPrice" width="57" label="入库价" />
+            <el-table-column align="center" prop=""  label="到手价">
+              <template v-if="scope.row.price" slot-scope="scope">{{(scope.row.price -
+                (scope.row.price * 0.075 + 38 + 8.5)) | numFilter}}
+              </template>
+            </el-table-column>
+            <el-table-column align="center" prop=""  label="预计利润">
+              <template v-if="scope.row.inPrice" slot-scope="scope">
+              <span
+                :style="(scope.row.price - (scope.row.price * 0.075 + 38 + 8.5) - scope.row.inPrice - 10) > 50 ? 'color: red' : ''"
+              >
+                {{(scope.row.price - (scope.row.price * 0.075 + 38 + 8.5) - scope.row.inPrice - 10) | numFilter}}
+              </span>
+              </template>
+            </el-table-column>
           </el-table>
+        </el-col>
+        <el-col style="margin-left: 30px;" :span="12">
+          <h5>价格走势</h5>
+          <div>
+            <ve-line
+              :data="chartData"
+              :legend-visible="false"
+              :loading="loading"
+              :data-empty="dataEmpty"
+              :settings="chartSettings"></ve-line>
+          </div>
+          <el-table border :data="tableData1">
+            <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+            <el-table-column align="center" prop="date"  label="日期" />
+            <el-table-column align="center" prop="price" label="价格" />
+            <el-table-column align="center" prop="theirPrice" label="到手价" />
+<!--            <el-table-column align="center" prop=""  label="到手价">-->
+<!--              <template v-if="scope.row.price" slot-scope="scope">-->
+<!--                {{(scope.row.price - (scope.row.price * 0.075 + 38 + 8.5)) | numFilter}}-->
+<!--              </template>-->
+<!--            </el-table-column>-->
+          </el-table>
+            <el-pagination
+              @size-change="reSearchHandle"
+              @current-change="pageChangeHandle"
+              :current-page="queryParam1.pageNum"
+              :page-sizes="[10, 20, 50, 100]"
+              :page-size="queryParam1.pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="totalCount1">
+            </el-pagination>
         </el-col>
       </el-row>
       <el-form-item style="margin-top: 20px;">
@@ -138,6 +198,8 @@
 <script>
 import { goodsBaseApi } from '@/api/goodsBase'
 import { goodsBaseSizeApi } from '@/api/goodsBaseSize'
+import { goodsBaseSizePriceApi } from '@/api/goodsBaseSizePrice'
+
 export default {
   data() {
     return {
@@ -157,11 +219,19 @@ export default {
       queryParam: {
         goodsId: ''
       },
+      queryParam1: {
+        goodsId: '',
+        sizeId: '',
+        pageSize: 10,
+        pageNum: 1
+      },
       // props: {
       //   lazy: false,
       //   multiple: true
       // },
       // uploadData: {},
+      tableData1: [],
+      totalCount1: 1,
       tableData: [],
       typeList: [],
       dataStatusList: [],
@@ -178,7 +248,23 @@ export default {
         imgUrl: [
           { required: true, trigger: 'blur', message: '图片地址非空' }
         ]
-      }
+      },
+      chartSettings: {
+        xAxisType: 'time',
+        area: false,
+        scale: [true],
+        axisSite: { right: ['date'] },
+        labelAlias: {
+          'price': '价格',
+          'theirPrice': '到手价'
+        }
+      },
+      chartData: {
+        columns: ['date', 'price','theirPrice'],
+        rows: []
+      },
+      loading: false,
+      dataEmpty: false
     }
   },
   created() {
@@ -195,23 +281,56 @@ export default {
     this.listSysDict()
   },
   methods: {
-    // getSize() {
-    //   this.form.sizeList = []
-    //   for (let i = 0; i < this.sizeList.length; i++) {
-    //     this.form.sizeList.push(this.sizeList[i][1])
-    //   }
-    // },
+    rowClick(row) {
+      this.queryParam1.goodsId = this.form.id
+      this.queryParam1.sizeId = row.sizeId
+      this.getPagePrice()
+    },
+    pageChangeHandle(currentPage) {
+      this.queryParam1.pageNum = currentPage
+      this.getPagePrice()
+    },
+    reSearchHandle(size) {
+      this.queryParam1.pageSize = size
+      this.queryParam1.pageNum = 1
+      this.getPagePrice()
+    },
     listSysDict() {
       let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
         localStorage.getItem('sysDictList')) : []
       this.typeList = sysDictList.filter(item => item.typeValue == 20221108)
       this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
     },
+    getPagePrice() {
+      goodsBaseSizePriceApi.page(this.queryParam1).then(res => {
+        if (res.subCode === 1000) {
+          this.tableData1 = res.data ? res.data.list : []
+          this.dataEmpty = false
+          this.loading = false
+          this.chartData.rows = this.tableData1
+          this.totalCount1 = res.data ? res.data.pageInfo.totalCount : 0
+          for (let i = 0; i < this.tableData1.length; i++) {
+            let price =
+              this.tableData1[i].price - (this.tableData1[i].price * 0.075 + 38 + 8.5)
+            this.tableData1[i].theirPrice = parseFloat(price).toFixed(2)
+          }
+        } else {
+          this.$message.error(res.subMsg)
+        }
+      })
+    },
     getPage() {
       goodsBaseSizeApi.page(this.queryParam).then(res => {
         if (res.subCode === 1000) {
           this.tableData = res.data ? res.data.list : []
           let totalCount = res.data ? res.data.pageInfo.totalCount : 0
+          if (this.form.sizeVoList) {
+            if (this.tableData && this.tableData[0].sizeId) {
+              this.queryParam1.goodsId = this.form.id
+              this.queryParam1.sizeId = this.tableData[0].sizeId
+              this.getPagePrice()
+            }
+          }
           if (totalCount < this.form.sizeList.length) {
             this.getPage()
           }
