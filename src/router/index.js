@@ -207,6 +207,13 @@ export const constantRoutes = [
         meta: { title: '商品基本信息' },
         children: [
           {
+            path: 'detailNew',
+            name: 'detailNew',
+            component: () => import('@/views/goodsBase/detail-new'),
+            meta: { title: '智能获取', routerId: 3 },
+            hidden: true
+          },
+          {
             path: 'detail',
             name: 'detail',
             component: () => import('@/views/goodsBase/detail'),

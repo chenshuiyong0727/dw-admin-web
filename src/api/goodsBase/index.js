@@ -60,6 +60,11 @@ export const goodsBaseApi = {
     method: 'post',
     data: body,
     loading
+  }),
+  getGoodsByActNoAndSize: (body) => request({
+    url: '/gw/op/v1/goodsBase/getGoodsByActNoAndSize',
+    method: 'get',
+    params: body
   })
 
 }

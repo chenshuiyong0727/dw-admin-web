@@ -43,7 +43,19 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-form-item label="图片" class="is-required">
+        <el-form-item label="网络图片">
+          <el-col :span="10">
+            <img
+              v-if="form.img"
+              :src="form.img"
+              style="width: 240px"
+              @click="avatarShow(form.img)"
+            />
+          </el-col>
+        </el-form-item>
+      </el-row>
+      <el-row>
+        <el-form-item label="本地图片" class="is-required">
           <el-upload
             :disabled="type == 1"
             class="avatar-uploader"
@@ -57,7 +69,7 @@
               v-if="form.imgUrl"
               :src="fileUrl + form.imgUrl"
               style="width: 240px"
-              @click="avatarShow(form.imgUrl)"
+              @click="avatarShow(fileUrl + form.imgUrl)"
             />
             <el-button v-if="type != 1" v-show="!form.imgUrl" size="small"
             >上传图片
@@ -107,6 +119,20 @@
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
+          <el-form-item prop="name" label="发售日期">
+            <el-input v-model="form.sellDate" :disabled="type == 1 "></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row class="form-flex">
+        <el-col :span="10">
+          <el-form-item prop="name" label="发售价格">
+            <el-input v-model="form.sellPrice" :disabled="type == 1 "></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row class="form-flex">
+        <el-col :span="10">
           <el-form-item prop="remark" label="备注">
             <el-input type="textarea" :rows="4" maxlength="140" size="small"
                       :disabled="type == 1 " v-model="form.remark"></el-input>
@@ -123,6 +149,11 @@
         </el-button-group>
       </el-form-item>
     </el-form>
+    <div class="popContainer" v-if="pictureZoomShow" @click="pictureZoomShow = false">
+      <div class="imageShow">
+        <img :src="picture" alt="" width="100%" >
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -132,6 +163,8 @@
   export default {
     data() {
       return {
+        picture: '',
+        pictureZoomShow: false,
         form: {
           type: '01',
           actNo: '',
@@ -214,11 +247,15 @@
         }
         this.options = options
       },
+      // avatarShow(e) {
+      //   if (!e) {
+      //     return
+      //   }
+      //   window.open(this.fileUrl + e)
+      // },
       avatarShow(e) {
-        if (!e) {
-          return
-        }
-        window.open(this.fileUrl + e)
+        this.picture = e
+        this.pictureZoomShow = true
       },
       async handleImageSuccess(res, file) {
         this.$message.success('上传成功')

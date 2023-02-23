@@ -51,6 +51,10 @@
                    v-permission:[buttonPermissionArr.searchBtn]="['查询']" @click="resetHandle">重置
         </el-button>
         <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-plus"
+                   v-permission:[buttonPermissionArr.searchBtn]="['新增']" @click="detailNew(null,3)">
+          智能新增
+        </el-button>
+        <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-plus"
                    v-permission:[buttonPermissionArr.searchBtn]="['新增']" @click="goDetail(null,3)">
           新增
         </el-button>
@@ -72,28 +76,34 @@
       <el-table-column align="center" prop="actNo" label="货号"/>
       <el-table-column align="center" label="图片" width="120">
         <template slot-scope="scope">
-          <img v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"
-               @click="avatarShow(scope.row.imgUrl)">
+          <img v-if="scope.row.img" :src="scope.row.img" class="userPic" @click="avatarShow(scope.row.img)">
+          <img v-if="!scope.row.img && scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic" @click="avatarShow(fileUrl+scope.row.imgUrl)">
         </template>
       </el-table-column>
       <el-table-column align="center" prop="type" label="类型">
         <template slot-scope="scope">{{ scope.row.type | dictToDescTypeValue(20221108) }}</template>
       </el-table-column>
-      <el-table-column align="center" width="180" prop="id" label="商品基本信息编号"/>
+      <el-table-column align="center" prop="id" label="id"/>
       <el-table-column align="center" prop="name" label="商品名称"/>
       <el-table-column align="center" prop="brand" label="品牌"/>
+      <el-table-column align="center" prop="sellDate" label="发售日期"/>
+      <el-table-column align="center" prop="sellPrice" label="发售价格"/>
       <el-table-column align="center" prop="remark" label="备注"/>
       <el-table-column fixed="right" align="center" label="操作" width="130"
                        v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length">
         <template slot-scope="scope">
           <div>
-            <el-button type="text" @click="goDetail(scope.row.id , 1)"
-                       v-permission:[buttonPermissionArr.listBtn]="['查看']">查看
-            </el-button>
+
             <el-button type="text" @click="goDetail(scope.row.id , 2)"
                        v-permission:[buttonPermissionArr.listBtn]="['编辑']">编辑
             </el-button>
+            <el-button type="text" @click="detailNew(scope.row.id , 2)"
+                       v-permission:[buttonPermissionArr.listBtn]="['编辑']">智能修改
+            </el-button>
           </div>
+          <el-button type="text" @click="detailNew(scope.row.id , 1)"
+                     v-permission:[buttonPermissionArr.listBtn]="['查看']">查看
+          </el-button>
           <!--	          <el-button type="text" @click="goDel(scope.row.id)" v-permission:[buttonPermissionArr.listBtn]="['删除']">删除</el-button>-->
           <el-button type="text" @click="jumpactNo(scope.row)">查看库存</el-button>
         </template>
@@ -113,7 +123,7 @@
     <!-- </three-level-route> -->
     <div class="popContainer" v-if="pictureZoomShow" @click="pictureZoomShow = false">
       <div class="imageShow">
-        <img :src="fileUrl + imageZoom" alt="" width="100%" >
+        <img :src="imageZoom" alt="" width="100%" >
       </div>
     </div>
   </three-level-route>
@@ -185,6 +195,10 @@
       goDetail(id, type) {
         // *** 根据真实路径配置地址
         this.$router.push({ path: '/goodsBase/list/detail', query: { id, type } })
+      },
+      detailNew(id, type) {
+        // *** 根据真实路径配置地址
+        this.$router.push({ path: '/goodsBase/list/detailNew', query: { id, type } })
       },
       goDel(id) {
         goodsBaseApi.delById(id).then(res => {
