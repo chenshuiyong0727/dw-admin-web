@@ -52,9 +52,15 @@
           <el-table style="width:100%" height="500" ref="inventoryTable" :data="tableData">
             <el-table-column align="center" prop="actNo" label="货号"/>
             <el-table-column align="center" label="图片">
+<!--              <template slot-scope="scope">-->
+<!--                <img v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"-->
+<!--                     @click="avatarShow(scope.row.imgUrl)">-->
+<!--              </template>-->
               <template slot-scope="scope">
-                <img v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"
-                     @click="avatarShow(scope.row.imgUrl)">
+                <img v-if="scope.row.img" :src="scope.row.img" class="userPic"
+                     @click="avatarShow(scope.row.img)">
+                <img v-if="!scope.row.img && scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl"
+                     class="userPic" @click="avatarShow(fileUrl+scope.row.imgUrl)">
               </template>
             </el-table-column>
 
@@ -86,9 +92,9 @@
       </el-row>
     </el-drawer>
     <!-- </three-level-route> -->
-    <div class="popContainer" v-if="pictureZoomShow" @click="pictureZoomShow = false">
+    <div style="z-index: 1000000000" class="popContainer" v-if="pictureZoomShow" @click="pictureZoomShow = false">
       <div class="imageShow">
-        <img :src="fileUrl + imageZoom" alt="" width="100%" >
+        <img :src="imageZoom" alt="" width="100%" >
       </div>
     </div>
   </three-level-route>
@@ -102,6 +108,7 @@
     data() {
       return {
         pictureZoomShow: false,
+        imageZoom: '',
         fileUrl: fileUrl,
         fieldName: '',
         fieldValue: '',
@@ -123,6 +130,10 @@
       // goDetail(id, type) {
       //   this.$router.push({ path: '/goodsBase/list/detail', query: { id, type }})
       // },
+      avatarShow(e) {
+        this.imageZoom = e
+        this.pictureZoomShow = true
+      },
       goDetail(goodsId) {
         // *** 根据真实路径配置地址
         // let goodsId = this.queryParam.goodsId

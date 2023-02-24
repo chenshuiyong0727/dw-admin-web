@@ -4,12 +4,18 @@
       <el-row class="clearfix btm-distance">
         <div class="overview">
           <h5>{{form.actNo}}</h5>
-          <img
-            v-if="form.imgUrl"
-            :src="fileUrl + form.imgUrl"
-            style="width: 100px;"
-            @click="avatarShow(form.imgUrl)"
-          />
+          <h5>{{form.name}}</h5>
+<!--          <img-->
+<!--            v-if="form.imgUrl"-->
+<!--            :src="fileUrl + form.imgUrl"-->
+<!--            style="width: 100px;"-->
+<!--            @click="avatarShow(form.imgUrl)"-->
+<!--          />-->
+
+          <img v-if="form.img" :src="form.img" style="width: 100px;"
+               @click="avatarShow(form.img)">
+          <img v-if="!form.img && form.imgUrl" :src="fileUrl+form.imgUrl"
+               style="width: 100px;" @click="avatarShow(fileUrl+form.imgUrl)">
         </div>
       </el-row>
       <el-form ref="form" style="padding-top: 70px;">
@@ -101,7 +107,7 @@
     </div>
     <div class="popContainer" v-if="pictureZoomShow" @click="pictureZoomShow = false">
       <div class="imageShow">
-        <img :src="fileUrl + imageZoom" alt="" width="100%" >
+        <img :src="imageZoom" alt="" width="100%" >
       </div>
     </div>
   </div>
@@ -120,7 +126,9 @@
         form: {
           sizeVoList: '',
           actNo: '',
-          imgUrl: ''
+          name: '',
+          imgUrl: '',
+          img: ''
         },
         activeIndex: [],
         pictureZoomShow: false,

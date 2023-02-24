@@ -47,9 +47,15 @@
             </template>
           </el-table-column>
           <el-table-column align="center" label="图片">
+            <!--            <template slot-scope="scope">-->
+            <!--              <img v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"-->
+            <!--                   @click="avatarShow(scope.row.imgUrl)">-->
+            <!--            </template>-->
             <template slot-scope="scope">
-              <img v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"
-                   @click="avatarShow(scope.row.imgUrl)">
+              <img v-if="scope.row.img" :src="scope.row.img" class="userPic"
+                   @click="avatarShow(scope.row.img)">
+              <img v-if="!scope.row.img && scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl"
+                   class="userPic" @click="avatarShow(fileUrl+scope.row.imgUrl)">
             </template>
           </el-table-column>
         </el-table>
@@ -74,8 +80,8 @@
             <div>
               <img
                 v-if="imgUrl"
-                :src="fileUrl + imgUrl"
-                style="width: 80px;height: 75px;border-radius: 10px;"
+                :src="imgUrl"
+                style="width: 80px;border-radius: 10px;"
                 @click="avatarShow(imgUrl)"
               />
             </div>
@@ -117,7 +123,7 @@
             </div>
           </el-row>
           <el-form ref="form">
-            <el-row >
+            <el-row>
               <el-button type="primary" size="small" style="margin-right: 5px"
                          @click="handleClick()">移动仓库
               </el-button>
@@ -129,10 +135,12 @@
                   <el-dropdown-item
                     type="text"
                     @click.native="jumpactNo">
-                    查看订单</el-dropdown-item>
+                    查看订单
+                  </el-dropdown-item>
                   <el-dropdown-item
                     type="text"
-                    @click.native="goDetail">新增尺码</el-dropdown-item>
+                    @click.native="goDetail">新增尺码
+                  </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </el-row>
@@ -140,9 +148,9 @@
         </div>
         <el-table style="margin-top: 20px" border :data="tableData" @selection-change="selected">
 
-<!--          <el-table-column align="center" prop="size" width="50" label="尺码"/>-->
+          <!--          <el-table-column align="center" prop="size" width="50" label="尺码"/>-->
           <el-table-column type="selection" width="40"></el-table-column>
-          <el-table-column align="center" prop="size"  width="60" label="尺码">
+          <el-table-column align="center" prop="size" width="60" label="尺码">
             <template scope="scope">
               <el-button
                 type="text"
@@ -150,24 +158,24 @@
               </el-button>
             </template>
           </el-table-column>
-<!--          <el-table-column align="center" prop="size" width="100" label="尺码">-->
-<!--            <template slot-scope="scope">-->
-<!--&lt;!&ndash;              <div class="input-box">&ndash;&gt;-->
-<!--&lt;!&ndash;                <el-input size="small" v-model="scope.row.price"></el-input>&ndash;&gt;-->
-<!--&lt;!&ndash;              </div>&ndash;&gt;-->
-<!--              <el-select v-model="scope.row.size">-->
-<!--&lt;!&ndash;              <el-select v-model="scope.row.size" @change="changeStatus(scope.row)">&ndash;&gt;-->
-<!--                <el-option-->
-<!--                  v-for="item in sizeList"-->
-<!--                  :key="item.id"-->
-<!--                  :label="item.size"-->
-<!--                  :value="+item.id">-->
-<!--                </el-option>-->
-<!--              </el-select>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column align="center" prop="oldInventory" width="50" label="原始库存"/>-->
-<!--          <el-table-column align="center" prop="" width="50" label="剩余库存">-->
+          <!--          <el-table-column align="center" prop="size" width="100" label="尺码">-->
+          <!--            <template slot-scope="scope">-->
+          <!--&lt;!&ndash;              <div class="input-box">&ndash;&gt;-->
+          <!--&lt;!&ndash;                <el-input size="small" v-model="scope.row.price"></el-input>&ndash;&gt;-->
+          <!--&lt;!&ndash;              </div>&ndash;&gt;-->
+          <!--              <el-select v-model="scope.row.size">-->
+          <!--&lt;!&ndash;              <el-select v-model="scope.row.size" @change="changeStatus(scope.row)">&ndash;&gt;-->
+          <!--                <el-option-->
+          <!--                  v-for="item in sizeList"-->
+          <!--                  :key="item.id"-->
+          <!--                  :label="item.size"-->
+          <!--                  :value="+item.id">-->
+          <!--                </el-option>-->
+          <!--              </el-select>-->
+          <!--            </template>-->
+          <!--          </el-table-column>-->
+          <!--          <el-table-column align="center" prop="oldInventory" width="50" label="原始库存"/>-->
+          <!--          <el-table-column align="center" prop="" width="50" label="剩余库存">-->
           <el-table-column align="center" prop="oldInventory" label="原始库存">
             <template scope="scope">
               <div class="input-box">
@@ -232,7 +240,8 @@
           <el-table-column fixed="right" align="center" label="操作" width="140">
             <template slot-scope="scope">
               <el-button type="text" @click="update(scope.row)">修改</el-button>
-              <el-button type="text" class="color-danger" @click="goDel(scope.row.id)">删除</el-button>
+              <el-button type="text" class="color-danger" @click="goDel(scope.row.id)">删除
+              </el-button>
               <el-button
                 type="text"
                 v-if="scope.row.inventory > scope.row.galleryCount"
@@ -258,7 +267,7 @@
     <!-- </three-level-route> -->
     <div class="popContainer" v-if="pictureZoomShow" @click="pictureZoomShow = false">
       <div class="imageShow">
-        <img :src="fileUrl + imageZoom" alt="" width="100%" >
+        <img :src="imageZoom" alt="" width="100%">
       </div>
     </div>
     <change-status-dialog
@@ -282,288 +291,305 @@
 </template>
 
 <script>
-  import ThreeLevelRoute from '@/components/ThreeLevelRoute'
-  import { goodsInventoryApi } from '@/api/goodsInventory'
-  import { permissionMixin } from '@/mixins/permissionMixin'
-  import InventoryDetail from './components/inventoryDetail'
-  import changeStatusDialog from './components/changeStatusDialog'
-  import changeStatusDialog1 from './components/changeStatusDialog1'
-  import changeStatusDialog2 from './components/changeStatusDialog2'
-  import { goodsBaseApi } from '@/api/goodsBase'
+import ThreeLevelRoute from '@/components/ThreeLevelRoute'
+import { goodsInventoryApi } from '@/api/goodsInventory'
+import { permissionMixin } from '@/mixins/permissionMixin'
+import InventoryDetail from './components/inventoryDetail'
+import changeStatusDialog from './components/changeStatusDialog'
+import changeStatusDialog1 from './components/changeStatusDialog1'
+import changeStatusDialog2 from './components/changeStatusDialog2'
+import { goodsBaseApi } from '@/api/goodsBase'
 
-  export default {
-    mixins: [permissionMixin],
-    components: {
-      ThreeLevelRoute,
-      changeStatusDialog,
-      changeStatusDialog1,
-      changeStatusDialog2,
-      InventoryDetail
-    },
-    data() {
-      return {
-        requestParam: {
-          ids: [],
-          warehouseId: 2
-        },
-        selectedId: [],
+export default {
+  mixins: [permissionMixin],
+  components: {
+    ThreeLevelRoute,
+    changeStatusDialog,
+    changeStatusDialog1,
+    changeStatusDialog2,
+    InventoryDetail
+  },
+  data() {
+    return {
+      requestParam: {
         ids: [],
-        sizeList: '',
-        warehouseList: '',
-        sizeData: '',
-        sizeData1: '',
-        imageZoom: '',
-        isShowDialog: false,
-        isShowDialog2: false,
-        isShowDialog1: false,
-        queryParam1: {
-          keyword: '',
-          pageSize: 5,
-          inventoryTo: 1,
-          pageNum: 1
-        },
-        queryParam: {
-          id: '',
-          goodsId: '',
-          pageSize: 10,
-          pageNum: 1
-        },
-        pictureZoomShow: false,
-        fileUrl: fileUrl,
-        inventoryToList: [
-          { fieldValue: 1, fieldName: '现货' }, { fieldValue: 0, fieldName: '售空' },
-          { fieldValue: 2, fieldName: '未上架' }
-        ],
-        dataStatusList: [],
-        imgUrl: '',
-        actNo: '',
-        tableData: [],
-        tableData1: [],
-        totalCount1: 1,
-        totalCount: 1,
-        inventoryData: {
-          profits: '',
-          inventory: '',
-          oldInventory: '',
-          inventoryCost: '',
-          dwPrice: ''
-        }
-      }
-    },
-    created() {
-      const { actNo } = this.$route.query
-      // this.goodsId = goodsId
-      this.queryParam1.keyword = actNo
-      if (this.queryParam1.keyword) {
-        this.page()
-        // this.getDetailById(this.goodsId)
-      }
-    },
-    mounted() {
-      this.page()
-      this.listSysDict()
-      this.handleChange()
-    },
-    methods: {
-      handleChange() {
-        goodsBaseApi.listDropDownSizes({ type: '' }, false).then(res => {
-          console.info(res)
-          if (res.subCode === 1000) {
-            this.sizeList = res.data
-          }
-        })
+        warehouseId: 2
       },
-      changeStatusDialog(row) {
-        this.sizeData = row
-        this.isShowDialog = true
+      selectedId: [],
+      ids: [],
+      sizeList: '',
+      warehouseList: '',
+      sizeData: '',
+      sizeData1: '',
+      imageZoom: '',
+      isShowDialog: false,
+      isShowDialog2: false,
+      isShowDialog1: false,
+      queryParam1: {
+        keyword: '',
+        pageSize: 5,
+        inventoryTo: 1,
+        pageNum: 1
       },
-      closDialog() {
-        this.isShowDialog = false
+      queryParam: {
+        sort: ' c.size asc ,',
+        id: '',
+        goodsId: '',
+        pageSize: 10,
+        pageNum: 1
       },
-      selected(val) {
-        this.selectedId = val
-        let temp = []
-        for (let i = 0; i < this.selectedId.length; i++) {
-          temp.push(this.selectedId[i].id)
-        }
-        this.ids = temp
-      },
-      changeStatusDialog2() {
-        this.isShowDialog2 = true
-      },
-      closDialog2() {
-        this.isShowDialog2 = false
-      },
-      changeStatusDialog1(row) {
-        console.info(row)
-        this.sizeData1 = row
-        this.isShowDialog1 = true
-      },
-      closDialog1() {
-        this.isShowDialog1 = false
-      },
-      refreshPage() {
-        this.isShowDialog = false
-        this.pageGoods()
-      },
-      refreshPage2() {
-        this.isShowDialog2 = false
-        this.pageGoods()
-      },
-      refreshPage1() {
-        this.isShowDialog1 = false
-        this.pageGoods()
-      },
-      avatarShow(e) {
-        this.imageZoom = e
-        this.pictureZoomShow = true
-      },
-      goDetail() {
-        // *** 根据真实路径配置地址
-        if (!this.queryParam.goodsId) {
-          this.$message.error('没有选中数据')
-          return
-        }
-        let goodsId = this.queryParam.goodsId
-        this.$router.push({ path: '/goodsBase/goodsInventory/detail', query: { goodsId } })
-      },
-      handleClick() {
-        this.requestParam.ids = this.ids
-        if (!this.ids.length) {
-          this.$message.error('请选择尺码')
-          return
-        }
-        this.isShowDialog2 = true
-      },
-      jumpactNo() {
-        if (!this.actNo) {
-          this.$message.error('没有选中数据')
-          return
-        }
-        let actNo = this.actNo
-        this.$router.push({ path: '/goodsOrder/list', query: { actNo } })
-      },
-      rowClick(row) {
-        console.info(row)
-        this.pageGoods(row.id)
-        this.imgUrl = row.imgUrl
-        this.actNo = row.actNo
-        this.queryParam1.keyword = row.actNo
-      },
-      showInventoryDrawer() {
-        this.$refs['inventory-detail-edit'].show()
-      },
-      viewAll(actNo) {
-        this.$router.push({ path: '/goodsBase/goodsInventory/dataDetail', query: { actNo } })
-        //
-        // this.$router.push({path: '/goodsBase/goodsInventory/dataDetail'})
-      },
-      page() {
-        goodsInventoryApi.page(this.queryParam1).then(res => {
-          if (res.subCode === 1000) {
-            this.tableData1 = res.data ? res.data.list : []
-            this.totalCount1 = res.data ? res.data.pageInfo.totalCount : 0
-            if (this.totalCount1 == 0) {
-              if (this.queryParam1.inventoryTo == 1) {
-                this.queryParam1.inventoryTo = 0
-                this.page()
-              }
-            } else {
-              this.imgUrl = this.tableData1[0].imgUrl
-              this.actNo = this.tableData1[0].actNo
-              this.pageGoods(this.tableData1[0].id)
-            }
-          } else {
-            this.$message.error(res.subMsg)
-          }
-        })
-      },
-      pageGoods(goodsId) {
-        if (goodsId) {
-          this.queryParam.goodsId = goodsId
-        }
-        goodsInventoryApi.pageGoods(this.queryParam).then(res => {
-          if (res.subCode === 1000) {
-            this.tableData = res.data ? res.data.list : []
-            this.totalCount = res.data ? res.data.pageInfo.totalCount : 0
-            this.inventoryData = res.data.goodsInventoryPageVo ? res.data.goodsInventoryPageVo
-              : this.inventoryData
-          } else {
-            this.$message.error(res.subMsg)
-          }
-        })
-      },
-      listSysDict() {
-        let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
-          localStorage.getItem('sysDictList')) : []
-        this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
-        this.warehouseList = sysDictList.filter(item => item.typeValue == 40)
-        console.info(this.warehouseList)
-      },
-      pageChangeHandle(currentPage) {
-        this.queryParam.pageNum = currentPage
-        this.pageGoods()
-      },
-      reSearchHandle(size) {
-        this.queryParam.pageSize = size
-        this.queryParam.pageNum = 1
-        this.pageGoods()
-      },
-      pageChangeHandle1(currentPage) {
-        this.queryParam1.pageNum = currentPage
-        this.page()
-      },
-      reSearchHandle1(size) {
-        this.queryParam1.pageSize = size
-        this.queryParam1.pageNum = 1
-        this.page()
-      },
-      goDel(id) {
-        this.$confirm('是否删除', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          goodsInventoryApi.delById(id).then(res => {
-            if (res.subCode === 1000) {
-              this.$message.success(res.subMsg)
-              this.pageGoods()
-            } else {
-              this.$message.error(res.subMsg)
-            }
-          })
-        })
-      },
-      update(row) {
-        if (row.oldInventory < row.inventory) {
-          this.$message.error('原始库存小于剩余库存')
-          return
-        }
-        this.$confirm('是否修改', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          row.createTime = null
-          goodsInventoryApi.update(row).then(res => {
-            if (res.subCode === 1000) {
-              this.$message.success(res.subMsg)
-              this.pageGoods(row.goodsId)
-            } else {
-              this.$message.error(res.subMsg)
-            }
-          })
-        })
-      },
-      changeStatus(row) {
-        console.info(row)
-      },
-      search() {
-        this.queryParam1.pageNum = 1
-        this.page()
+      pictureZoomShow: false,
+      fileUrl: fileUrl,
+      inventoryToList: [
+        { fieldValue: 1, fieldName: '现货' }, { fieldValue: 0, fieldName: '售空' },
+        { fieldValue: 2, fieldName: '未上架' }
+      ],
+      dataStatusList: [],
+      imgUrl: '',
+      actNo: '',
+      tableData: [],
+      tableData1: [],
+      totalCount1: 1,
+      totalCount: 1,
+      inventoryData: {
+        profits: '',
+        inventory: '',
+        oldInventory: '',
+        inventoryCost: '',
+        dwPrice: ''
       }
     }
+  },
+  created() {
+    const { actNo } = this.$route.query
+    // this.goodsId = goodsId
+    this.queryParam1.keyword = actNo
+    if (this.queryParam1.keyword) {
+      this.page()
+      // this.getDetailById(this.goodsId)
+    }
+  },
+  mounted() {
+    this.page()
+    this.listSysDict()
+    this.handleChange()
+  },
+  methods: {
+    handleChange() {
+      goodsBaseApi.listDropDownSizes({ type: '' }, false).then(res => {
+        console.info(res)
+        if (res.subCode === 1000) {
+          this.sizeList = res.data
+        }
+      })
+    },
+    changeStatusDialog(row) {
+      this.sizeData = row
+      this.isShowDialog = true
+    },
+    closDialog() {
+      this.isShowDialog = false
+    },
+    selected(val) {
+      this.selectedId = val
+      let temp = []
+      for (let i = 0; i < this.selectedId.length; i++) {
+        temp.push(this.selectedId[i].id)
+      }
+      this.ids = temp
+    },
+    changeStatusDialog2() {
+      this.isShowDialog2 = true
+    },
+    closDialog2() {
+      this.isShowDialog2 = false
+    },
+    changeStatusDialog1(row) {
+      console.info(row)
+      this.sizeData1 = row
+      this.isShowDialog1 = true
+    },
+    closDialog1() {
+      this.isShowDialog1 = false
+    },
+    refreshPage() {
+      this.isShowDialog = false
+      this.pageGoods()
+    },
+    refreshPage2() {
+      this.isShowDialog2 = false
+      this.pageGoods()
+    },
+    refreshPage1() {
+      this.isShowDialog1 = false
+      this.pageGoods()
+    },
+    avatarShow(e) {
+      this.imageZoom = e
+      this.pictureZoomShow = true
+    },
+    goDetail() {
+      // *** 根据真实路径配置地址
+      if (!this.queryParam.goodsId) {
+        this.$message.error('没有选中数据')
+        return
+      }
+      let goodsId = this.queryParam.goodsId
+      this.$router.push({ path: '/goodsBase/goodsInventory/detail', query: { goodsId } })
+    },
+    handleClick() {
+      this.requestParam.ids = this.ids
+      if (!this.ids.length) {
+        this.$message.error('请选择尺码')
+        return
+      }
+      this.isShowDialog2 = true
+    },
+    jumpactNo() {
+      if (!this.actNo) {
+        this.$message.error('没有选中数据')
+        return
+      }
+      let actNo = this.actNo
+      this.$router.push({ path: '/goodsOrder/list', query: { actNo } })
+    },
+    rowClick(row) {
+      console.info(row)
+      this.pageGoods(row.id)
+      // this.imgUrl = row.imgUrl
+      if (row.img) {
+        this.imgUrl = row.img
+      } else {
+        if (row.imgUrl) {
+          this.imgUrl = this.fileUrl + row.imgUrl
+        }
+      }
+      this.actNo = row.actNo
+      this.queryParam1.keyword = row.actNo
+    },
+    showInventoryDrawer() {
+      this.$refs['inventory-detail-edit'].show()
+    },
+    viewAll(actNo) {
+      this.$router.push({ path: '/goodsBase/goodsInventory/dataDetail', query: { actNo } })
+      //
+      // this.$router.push({path: '/goodsBase/goodsInventory/dataDetail'})
+    },
+    page() {
+      goodsInventoryApi.page(this.queryParam1).then(res => {
+        if (res.subCode === 1000) {
+          this.tableData1 = res.data ? res.data.list : []
+          this.totalCount1 = res.data ? res.data.pageInfo.totalCount : 0
+          if (this.totalCount1 == 0) {
+            if (this.queryParam1.inventoryTo == 1) {
+              this.queryParam1.inventoryTo = 0
+              this.page()
+            }
+          } else {
+            // this.imgUrl = this.tableData1[0].imgUrl
+            let row = this.tableData1[0]
+            if (row.img) {
+              this.imgUrl = row.img
+            } else {
+              if (row.imgUrl) {
+                this.imgUrl = this.fileUrl + row.imgUrl
+              }
+            }
+
+            this.actNo = this.tableData1[0].actNo
+            this.pageGoods(this.tableData1[0].id)
+          }
+        } else {
+          this.$message.error(res.subMsg)
+        }
+      })
+    },
+    pageGoods(goodsId) {
+      if (goodsId) {
+        this.queryParam.goodsId = goodsId
+      }
+      goodsInventoryApi.pageGoods(this.queryParam).then(res => {
+        if (res.subCode === 1000) {
+          this.tableData = res.data ? res.data.list : []
+          this.totalCount = res.data ? res.data.pageInfo.totalCount : 0
+          this.inventoryData = res.data.goodsInventoryPageVo ? res.data.goodsInventoryPageVo
+            : this.inventoryData
+        } else {
+          this.$message.error(res.subMsg)
+        }
+      })
+    },
+    listSysDict() {
+      let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
+        localStorage.getItem('sysDictList')) : []
+      this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
+      this.warehouseList = sysDictList.filter(item => item.typeValue == 40)
+      console.info(this.warehouseList)
+    },
+    pageChangeHandle(currentPage) {
+      this.queryParam.pageNum = currentPage
+      this.pageGoods()
+    },
+    reSearchHandle(size) {
+      this.queryParam.pageSize = size
+      this.queryParam.pageNum = 1
+      this.pageGoods()
+    },
+    pageChangeHandle1(currentPage) {
+      this.queryParam1.pageNum = currentPage
+      this.page()
+    },
+    reSearchHandle1(size) {
+      this.queryParam1.pageSize = size
+      this.queryParam1.pageNum = 1
+      this.page()
+    },
+    goDel(id) {
+      this.$confirm('是否删除', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        goodsInventoryApi.delById(id).then(res => {
+          if (res.subCode === 1000) {
+            this.$message.success(res.subMsg)
+            this.pageGoods()
+          } else {
+            this.$message.error(res.subMsg)
+          }
+        })
+      })
+    },
+    update(row) {
+      if (row.oldInventory < row.inventory) {
+        this.$message.error('原始库存小于剩余库存')
+        return
+      }
+      this.$confirm('是否修改', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        row.createTime = null
+        goodsInventoryApi.update(row).then(res => {
+          if (res.subCode === 1000) {
+            this.$message.success(res.subMsg)
+            this.pageGoods(row.goodsId)
+          } else {
+            this.$message.error(res.subMsg)
+          }
+        })
+      })
+    },
+    changeStatus(row) {
+      console.info(row)
+    },
+    search() {
+      this.queryParam1.pageNum = 1
+      this.page()
+    }
   }
+}
 </script>
 
 <style lang="scss" scoped>

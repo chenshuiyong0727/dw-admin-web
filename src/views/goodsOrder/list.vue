@@ -205,11 +205,18 @@
       <!--      <el-table-column align="center" prop="id" label="订单主键"/>-->
       <el-table-column align="center" prop="orderNo" label="订单号"/>
       <el-table-column align="center" label="图片" width="120">
+<!--        <template slot-scope="scope">-->
+<!--          <img v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"-->
+<!--               @click="avatarShow(scope.row.imgUrl)">-->
+<!--        </template>-->
         <template slot-scope="scope">
-          <img v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"
-               @click="avatarShow(scope.row.imgUrl)">
+          <img v-if="scope.row.img" :src="scope.row.img" class="userPic"
+               @click="avatarShow(scope.row.img)">
+          <img v-if="!scope.row.img && scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl"
+               class="userPic" @click="avatarShow(fileUrl+scope.row.imgUrl)">
         </template>
       </el-table-column>
+
       <el-table-column align="center" width="100" prop="actNo" label="货号">
         <template slot-scope="scope">
           <a style="color: #20a0ff" @click="jumpactNo(scope.row.actNo)"> {{ scope.row.actNo }}</a>

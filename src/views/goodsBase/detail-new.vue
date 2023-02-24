@@ -255,12 +255,11 @@ export default {
         scale: [true],
         axisSite: { right: ['date'] },
         labelAlias: {
-          'price': '价格',
-          'theirPrice': '到手价'
+          'price': '价格'
         }
       },
       chartData: {
-        columns: ['date', 'price','theirPrice'],
+        columns: ['date', 'price'],
         rows: []
       },
       loading: false,

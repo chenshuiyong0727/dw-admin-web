@@ -67,10 +67,17 @@
     <el-table ref="queryTable" height="600" style="margin-top: 20px" border :data="tableData" @selection-change="selected">
       <el-table-column type="selection" width="40"></el-table-column>
       <el-table-column align="center" prop="actNo" width="100" fixed="left" label="货号"/>
+      <el-table-column align="center" prop="goodsName" width="150" fixed="left" label="商品名"/>
       <el-table-column align="center" label="图片" fixed="left">
+<!--        <template slot-scope="scope">-->
+<!--          <img v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"-->
+<!--               @click="avatarShow(scope.row.imgUrl)">-->
+<!--        </template>-->
         <template slot-scope="scope">
-          <img v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"
-               @click="avatarShow(scope.row.imgUrl)">
+          <img v-if="scope.row.img" :src="scope.row.img" class="userPic"
+               @click="avatarShow(scope.row.img)">
+          <img v-if="!scope.row.img && scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl"
+               class="userPic" @click="avatarShow(fileUrl+scope.row.imgUrl)">
         </template>
       </el-table-column>
       <el-table-column align="center" prop="size" width="50" label="尺码" sortable/>
@@ -151,7 +158,7 @@
     <!-- </three-level-route> -->
     <div class="popContainer" v-if="pictureZoomShow" @click="pictureZoomShow = false">
       <div class="imageShow">
-        <img :src="fileUrl + imageZoom" alt="" width="100%" >
+        <img :src="imageZoom" alt="" width="100%" >
       </div>
     </div>
     <change-status-dialog
