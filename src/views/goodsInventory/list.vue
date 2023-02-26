@@ -18,7 +18,7 @@
             </el-col>
             <el-col :span="16">
               <el-form-item size="small">
-                <el-input v-model.trim="queryParam1.keyword" placeholder="货号">
+                <el-input v-model.trim="queryParam1.keyword" placeholder="关键词（货号、商品名）">
                 </el-input>
               </el-form-item>
             </el-col>

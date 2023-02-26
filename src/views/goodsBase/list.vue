@@ -84,7 +84,7 @@
         <template slot-scope="scope">{{ scope.row.type | dictToDescTypeValue(20221108) }}</template>
       </el-table-column>
       <el-table-column align="center" prop="id" label="id"/>
-      <el-table-column align="center" prop="name" label="商品名称"/>
+      <el-table-column align="center" width="150" prop="name" label="商品名称"/>
       <el-table-column align="center" prop="brand" label="品牌"/>
       <el-table-column align="center" prop="sellDate" label="发售日期"/>
       <el-table-column align="center" prop="sellPrice" label="发售价格"/>

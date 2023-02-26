@@ -4,7 +4,7 @@
       <el-row class="query-form">
         <el-col :span="6">
           <el-form-item size="small">
-            <el-input v-model.trim="queryParam.keyword" placeholder="货号"></el-input>
+            <el-input v-model.trim="queryParam.keyword" placeholder="关键词（货号、商品名）"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -222,6 +222,11 @@
           <a style="color: #20a0ff" @click="jumpactNo(scope.row.actNo)"> {{ scope.row.actNo }}</a>
         </template>
       </el-table-column>
+      <el-table-column align="center" width="120" prop="goodsName" label="商品名称">
+        <template slot-scope="scope">
+          <a style="color: #20a0ff" @click="jumpactNo(scope.row.actNo)"> {{ scope.row.goodsName }}</a>
+        </template>
+      </el-table-column>
       <el-table-column align="center" prop="size" label="尺码"/>
       <el-table-column align="center" prop="status" label="状态">
         <template slot-scope="scope">{{ scope.row.status | dictToDescTypeValue(37) }}</template>
@@ -292,7 +297,7 @@
     <!-- </three-level-route> -->
     <div class="popContainer" v-if="pictureZoomShow" @click="pictureZoomShow = false">
       <div class="imageShow">
-        <img :src="fileUrl + imageZoom" alt="" width="100%" >
+        <img :src="imageZoom" alt="" width="100%" >
       </div>
     </div>
     <order-change-status-dialog

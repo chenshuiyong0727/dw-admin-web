@@ -2,7 +2,7 @@
   <div class="page-container container-flex">
     <div class="container-left">
       <el-row class="clearfix btm-distance">
-        <div class="overview">
+        <div class="overview" style="margin-bottom: 20px;">
           <h5>{{form.actNo}}</h5>
           <h5>{{form.name}}</h5>
 <!--          <img-->

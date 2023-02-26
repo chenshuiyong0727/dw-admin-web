@@ -108,18 +108,18 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row>
-        <el-form-item label="图片" class="is-required">
-          <el-col :span="10">
-            <img
-              v-if="form.img"
-              :src="form.img"
-              style="width: 240px"
-              @click="avatarShow"
-            />
-          </el-col>
-        </el-form-item>
-      </el-row>
+<!--      <el-row>-->
+<!--        <el-form-item label="图片" class="is-required">-->
+<!--          <el-col :span="10">-->
+<!--            <img-->
+<!--              v-if="form.img"-->
+<!--              :src="form.img"-->
+<!--              style="width: 240px"-->
+<!--              @click="avatarShow"-->
+<!--            />-->
+<!--          </el-col>-->
+<!--        </el-form-item>-->
+<!--      </el-row>-->
       <el-row>
         <el-col :span="11">
           <h5>尺码列表</h5>
@@ -171,7 +171,7 @@
               @size-change="reSearchHandle"
               @current-change="pageChangeHandle"
               :current-page="queryParam1.pageNum"
-              :page-sizes="[10, 20, 50, 100]"
+              :page-sizes="[10, 30, 50, 100,150,200]"
               :page-size="queryParam1.pageSize"
               layout="total, sizes, prev, pager, next, jumper"
               :total="totalCount1">

@@ -44,13 +44,16 @@
     <buttomButton style="z-index: 9999" :tableRef="this.$refs['queryTable']"></buttomButton>
     <el-table ref="queryTable" height="600" style="margin-top: 20px" border :data="tableData">
       <el-table-column align="center" prop="actNo" label="货号"/>
+      <el-table-column align="center" width="150" prop="goodsName" label="商品名称"/>
       <el-table-column align="center" prop="oldInventory"  label="原始库存" sortable/>
       <el-table-column align="center" prop="inventoryAmount"  label="入库总额" sortable/>
             <el-table-column align="center" label="图片" fixed="left">
-              <template slot-scope="scope">
-                <img v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"
-                     @click="avatarShow(scope.row.imgUrl)">
-              </template>
+          <template slot-scope="scope">
+          <img v-if="scope.row.img" :src="scope.row.img" class="userPic"
+               @click="avatarShow(scope.row.img)">
+          <img v-if="!scope.row.img && scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl"
+               class="userPic" @click="avatarShow(fileUrl+scope.row.imgUrl)">
+        </template>
             </el-table-column>
       <el-table-column align="center" prop="size" label="尺码" sortable/>
       <el-table-column align="center" prop="price" label="入库价" sortable/>
@@ -90,7 +93,7 @@
     </el-table>
     <div class="popContainer" v-if="pictureZoomShow" @click="pictureZoomShow = false">
       <div class="imageShow">
-        <img :src="fileUrl + imageZoom" alt="" width="100%">
+        <img :src="imageZoom" alt="" width="100%">
       </div>
     </div>
   </div>

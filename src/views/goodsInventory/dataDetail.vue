@@ -29,7 +29,7 @@
         </el-col>
         <el-col :span="6">
           <el-form-item size="small">
-            <el-input v-model.trim="queryParam.actNo" placeholder="货号"></el-input>
+            <el-input v-model.trim="queryParam.actNo" placeholder="关键词（货号、商品名）"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -66,8 +66,20 @@
     <buttomButton style="z-index: 9999" :tableRef="this.$refs['queryTable']"></buttomButton>
     <el-table ref="queryTable" height="600" style="margin-top: 20px" border :data="tableData" @selection-change="selected">
       <el-table-column type="selection" width="40"></el-table-column>
-      <el-table-column align="center" prop="actNo" width="100" fixed="left" label="货号"/>
-      <el-table-column align="center" prop="goodsName" width="150" fixed="left" label="商品名"/>
+<!--      <el-table-column align="center" prop="actNo" width="100" fixed="left" label="货号"/>-->
+<!--      <el-table-column align="center" prop="goodsName" width="150" fixed="left" label="商品名"/>-->
+<!--      -->
+      <el-table-column align="center" width="100" prop="actNo" label="货号">
+        <template slot-scope="scope">
+          <a style="color: #20a0ff" @click="jumpactNo(scope.row.goodsId, 1)"> {{ scope.row.actNo }}</a>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" width="120" prop="goodsName" label="商品名称">
+        <template slot-scope="scope">
+          <a style="color: #20a0ff" @click="jumpactNo(scope.row.goodsId , 1)"> {{ scope.row.goodsName }}</a>
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="图片" fixed="left">
 <!--        <template slot-scope="scope">-->
 <!--          <img v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"-->
@@ -303,13 +315,8 @@
         this.imageZoom = e
         this.pictureZoomShow = true
       },
-      jumpactNo() {
-        if (!this.actNo) {
-          this.$alert('没有选中数据')
-          return
-        }
-        let actNo = this.actNo
-        this.$router.push({ path: '/goodsOrder/list', query: { actNo } })
+      jumpactNo(id , type ) {
+          this.$router.push({ path: '/goodsBase/list/detailNew', query: { id, type }})
       },
       pageGoods() {
         if (this.queryParam.inventory == 1) {
