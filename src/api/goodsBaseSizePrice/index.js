@@ -6,6 +6,12 @@ export const goodsBaseSizePriceApi = {
     method: 'get',
     params: body
   }),
+  // 获取数据列表
+  getPriceData: (body) => request({
+    url: '/gw/op/v1/goodsBaseSizePrice/getPriceData',
+    method: 'get',
+    params: body
+  }),
   // 批量删除
   batchdelete: (body) => request({
     url: '/gw/op/v1/goodsBaseSizePrice/batch/remove',

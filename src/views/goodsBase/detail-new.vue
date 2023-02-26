@@ -148,6 +148,77 @@
         </el-col>
         <el-col style="margin-left: 30px;" :span="12">
           <h5>价格走势</h5>
+          <div style=" display: flex;">
+            <el-row class="clearfix btm-distance">
+              <div class="overview">
+                <p><strong>当前尺码</strong></p>
+                <p class="color-danger"><strong>{{sizeTitle}}</strong></p>
+              </div>
+            </el-row>
+            <el-row class="clearfix btm-distance">
+              <div class="overview">
+                <p><strong>价格更新日期</strong></p>
+                <p>{{priceData.date}}</p>
+              </div>
+            </el-row>
+            <el-row class="clearfix btm-distance">
+              <div class="overview">
+                <p><strong>当前价格</strong></p>
+                <p>{{priceData.price}} </p>
+              </div>
+            </el-row>
+            <el-row class="clearfix btm-distance">
+              <div class="overview">
+                <p><strong>当前到手价</strong></p>
+                <p>{{priceData.theirPrice}} </p>
+              </div>
+            </el-row>
+          </div>
+          <div style=" display: flex;">
+            <el-row class="clearfix btm-distance">
+              <div class="overview">
+                <p><strong>365天最高价</strong></p>
+                <p>{{priceData.price365}} </p>
+              </div>
+            </el-row>
+            <el-row class="clearfix btm-distance">
+              <div class="overview">
+                <p><strong>365天最高到手价</strong></p>
+                <p>{{priceData.theirPrice365}} </p>
+              </div>
+            </el-row>
+            <el-row class="clearfix btm-distance">
+              <div class="overview">
+                <p><strong>180天最高价</strong></p>
+                <p>{{priceData.price180}} </p>
+              </div>
+            </el-row>
+            <el-row class="clearfix btm-distance">
+              <div class="overview">
+                <p><strong>180天最高到手价</strong></p>
+                <p>{{priceData.theirPrice365}} </p>
+              </div>
+            </el-row>
+          </div>
+          <div style=" display: flex;">
+            <el-row class="clearfix btm-distance">
+              <div class="overview">
+                <p><strong>30天最高价</strong></p>
+                <p>{{priceData.price30}} </p>
+              </div>
+            </el-row>
+            <el-row class="clearfix btm-distance">
+              <div class="overview">
+                <p><strong>30天最高到手价</strong></p>
+                <p>{{priceData.theirPrice365}} </p>
+              </div>
+            </el-row>
+          </div>
+          <div>
+            <el-button @click="profitData(30)"  round>30天走势图</el-button>
+            <el-button @click="profitData(180)" round>180天走势图</el-button>
+            <el-button @click="profitData(365)" round>365天走势图</el-button>
+          </div>
           <div>
             <ve-line
               :data="chartData"
@@ -156,26 +227,26 @@
               :data-empty="dataEmpty"
               :settings="chartSettings"></ve-line>
           </div>
-          <el-table border :data="tableData1">
-            <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-            <el-table-column align="center" prop="date"  label="日期" />
-            <el-table-column align="center" prop="price" label="价格" />
-            <el-table-column align="center" prop="theirPrice" label="到手价" />
-<!--            <el-table-column align="center" prop=""  label="到手价">-->
-<!--              <template v-if="scope.row.price" slot-scope="scope">-->
-<!--                {{(scope.row.price - (scope.row.price * 0.075 + 38 + 8.5)) | numFilter}}-->
-<!--              </template>-->
-<!--            </el-table-column>-->
-          </el-table>
-            <el-pagination
-              @size-change="reSearchHandle"
-              @current-change="pageChangeHandle"
-              :current-page="queryParam1.pageNum"
-              :page-sizes="[10, 30, 50, 100,150,200]"
-              :page-size="queryParam1.pageSize"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="totalCount1">
-            </el-pagination>
+<!--          <el-table border :data="tableData1">-->
+<!--            <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>-->
+<!--            <el-table-column align="center" prop="date"  label="日期" />-->
+<!--            <el-table-column align="center" prop="price" label="价格" />-->
+<!--            <el-table-column align="center" prop="theirPrice" label="到手价" />-->
+<!--&lt;!&ndash;            <el-table-column align="center" prop=""  label="到手价">&ndash;&gt;-->
+<!--&lt;!&ndash;              <template v-if="scope.row.price" slot-scope="scope">&ndash;&gt;-->
+<!--&lt;!&ndash;                {{(scope.row.price - (scope.row.price * 0.075 + 38 + 8.5)) | numFilter}}&ndash;&gt;-->
+<!--&lt;!&ndash;              </template>&ndash;&gt;-->
+<!--&lt;!&ndash;            </el-table-column>&ndash;&gt;-->
+<!--          </el-table>-->
+<!--            <el-pagination-->
+<!--              @size-change="reSearchHandle"-->
+<!--              @current-change="pageChangeHandle"-->
+<!--              :current-page="queryParam1.pageNum"-->
+<!--              :page-sizes="[10, 30, 50, 100,150,200]"-->
+<!--              :page-size="queryParam1.pageSize"-->
+<!--              layout="total, sizes, prev, pager, next, jumper"-->
+<!--              :total="totalCount1">-->
+<!--            </el-pagination>-->
         </el-col>
       </el-row>
       <el-form-item style="margin-top: 20px;">
@@ -222,8 +293,8 @@ export default {
       queryParam1: {
         goodsId: '',
         sizeId: '',
-        pageSize: 10,
-        pageNum: 1
+        // pageSize: 10,
+        dayNum: 30
       },
       // props: {
       //   lazy: false,
@@ -235,6 +306,7 @@ export default {
       tableData: [],
       typeList: [],
       dataStatusList: [],
+      sizeTitle: '',
       type: '',
       id: '',
       options: [],
@@ -262,6 +334,8 @@ export default {
         columns: ['date', 'price'],
         rows: []
       },
+      priceData: {
+      },
       loading: false,
       dataEmpty: false
     }
@@ -280,54 +354,95 @@ export default {
     this.listSysDict()
   },
   methods: {
+    profitData(dayNum) {
+      this.queryParam1.dayNum = dayNum
+      this.getPriceData()
+    },
     rowClick(row) {
+      this.sizeTitle = row.size
       this.queryParam1.goodsId = this.form.id
       this.queryParam1.sizeId = row.sizeId
-      this.getPagePrice()
+      // this.getPagePrice()
+      this.getPriceData()
     },
-    pageChangeHandle(currentPage) {
-      this.queryParam1.pageNum = currentPage
-      this.getPagePrice()
-    },
-    reSearchHandle(size) {
-      this.queryParam1.pageSize = size
-      this.queryParam1.pageNum = 1
-      this.getPagePrice()
-    },
+    // pageChangeHandle(currentPage) {
+    //   this.queryParam1.pageNum = currentPage
+    //   this.getPagePrice()
+    // },
+    // reSearchHandle(size) {
+    //   this.queryParam1.pageSize = size
+    //   this.queryParam1.pageNum = 1
+    //   this.getPagePrice()
+    // },
     listSysDict() {
       let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
         localStorage.getItem('sysDictList')) : []
       this.typeList = sysDictList.filter(item => item.typeValue == 20221108)
       this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
     },
-    getPagePrice() {
-      goodsBaseSizePriceApi.page(this.queryParam1).then(res => {
+    getPriceData() {
+      goodsBaseSizePriceApi.getPriceData(this.queryParam1).then(res => {
         if (res.subCode === 1000) {
-          this.tableData1 = res.data ? res.data.list : []
+          this.priceData = res.data
           this.dataEmpty = false
           this.loading = false
-          this.chartData.rows = this.tableData1
-          this.totalCount1 = res.data ? res.data.pageInfo.totalCount : 0
-          for (let i = 0; i < this.tableData1.length; i++) {
-            let price =
-              this.tableData1[i].price - (this.tableData1[i].price * 0.075 + 38 + 8.5)
-            this.tableData1[i].theirPrice = parseFloat(price).toFixed(2)
-          }
+          this.chartData.rows = res.data ? res.data.list : []
+          let theirPrice = res.data.price - (res.data.price * 0.075 + 38 + 8.5)
+          this.priceData.theirPrice = parseFloat(theirPrice).toFixed(2)
+
+          let theirPrice30 = res.data.price30 - (res.data.price30 * 0.075 + 38 + 8.5)
+          this.priceData.theirPrice30 = parseFloat(theirPrice30).toFixed(2)
+
+          let theirPrice180 = res.data.price180 - (res.data.price180 * 0.075 + 38 + 8.5)
+          this.priceData.theirPrice180 = parseFloat(theirPrice180).toFixed(2)
+
+          let theirPrice365 = res.data.price365 - (res.data.price365 * 0.075 + 38 + 8.5)
+          this.priceData.theirPrice365 = parseFloat(theirPrice365).toFixed(2)
+          // this.totalCount1 = res.data ? res.data.pageInfo.totalCount : 0
+          // for (let i = 0; i < this.tableData1.length; i++) {
+          //   let price =
+          //     this.tableData1[i].price - (this.tableData1[i].price * 0.075 + 38 + 8.5)
+          //   this.tableData1[i].theirPrice = parseFloat(price).toFixed(2)
+          // }
+        } else if (res.subCode === 10086) {
+          // this.$message.info(res.subMsg)
         } else {
           this.$message.error(res.subMsg)
         }
       })
     },
+    // getPagePrice() {
+    //   goodsBaseSizePriceApi.page(this.queryParam1).then(res => {
+    //     if (res.subCode === 1000) {
+    //       this.tableData1 = res.data ? res.data.list : []
+    //       this.dataEmpty = false
+    //       this.loading = false
+    //       this.chartData.rows = this.tableData1
+    //       this.totalCount1 = res.data ? res.data.pageInfo.totalCount : 0
+    //       for (let i = 0; i < this.tableData1.length; i++) {
+    //         let price =
+    //           this.tableData1[i].price - (this.tableData1[i].price * 0.075 + 38 + 8.5)
+    //         this.tableData1[i].theirPrice = parseFloat(price).toFixed(2)
+    //       }
+    //     } else {
+    //       this.$message.error(res.subMsg)
+    //     }
+    //   })
+    // },
     getPage() {
       goodsBaseSizeApi.page(this.queryParam).then(res => {
         if (res.subCode === 1000) {
           this.tableData = res.data ? res.data.list : []
           let totalCount = res.data ? res.data.pageInfo.totalCount : 0
-          if (this.form.sizeVoList) {
-            if (this.tableData && this.tableData[0].sizeId) {
-              this.queryParam1.goodsId = this.form.id
-              this.queryParam1.sizeId = this.tableData[0].sizeId
-              this.getPagePrice()
+          if (this.form.sizeVoList && this.tableData) {
+            for (let i = 0; i < this.tableData.length; i++) {
+              if (this.tableData[i].sizeId && this.tableData[i].inventory) {
+                this.queryParam1.goodsId = this.form.id
+                this.queryParam1.sizeId = this.tableData[i].sizeId
+                this.sizeTitle = this.tableData[i].size
+                this.getPriceData()
+                break
+              }
             }
           }
           if (totalCount < this.form.sizeList.length) {
@@ -534,5 +649,26 @@ export default {
   h5 {
     font-size: 16px;
     padding-bottom: 10px;
+  }
+
+  .overview {
+    padding: 10px 10px;
+    border-radius: 5px;
+    background: #eee;
+    /*    height: 135px;
+        width: 195px;*/
+    margin-right: 15px;
+    float: left;
+
+  strong {
+    /*font-size: 16px;*/
+    color: #111;
+    padding-bottom: 5px;
+    display: inline-block;
+  }
+
+  p {
+    line-height: 25px;
+  }
   }
 </style>
