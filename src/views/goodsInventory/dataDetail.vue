@@ -93,6 +93,11 @@
         </template>
       </el-table-column>
       <el-table-column align="center" prop="size" width="50" label="尺码" sortable/>
+      <el-table-column align="center" prop="warehouseId" label="仓库">
+        <template v-if="scope.row.warehouseId" slot-scope="scope">{{ scope.row.warehouseId |
+          dictToDescTypeValue(40) }}
+        </template>
+      </el-table-column>
       <el-table-column align="center" prop="price" label="入库价" sortable>
         <template scope="scope">
           <div class="input-box">
@@ -100,6 +105,9 @@
           </div>
         </template>
       </el-table-column>
+      <el-table-column align="center" prop="thisTimePrice" width="80" label="球鞋仓库价" sortable/>
+      <el-table-column align="center" prop="thisTimeThePrice" width="80" label="球鞋仓库到手价" sortable/>
+      <el-table-column align="center" prop="thisTimeProfits" width="80" label="球鞋仓库利润价" sortable/>
       <el-table-column align="center" prop="dwPrice" label="得物价" sortable>
         <template scope="scope">
           <div class="input-box">
@@ -107,12 +115,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="warehouseId" label="仓库">
-        <template v-if="scope.row.warehouseId" slot-scope="scope">{{ scope.row.warehouseId |
-          dictToDescTypeValue(40) }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" prop="" label="预计利润" sortable>
+      <el-table-column align="center" prop="" label="得物价预计利润" sortable>
         <template v-if="scope.row.dwPrice" slot-scope="scope">
           <!--              style="color: red"-->
           <span
@@ -122,6 +125,16 @@
               </span>
         </template>
       </el-table-column>
+<!--      <el-table-column align="center" prop="" label="预计利润" sortable>-->
+<!--        <template v-if="scope.row.dwPrice" slot-scope="scope">-->
+<!--          &lt;!&ndash;              style="color: red"&ndash;&gt;-->
+<!--          <span-->
+<!--            :style="(scope.row.dwPrice - (scope.row.dwPrice * 0.075 + 38 + 8.5) - scope.row.price - 10) > 50 ? 'color: red' : ''"-->
+<!--          >-->
+<!--                {{(scope.row.dwPrice - (scope.row.dwPrice * 0.075 + 38 + 8.5) - scope.row.price - 10) | numFilter}}-->
+<!--              </span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column align="center" prop="oldInventory" width="50" label="原始库存" sortable/>
       <el-table-column align="center" prop="inventory" width="50" label="剩余库存" sortable/>
       <el-table-column align="center" prop="successCount" width="80" label="成功数" sortable/>
@@ -135,7 +148,7 @@
           8.5) | numFilter}}
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="" label="到手单价" sortable sortable>
+      <el-table-column align="center" prop="" label="到手单价"  sortable>
         <template v-if="scope.row.dwPrice" slot-scope="scope">{{(scope.row.dwPrice -
           (scope.row.dwPrice * 0.075 + 38 + 8.5)) | numFilter}}
         </template>
