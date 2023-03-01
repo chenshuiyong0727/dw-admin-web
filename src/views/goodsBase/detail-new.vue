@@ -13,7 +13,7 @@
         <el-col :span="10">
           <el-form-item prop="actNo" label="货号" class="is-required">
             <el-input v-model="form.actNo" :disabled="type == 1 ">
-              <el-button type="primary" slot="append" @click="getImgUrl(form.actNo)"
+              <el-button type="primary" slot="append" @click="getImgUrl(form.actNo)"  :disabled="type == 1 "
                          icon="el-icon-refresh">获取资料
               </el-button>
             </el-input>

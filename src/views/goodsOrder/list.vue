@@ -197,7 +197,9 @@
       </el-row>
     </el-form>
     <buttomButton style="z-index: 9999" :tableRef="this.$refs['queryTable']"></buttomButton>
-    <el-table ref="queryTable" height="600" style="margin-top: 20px" border :data="tableData"
+    <el-table
+      show-summary     :summary-method="getSummaries"
+      ref="queryTable" height="600" style="margin-top: 20px" border :data="tableData"
               @selection-change="selected">
 
       <el-table-column type="selection" width="55"></el-table-column>
@@ -408,7 +410,48 @@
       this.getPage()
       this.listSysDict()
     },
+    updated () {
+      this.$nextTick(() => {
+        this.$refs['queryTable'].doLayout();
+      })
+    },
     methods: {
+      getSummaries(param) {
+        const { columns, data } = param;
+        const sums = [];
+        columns.forEach((column, index) => {
+          if (index === 0) {
+            sums[index] = '合计';
+            return;
+          }
+          if (column.property == 'id'
+            || column.property == 'size'
+            || column.property == 'status'
+            || column.property == 'addressId'
+            || column.property == 'waybillNo'
+            || column.property == 'successTime'
+            || column.property == 'sellTime'
+          ){
+            return
+          }
+          const values = data.map(item => Number(item[column.property]));
+          if (!values.every(value => isNaN(value))) {
+            sums[index] = values.reduce((prev, curr) => {
+              const value = Number(curr);
+              if (!isNaN(value)) {
+                return prev + curr;
+              } else {
+                return prev;
+              }
+            }, 0);
+            sums[index] += '';
+          } else {
+            sums[index] = '';
+          }
+        });
+        return sums;
+      },
+
       changeStatusDialog1(row) {
         this.orderData1 = row
         this.isShowDialog1 = true

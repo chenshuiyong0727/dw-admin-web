@@ -503,9 +503,38 @@ export default {
         }
       })
     },
+    // getData() {
+    //   goodsOrderApi.indexData().then(res => {
+    //     if (res.subCode === 1000) {
+    //       this.form = res.data ? res.data.commonDto : {}
+    //       this.orderIofo = res.data ? res.data.countDto : {}
+    //       if (this.form.inventoryCost && this.form.inventoryNum) {
+    //         this.form.inboundAverage = parseFloat(
+    //           this.form.inventoryCost / this.form.inventoryNum).toFixed(2)
+    //       }
+    //       if (this.form.successNum) {
+    //         this.form.orderAmountAverage = parseFloat(
+    //           this.form.orderAmount / this.form.successNum).toFixed(2)
+    //         this.form.freightAverage = parseFloat(
+    //           this.form.freight / this.form.successNum).toFixed(2)
+    //         this.form.profitsAverage = parseFloat(
+    //           this.form.profitsAmount / this.form.successNum).toFixed(2)
+    //       }
+    //       this.form.costAverage = parseFloat(
+    //         this.form.inboundAverage / 1 + this.form.freightAverage / 1).toFixed(2)
+    //       this.form.inventoryRatio = parseFloat(
+    //         this.form.inventoryNum / this.form.goodsPutInNum * 100).toFixed(2)
+    //       this.form.profitsProportion = parseFloat(
+    //         this.form.profitsAverage / this.form.costAverage * 100).toFixed(2)
+    //     } else {
+    //       this.$message.error(res.subMsg)
+    //     }
+    //   })
+    // },
     getData() {
-      goodsOrderApi.indexData().then(res => {
-        if (res.subCode === 1000) {
+      this.$store.dispatch('apply/orderInfo').then((res) => {
+        this.loading = false
+        if (res.data) {
           this.form = res.data ? res.data.commonDto : {}
           this.orderIofo = res.data ? res.data.countDto : {}
           if (this.form.inventoryCost && this.form.inventoryNum) {
@@ -529,7 +558,35 @@ export default {
         } else {
           this.$message.error(res.subMsg)
         }
+      }).catch(() => {
+        this.$message.error('系统错误')
       })
+      // goodsOrderApi.indexData().then(res => {
+      //   if (res.subCode === 1000) {
+      //     this.form = res.data ? res.data.commonDto : {}
+      //     this.orderIofo = res.data ? res.data.countDto : {}
+      //     if (this.form.inventoryCost && this.form.inventoryNum) {
+      //       this.form.inboundAverage = parseFloat(
+      //         this.form.inventoryCost / this.form.inventoryNum).toFixed(2)
+      //     }
+      //     if (this.form.successNum) {
+      //       this.form.orderAmountAverage = parseFloat(
+      //         this.form.orderAmount / this.form.successNum).toFixed(2)
+      //       this.form.freightAverage = parseFloat(
+      //         this.form.freight / this.form.successNum).toFixed(2)
+      //       this.form.profitsAverage = parseFloat(
+      //         this.form.profitsAmount / this.form.successNum).toFixed(2)
+      //     }
+      //     this.form.costAverage = parseFloat(
+      //       this.form.inboundAverage / 1 + this.form.freightAverage / 1).toFixed(2)
+      //     this.form.inventoryRatio = parseFloat(
+      //       this.form.inventoryNum / this.form.goodsPutInNum * 100).toFixed(2)
+      //     this.form.profitsProportion = parseFloat(
+      //       this.form.profitsAverage / this.form.costAverage * 100).toFixed(2)
+      //   } else {
+      //     this.$message.error(res.subMsg)
+      //   }
+      // })
     },
     jumpactOrder(type) {
       let path = '/goodsOrder/list' + type

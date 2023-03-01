@@ -64,7 +64,7 @@
       </el-row>
     </el-form>
     <buttomButton style="z-index: 9999" :tableRef="this.$refs['queryTable']"></buttomButton>
-    <el-table ref="queryTable" height="600" style="margin-top: 20px" border :data="tableData" @selection-change="selected">
+    <el-table show-summary     :summary-method="getSummaries"  ref="queryTable" height="600" style="margin-top: 20px" border :data="tableData" @selection-change="selected">
       <el-table-column type="selection" width="40"></el-table-column>
 <!--      <el-table-column align="center" prop="actNo" width="100" fixed="left" label="货号"/>-->
 <!--      <el-table-column align="center" prop="goodsName" width="150" fixed="left" label="商品名"/>-->
@@ -80,11 +80,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="图片" fixed="left">
-<!--        <template slot-scope="scope">-->
-<!--          <img v-if="scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic"-->
-<!--               @click="avatarShow(scope.row.imgUrl)">-->
-<!--        </template>-->
+      <el-table-column align="center" label="图片">
         <template slot-scope="scope">
           <img v-if="scope.row.img" :src="scope.row.img" class="userPic"
                @click="avatarShow(scope.row.img)">
@@ -273,6 +269,11 @@
         this.pageGoods()
       }
     },
+    updated () {
+      this.$nextTick(() => {
+        this.$refs['queryTable'].doLayout();
+      })
+    },
     mounted() {
       this.pageGoods()
       this.listSysDict()
@@ -330,6 +331,37 @@
       },
       jumpactNo(id , type ) {
           this.$router.push({ path: '/goodsBase/list/detailNew', query: { id, type }})
+      },
+      getSummaries(param) {
+        const { columns, data } = param;
+        const sums = [];
+        columns.forEach((column, index) => {
+          if (index === 0) {
+            sums[index] = '合计';
+            return;
+          }
+          if (column.property == 'id'
+              || column.property == 'size'
+              || column.property == 'warehouseId'
+            ){
+            return
+          }
+          const values = data.map(item => Number(item[column.property]));
+          if (!values.every(value => isNaN(value))) {
+            sums[index] = values.reduce((prev, curr) => {
+              const value = Number(curr);
+              if (!isNaN(value)) {
+                return prev + curr;
+              } else {
+                return prev;
+              }
+            }, 0);
+            sums[index] += '';
+          } else {
+            sums[index] = '';
+          }
+        });
+        return sums;
       },
       pageGoods() {
         if (this.queryParam.inventory == 1) {

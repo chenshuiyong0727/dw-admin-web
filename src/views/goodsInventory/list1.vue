@@ -89,7 +89,9 @@
     </el-form>
 
     <buttomButton style="z-index: 9999" :tableRef="this.$refs['queryTable']"></buttomButton>
-    <el-table ref="queryTable" height="600" style="margin-top: 20px" border :data="tableData"
+   <el-table
+      show-summary     :summary-method="getSummaries"
+      ref="queryTable" height="600" style="margin-top: 20px" border :data="tableData"
               @selection-change="selected">
 
       <el-table-column type="selection" width="55"></el-table-column>
@@ -182,6 +184,11 @@
     mounted() {
       this.getPage()
       this.listSysDict()
+    },
+    updated () {
+      this.$nextTick(() => {
+        this.$refs['queryTable'].doLayout();
+      })
     },
     methods: {
       createTimeChange() {

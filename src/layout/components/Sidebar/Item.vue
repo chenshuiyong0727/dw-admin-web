@@ -1,5 +1,6 @@
 <script>
-export default {
+  import store from '@/store'
+  export default {
   name: 'MenuItem',
   functional: true,
   props: {
@@ -29,8 +30,30 @@ export default {
 
     if (title) {
       let node = <span slot='title'>{(title)}</span>
-      if (msgCount) {
-        node = <div class='p-msg'><span slot='title'>{(title)}</span><i class='msg'>{(msgCount)}</i></div>
+      if (title === '待发货商品') {
+        if (store.getters.count3) {
+          node = <div class='p-msg'><span slot='title'>{(title)}</span><i class='msg'>{(store.getters.count3)}</i></div>
+        }
+      } else if (title === '已发货商品'){
+        if (store.getters.count4) {
+          node = <div class='p-msg'><span slot='title'>{(title)}</span><i class='msg'>{(store.getters.count4)}</i></div>
+        }
+      } else if (title === '已揽件商品'){
+        if (store.getters.count5) {
+          node = <div class='p-msg'><span slot='title'>{(title)}</span><i class='msg'>{(store.getters.count5)}</i></div>
+        }
+      } else if (title === '已收货商品'){
+        if (store.getters.count6) {
+          node = <div class='p-msg'><span slot='title'>{(title)}</span><i class='msg'>{(store.getters.count6)}</i></div>
+        }
+      } else if (title === '瑕疵商品'){
+        if (store.getters.count8) {
+          node = <div class='p-msg'><span slot='title'>{(title)}</span><i class='msg'>{(store.getters.count8)}</i></div>
+        }
+      } else {
+        if (msgCount) {
+          node = <div class='p-msg'><span slot='title'>{(title)}</span><i class='msg'>{(msgCount)}</i></div>
+        }
       }
       vnodes.push(node)
     }
