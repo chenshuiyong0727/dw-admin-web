@@ -103,7 +103,16 @@
       </el-table-column>
       <el-table-column align="center" prop="thisTimePrice" width="80" label="球鞋仓库价" sortable/>
       <el-table-column align="center" prop="thisTimeThePrice" width="80" label="球鞋仓库到手价" sortable/>
-      <el-table-column align="center" prop="thisTimeProfits" width="80" label="球鞋仓库利润价" sortable/>
+      <el-table-column align="center" prop="thisTimeProfits" label="球鞋仓库利润价" sortable>
+        <template  slot-scope="scope">
+          <span
+            :style="scope.row.thisTimeProfits > 50 ? 'color: red' : ''"
+          >
+                {{ scope.row.thisTimeProfits}}
+              </span>
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" prop="dwPrice" label="得物价" sortable>
         <template scope="scope">
           <div class="input-box">
