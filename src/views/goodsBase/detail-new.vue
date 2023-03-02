@@ -196,7 +196,7 @@
             <el-row class="clearfix btm-distance">
               <div class="overview">
                 <p><strong>180天最高到手价</strong></p>
-                <p>{{priceData.theirPrice365}} </p>
+                <p>{{priceData.theirPrice180}} </p>
               </div>
             </el-row>
           </div>
@@ -210,7 +210,7 @@
             <el-row class="clearfix btm-distance">
               <div class="overview">
                 <p><strong>30天最高到手价</strong></p>
-                <p>{{priceData.theirPrice365}} </p>
+                <p>{{priceData.theirPrice30}} </p>
               </div>
             </el-row>
           </div>
@@ -411,24 +411,6 @@ export default {
         }
       })
     },
-    // getPagePrice() {
-    //   goodsBaseSizePriceApi.page(this.queryParam1).then(res => {
-    //     if (res.subCode === 1000) {
-    //       this.tableData1 = res.data ? res.data.list : []
-    //       this.dataEmpty = false
-    //       this.loading = false
-    //       this.chartData.rows = this.tableData1
-    //       this.totalCount1 = res.data ? res.data.pageInfo.totalCount : 0
-    //       for (let i = 0; i < this.tableData1.length; i++) {
-    //         let price =
-    //           this.tableData1[i].price - (this.tableData1[i].price * 0.075 + 38 + 8.5)
-    //         this.tableData1[i].theirPrice = parseFloat(price).toFixed(2)
-    //       }
-    //     } else {
-    //       this.$message.error(res.subMsg)
-    //     }
-    //   })
-    // },
     getPage() {
       goodsBaseSizeApi.page(this.queryParam).then(res => {
         if (res.subCode === 1000) {
