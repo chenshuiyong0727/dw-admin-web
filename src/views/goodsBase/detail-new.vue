@@ -327,7 +327,8 @@ export default {
         scale: [true],
         axisSite: { right: ['date'] },
         labelAlias: {
-          'price': '价格'
+          'price': '价格',
+          'date': '日期',
         }
       },
       chartData: {
