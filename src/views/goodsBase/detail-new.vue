@@ -429,7 +429,9 @@ export default {
             }
           }
           if (totalCount < this.form.sizeList.length) {
-            this.getPage()
+            setTimeout(()=>{
+              this.getPage()
+            },1000)
           }
         } else {
           this.$message.error(res.subMsg)

@@ -185,7 +185,6 @@
       gotopath() {
         initSysDict().then(() => {
           let functionList = JSON.parse(localStorage.getItem('functionList'))
-          console.info(functionList)
           const allRouter = functionList.filter(item => item.functionType == '1' && item.route)
           allRouter.sort((a, b) => {
             return a.sort - b.sort
@@ -195,7 +194,8 @@
           if (!isHasRouterAuth.length) {
             this.redirect = allRouter[0].route
           }
-          this.$router.push({ path: '/homePage' || this.redirect })
+          console.info(this.redirect)
+          this.$router.push({ path: this.redirect || '/homePage'})
         })
       },
       handleLogin() {
