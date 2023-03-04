@@ -40,6 +40,19 @@
             <el-input v-model.trim="queryParam.remark" placeholder="备注"></el-input>
           </el-form-item>
         </el-col>
+        <el-col :span="6">
+          <el-form-item size="small">
+            <el-date-picker
+              v-model="syncTime"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="同步时间"
+              end-placeholder="同步时间"
+              @change="syncTimeChange"
+              value-format="yyyy-MM-dd">
+            </el-date-picker>
+          </el-form-item>
+        </el-col>
       </el-row>
 
       <el-row type="flex" justify="center"
@@ -88,7 +101,9 @@
       <el-table-column align="center" prop="brand" label="品牌"/>
       <el-table-column align="center" prop="sellDate" label="发售日期"/>
       <el-table-column align="center" prop="sellPrice" label="发售价格"/>
-      <el-table-column align="center" prop="remark" label="备注"/>
+      <el-table-column align="center" prop="syncTime" label="同步时间" width="100" sortable>
+        <template slot-scope="scope">{{scope.row.syncTime | formateTime() }}</template>
+      </el-table-column>
       <el-table-column fixed="right" align="center" label="操作" width="130"
                        v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length">
         <template slot-scope="scope">
@@ -142,6 +157,7 @@
     },
     data() {
       return {
+        syncTime: '',
         queryParam: {
           id: '',
           type: '',
@@ -149,6 +165,8 @@
           name: '',
           brand: '',
           remark: '',
+          syncTimeFrom: '',
+          syncTimeTo: '',
           pageSize: 10,
           pageNum: 1
         },
@@ -167,6 +185,15 @@
       this.listSysDict()
     },
     methods: {
+      syncTimeChange() {
+        if (this.syncTime) {
+          this.queryParam.syncTimeFrom = this.syncTime[0]
+          this.queryParam.syncTimeTo = this.syncTime[1]
+        } else {
+          this.queryParam.syncTimeFrom = null
+          this.queryParam.syncTimeTo = null
+        }
+      },
       getPage() {
         goodsBaseApi.page(this.queryParam).then(res => {
           if (res.subCode === 1000) {
@@ -282,6 +309,8 @@
       },
       resetHandle() {
         this.queryParam = {
+          syncTimeFrom: '',
+          syncTimeTo: '',
           id: '',
           type: '',
           actNo: '',
@@ -291,6 +320,7 @@
           pageSize: 10,
           pageNum: 1
         }
+        this.syncTime = ''
         this.getPage()
       }
     }

@@ -57,108 +57,6 @@ export const constantRoutes = [
     redirect: '/homePage',
     hidden: true
   },
-  // 组织管理
-  // {
-  //   path: '/organization',
-  //   component: Layout,
-  //   meta: { title: '组织管理', leftMenuId: 1 },
-  //   redirect: '/organization/structure',
-  //   children: [
-  //     {
-  //       path: 'structure',
-  //       name: 'structure',
-  //       component: () => import('@/views/systemManage/organization/organization'),
-  //       meta: { title: '组织结构' },
-  //       children: [
-  //         {
-  //           path: 'add',
-  //           name: 'addOrganization',
-  //           component: () => import('@/views/systemManage/organization/addOrganization'),
-  //           meta: { title: '新增', routerId: 3 },
-  //           hidden: true
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       path: 'job',
-  //       name: 'job',
-  //       component: () => import('@/views/systemManage/organization/job'),
-  //       meta: { title: '岗位管理' },
-  //       children: [
-  //         {
-  //           path: 'add',
-  //           name: 'addJob',
-  //           component: () => import('@/views/systemManage/organization/addJob'),
-  //           meta: { title: '新增', routerId: 3 },
-  //           hidden: true
-  //         }
-  //       ]
-  //     }
-  //   ]
-  // },
-  // 员工管理
-  // {
-  //   path: '/staff',
-  //   component: Layout,
-  //   meta: { title: '员工管理', leftMenuId: 1 },
-  //   redirect: '/staff/account',
-  //   children: [
-  //     {
-  //       path: 'account',
-  //       name: 'account',
-  //       component: () => import('@/views/systemManage/staff/account'),
-  //       meta: { title: '账号管理' },
-  //       children: [
-  //         {
-  //           path: 'add',
-  //           name: 'addAccount',
-  //           component: () => import('@/views/systemManage/staff/addAccount'),
-  //           meta: { title: '新增', routerId: 3 },
-  //           hidden: true
-  //         }
-  //       ]
-  //     }
-  //   ]
-  // },
-  // 权限管理
-  // {
-  //   path: '/authority',
-  //   component: Layout,
-  //   meta: { title: '权限管理', leftMenuId: 1 },
-  //   redirect: '/authority/role',
-  //   children: [
-  //     {
-  //       path: 'role',
-  //       name: 'role',
-  //       component: () => import('@/views/systemManage/authority/role'),
-  //       meta: { title: '角色权限' },
-  //       children: [
-  //         {
-  //           path: 'add',
-  //           name: 'addRole',
-  //           component: () => import('@/views/systemManage/authority/addRole'),
-  //           meta: { title: '新增', routerId: 3 },
-  //           hidden: true
-  //         }
-  //       ]
-  //     }
-  //   ]
-  // },
-  // 菜单管理
-  /*  {
-      path: '/menu',
-      component: Layout,
-      meta: { title: '菜单管理', leftMenuId: 1 },
-      redirect: '/menu/list',
-      children: [
-        {
-          path: 'list',
-          name: 'list',
-          component: () => import('@/views/systemManage/menu/list'),
-          meta: { title: '菜单列表' }
-        }
-      ]
-    },*/
   // 我的账号
   {
     path: '/myAccount',
@@ -234,15 +132,42 @@ export const constantRoutes = [
             component: () => import('@/views/goodsInventory/detail'),
             meta: { title: '详情', routerId: 3 },
             hidden: true
-          },
-          {
-            path: 'dataDetail',
-            name: 'dataDetail',
-            component: () => import('@/views/goodsInventory/dataDetail'),
-            meta: { title: '库存明细', routerId: 3 },
-            hidden: true
+          // },
+          // {
+          //   path: 'dataDetail',
+          //   name: 'dataDetail',
+          //   component: () => import('@/views/goodsInventory/dataDetail'),
+          //   meta: { title: '库存明细', routerId: 3 },
+          //   hidden: true
           }
         ]
+      },
+      // {
+      //   path: 'goodsInventoryDetail',
+      //   name: 'goodsInventoryDetail',
+      //   component: () => import('@/views/goodsInventory/listDetail'),
+      //   meta: { title: '库存明细' },
+      //   children: [
+      //     {
+      //       path: 'detail',
+      //       name: 'detail',
+      //       component: () => import('@/views/goodsInventory/detail'),
+      //       meta: { title: '详情', routerId: 3 },
+      //       hidden: true
+      //     }
+      //   ]
+      // },
+      // // {
+      // //   path: 'dataDetail',
+      // //   name: 'dataDetail',
+      // //   component: () => import('@/views/goodsInventory/dataDetail'),
+      // //   meta: { title: '库存明细' }
+      // // },
+      {
+        path: 'dataDetail',
+        name: 'dataDetail',
+        component: () => import('@/views/goodsInventory/dataDetail'),
+        meta: { title: '库存明细' }
       }
     ]
   },

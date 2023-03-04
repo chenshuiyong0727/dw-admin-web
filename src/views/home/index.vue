@@ -599,7 +599,7 @@ export default {
       //   return
       // }
       // let goodsId = this.queryParam.goodsId
-      this.$router.push({ path: '/goodsBase/goodsInventory/dataDetail', query: { warehouseId }})
+      this.$router.push({ path: '/goodsBase/dataDetail', query: { warehouseId }})
     },
     jumpactNo() {
       this.$router.push({ path: '/goodsBase/goodsInventory' })

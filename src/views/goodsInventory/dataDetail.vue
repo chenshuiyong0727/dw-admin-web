@@ -40,6 +40,19 @@
         <el-col :span="6">
           <el-form-item size="small">
             <el-date-picker
+              v-model="syncTime"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="同步时间"
+              end-placeholder="同步时间"
+              @change="syncTimeChange"
+              value-format="yyyy-MM-dd">
+            </el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item size="small">
+            <el-date-picker
               v-model="createTime"
               type="daterange"
               range-separator="至"
@@ -93,6 +106,9 @@
         <template v-if="scope.row.warehouseId" slot-scope="scope">{{ scope.row.warehouseId |
           dictToDescTypeValue(40) }}
         </template>
+      </el-table-column>
+      <el-table-column align="center" prop="syncTime" label="同步时间" width="100" sortable>
+        <template slot-scope="scope">{{scope.row.syncTime | formateTime() }}</template>
       </el-table-column>
       <el-table-column align="center" prop="price" label="入库价" sortable>
         <template scope="scope">
@@ -219,11 +235,14 @@
     },
     data() {
       return {
+        syncTime: '',
         sizeData: '',
         imageZoom: '',
         isShowDialog: false,
         createTime: [],
         queryParam: {
+          syncTimeFrom: '',
+          syncTimeTo: '',
           id: '',
           warehouseId: '',
           createTimeFrom: '',
@@ -288,6 +307,15 @@
       this.listSysDict()
     },
     methods: {
+      syncTimeChange() {
+        if (this.syncTime) {
+          this.queryParam.syncTimeFrom = this.syncTime[0]
+          this.queryParam.syncTimeTo = this.syncTime[1]
+        } else {
+          this.queryParam.syncTimeFrom = null
+          this.queryParam.syncTimeTo = null
+        }
+      },
       changeStatusDialog2() {
         this.isShowDialog2 = true
       },
@@ -459,6 +487,8 @@
       },
       resetHandle() {
         this.queryParam = {
+          syncTimeFrom: '',
+          syncTimeTo: '',
           id: '',
           warehouseId: '',
           inventory: 1,
@@ -470,6 +500,7 @@
           pageSize: 10,
           pageNum: 1
         }
+        this.syncTime = ''
         this.search()
       }
     }

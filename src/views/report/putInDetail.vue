@@ -145,7 +145,7 @@ export default {
   // },
   methods: {
     viewAll(months) {
-      this.$router.push({ path: '/goodsBase/goodsInventory/dataDetail', query: { months }})
+      this.$router.push({ path: '/goodsBase/dataDetail', query: { months }})
     },
     createTimeChange() {
       if (this.createTime) {
