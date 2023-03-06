@@ -245,6 +245,7 @@
           syncTimeTo: '',
           id: '',
           warehouseId: '',
+          today: '',
           createTimeFrom: '',
           createTimeTo: '',
           inventory: 1,
@@ -282,10 +283,11 @@
       }
     },
     created() {
-      const { actNo, months, warehouseId } = this.$route.query
+      const { actNo, months, warehouseId,today } = this.$route.query
       this.queryParam.actNo = actNo
       this.queryParam.warehouseId = warehouseId
-      if (this.queryParam.actNo || this.queryParam.warehouseId) {
+      this.queryParam.today = today
+      if (this.queryParam.actNo || this.queryParam.warehouseId || this.queryParam.today) {
         this.pageGoods()
       }
       this.months = months
@@ -490,6 +492,7 @@
           syncTimeFrom: '',
           syncTimeTo: '',
           id: '',
+          today: '',
           warehouseId: '',
           inventory: 1,
           inventoryFrom: '',

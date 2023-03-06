@@ -266,6 +266,35 @@
             </div>
           </el-col>
         </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">
+            <div class="un-handle-item" @click="goDataDetailToday(1)">
+              <span class="font-medium">今日更新</span>
+              <span
+                style="float: right"
+                :class="storeData.successNum > 0 ? 'color-danger' : ''"
+              >({{storeData.successNum}})</span>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="un-handle-item" @click="goDataDetailToday(2)">
+              <span class="font-medium">待上架商品</span>
+              <span
+                style="float: right"
+                :class="storeData.successNumLast > 0 ? 'color-danger' : ''"
+              >({{storeData.successNumLast}})</span>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="un-handle-item" @click="goDataDetailToday(3)">
+              <span class="font-medium">待移库商品</span>
+              <span
+                style="float: right"
+                :class="storeData.waitMoveCout > 0 ? 'color-danger' : ''"
+              >({{storeData.waitMoveCout}})</span>
+            </div>
+          </el-col>
+        </el-row>
       </div>
     </div>
     <div class="statistics-layout">
@@ -389,6 +418,7 @@ export default {
       nowTime: '',
       nowWeek: '',
       orderData: {},
+      storeData: {},
       loading: false,
       dataEmpty: false
     }
@@ -396,7 +426,7 @@ export default {
   created() {
     this.getData()
     this.getData1()
-    // this.currentTime()
+    this.getData2()
     this.initTime()
     this.time()
   },
@@ -503,6 +533,15 @@ export default {
         }
       })
     },
+    getData2() {
+      goodsOrderApi.todaySync(this.queryParam).then(res => {
+        if (res.subCode === 1000) {
+          this.storeData = res.data
+        } else {
+          this.$message.error(res.subMsg)
+        }
+      })
+    },
     // getData() {
     //   goodsOrderApi.indexData().then(res => {
     //     if (res.subCode === 1000) {
@@ -600,6 +639,9 @@ export default {
       // }
       // let goodsId = this.queryParam.goodsId
       this.$router.push({ path: '/goodsBase/dataDetail', query: { warehouseId }})
+    },
+    goDataDetailToday(today) {
+      this.$router.push({ path: '/goodsBase/dataDetail', query: { today }})
     },
     jumpactNo() {
       this.$router.push({ path: '/goodsBase/goodsInventory' })
