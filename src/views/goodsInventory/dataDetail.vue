@@ -16,6 +16,19 @@
         </el-col>
         <el-col :span="6">
           <el-form-item size="small">
+            <el-select v-model="queryParam.today">
+              <el-option label="特殊条件" value=""></el-option>
+              <el-option
+                v-for="item in todayList"
+                :key="item.fieldValue"
+                :label="item.fieldName"
+                :value="+item.fieldValue">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item size="small">
             <el-select v-model="queryParam.warehouseId">
               <el-option label="仓库" value=""></el-option>
               <el-option
@@ -117,7 +130,20 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="thisTimePrice" width="80" label="球鞋仓库价" sortable/>
+      <el-table-column align="center" prop="difference" label="加入后差额" sortable>
+        <template  slot-scope="scope">
+          <strong v-if="scope.row.thisTimePrice" :class="scope.row.difference > 0 ? 'color-danger' : 'color-success'">{{ scope.row.difference}}</strong>
+          <STRONG class="color-danger" v-else>售空</STRONG>
+        </template>
+      </el-table-column>
+<!--      <el-table-column align="center" prop="thisTimePrice" width="80" label="球鞋仓库价" sortable/>-->
+      <el-table-column align="center" prop="thisTimePrice"  width="80"  label="球鞋仓库价" sortable>
+        <template  slot-scope="scope">
+          <span v-if="scope.row.thisTimePrice">{{ scope.row.thisTimePrice}}</span>
+          <STRONG class="color-danger" v-else>售空</STRONG>
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" prop="thisTimeThePrice" width="80" label="球鞋仓库到手价" sortable/>
       <el-table-column align="center" prop="thisTimeProfits" label="球鞋仓库利润价" sortable>
         <template  slot-scope="scope">
@@ -128,15 +154,15 @@
               </span>
         </template>
       </el-table-column>
-
-      <el-table-column align="center" prop="dwPrice" label="得物价" sortable>
-        <template scope="scope">
-          <div class="input-box">
-            <el-input size="small" v-model="scope.row.dwPrice"></el-input>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" prop="" label="得物价预计利润" sortable>
+      <el-table-column align="center" prop="dwPrice"  label="入库售价"  sortable/>
+<!--      <el-table-column align="center" prop="dwPrice" label="入库售价" sortable>-->
+<!--        <template scope="scope">-->
+<!--          <div class="input-box">-->
+<!--            <el-input size="small" v-model="scope.row.dwPrice"></el-input>-->
+<!--          </div>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+      <el-table-column align="center" prop="" label="入库售价预计利润" sortable>
         <template v-if="scope.row.dwPrice" slot-scope="scope">
           <!--              style="color: red"-->
           <span
@@ -264,6 +290,14 @@
           { fieldValue: 1, fieldName: '现货' }, { fieldValue: 0, fieldName: '售空' },
           { fieldValue: 2, fieldName: '未上架' }
         ],
+        todayList: [
+          { fieldValue: 1, fieldName: '今日更新' },
+          { fieldValue: 2, fieldName: '待上架商品' },
+          { fieldValue: 3, fieldName: '待移库商品' },
+          { fieldValue: 4, fieldName: '涨价商品' },
+          { fieldValue: 5, fieldName: '降价商品' },
+          { fieldValue: 6, fieldName: '售空商品' }
+        ],
         requestParam: {
           ids: [],
           warehouseId: 2
@@ -369,8 +403,14 @@
         this.pictureZoomShow = true
       },
       jumpactNo(id , type ) {
-          this.$router.push({ path: '/goodsBase/list/detailNew', query: { id, type }})
+          // this.$router.push({ path: '/goodsBase/list/detailNew', query: { id, type }})
+         let routeUrl = this.$router.resolve({
+          path: '/goodsBase/list/detailNew',
+          query: { id, type },
+        })
+        window.open(routeUrl.href, '_blank')
       },
+
       getSummaries(param) {
         const { columns, data } = param;
         const sums = [];

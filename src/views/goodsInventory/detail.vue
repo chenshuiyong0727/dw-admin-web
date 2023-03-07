@@ -29,7 +29,7 @@
           </el-col>
           <el-col>
             <el-form-item size="small">
-              <el-input v-model.trim="unifiedDwPrice" placeholder="一键设置得物价">
+              <el-input v-model.trim="unifiedDwPrice" placeholder="一键设置入库售价">
                 <el-button type="primary" slot="append" @click="setUnifiedDwPrice()">确认</el-button>
               </el-input>
             </el-form-item>
@@ -37,9 +37,11 @@
         </el-row>
       </el-form>
       <el-row class="clearfix btm-distance">
-          <span @click="addSizeHandle(item, index)"
-                :class="activeIndex.includes(index) ? 'cityActive' : 'city'"
-                v-for="(item, index) in form.sizeVoList" :key="item.id">{{item.size}} </span>
+          <span
+            @click="addSizeHandle(item, index)"
+            :class="activeIndex.includes(index) ? 'cityActive' : 'city'"
+            v-for="(item, index) in form.sizeVoList"
+            :key="item.id">{{item.size}} </span>
       </el-row>
     </div>
     <div class="container-right">
@@ -75,7 +77,7 @@
             {{scope.row.price * scope.row.inventory }}
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="dwPrice" label="得物价">
+        <el-table-column align="center" prop="dwPrice" label="入库售价">
           <template scope="scope">
             <div class="input-box">
               <el-input size="small" v-model="scope.row.dwPrice"></el-input>
@@ -163,7 +165,7 @@
             return
           }
           if (!data1.dwPrice) {
-            this.$message.error('请输入尺码 ' + size + ' 的得物价')
+            this.$message.error('请输入尺码 ' + size + ' 的入库售价')
             return
           }
         }
@@ -195,7 +197,7 @@
       },
       setUnifiedDwPrice() {
         if (!this.unifiedDwPrice) {
-          this.$message.error('请输入得物价格')
+          this.$message.error('请输入入库售价格')
           return
         }
         let table1 = []

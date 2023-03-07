@@ -225,7 +225,12 @@
       },
       detailNew(id, type) {
         // *** 根据真实路径配置地址
-        this.$router.push({ path: '/goodsBase/list/detailNew', query: { id, type } })
+        // this.$router.push({ path: '/goodsBase/list/detailNew', query: { id, type } })
+        let routeUrl = this.$router.resolve({
+          path: '/goodsBase/list/detailNew',
+          query: { id, type },
+        })
+        window.open(routeUrl.href, '_blank')
       },
       goDel(id) {
         goodsBaseApi.delById(id).then(res => {

@@ -199,7 +199,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="dwPrice" label="得物价">
+          <el-table-column align="center" prop="dwPrice" label="入库售价">
             <template scope="scope">
               <div class="input-box">
                 <el-input size="small" v-model="scope.row.dwPrice"></el-input>

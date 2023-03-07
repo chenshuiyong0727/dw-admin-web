@@ -295,6 +295,17 @@
             </div>
           </el-col>
         </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">
+            <div class="un-handle-item" @click="goDataDetailToday(4)">
+              <span class="font-medium">涨价商品</span>
+              <span
+                style="float: right"
+                :class="storeData.upCout > 0 ? 'color-danger' : ''"
+              >({{storeData.upCout}})</span>
+            </div>
+          </el-col>
+        </el-row>
       </div>
     </div>
     <div class="statistics-layout">
