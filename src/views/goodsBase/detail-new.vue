@@ -123,7 +123,8 @@
       <el-row>
         <el-col :span="11">
           <h5>尺码列表</h5>
-          <el-table border :data="tableData"  @row-click="rowClick">
+          <el-table  :row-style="{height:'40px'}"
+                     :cell-style="{padding:'0px'}"  border :data="tableData"  @row-click="rowClick">
             <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
             <el-table-column align="center" prop="size"  width="50" label="尺码" />
             <el-table-column align="center" prop="price"  width="57" label="当前价" />

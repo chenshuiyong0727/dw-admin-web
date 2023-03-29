@@ -254,6 +254,21 @@ export const constantRoutes = [
             hidden: true
           }
         ]
+      },
+      {
+        path: 'gift',
+        name: 'gift',
+        component: () => import('@/views/gift/list'),
+        meta: { title: '红包' },
+        children: [
+          {
+            path: 'detail',
+            name: 'detail',
+            component: () => import('@/views/gift/detail'),
+            meta: { title: '详情', routerId: 3 },
+            hidden: true
+          }
+        ]
       }
     ]
   },

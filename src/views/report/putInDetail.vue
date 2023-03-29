@@ -42,7 +42,8 @@
       </el-row>
     </el-form>
     <buttomButton style="z-index: 9999" :tableRef="this.$refs['queryTable']"></buttomButton>
-    <el-table ref="queryTable" height="600" style="margin-top: 20px" border :data="tableData">
+    <el-table :row-style="{height:'30px'}"
+    :cell-style="{padding:'0px'}" ref="queryTable" height="600" style="margin-top: 20px" border :data="tableData">
       <el-table-column align="center" prop="actNo" label="货号"/>
       <el-table-column align="center" width="150" prop="goodsName" label="商品名称"/>
       <el-table-column align="center" prop="oldInventory"  label="原始库存" sortable/>

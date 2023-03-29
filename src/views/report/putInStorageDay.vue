@@ -34,7 +34,8 @@
       </el-row>
     </el-form>
 
-    <el-table height="600" style="margin-top: 20px" border :data="tableData">
+    <el-table :row-style="{height:'30px'}"
+              :cell-style="{padding:'0px'}" height="600" style="margin-top: 20px" border :data="tableData">
 
       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
       <!--      <el-table-column align="center" prop="months" label="月份"/>-->
