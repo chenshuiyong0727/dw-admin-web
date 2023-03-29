@@ -2,6 +2,11 @@ import request from '@/utils/request'
 
 export const reportApi = {
   // 获取数据列表
+  giftReport: () => request({
+    url: '/gw/op/v1/report/giftReport',
+    method: 'get'
+  }),
+  // 获取数据列表
   putInStorage: (body) => request({
     url: '/gw/op/v1/report/putInStorage',
     method: 'get',

@@ -314,6 +314,12 @@ export const constantRoutes = [
             hidden: true
           }
         ]
+      },
+      {
+        path: 'giftReport',
+        name: 'giftReport',
+        component: () => import('@/views/report/giftReport'),
+        meta: { title: '红包报表' }
       }
     ]
   },
