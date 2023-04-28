@@ -14,6 +14,19 @@
         </el-col>
         <el-col :span="6">
           <el-form-item size="small">
+            <el-select v-model="queryParam.type">
+              <el-option label="类型" value=""></el-option>
+              <el-option
+                v-for="item in typeList"
+                :key="item.fieldValue"
+                :label="item.fieldName"
+                :value="item.fieldValue">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item size="small">
             <div>
               <el-input
                 style="width: 47%"
@@ -59,6 +72,7 @@
               @selection-change="selected">
 
       <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
       <el-table-column align="center" width="100" prop="actNo" label="货号">
         <template slot-scope="scope">
           <a style="color: #20a0ff" @click="jumpactNo(scope.row.actNo)"> {{ scope.row.actNo }}</a>
@@ -66,10 +80,9 @@
       </el-table-column>
       <el-table-column align="center" width="120" prop="goodsName" label="商品名称">
         <template slot-scope="scope">
-          <a style="color: #20a0ff" @click="jumpactNo(scope.row.actNo)"> {{ scope.row.goodsName }}</a>
+          <a style="color: #20a0ff" @click="jumpGoods(scope.row.goodsId , 1)"> {{ scope.row.goodsName }}</a>
         </template>
       </el-table-column>
-      <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
       <!--      <el-table-column align="center" prop="goodsId" label="商品编号" />-->
       <!--      <el-table-column align="center" prop="sizeId" label="尺码编号" />-->
       <el-table-column align="center" label="图片" width="120">
@@ -79,6 +92,9 @@
         </template>
       </el-table-column>
       <el-table-column align="center" prop="size" label="尺码"/>
+      <el-table-column align="center" prop="type" label="类型">
+        <template slot-scope="scope">{{ scope.row.type | dictToDescTypeValue(20221108) }}</template>
+      </el-table-column>
       <el-table-column align="center" prop="inPutPrice" label="入库价"/>
       <el-table-column align="center" prop="price" label="当前价"/>
       <el-table-column align="center" prop="thisTimeThePrice" label="到手价"/>
@@ -144,6 +160,7 @@
         queryParam: {
           keyword: '',
           goodsId: '',
+          type: '',
           sizeId: '',
           size: '',
           priceFrom: 50,
@@ -155,6 +172,7 @@
         imageZoom: '',
         fileUrl: fileUrl,
         dataStatusList: [],
+        typeList: [],
         selectedId: [],
         ids: [],
         tableData: [],
@@ -166,6 +184,17 @@
       this.listSysDict()
     },
     methods: {
+      jumpactNo(actNo) {
+        this.$router.push({ path: '/goodsBase/goodsInventory', query: { actNo } })
+      },
+      jumpGoods(id , type ) {
+        // this.$router.push({ path: '/goodsBase/list/detailNew', query: { id, type }})
+        let routeUrl = this.$router.resolve({
+          path: '/goodsBase/list/detailNew',
+          query: { id, type },
+        })
+        window.open(routeUrl.href, '_blank')
+      },
       getPage() {
         goodsBusinessApi.page(this.queryParam).then(res => {
           if (res.subCode === 1000) {
@@ -184,6 +213,7 @@
         let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
           localStorage.getItem('sysDictList')) : []
         this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
+        this.typeList = sysDictList.filter(item => item.typeValue == 20221108)
       },
       pageChangeHandle(currentPage) {
         this.queryParam.pageNum = currentPage
@@ -268,6 +298,7 @@
         this.queryParam = {
           keyword: '',
           goodsId: '',
+          type: '',
           sizeId: '',
           size: '',
           priceFrom: '',
