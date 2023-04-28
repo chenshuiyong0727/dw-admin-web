@@ -269,6 +269,21 @@ export const constantRoutes = [
             hidden: true
           }
         ]
+      },
+      {
+        path: 'goodsBusiness',
+        name: 'goodsBusiness',
+        component: () => import('@/views/goodsBusiness/list'),
+        meta: { title: '营销' },
+        children: [
+          {
+            path: 'detail',
+            name: 'detail',
+            component: () => import('@/views/goodsBusiness/detail'),
+            meta: { title: '详情', routerId: 3 },
+            hidden: true
+          }
+        ]
       }
     ]
   },

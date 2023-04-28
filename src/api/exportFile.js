@@ -1,9 +1,12 @@
 import axios from 'axios'
+import { hideLoading, showLoading } from '@/components/Loading/loading'
 
 export const getExport = (url, body, method = 'post') => {
+  showLoading()
   return new Promise((resolve) => {
     axios({
       url,
+      timeout: 10,
       data: body,
       method,
       responseType: 'blob',
@@ -11,6 +14,7 @@ export const getExport = (url, body, method = 'post') => {
         'tokenAuth': localStorage.getItem('org_token_auth')
       }
     }).then(res => {
+      hideLoading()
       if (res.status === 200) {
         const fileName = res.headers['content-disposition'] ? decodeURI(
           res.headers['content-disposition'].split(';')[1].split('=')[1].split(
