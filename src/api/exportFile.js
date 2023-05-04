@@ -6,7 +6,6 @@ export const getExport = (url, body, method = 'post') => {
   return new Promise((resolve) => {
     axios({
       url,
-      timeout: 10,
       data: body,
       method,
       responseType: 'blob',

@@ -168,6 +168,21 @@ export const constantRoutes = [
         name: 'dataDetail',
         component: () => import('@/views/goodsInventory/dataDetail'),
         meta: { title: '库存明细' }
+      },
+      {
+        path: 'goodsAct',
+        name: 'goodsAct',
+        component: () => import('@/views/goodsAct/list'),
+        meta: { title: '活动' },
+        children: [
+          {
+            path: 'detail',
+            name: 'detail',
+            component: () => import('@/views/goodsAct/detail'),
+            meta: { title: '详情', routerId: 3 },
+            hidden: true
+          }
+        ]
       }
     ]
   },
