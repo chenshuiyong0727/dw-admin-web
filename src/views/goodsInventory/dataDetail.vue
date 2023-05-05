@@ -91,7 +91,7 @@
     </el-form>
     <buttomButton style="z-index: 9999" :tableRef="this.$refs['queryTable']"></buttomButton>
     <el-table show-summary     :summary-method="getSummaries"  ref="queryTable" height="600" style="margin-top: 20px" border :data="tableData" @selection-change="selected">
-      <el-table-column type="selection" width="40"></el-table-column>
+      <el-table-column type="selection" width="55"></el-table-column>
 <!--      <el-table-column align="center" prop="actNo" width="100" fixed="left" label="货号"/>-->
 <!--      <el-table-column align="center" prop="goodsName" width="150" fixed="left" label="商品名"/>-->
 <!--      -->
@@ -425,19 +425,28 @@
             ){
             return
           }
-          const values = data.map(item => Number(item[column.property]));
-          if (!values.every(value => isNaN(value))) {
-            sums[index] = values.reduce((prev, curr) => {
-              const value = Number(curr);
-              if (!isNaN(value)) {
-                return prev + curr;
-              } else {
-                return prev;
-              }
-            }, 0);
-            sums[index] += '';
-          } else {
-            sums[index] = '';
+          // const values = data.map(item => Number(item[column.property]));
+          // if (!values.every(value => isNaN(value))) {
+          //   sums[index] = values.reduce((prev, curr) => {
+          //     const value = Number(curr);
+          //     if (!isNaN(value)) {
+          //       return prev + curr;
+          //     } else {
+          //       return prev;
+          //     }
+          //   }, 0);
+          //   sums[index] += '';
+          // } else {
+          //   sums[index] = '';
+          // }
+          const values = data.map(item=>Number(item[column.property]))
+          const flag = values.every(item=>isNaN(item))
+          if(flag){
+            return sums[index] = ""
+          }else{
+            sums[index] = values.reduce((total,item)=>total+item);
+            sums[index] = Math.round(sums[index]*100)/100;
+            sums[index] += ""
           }
         });
         return sums;

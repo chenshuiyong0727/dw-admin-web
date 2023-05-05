@@ -246,11 +246,12 @@
           slot-scope="scope">{{(scope.row.profits / scope.row.price ) * 100 | numFilter}} %
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="" label="预估利润">
-        <template v-if="scope.row.theirPrice && scope.row.price " slot-scope="scope">
-          {{(scope.row.theirPrice - scope.row.price - 10 ) | numFilter}}
-        </template>
-      </el-table-column>
+      <el-table-column align="center" prop="forecastProfits" label="预估利润"/>
+      <!--      <el-table-column align="center" prop="" label="预估利润">-->
+<!--        <template v-if="scope.row.theirPrice && scope.row.price " slot-scope="scope">-->
+<!--          {{(scope.row.theirPrice - scope.row.price - 10 ) | numFilter}}-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <!--      <el-table-column align="center" prop="address" label="地址"/>-->
       <el-table-column align="center" prop="addressId" label="地址">
         <template v-if="scope.row.addressId" slot-scope="scope">{{ scope.row.addressId |
@@ -434,20 +435,30 @@
           ){
             return
           }
-          const values = data.map(item => Number(item[column.property]));
-          if (!values.every(value => isNaN(value))) {
-            sums[index] = values.reduce((prev, curr) => {
-              const value = Number(curr);
-              if (!isNaN(value)) {
-                return prev + curr;
-              } else {
-                return prev;
-              }
-            }, 0);
-            sums[index] += '';
-          } else {
-            sums[index] = '';
+          const values = data.map(item=>Number(item[column.property]))
+          const flag = values.every(item=>isNaN(item))
+          if(flag){
+            return sums[index] = ""
+          }else{
+            sums[index] = values.reduce((total,item)=>total+item);
+            sums[index] = Math.round(sums[index]*100)/100;
+            sums[index] += ""
           }
+          // const values = data.map(item => Number(item[column.property]));
+          // if (!values.every(value => isNaN(value))) {
+          //   sums[index] = values.reduce((prev, curr) => {
+          //     const value = Number(curr);
+          //     if (!isNaN(value)) {
+          //       let res = prev + curr;
+          //       return res
+          //     } else {
+          //       return prev;
+          //     }
+          //   }, 0);
+          //   sums[index] += '';
+          // } else {
+          //   sums[index] = '';
+          // }
         });
         return sums;
       },
@@ -541,6 +552,14 @@
           if (res.subCode === 1000) {
             this.tableData = res.data ? res.data.list : []
             this.totalCount = res.data ? res.data.pageInfo.totalCount : 0
+            if (this.totalCount >0) {
+              for (let i = 0; i <this.tableData.length ; i++) {
+                let data1 = this.tableData[i]
+                let forecastProfits = data1.theirPrice - data1.price - 10
+                forecastProfits = parseFloat(forecastProfits).toFixed(2)
+                this.tableData[i].forecastProfits = forecastProfits
+              }
+            }
           } else {
             this.$message.error(res.subMsg)
           }

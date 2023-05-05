@@ -1,5 +1,105 @@
 <template>
   <div class="app-container">
+    <div class="un-handle-layout">
+      <div class="layout-title">待处理事务</div>
+      <div class="un-handle-content">
+        <el-row :gutter="20">
+          <el-col :span="8">
+            <div class="un-handle-item" @click="jumpactOrder(2)">
+              <span class="font-medium">已上架商品</span>
+              <span style="float: right">({{orderIofo.count2}})</span>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="un-handle-item" @click="jumpactOrder(3)">
+              <span class="font-medium">待发货商品</span>
+              <span
+                style="float: right"
+                :class="orderIofo.count3 > 0 ? 'color-danger' : ''"
+              >({{orderIofo.count3}})</span>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="un-handle-item" @click="jumpactOrder(4)">
+              <span class="font-medium">已发货商品</span>
+              <span
+                style="float: right"
+                :class="orderIofo.count4 > 0 ? 'color-danger' : ''"
+              >({{orderIofo.count4}})</span>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">
+            <div class="un-handle-item" @click="jumpactOrder(5)">
+              <span class="font-medium">已揽件商品</span>
+              <span
+                style="float: right"
+                :class="orderIofo.count5 > 0 ? 'color-danger' : ''"
+              >({{orderIofo.count5}})</span>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="un-handle-item" @click="jumpactOrder(6)">
+              <span class="font-medium">已收货商品</span>
+              <span
+                style="float: right"
+                :class="orderIofo.count6 > 0 ? 'color-danger' : ''"
+              >({{orderIofo.count6}})</span>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="un-handle-item" @click="jumpactOrder(8)">
+              <span class="font-medium">瑕疵商品</span>
+              <span
+                style="float: right"
+                :class="orderIofo.count8 > 0 ? 'color-danger' : ''"
+              >({{orderIofo.count8}})</span>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">
+            <div class="un-handle-item" @click="goDataDetailToday(1)">
+              <span class="font-medium">今日更新</span>
+              <span
+                style="float: right"
+                :class="storeData.successNum > 0 ? 'color-danger' : ''"
+              >({{storeData.successNum}})</span>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="un-handle-item" @click="goDataDetailToday(2)">
+              <span class="font-medium">待上架商品</span>
+              <span
+                style="float: right"
+                :class="storeData.successNumLast > 0 ? 'color-danger' : ''"
+              >({{storeData.successNumLast}})</span>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="un-handle-item" @click="goDataDetailToday(3)">
+              <span class="font-medium">待移库商品</span>
+              <span
+                style="float: right"
+                :class="storeData.waitMoveCout > 0 ? 'color-danger' : ''"
+              >({{storeData.waitMoveCout}})</span>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">
+            <div class="un-handle-item" @click="goDataDetailToday(4)">
+              <span class="font-medium">涨价商品</span>
+              <span
+                style="float: right"
+                :class="storeData.upCout > 0 ? 'color-danger' : ''"
+              >({{storeData.upCout}})</span>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+    </div>
     <div class="address-layout">
       <el-row :gutter="20">
 <!--        <el-col :span="6">-->
@@ -207,106 +307,6 @@
 
 
       </el-row>
-    </div>
-    <div class="un-handle-layout">
-      <div class="layout-title">待处理事务</div>
-      <div class="un-handle-content">
-        <el-row :gutter="20">
-          <el-col :span="8">
-            <div class="un-handle-item" @click="jumpactOrder(2)">
-              <span class="font-medium">已上架商品</span>
-              <span style="float: right">({{orderIofo.count2}})</span>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="un-handle-item" @click="jumpactOrder(3)">
-              <span class="font-medium">待发货商品</span>
-              <span
-                style="float: right"
-                :class="orderIofo.count3 > 0 ? 'color-danger' : ''"
-              >({{orderIofo.count3}})</span>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="un-handle-item" @click="jumpactOrder(4)">
-              <span class="font-medium">已发货商品</span>
-              <span
-                style="float: right"
-                :class="orderIofo.count4 > 0 ? 'color-danger' : ''"
-              >({{orderIofo.count4}})</span>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="8">
-            <div class="un-handle-item" @click="jumpactOrder(5)">
-              <span class="font-medium">已揽件商品</span>
-              <span
-                style="float: right"
-                :class="orderIofo.count5 > 0 ? 'color-danger' : ''"
-              >({{orderIofo.count5}})</span>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="un-handle-item" @click="jumpactOrder(6)">
-              <span class="font-medium">已收货商品</span>
-              <span
-                style="float: right"
-                :class="orderIofo.count6 > 0 ? 'color-danger' : ''"
-              >({{orderIofo.count6}})</span>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="un-handle-item" @click="jumpactOrder(8)">
-              <span class="font-medium">瑕疵商品</span>
-              <span
-                style="float: right"
-                :class="orderIofo.count8 > 0 ? 'color-danger' : ''"
-              >({{orderIofo.count8}})</span>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="8">
-            <div class="un-handle-item" @click="goDataDetailToday(1)">
-              <span class="font-medium">今日更新</span>
-              <span
-                style="float: right"
-                :class="storeData.successNum > 0 ? 'color-danger' : ''"
-              >({{storeData.successNum}})</span>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="un-handle-item" @click="goDataDetailToday(2)">
-              <span class="font-medium">待上架商品</span>
-              <span
-                style="float: right"
-                :class="storeData.successNumLast > 0 ? 'color-danger' : ''"
-              >({{storeData.successNumLast}})</span>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="un-handle-item" @click="goDataDetailToday(3)">
-              <span class="font-medium">待移库商品</span>
-              <span
-                style="float: right"
-                :class="storeData.waitMoveCout > 0 ? 'color-danger' : ''"
-              >({{storeData.waitMoveCout}})</span>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="8">
-            <div class="un-handle-item" @click="goDataDetailToday(4)">
-              <span class="font-medium">涨价商品</span>
-              <span
-                style="float: right"
-                :class="storeData.upCout > 0 ? 'color-danger' : ''"
-              >({{storeData.upCout}})</span>
-            </div>
-          </el-col>
-        </el-row>
-      </div>
     </div>
     <div class="statistics-layout">
       <div class="layout-title">订单统计</div>
@@ -681,6 +681,7 @@ export default {
   }
 
   .address-layout {
+    margin-top: 20px;
   }
 
   .total-layout {
@@ -716,7 +717,6 @@ export default {
   }
 
   .un-handle-layout {
-    margin-top: 20px;
     border: 1px solid #DCDFE6;
   }
 
