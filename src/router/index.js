@@ -107,7 +107,7 @@ export const constantRoutes = [
           {
             path: 'detailNew',
             name: 'detailNew',
-            component: () => import('@/views/goodsBase/detail-new'),
+            component: () => import('@/views/goodsBase/detail-newV2'),
             meta: { title: '智能获取', routerId: 3 },
             hidden: true
           },

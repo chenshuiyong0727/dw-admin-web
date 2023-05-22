@@ -36,6 +36,12 @@
         <el-input v-model="requestParam.shelvesPrice" size="small"></el-input>
       </el-col>
     </el-row>
+    <el-row class="form-flex">
+      <el-col :span="8" style="text-align: right"><i class="red">*</i><span>发货截止时间：</span></el-col>
+      <el-col :span="8" :offset="1">
+        <el-date-picker type="datetime" placeholder="发货截止时间" v-model="requestParam.deliveryDeadlineTime" value-format="yyyy-MM-dd HH:mm:ss">></el-date-picker>
+      </el-col>
+    </el-row>
     <!--    <el-row class="form-flex">-->
     <!--      <el-col :span="8" style="text-align: right"><span>补贴价格：</span></el-col>-->
     <!--      <el-col :span="8" :offset="1">-->
@@ -67,63 +73,72 @@
   </el-dialog>
 </template>
 <script>
-  import { goodsOrderApi } from '@/api/goodsOrder'
+import { goodsOrderApi } from '@/api/goodsOrder'
 
-  export default {
-    props: {
-      orderData: {
-        type: Object
-      }
-    },
-    data() {
-      return {
-        fileUrl: fileUrl,
-        dialogVisible: true,
-        requestParam: {
-          id: '',
-          status: 3,
-          shelvesPrice: '',
-          theirPrice: '',
-          subsidiesPrice: ''
-        }
-      }
-    },
-    mounted() {
-      this.requestParam.id = this.orderData.id
-      this.requestParam.shelvesPrice = this.orderData.shelvesPrice
-      this.requestParam.subsidiesPrice = this.orderData.subsidiesPrice
-      this.requestParam.status = this.orderData.status
-    },
-    methods: {
-      avatarShow(e) {
-        if (!e) {
-          return
-        }
-        window.open(this.fileUrl + e)
-      },
-      closDialog() {
-        this.$emit('closDialog')
-      },
-      confirmHandle() {
-        let realVal = this.requestParam.subsidiesPrice * 1 + this.requestParam.shelvesPrice
-          - (this.requestParam.shelvesPrice * 0.075 + 38 + 8.5)
-        this.requestParam.theirPrice = parseFloat(realVal).toFixed(2)
-        // 出售
-        goodsOrderApi.sellGoods(this.requestParam).then(res => {
-          if (res.subCode === 1000) {
-            this.$store.dispatch('apply/orderInfo')
-            this.$message({
-              message: '操作成功，即将返回',
-              type: 'success'
-            })
-            this.$emit('refreshPage')
-          } else {
-            this.$message.error(res.subMsg)
-          }
-        })
+export default {
+  props: {
+    orderData: {
+      type: Object
+    }
+  },
+  data() {
+    return {
+      fileUrl: fileUrl,
+      dialogVisible: true,
+      requestParam: {
+        id: '',
+        status: 3,
+        deliveryDeadlineTime: '',
+        shelvesPrice: '',
+        theirPrice: '',
+        subsidiesPrice: ''
       }
     }
+  },
+  mounted() {
+    this.requestParam.id = this.orderData.id
+    this.requestParam.deliveryDeadlineTime = this.orderData.deliveryDeadlineTime
+    this.requestParam.shelvesPrice = this.orderData.shelvesPrice
+    this.requestParam.subsidiesPrice = this.orderData.subsidiesPrice
+  },
+  methods: {
+    avatarShow(e) {
+      if (!e) {
+        return
+      }
+      window.open(this.fileUrl + e)
+    },
+    closDialog() {
+      this.$emit('closDialog')
+    },
+    confirmHandle() {
+      if (!this.requestParam.shelvesPrice) {
+        this.$message.error('出售价格为空')
+        return
+      }
+      if (!this.requestParam.deliveryDeadlineTime) {
+        this.$message.error('发货截止时间为空')
+        return
+      }
+      let realVal = this.requestParam.subsidiesPrice * 1 + this.requestParam.shelvesPrice
+      - (this.requestParam.shelvesPrice * 0.075 + 38 + 8.5)
+      this.requestParam.theirPrice = parseFloat(realVal).toFixed(2)
+      // 出售
+      goodsOrderApi.sellGoods(this.requestParam).then(res => {
+        if (res.subCode === 1000) {
+          this.$store.dispatch('apply/orderInfo')
+          this.$message({
+            message: '操作成功，即将返回',
+            type: 'success'
+          })
+          this.$emit('refreshPage')
+        } else {
+          this.$message.error(res.subMsg)
+        }
+      })
+    }
   }
+}
 </script>
 <style lang="scss" scoped>
   ::v-deep .el-dialog__header, ::v-deep .el-dialog__body {

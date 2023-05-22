@@ -233,6 +233,13 @@
       <el-table-column align="center" prop="status" label="状态">
         <template slot-scope="scope">{{ scope.row.status | dictToDescTypeValue(37) }}</template>
       </el-table-column>
+      <el-table-column align="center" prop="sellTime" label="发货截止时间">
+        <template slot-scope="scope">
+          <span class="color-danger">
+              {{scope.row.deliveryDeadlineTime | formateTime }}
+          </span>
+        </template>
+      </el-table-column>
       <el-table-column align="center" prop="price" label="入库价"/>
       <el-table-column align="center" prop="shelvesPrice" label="原售价"/>
       <el-table-column align="center" prop="freight" label="运费"/>
@@ -277,12 +284,10 @@
         <template slot-scope="scope">
           <div>
             <el-button type="text" class="color-danger" @click="goDel(scope.row.id)">删除</el-button>
+            <el-button type="text" v-if="scope.row.status == 2" @click="changeStatusDialog2(scope.row)">出售</el-button>
+            <el-button type="text" v-else @click="changeStatusDialog1(scope.row)">修改地址</el-button>
             <el-button type="text" @click="changeStatusDialog(scope.row)">交易成功</el-button>
-            <el-button type="text" v-if="scope.row.status == 2"
-                       @click="changeStatusDialog2(scope.row)">出售
-            </el-button>
           </div>
-          <el-button type="text" @click="changeStatusDialog1(scope.row)">修改地址</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -486,8 +491,9 @@
         this.getPage()
       },
       changeStatusDialog2(row) {
-        row.status = 3
+        debugger
         this.orderData2 = row
+        // this.orderData2.status = 3
         this.isShowDialog2 = true
       },
       closDialog2() {

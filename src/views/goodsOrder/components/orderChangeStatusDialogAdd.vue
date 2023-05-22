@@ -47,6 +47,19 @@
       </el-col>
     </el-row>
     <el-row class="form-flex">
+      <el-col :span="8" style="text-align: right"><span>请选择状态：</span></el-col>
+      <el-col :span="8" :offset="1">
+        <el-select v-model="requestParam.status">
+          <el-option
+            v-for="item in statusList"
+            :key="item.fieldValue"
+            :label="item.fieldName"
+            :value="+item.fieldValue">
+          </el-option>
+        </el-select>
+      </el-col>
+    </el-row>
+    <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><span>运单号：</span></el-col>
       <el-col :span="8" :offset="1">
         <el-input v-model="requestParam.waybillNo" size="small"></el-input>
@@ -72,10 +85,12 @@
         fileUrl: fileUrl,
         dialogVisible: true,
         addressList: [],
+        statusList: [],
         requestParam: {
           id: '',
           waybillNo: '',
           freight: '',
+          status: '',
           addressId: ''
         }
       }
@@ -85,6 +100,7 @@
       this.requestParam.id = this.orderData.id
       this.requestParam.freight = this.orderData.freight
       this.requestParam.waybillNo = this.orderData.waybillNo
+      this.requestParam.status = this.orderData.status + 1
       this.requestParam.addressId = this.orderData.addressId
     },
     methods: {
@@ -98,6 +114,7 @@
         let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
           localStorage.getItem('sysDictList')) : []
         this.addressList = sysDictList.filter(item => item.typeValue == 38)
+        this.statusList = sysDictList.filter(item => item.typeValue == 37)
       },
       closDialog() {
         this.$emit('closDialog')

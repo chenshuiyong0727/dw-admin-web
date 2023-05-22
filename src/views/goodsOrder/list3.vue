@@ -216,6 +216,13 @@
       <el-table-column align="center" prop="status" label="状态">
         <template slot-scope="scope">{{ scope.row.status | dictToDescTypeValue(37) }}</template>
       </el-table-column>
+     <el-table-column align="center" prop="sellTime" label="发货截止时间">
+       <template slot-scope="scope">
+          <span class="color-danger">
+              {{scope.row.deliveryDeadlineTime | formateTime }}
+          </span>
+       </template>
+     </el-table-column>
       <el-table-column align="center" prop="price" label="入库价"/>
       <el-table-column align="center" prop="shelvesPrice" label="原售价"/>
       <el-table-column align="center" prop="freight" label="运费"/>

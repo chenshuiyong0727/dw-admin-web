@@ -65,6 +65,12 @@ export const goodsBaseApi = {
     url: '/gw/op/v1/goodsBase/getGoodsByActNoAndSize',
     method: 'get',
     params: body
+  }),
+  getGoodsByActNoAndSizeH5: (body) => request({
+    url: '/gw/op/v2/goodsBase/getGoodsByActNoAndSizeH5',
+    method: 'get',
+    loading: false,
+    params: body
   })
 
 }
