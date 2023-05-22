@@ -60,6 +60,12 @@
       </el-col>
     </el-row>
     <el-row class="form-flex">
+      <el-col :span="8" style="text-align: right"><i class="red">*</i><span>发货截止时间：</span></el-col>
+      <el-col :span="8" :offset="1">
+        <el-date-picker type="datetime" placeholder="发货截止时间" v-model="requestParam.deliveryDeadlineTime" value-format="yyyy-MM-dd HH:mm:ss">></el-date-picker>
+      </el-col>
+    </el-row>
+    <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><span>运单号：</span></el-col>
       <el-col :span="8" :offset="1">
         <el-input v-model="requestParam.waybillNo" size="small"></el-input>
@@ -73,6 +79,7 @@
 </template>
 <script>
   import { goodsOrderApi } from '@/api/goodsOrder'
+  import { parseTime } from '@/utils/index'
 
   export default {
     props: {
@@ -89,6 +96,7 @@
         requestParam: {
           id: '',
           waybillNo: '',
+          deliveryDeadlineTime: '',
           freight: '',
           status: '',
           addressId: ''
@@ -100,6 +108,7 @@
       this.requestParam.id = this.orderData.id
       this.requestParam.freight = this.orderData.freight
       this.requestParam.waybillNo = this.orderData.waybillNo
+      this.requestParam.deliveryDeadlineTime = parseTime(this.orderData.deliveryDeadlineTime)
       this.requestParam.status = this.orderData.status + 1
       this.requestParam.addressId = this.orderData.addressId
     },

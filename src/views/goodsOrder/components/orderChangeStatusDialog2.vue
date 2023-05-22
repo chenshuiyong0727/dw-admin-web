@@ -74,6 +74,7 @@
 </template>
 <script>
 import { goodsOrderApi } from '@/api/goodsOrder'
+import { parseTime } from '@/utils/index'
 
 export default {
   props: {
@@ -97,7 +98,7 @@ export default {
   },
   mounted() {
     this.requestParam.id = this.orderData.id
-    this.requestParam.deliveryDeadlineTime = this.orderData.deliveryDeadlineTime
+    this.requestParam.deliveryDeadlineTime =  parseTime(this.orderData.deliveryDeadlineTime)
     this.requestParam.shelvesPrice = this.orderData.shelvesPrice
     this.requestParam.subsidiesPrice = this.orderData.subsidiesPrice
   },
