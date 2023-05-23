@@ -370,6 +370,7 @@
     methods: {
       changeStatus(row) {
         row.status = 2
+        row.deliveryDeadlineTime = ''
         goodsOrderApi.sellGoods(row).then(res => {
           if (res.subCode === 1000) {
             this.$message.success(res.subMsg)
