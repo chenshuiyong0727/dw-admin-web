@@ -210,11 +210,44 @@ export function formatParams(params) {
  * @param {*} time
  * @returns
  */
+// export function isTokenExpire(time) {
+//
+//   let abc = new Date( 604809028).getMinutes()
+//   console.log('abc' , abc)
+//   let curTime = new Date().getTime()
+//   console.log('time2' , new Date())
+//   console.log('curTime' , curTime)
+//   let tokenExpireTime = new Date(time).getTime()
+//   let expierTime = tokenExpireTime - curTime
+//   console.log('expierTime' , expierTime)
+//   let minutes1 = new Date(expierTime).getMinutes()
+//   console.log('minutes1' , minutes1)
+//   let getMinutesTime = expierTime < 0 ? -1 : minutes1
+//   console.log('getMinutesTime' , getMinutesTime)
+//   if (getMinutesTime >= 0 && getMinutesTime <= 5) {
+//     console.log('  刷新     ')
+//     console.log('       ')
+//     console.log('       ')
+//     // 即将过期
+//     return 1
+//   } else if (getMinutesTime < 0) {
+//     // 已过期
+//     return 2
+//   }
+// }
+
+/**
+ * 判断token是否即将过期
+ * @param {*} time
+ * @returns
+ */
 export function isTokenExpire(time) {
   let curTime = new Date().getTime()
   let tokenExpireTime = new Date(time).getTime()
   let expierTime = tokenExpireTime - curTime
-  let getMinutesTime = expierTime < 0 ? -1 : new Date(expierTime).getMinutes()
+  let minutes1 = expierTime / 1000 / 60
+  console.log('minutes1' , minutes1)
+  let getMinutesTime = expierTime < 0 ? -1 : minutes1
   if (getMinutesTime >= 0 && getMinutesTime <= 5) {
     // 即将过期
     return 1
