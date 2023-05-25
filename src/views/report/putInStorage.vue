@@ -37,32 +37,32 @@
       <!--      <el-table-column align="center" prop="orderAmount" label="订单金额"/>-->
       <!--      <el-table-column align="center" prop="profitsAmount" label="利润"/>-->
       <!--      -->
-      <el-table-column align="center" width="100" label="月份">
+      <el-table-column align="center" width="95" label="月份">
         <template slot-scope="scope">
           <a
             @click="jumpDetail(scope.row.months)"
             :style="scope.row.months == '合计' ? 'font-weight: bold;' : 'color: #20a0ff;'"> {{ scope.row.months }}</a>
         </template>
       </el-table-column>
-      <el-table-column align="center" width="100" label="入库数">
+      <el-table-column align="center" width="95" label="入库数">
         <template slot-scope="scope">
           <span
             :style="scope.row.months == '合计' ? 'font-weight: bold' : ''"> {{ scope.row.successNum }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" width="100" label="入库总额">
+      <el-table-column align="center" width="95" label="入库总额">
         <template slot-scope="scope">
           <span
             :style="scope.row.months == '合计' ? 'font-weight: bold' : ''"> {{ scope.row.orderAmount }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" width="100" label="市价总额">
+      <el-table-column align="center" width="95" label="市价总额">
         <template slot-scope="scope">
           <span
             :style="scope.row.months == '合计' ? 'font-weight: bold' : ''"> {{ scope.row.profitsAmount }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" width="100" label="入库均价">
+      <el-table-column align="center" width="95" label="入库均价">
         <template slot-scope="scope">
           <span v-if="scope.row.successNum"
                 :style="scope.row.months == '合计' ? 'font-weight: bold' : ''">
@@ -74,7 +74,7 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column align="center" width="100" label="市价均价">
+      <el-table-column align="center" width="95" label="市价均价">
         <template slot-scope="scope">
           <span v-if="scope.row.successNum"
                 :style="scope.row.months == '合计' ? 'font-weight: bold' : ''">
@@ -84,6 +84,38 @@
                 :style="scope.row.months == '合计' ? 'font-weight: bold' : ''">
              0
           </span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" width="95" label="剩余库存">
+        <template slot-scope="scope">
+          <span
+            :style="scope.row.months == '合计' ? 'font-weight: bold' : ''"> {{ scope.row.inventory }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" width="95" label="剩余库存总额">
+        <template slot-scope="scope">
+          <span
+            :style="scope.row.months == '合计' ? 'font-weight: bold' : ''"> {{ scope.row.inventoryPrice }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" width="95" label="已售数量">
+        <template slot-scope="scope">
+          <span
+            :style="scope.row.months == '合计' ? 'font-weight: bold' : ''"> {{ scope.row.saleNum }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" width="95" label="出售金额">
+        <template slot-scope="scope">
+          <span
+            :style="scope.row.months == '合计' ? 'font-weight: bold' : ''"> {{ scope.row.theirPrice }}</span>
+        </template>
+      </el-table-column>
+
+
+      <el-table-column align="center" width="95" label="产生利润">
+        <template slot-scope="scope">
+          <span
+            :style="scope.row.months == '合计' ? 'font-weight: bold' : ''"> {{ scope.row.profits }}</span>
         </template>
       </el-table-column>
       <!--      <el-table-column  align="center"  width="100" label="市价均价"  >-->
