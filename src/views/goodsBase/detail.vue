@@ -157,228 +157,234 @@
   </div>
 </template>
 <script>
-  import { fileApi } from '@/api/file'
-  import { goodsBaseApi } from '@/api/goodsBase'
+import { fileApi } from '@/api/file'
+import { goodsBaseApi } from '@/api/goodsBase'
+import * as imageConversion from 'image-conversion'
+import { hideLoading, showLoading } from '@/components/Loading/loading'
 
-  export default {
-    data() {
-      return {
-        picture: '',
-        pictureZoomShow: false,
-        form: {
-          type: '01',
-          actNo: '',
-          name: '',
-          imgUrl: '',
-          brand: '耐克',
-          remark: '',
-          sizeList: []
-        },
-        props: {
-          lazy: false,
-          multiple: true
-        },
-        uploadData: {},
-        sizeList: [],
-        uploadPath: uploadPath,
-        fileUrl: fileUrl,
-        typeList: [],
-        dataStatusList: [],
-        type: '',
-        id: '',
-        options: [],
-        rules: {
-          type: [
-            { required: true, trigger: 'blur', message: '类型非空' }
-          ],
-          actNo: [
-            { required: true, trigger: 'blur', message: '货号非空' }
-          ],
-          imgUrl: [
-            { required: true, trigger: 'blur', message: '图片地址非空' }
-          ]
-        }
+export default {
+  data() {
+    return {
+      picture: '',
+      pictureZoomShow: false,
+      form: {
+        type: '01',
+        actNo: '',
+        name: '',
+        imgUrl: '',
+        brand: '耐克',
+        remark: '',
+        sizeList: []
+      },
+      props: {
+        lazy: false,
+        multiple: true
+      },
+      uploadData: {},
+      sizeList: [],
+      uploadPath: uploadPath,
+      fileUrl: fileUrl,
+      typeList: [],
+      dataStatusList: [],
+      type: '',
+      id: '',
+      options: [],
+      rules: {
+        type: [
+          { required: true, trigger: 'blur', message: '类型非空' }
+        ],
+        actNo: [
+          { required: true, trigger: 'blur', message: '货号非空' }
+        ],
+        imgUrl: [
+          { required: true, trigger: 'blur', message: '图片地址非空' }
+        ]
+      }
+    }
+  },
+  created() {
+    const { id, type } = this.$route.query
+    this.id = id
+    this.type = type
+    this.form.id = id
+    if (this.id) {
+      this.getDetailById(this.id)
+    }
+  },
+  mounted() {
+    this.init()
+  },
+  methods: {
+    getSize() {
+      this.form.sizeList = []
+      for (let i = 0; i < this.sizeList.length; i++) {
+        this.form.sizeList.push(this.sizeList[i][1])
       }
     },
-    created() {
-      const { id, type } = this.$route.query
-      this.id = id
-      this.type = type
-      this.form.id = id
-      if (this.id) {
-        this.getDetailById(this.id)
-      }
+    listSysDict() {
+      let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
+        localStorage.getItem('sysDictList')) : []
+      this.typeList = sysDictList.filter(item => item.typeValue == 20221108)
+      this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
     },
-    mounted() {
-      this.init()
-    },
-    methods: {
-      getSize() {
-        this.form.sizeList = []
-        for (let i = 0; i < this.sizeList.length; i++) {
-          this.form.sizeList.push(this.sizeList[i][1])
-        }
-      },
-      listSysDict() {
-        let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
-          localStorage.getItem('sysDictList')) : []
-        this.typeList = sysDictList.filter(item => item.typeValue == 20221108)
-        this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
-      },
-      init() {
-        this.listSysDict()
-        let typeList = this.typeList
-        let options = []
-        for (let i = 0; i < typeList.length; i++) {
-          goodsBaseApi.listDropDownSizes({ type: typeList[i].fieldValue }, false).then(res => {
-            if (res.subCode === 1000) {
-              options.push({
-                label: typeList[i].fieldName,
-                value: typeList[i].fieldValue,
-                children: res.data.map(item => {
-                  return {
-                    value: item.id,
-                    label: item.size
-                  }
-                })
+    init() {
+      this.listSysDict()
+      let typeList = this.typeList
+      let options = []
+      for (let i = 0; i < typeList.length; i++) {
+        goodsBaseApi.listDropDownSizes({ type: typeList[i].fieldValue }, false).then(res => {
+          if (res.subCode === 1000) {
+            options.push({
+              label: typeList[i].fieldName,
+              value: typeList[i].fieldValue,
+              children: res.data.map(item => {
+                return {
+                  value: item.id,
+                  label: item.size
+                }
               })
+            })
+          }
+        })
+      }
+      this.options = options
+    },
+    avatarShow(e) {
+      this.picture = e
+      this.pictureZoomShow = true
+    },
+    async handleImageSuccess(res, file) {
+      hideLoading()
+      this.$message.success('上传成功')
+      this.form.imgUrl = res.data
+    },
+    async beforeImageUpload(file) {
+      if (!this.form.actNo) {
+        this.$message.error('请输入货号')
+        return false
+      }
+      this.uploadData = { actNo: this.form.actNo } // 上传携带的参数名
+      const fileName = file.name
+      const fileType = fileName.substring(fileName.lastIndexOf('.'))
+      // jpeg,.png,.jpg,.bmp,.gif
+      if (
+        fileType === '.jpg' ||
+        fileType === '.png' ||
+        fileType === '.jpeg' ||
+        fileType === '.bmp' ||
+        fileType === '.gif'
+      ) {
+        // 不处理
+      } else {
+        this.$message.error(
+          '不是,jpeg,.png,.jpg,.bmp,.gif文件,请上传正确的图片类型'
+        )
+        return false
+      }
+      showLoading()
+      let overSize = file.size / 1024 / 1024
+      console.info("size1",overSize)
+      if (overSize > 1) {
+        file = await imageConversion.compressAccurately(file, 200)
+      }
+      overSize = file.size / 1024 / 1024
+      console.info("size2",overSize)
+      return file
+    },
+    getDetailById(id) {
+      if (id) {
+        goodsBaseApi.getDetailById(id).then(res => {
+          if (res.subCode === 1000) {
+            this.form = res.data ? res.data : {}
+            this.form.sizeList = []
+            this.sizeList = res.data.sizeListList
+            for (let i = 0; i < res.data.sizeListList.length; i++) {
+              this.form.sizeList.push(res.data.sizeListList[i][1])
+            }
+          } else {
+            this.$message.error(res.subMsg)
+          }
+        })
+      }
+    },
+    getImgUrl(actNo) {
+      if (!actNo) {
+        this.$message.error('请输入货号')
+        return false
+      }
+      fileApi.getImgUrl({ actNo }).then(res => {
+        if (res.subCode === 1000) {
+          console.info(res.data)
+          this.$message.success(res.subMsg)
+          this.form.imgUrl = res.data.url
+        } else {
+          this.$message.error(res.subMsg)
+        }
+      })
+    },
+    goBack() {
+      this.$router.push({ path: '/goodsBase/list' })
+    },
+    goEdit() {
+      this.type = 2
+    },
+    resetHandle() {
+      this.form = {
+        type: '01',
+        actNo: '',
+        name: '',
+        imgUrl: '',
+        brand: '耐克',
+        remark: '',
+        sizeList: []
+      }
+      this.options = []
+    },
+    submit() {
+      this.$refs['form'].validate(async(valid) => {
+        if (!valid) {
+          return false
+        }
+        if (!this.form.imgUrl) {
+          this.$message.error('上传图片')
+          return false
+        }
+        if (!this.form.sizeList.length) {
+          this.$message.error('请选择尺码')
+          return false
+        }
+        if (this.type == 2) {
+          goodsBaseApi.update(this.form).then(res => {
+            if (res.subCode === 1000) {
+              this.$message.success('操作成功')
+              this.goBack()
+            } else {
+              this.$message.error(res.subMsg)
             }
           })
-        }
-        this.options = options
-      },
-      // avatarShow(e) {
-      //   if (!e) {
-      //     return
-      //   }
-      //   window.open(this.fileUrl + e)
-      // },
-      avatarShow(e) {
-        this.picture = e
-        this.pictureZoomShow = true
-      },
-      async handleImageSuccess(res, file) {
-        this.$message.success('上传成功')
-        this.form.imgUrl = res.data
-      },
-      beforeImageUpload(file) {
-        if (!this.form.actNo) {
-          this.$message.error('请输入货号')
-          return false
-        }
-        this.uploadData = { actNo: this.form.actNo } // 上传携带的参数名
-        const fileName = file.name
-        const fileType = fileName.substring(fileName.lastIndexOf('.'))
-        // jpeg,.png,.jpg,.bmp,.gif
-        if (
-          fileType === '.jpg' ||
-          fileType === '.png' ||
-          fileType === '.jpeg' ||
-          fileType === '.bmp' ||
-          fileType === '.gif'
-        ) {
-          // 不处理
         } else {
-          this.$message.error(
-            '不是,jpeg,.png,.jpg,.bmp,.gif文件,请上传正确的图片类型'
-          )
-          return false
-        }
-      },
-      getDetailById(id) {
-        if (id) {
-          goodsBaseApi.getDetailById(id).then(res => {
+          goodsBaseApi.add(this.form).then(res => {
             if (res.subCode === 1000) {
-              this.form = res.data ? res.data : {}
-              this.form.sizeList = []
-              this.sizeList = res.data.sizeListList
-              for (let i = 0; i < res.data.sizeListList.length; i++) {
-                this.form.sizeList.push(res.data.sizeListList[i][1])
-              }
+              this.$message.success('操作成功')
+              // this.goBack()
+              this.$confirm('是否继续添加商品?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                this.resetHandle()
+              }).catch(() => {
+                this.goBack()
+              })
             } else {
               this.$message.error(res.subMsg)
             }
           })
         }
-      },
-      getImgUrl(actNo) {
-        if (!actNo) {
-          this.$message.error('请输入货号')
-          return false
-        }
-        fileApi.getImgUrl({ actNo }).then(res => {
-          if (res.subCode === 1000) {
-            console.info(res.data)
-            this.$message.success(res.subMsg)
-            this.form.imgUrl = res.data.url
-          } else {
-            this.$message.error(res.subMsg)
-          }
-        })
-      },
-      goBack() {
-        this.$router.push({ path: '/goodsBase/list' })
-      },
-      goEdit() {
-        this.type = 2
-      },
-      resetHandle() {
-        this.form = {
-          type: '01',
-          actNo: '',
-          name: '',
-          imgUrl: '',
-          brand: '耐克',
-          remark: '',
-          sizeList: []
-        }
-        this.options = []
-      },
-      submit() {
-        this.$refs['form'].validate(async(valid) => {
-          if (!valid) {
-            return false
-          }
-          if (!this.form.imgUrl) {
-            this.$message.error('上传图片')
-            return false
-          }
-          if (!this.form.sizeList.length) {
-            this.$message.error('请选择尺码')
-            return false
-          }
-          if (this.type == 2) {
-            goodsBaseApi.update(this.form).then(res => {
-              if (res.subCode === 1000) {
-                this.$message.success('操作成功')
-                this.goBack()
-              } else {
-                this.$message.error(res.subMsg)
-              }
-            })
-          } else {
-            goodsBaseApi.add(this.form).then(res => {
-              if (res.subCode === 1000) {
-                this.$message.success('操作成功')
-                // this.goBack()
-                this.$confirm('是否继续添加商品?', '提示', {
-                  confirmButtonText: '确定',
-                  cancelButtonText: '取消',
-                  type: 'warning'
-                }).then(() => {
-                  this.resetHandle()
-                }).catch(() => {
-                  this.goBack()
-                })
-              } else {
-                this.$message.error(res.subMsg)
-              }
-            })
-          }
-        })
-      }
+      })
     }
   }
+}
 </script>
 <style>
   h5 {
