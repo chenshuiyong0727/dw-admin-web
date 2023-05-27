@@ -425,6 +425,21 @@ export const constantRoutes = [
         name: 'dist',
         component: () => import('@/views/dictManage/dictList'),
         meta: { title: '字典管理' }
+      },
+      {
+        path: '/keyValue/list',
+        name: 'keyValue',
+        component: () => import('@/views/keyValue/list'),
+        meta: { title: '键值对' },
+        children: [
+          {
+            path: 'detail',
+            name: 'detail',
+            component: () => import('@/views/keyValue/detail'),
+            meta: { title: '详情', routerId: 3 },
+            hidden: true
+          }
+        ]
       }
     ]
   },
