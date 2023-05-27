@@ -89,7 +89,9 @@
           <el-row class="clearfix btm-distance" style="padding-left: 15px;">
             <div class="overview">
               <p><strong>库存数量</strong></p>
-              <p>{{inventoryData.inventory}} / {{inventoryData.oldInventory}} </p>
+              <p v-if="inventoryData.inventory && inventoryData.oldInventory">
+                {{inventoryData.inventory}} / {{inventoryData.oldInventory}}
+              </p>
             </div>
           </el-row>
           <el-row class="clearfix btm-distance">
@@ -119,7 +121,7 @@
           <el-row class="clearfix btm-distance">
             <div class="overview">
               <p><strong>利润比例</strong></p>
-              <p>{{(inventoryData.profits / inventoryData.inputPrice ) * 100 | numFilter}} %</p>
+              <p v-if="inventoryData.profits && inventoryData.inputPrice">{{(inventoryData.profits / inventoryData.inputPrice ) * 100 | numFilter}} %</p>
             </div>
           </el-row>
           <el-form ref="form">

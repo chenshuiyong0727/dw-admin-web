@@ -213,6 +213,11 @@
             v-if="scope.row.inventory > scope.row.galleryCount"
             @click="changeStatusDialog(scope.row)">上架
           </el-button>
+          <el-button
+            type="text"
+            v-else
+            @click="jumpOrder(scope.row.actNo)">订单
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -390,6 +395,13 @@
       changeStatusDialog(row) {
         this.sizeData = row
         this.isShowDialog = true
+      },
+      jumpOrder(actNo) {
+        if (!actNo) {
+          this.$message.error('没有选中数据')
+          return
+        }
+        this.$router.push({ path: '/goodsOrder/list', query: { actNo } })
       },
       closDialog() {
         this.isShowDialog = false

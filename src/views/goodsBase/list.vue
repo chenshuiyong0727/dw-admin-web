@@ -53,6 +53,19 @@
             </el-date-picker>
           </el-form-item>
         </el-col>
+        <el-col :span="6">
+          <el-form-item size="small">
+            <el-select v-model="queryParam.inventoryTo" @change="search">
+              <el-option label="是否有库存" value=""></el-option>
+              <el-option
+                v-for="item in inventoryToList"
+                :key="item.fieldValue"
+                :label="item.fieldName"
+                :value="+item.fieldValue">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
       </el-row>
 
       <el-row type="flex" justify="center"
@@ -93,6 +106,11 @@
           <img v-if="!scope.row.img && scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl" class="userPic" @click="avatarShow(fileUrl+scope.row.imgUrl)">
         </template>
       </el-table-column>
+      <el-table-column align="center" width="100" prop="inventoryInfo" label="sku数/原始库存/剩余库存">
+        <template slot-scope="scope">
+          <a style="color: #20a0ff" @click="jumpactNo(scope.row)"> {{ scope.row.inventoryInfo }}</a>
+        </template>
+      </el-table-column>
       <el-table-column align="center" prop="type" label="类型">
         <template slot-scope="scope">{{ scope.row.type | dictToDescTypeValue(20221108) }}</template>
       </el-table-column>
@@ -120,7 +138,7 @@
                      v-permission:[buttonPermissionArr.listBtn]="['查看']">查看
           </el-button>
           <!--	          <el-button type="text" @click="goDel(scope.row.id)" v-permission:[buttonPermissionArr.listBtn]="['删除']">删除</el-button>-->
-          <el-button type="text" @click="jumpactNo(scope.row)">查看库存</el-button>
+          <el-button v-if="scope.row.inventoryInfo" type="text" @click="jumpactNo(scope.row)">查看库存</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -165,15 +183,20 @@
           name: '',
           brand: '',
           remark: '',
+          inventoryTo: '',
           syncTimeFrom: '',
           syncTimeTo: '',
           pageSize: 10,
           pageNum: 1
         },
+        // inventoryToList: [
+        //   { fieldValue: 1, fieldName: '入过库' }, { fieldValue: 2, fieldName: '在售' }, { fieldValue: 3, fieldName: '售空' }
+        // ],
         pictureZoomShow: false,
         fileUrl: fileUrl,
         typeList: [],
         dataStatusList: [],
+        inventoryToList: [],
         selectedId: [],
         ids: [],
         tableData: [],
@@ -208,6 +231,7 @@
         let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
           localStorage.getItem('sysDictList')) : []
         this.typeList = sysDictList.filter(item => item.typeValue == 20221108)
+        this.inventoryToList = sysDictList.filter(item => item.typeValue == 43)
         this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
       },
       pageChangeHandle(currentPage) {

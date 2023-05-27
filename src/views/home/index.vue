@@ -311,7 +311,7 @@
     <div class="statistics-layout">
       <div class="layout-title">订单统计</div>
       <el-col :span="4">
-        <div style="padding: 20px">
+        <div @click="jumpSellList()"  style="padding: 20px;z-index: 20000">
           <div>
             <div style="color: #909399;font-size: 14px">本月订单总数</div>
             <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderData.successNum}}
@@ -357,7 +357,7 @@
           <!--            </div>-->
         </div>
       </el-col>
-      <el-row>
+      <el-row style="position: static">
         <el-col :span="20">
           <div style="padding: 10px;border-left:1px solid #DCDFE6">
             <el-button :type="mouthLl" @click="profitData(1)"  round>月利润</el-button>
