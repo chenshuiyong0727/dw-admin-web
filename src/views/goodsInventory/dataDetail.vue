@@ -50,19 +50,19 @@
             <el-input v-model.trim="queryParam.size" placeholder="尺码"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
-          <el-form-item size="small">
-            <el-date-picker
-              v-model="syncTime"
-              type="daterange"
-              range-separator="至"
-              start-placeholder="同步时间"
-              end-placeholder="同步时间"
-              @change="syncTimeChange"
-              value-format="yyyy-MM-dd">
-            </el-date-picker>
-          </el-form-item>
-        </el-col>
+<!--        <el-col :span="6">-->
+<!--          <el-form-item size="small">-->
+<!--            <el-date-picker-->
+<!--              v-model="syncTime"-->
+<!--              type="daterange"-->
+<!--              range-separator="至"-->
+<!--              start-placeholder="同步时间"-->
+<!--              end-placeholder="同步时间"-->
+<!--              @change="syncTimeChange"-->
+<!--              value-format="yyyy-MM-dd">-->
+<!--            </el-date-picker>-->
+<!--          </el-form-item>-->
+<!--        </el-col>-->
         <el-col :span="6">
           <el-form-item size="small">
             <el-date-picker
@@ -76,7 +76,7 @@
             </el-date-picker>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="8">
           <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-search"
                      @click="search">查询
           </el-button>
@@ -85,6 +85,9 @@
           </el-button>
           <el-button type="primary" size="small" style="margin-right: 10px"
                      @click="handleClick">移动仓库
+          </el-button>
+          <el-button v-if="today == 7" type="primary" size="small" style="margin-right: 10px ;background-color: #0fbe8f"
+                     @click="syncOldPriceToNew1">确认变价
           </el-button>
         </el-col>
       </el-row>
@@ -257,6 +260,7 @@
   import changeStatusDialog from './components/changeStatusDialog'
   import changeStatusDialog2 from './components/changeStatusDialog2'
   import buttomButton from '@/components/buttomButton'
+  import { goodsBaseApi } from '@/api/goodsBase'
 
   export default {
     components: {
@@ -268,6 +272,7 @@
       return {
         syncTime: '',
         sizeData: '',
+        today: '',
         imageZoom: '',
         isShowDialog: false,
         createTime: [],
@@ -295,14 +300,15 @@
           { fieldValue: 1, fieldName: '现货' }, { fieldValue: 0, fieldName: '售空' },
           { fieldValue: 2, fieldName: '未上架' }
         ],
-        todayList: [
-          { fieldValue: 1, fieldName: '今日更新' },
-          { fieldValue: 2, fieldName: '待上架商品' },
-          { fieldValue: 3, fieldName: '待移库商品' },
-          { fieldValue: 4, fieldName: '涨价商品' },
-          { fieldValue: 5, fieldName: '降价商品' },
-          { fieldValue: 6, fieldName: '售空商品' }
-        ],
+        // todayList: [
+        //   { fieldValue: 1, fieldName: '今日更新' },
+        //   { fieldValue: 2, fieldName: '待上架商品' },
+        //   { fieldValue: 3, fieldName: '待移库商品' },
+        //   { fieldValue: 4, fieldName: '涨价商品' },
+        //   { fieldValue: 5, fieldName: '降价商品' },
+        //   { fieldValue: 6, fieldName: '售空商品' }
+        // ],
+        todayList: [],
         requestParam: {
           ids: [],
           warehouseId: 2
@@ -323,6 +329,7 @@
     },
     created() {
       const { actNo, months, warehouseId,today } = this.$route.query
+      this.today = today
       this.queryParam.actNo = actNo
       this.queryParam.warehouseId = warehouseId
       this.queryParam.today = today
@@ -374,6 +381,14 @@
           temp.push(this.selectedId[i].id)
         }
         this.ids = temp
+      },
+      syncOldPriceToNew1() {
+        goodsBaseApi.syncOldPriceToNew().then(res => {
+          this.$message.success(res.subMsg)
+          if (res.subCode === 1000) {
+            this.refreshPage()
+          }
+        })
       },
       handleClick() {
         this.requestParam.ids = this.ids
@@ -488,6 +503,7 @@
           localStorage.getItem('sysDictList')) : []
         this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
         this.warehouseList = sysDictList.filter(item => item.typeValue == 40)
+        this.todayList = sysDictList.filter(item => item.typeValue == 44)
       },
       pageChangeHandle(currentPage) {
         this.queryParam.pageNum = currentPage

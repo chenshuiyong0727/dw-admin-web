@@ -25,7 +25,11 @@ export const goodsBaseApi = {
     method: 'put',
     data: body
   }),
-
+  // 获取数据列表
+  syncOldPriceToNew: () => request({
+    url: '/gw/op/v2/goodsBase/syncOldPriceToNew',
+    method: 'get'
+  }),
   // 获取详情
   getDetailById: (id) => request({
     url: '/gw/op/v1/goodsBase/' + id,
