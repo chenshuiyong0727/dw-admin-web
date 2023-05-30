@@ -30,23 +30,23 @@
 
     if (title) {
       let node = <span slot='title'>{(title)}</span>
-      if (title === '待发货商品') {
+      if (title === '待发货订单') {
         if (store.getters.count3) {
           node = <div class='p-msg'><span slot='title'>{(title)}</span><i class='msg'>{(store.getters.count3)}</i></div>
         }
-      } else if (title === '已发货商品'){
+      } else if (title === '已发货订单'){
         if (store.getters.count4) {
           node = <div class='p-msg'><span slot='title'>{(title)}</span><i class='msg'>{(store.getters.count4)}</i></div>
         }
-      } else if (title === '已揽件商品'){
+      } else if (title === '已揽件订单'){
         if (store.getters.count5) {
           node = <div class='p-msg'><span slot='title'>{(title)}</span><i class='msg'>{(store.getters.count5)}</i></div>
         }
-      } else if (title === '已收货商品'){
+      } else if (title === '已收货订单'){
         if (store.getters.count6) {
           node = <div class='p-msg'><span slot='title'>{(title)}</span><i class='msg'>{(store.getters.count6)}</i></div>
         }
-      } else if (title === '瑕疵商品'){
+      } else if (title === '瑕疵订单'){
         if (store.getters.count8) {
           node = <div class='p-msg'><span slot='title'>{(title)}</span><i class='msg'>{(store.getters.count8)}</i></div>
         }
