@@ -111,13 +111,12 @@ export default {
       requestParam: {
         id: '',
         status: 8,
-        reason: ''
+        reason: '色差'
       }
     }
   },
   mounted() {
     this.requestParam.id = this.orderData1.id
-    this.requestParam.reason = this.orderData1.reason
   },
   methods: {
     avatarShow(e) {
