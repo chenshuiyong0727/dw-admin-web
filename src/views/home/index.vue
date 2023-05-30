@@ -59,13 +59,22 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
+<!--          <el-col :span="8">-->
+<!--            <div class="un-handle-item" @click="goDataDetailToday(1)">-->
+<!--              <span class="font-medium">今日更新</span>-->
+<!--              <span-->
+<!--                style="float: right"-->
+<!--                :class="storeData.successNum > 0 ? 'color-danger' : ''"-->
+<!--              >({{storeData.successNum}})</span>-->
+<!--            </div>-->
+<!--          </el-col>-->
           <el-col :span="8">
-            <div class="un-handle-item" @click="goDataDetailToday(1)">
-              <span class="font-medium">今日更新</span>
+            <div class="un-handle-item" @click="goDataDetailToday(7)">
+              <span class="font-medium">变价商品</span>
               <span
                 style="float: right"
-                :class="storeData.successNum > 0 ? 'color-danger' : ''"
-              >({{storeData.successNum}})</span>
+                :class="storeData.upCout > 0 ? 'color-danger' : ''"
+              >({{storeData.upCout}})</span>
             </div>
           </el-col>
           <el-col :span="8">
@@ -87,17 +96,17 @@
             </div>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
-          <el-col :span="8">
-            <div class="un-handle-item" @click="goDataDetailToday(7)">
-              <span class="font-medium">变价商品</span>
-              <span
-                style="float: right"
-                :class="storeData.upCout > 0 ? 'color-danger' : ''"
-              >({{storeData.upCout}})</span>
-            </div>
-          </el-col>
-        </el-row>
+<!--        <el-row :gutter="20">-->
+<!--          <el-col :span="8">-->
+<!--            <div class="un-handle-item" @click="goDataDetailToday(7)">-->
+<!--              <span class="font-medium">变价商品</span>-->
+<!--              <span-->
+<!--                style="float: right"-->
+<!--                :class="storeData.upCout > 0 ? 'color-danger' : ''"-->
+<!--              >({{storeData.upCout}})</span>-->
+<!--            </div>-->
+<!--          </el-col>-->
+<!--        </el-row>-->
       </div>
     </div>
     <div class="address-layout">
@@ -369,7 +378,7 @@
               v-model="createTime"
               :type="dateType"
               align="right"
-              value-format="yyyy-MM-dd"
+              :value-format="valueFormat"
               unlink-panels
               range-separator="至"
               start-placeholder="开始日期"
@@ -405,6 +414,8 @@ export default {
         createTimeTo: ''
       },
       dateType: 'monthrange',
+      valueFormat: 'yyyy-MM',
+      // valueFormat: 'yyyy-MM-dd',
       dayLl: 'default',
       mouthLl: 'primary',
       createTime: '',
@@ -459,10 +470,12 @@ export default {
         this.mouthLl = 'primary'
         this.dayLl = 'default'
         this.dateType = 'monthrange'
+        this.valueFormat = 'yyyy-MM'
       } else {
         this.mouthLl = 'default'
         this.dayLl = 'primary'
         this.dateType = 'daterange'
+        this.valueFormat = 'yyyy-MM-dd'
       }
       this.getData1()
     },

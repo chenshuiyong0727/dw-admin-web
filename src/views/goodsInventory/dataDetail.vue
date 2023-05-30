@@ -133,7 +133,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="difference" label="加入后差额" sortable>
+      <el-table-column align="center" prop="difference" label="变更差额" sortable>
         <template  slot-scope="scope">
           <strong v-if="scope.row.thisTimePrice" :class="scope.row.difference > 0 ? 'color-danger' : 'color-success'">{{ scope.row.difference}}</strong>
           <STRONG class="color-danger" v-else>售空</STRONG>
