@@ -196,7 +196,7 @@
       <!--      <el-table-column align="center" prop="id" label="订单主键"/>-->
       <el-table-column align="center" prop="orderNo" label="订单号"/>
       <el-table-column align="center" label="图片" width="120">
-<template slot-scope="scope">
+        <template slot-scope="scope">
           <img v-if="scope.row.img" :src="scope.row.img" class="userPic"
                @click="avatarShow(scope.row.img)">
           <img v-if="!scope.row.img && scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl"
@@ -254,7 +254,7 @@
           <div>
             <el-button type="text" @click="changeStatusDialog(scope.row)">成功</el-button>
             <!--            <el-button type="text" @click="changeStatus(scope.row,7)" >成功</el-button>-->
-            <el-button type="text" @click="changeStatus(scope.row,8)">瑕疵</el-button>
+            <el-button type="text" @click="changeStatusDialog1(scope.row)">瑕疵</el-button>
           </div>
         </template>
       </el-table-column>
@@ -277,220 +277,273 @@
       </div>
     </div>
     <order-change-status-dialog
-      v-if="isShowDialog "
+      v-if="isShowDialog"
       :orderData="orderData"
       @refreshPage="refreshPage"
       @closDialog="closDialog"/>
+    <order-defect-dialog
+      v-if="isShowDialog1"
+      :orderData1="orderData1"
+      @refreshPage="refreshPage1"
+      @closDialog1="closDialog1"/>
   </three-level-route>
 </template>
 
 <script>
-  import ThreeLevelRoute from '@/components/ThreeLevelRoute'
-  import { goodsOrderApi } from '@/api/goodsOrder'
-  import buttomButton from '@/components/buttomButton'
-  import { permissionMixin } from '@/mixins/permissionMixin'
-  import { getExport } from '@/api/exportFile'
-  import orderChangeStatusDialog from './components/orderChangeStatusDialog'
+import ThreeLevelRoute from '@/components/ThreeLevelRoute'
+import { goodsOrderApi } from '@/api/goodsOrder'
+import buttomButton from '@/components/buttomButton'
+import { permissionMixin } from '@/mixins/permissionMixin'
+import { getExport } from '@/api/exportFile'
+import orderChangeStatusDialog from './components/orderChangeStatusDialog'
+import orderDefectDialog from './components/orderDefectDialog'
 
-  export default {
-    mixins: [permissionMixin],
-    components: {
-      buttomButton,
-      orderChangeStatusDialog,
-      ThreeLevelRoute
+export default {
+  mixins: [permissionMixin],
+  components: {
+    buttomButton,
+    orderChangeStatusDialog,
+    orderDefectDialog,
+    ThreeLevelRoute
+  },
+  data() {
+    return {
+      orderData: '',
+      isShowDialog: false,
+      orderData1: '',
+      isShowDialog1: false,
+      pictureZoomShow: false,
+      imageZoom: '',
+      fileUrl: fileUrl,
+      queryParam: {
+        id: '',
+        orderNo: '',
+        keyword: '',
+        size: '',
+        inventoryId: '',
+        status: 6,
+        shelvesPriceFrom: '',
+        shelvesPriceTo: '',
+        freightFrom: '',
+        freightTo: '',
+        poundageFrom: '',
+        poundageTo: '',
+        theirPriceFrom: '',
+        theirPriceTo: '',
+        addressId: '',
+        waybillNo: '',
+        createTimeFrom: '',
+        createTimeTo: '',
+        updateTimeFrom: '',
+        updateTimeTo: '',
+        sellTimeFrom: '',
+        sellTimeTo: '',
+        successTimeFrom: '',
+        successTimeTo: '',
+        pageSize: 10,
+        pageNum: 1
+      },
+      addressList: [],
+      statusList: [],
+      dataStatusList: [],
+      sellTime: '',
+      successTime: '',
+      createTime: '',
+      updateTime: '',
+      selectedId: [],
+      ids: [],
+      tableData: [],
+      totalCount: 1
+    }
+  },
+  mounted() {
+    this.getPage()
+    this.listSysDict()
+  },
+  updated () {
+    this.$nextTick(() => {
+      this.$refs['queryTable'].doLayout();
+    })
+  },
+  methods: {
+    getSummaries(param) {
+      const { columns, data } = param;
+      const sums = [];
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = '合计';
+          return;
+        }
+        if (column.property == 'id'
+          || column.property == 'size'
+          || column.property == 'status'
+          || column.property == 'addressId'
+          || column.property == 'waybillNo'
+          || column.property == 'successTime'
+          || column.property == 'sellTime'
+        ){
+          return
+        }
+        const values = data.map(item => Number(item[column.property]));
+        if (!values.every(value => isNaN(value))) {
+          sums[index] = values.reduce((prev, curr) => {
+            const value = Number(curr);
+            if (!isNaN(value)) {
+              return prev + curr;
+            } else {
+              return prev;
+            }
+          }, 0);
+          sums[index] += '';
+        } else {
+          sums[index] = '';
+        }
+      });
+      return sums;
     },
-    data() {
-      return {
-        orderData: '',
-        isShowDialog: false,
-        pictureZoomShow: false,
-        imageZoom: '',
-        fileUrl: fileUrl,
-        queryParam: {
-          id: '',
-          orderNo: '',
-          keyword: '',
-          size: '',
-          inventoryId: '',
-          status: 6,
-          shelvesPriceFrom: '',
-          shelvesPriceTo: '',
-          freightFrom: '',
-          freightTo: '',
-          poundageFrom: '',
-          poundageTo: '',
-          theirPriceFrom: '',
-          theirPriceTo: '',
-          addressId: '',
-          waybillNo: '',
-          createTimeFrom: '',
-          createTimeTo: '',
-          updateTimeFrom: '',
-          updateTimeTo: '',
-          sellTimeFrom: '',
-          sellTimeTo: '',
-          successTimeFrom: '',
-          successTimeTo: '',
-          pageSize: 10,
-          pageNum: 1
-        },
-        addressList: [],
-        statusList: [],
-        dataStatusList: [],
-        sellTime: '',
-        successTime: '',
-        createTime: '',
-        updateTime: '',
-        selectedId: [],
-        ids: [],
-        tableData: [],
-        totalCount: 1
-      }
+    changeStatusDialog(row) {
+      this.orderData = row
+      this.isShowDialog = true
     },
-    mounted() {
+    closDialog() {
+      this.isShowDialog = false
+    },
+    refreshPage() {
+      this.isShowDialog = false
       this.getPage()
-      this.listSysDict()
     },
-    updated () {
-      this.$nextTick(() => {
-        this.$refs['queryTable'].doLayout();
+    changeStatusDialog1(row) {
+      this.orderData1 = row
+      this.isShowDialog1 = true
+    },
+    closDialog1() {
+      this.isShowDialog1 = false
+      this.getPage()
+    },
+    refreshPage1() {
+      this.isShowDialog1 = false
+      this.getPage()
+    },
+    changeStatus(row, status) {
+      row.status = status
+      row.deliveryDeadlineTime = ''
+      goodsOrderApi.sellGoods(row).then(res => {
+        if (res.subCode === 1000) {
+          this.$message.success(res.subMsg)
+          this.$store.dispatch('apply/orderInfo')
+        } else {
+          this.$message.error(res.subMsg)
+        }
+        this.getPage()
       })
     },
-    methods: {
-      getSummaries(param) {
-        const { columns, data } = param;
-        const sums = [];
-        columns.forEach((column, index) => {
-          if (index === 0) {
-            sums[index] = '合计';
-            return;
-          }
-          if (column.property == 'id'
-            || column.property == 'size'
-            || column.property == 'status'
-            || column.property == 'addressId'
-            || column.property == 'waybillNo'
-            || column.property == 'successTime'
-            || column.property == 'sellTime'
-          ){
-            return
-          }
-          const values = data.map(item => Number(item[column.property]));
-          if (!values.every(value => isNaN(value))) {
-            sums[index] = values.reduce((prev, curr) => {
-              const value = Number(curr);
-              if (!isNaN(value)) {
-                return prev + curr;
-              } else {
-                return prev;
-              }
-            }, 0);
-            sums[index] += '';
-          } else {
-            sums[index] = '';
-          }
-        });
-        return sums;
-      },
-      changeStatusDialog(row) {
-        this.orderData = row
-        this.isShowDialog = true
-      },
-      closDialog() {
-        this.isShowDialog = false
-      },
-      refreshPage() {
-        this.isShowDialog = false
-        this.getPage()
-      },
-      changeStatus(row, status) {
-        row.status = status
-        row.deliveryDeadlineTime = ''
-        goodsOrderApi.sellGoods(row).then(res => {
-          if (res.subCode === 1000) {
-            this.$message.success(res.subMsg)
-            this.$store.dispatch('apply/orderInfo')
-          } else {
-            this.$message.error(res.subMsg)
-          }
+    avatarShow(e) {
+      this.imageZoom = e
+      this.pictureZoomShow = true
+    },
+    successTimeChange() {
+      if (this.successTime) {
+        this.queryParam.successTimeFrom = this.successTime[0]
+        this.queryParam.successTimeTo = this.successTime[1]
+      } else {
+        this.queryParam.successTimeFrom = null
+        this.queryParam.successTimeTo = null
+      }
+    },
+    sellTimeChange() {
+      if (this.sellTime) {
+        this.queryParam.sellTimeFrom = this.sellTime[0]
+        this.queryParam.sellTimeTo = this.sellTime[1]
+      } else {
+        this.queryParam.sellTimeFrom = null
+        this.queryParam.sellTimeTo = null
+      }
+    },
+    createTimeChange() {
+      if (this.createTime) {
+        this.queryParam.createTimeFrom = this.createTime[0]
+        this.queryParam.createTimeTo = this.createTime[1]
+      } else {
+        this.queryParam.createTimeFrom = null
+        this.queryParam.createTimeTo = null
+      }
+    },
+    updateTimeChange() {
+      if (this.updateTime) {
+        this.queryParam.updateTimeFrom = this.updateTime[0]
+        this.queryParam.updateTimeTo = this.updateTime[1]
+      } else {
+        this.queryParam.updateTimeFrom = null
+        this.queryParam.updateTimeTo = null
+      }
+    },
+    getPage() {
+      goodsOrderApi.page(this.queryParam).then(res => {
+        if (res.subCode === 1000) {
+          this.tableData = res.data ? res.data.list : []
+          this.totalCount = res.data ? res.data.pageInfo.totalCount : 0
+        } else {
+          this.$message.error(res.subMsg)
+        }
+      })
+    },
+    listSysDict() {
+      let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
+        localStorage.getItem('sysDictList')) : []
+      this.addressList = sysDictList.filter(item => item.typeValue == 38)
+      this.statusList = sysDictList.filter(item => item.typeValue == 37)
+      this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
+    },
+    pageChangeHandle(currentPage) {
+      this.queryParam.pageNum = currentPage
+      this.getPage()
+    },
+    reSearchHandle(size) {
+      this.queryParam.pageSize = size
+      this.queryParam.pageNum = 1
+      this.getPage()
+    },
+    goDetail(id, type) {
+      // *** 根据真实路径配置地址
+      this.$router.push({ path: '/goodsOrder/list/detail', query: { id, type } })
+    },
+    jumpactNo(actNo) {
+      this.$router.push({ path: '/goodsBase/goodsInventory', query: { actNo } })
+    },
+    goDel(id) {
+      goodsOrderApi.delById(id).then(res => {
+        if (res.subCode === 1000) {
+          this.$message.success(res.subMsg)
           this.getPage()
-        })
-      },
-      avatarShow(e) {
-        this.imageZoom = e
-        this.pictureZoomShow = true
-      },
-      successTimeChange() {
-        if (this.successTime) {
-          this.queryParam.successTimeFrom = this.successTime[0]
-          this.queryParam.successTimeTo = this.successTime[1]
         } else {
-          this.queryParam.successTimeFrom = null
-          this.queryParam.successTimeTo = null
+          this.$message.error(res.subMsg)
         }
-      },
-      sellTimeChange() {
-        if (this.sellTime) {
-          this.queryParam.sellTimeFrom = this.sellTime[0]
-          this.queryParam.sellTimeTo = this.sellTime[1]
-        } else {
-          this.queryParam.sellTimeFrom = null
-          this.queryParam.sellTimeTo = null
-        }
-      },
-      createTimeChange() {
-        if (this.createTime) {
-          this.queryParam.createTimeFrom = this.createTime[0]
-          this.queryParam.createTimeTo = this.createTime[1]
-        } else {
-          this.queryParam.createTimeFrom = null
-          this.queryParam.createTimeTo = null
-        }
-      },
-      updateTimeChange() {
-        if (this.updateTime) {
-          this.queryParam.updateTimeFrom = this.updateTime[0]
-          this.queryParam.updateTimeTo = this.updateTime[1]
-        } else {
-          this.queryParam.updateTimeFrom = null
-          this.queryParam.updateTimeTo = null
-        }
-      },
-      getPage() {
-        goodsOrderApi.page(this.queryParam).then(res => {
-          if (res.subCode === 1000) {
-            this.tableData = res.data ? res.data.list : []
-            this.totalCount = res.data ? res.data.pageInfo.totalCount : 0
-          } else {
-            this.$message.error(res.subMsg)
-          }
-        })
-      },
-      listSysDict() {
-        let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
-          localStorage.getItem('sysDictList')) : []
-        this.addressList = sysDictList.filter(item => item.typeValue == 38)
-        this.statusList = sysDictList.filter(item => item.typeValue == 37)
-        this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
-      },
-      pageChangeHandle(currentPage) {
-        this.queryParam.pageNum = currentPage
-        this.getPage()
-      },
-      reSearchHandle(size) {
-        this.queryParam.pageSize = size
-        this.queryParam.pageNum = 1
-        this.getPage()
-      },
-      goDetail(id, type) {
-        // *** 根据真实路径配置地址
-        this.$router.push({ path: '/goodsOrder/list/detail', query: { id, type } })
-      },
-      jumpactNo(actNo) {
-        this.$router.push({ path: '/goodsBase/goodsInventory', query: { actNo } })
-      },
-      goDel(id) {
-        goodsOrderApi.delById(id).then(res => {
+      })
+    },
+
+    search() {
+      this.queryParam.pageNum = 1
+      this.getPage()
+    },
+    selected(val) {
+      this.selectedId = val
+      let temp = []
+      for (let i = 0; i < this.selectedId.length; i++) {
+        temp.push(this.selectedId[i].id)
+      }
+      this.ids = temp
+    },
+    batchdelete() {
+      if (this.ids.length == 0) {
+        this.$alert('没有选中数据')
+        return
+      }
+      this.$confirm('是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        goodsOrderApi.batchdelete(this.ids).then(res => {
           if (res.subCode === 1000) {
             this.$message.success(res.subMsg)
             this.getPage()
@@ -498,89 +551,57 @@
             this.$message.error(res.subMsg)
           }
         })
-      },
-
-      search() {
-        this.queryParam.pageNum = 1
-        this.getPage()
-      },
-      selected(val) {
-        this.selectedId = val
-        let temp = []
-        for (let i = 0; i < this.selectedId.length; i++) {
-          temp.push(this.selectedId[i].id)
+      })
+    },
+    exportHandle() {
+      let data = {}
+      if (this.ids.length > 0) {
+        data.ids = this.ids
+      } else {
+        this.$message.success('未勾选数据，导出符合条件的所有数据')
+        data = {
+          ...this.queryParam
         }
-        this.ids = temp
-      },
-      batchdelete() {
-        if (this.ids.length == 0) {
-          this.$alert('没有选中数据')
-          return
-        }
-        this.$confirm('是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          goodsOrderApi.batchdelete(this.ids).then(res => {
-            if (res.subCode === 1000) {
-              this.$message.success(res.subMsg)
-              this.getPage()
-            } else {
-              this.$message.error(res.subMsg)
-            }
-          })
-        })
-      },
-      exportHandle() {
-        let data = {}
-        if (this.ids.length > 0) {
-          data.ids = this.ids
-        } else {
-          this.$message.success('未勾选数据，导出符合条件的所有数据')
-          data = {
-            ...this.queryParam
-          }
-        }
-        getExport('/gw/op/v1/goodsOrder/export', data, 'post', '商品订单信息列表').then(() => {
-          this.$emit('refresh')
-        })
-      },
-      resetHandle() {
-        this.queryParam = {
-          id: '',
-          orderNo: '',
-          keyword: '',
-          size: '',
-          inventoryId: '',
-          status: 6,
-          shelvesPriceFrom: '',
-          shelvesPriceTo: '',
-          freightFrom: '',
-          freightTo: '',
-          poundageFrom: '',
-          poundageTo: '',
-          theirPriceFrom: '',
-          theirPriceTo: '',
-          addressId: '',
-          waybillNo: '',
-          createTimeFrom: '',
-          createTimeTo: '',
-          updateTimeFrom: '',
-          updateTimeTo: '',
-          sellTimeFrom: '',
-          sellTimeTo: '',
-          successTimeFrom: '',
-          successTimeTo: '',
-          pageSize: 10,
-          pageNum: 1
-        }
-        this.createTime = ''
-        this.updateTime = ''
-        this.sellTime = ''
-        this.successTime = ''
-        this.getPage()
       }
+      getExport('/gw/op/v1/goodsOrder/export', data, 'post', '商品订单信息列表').then(() => {
+        this.$emit('refresh')
+      })
+    },
+    resetHandle() {
+      this.queryParam = {
+        id: '',
+        orderNo: '',
+        keyword: '',
+        size: '',
+        inventoryId: '',
+        status: 6,
+        shelvesPriceFrom: '',
+        shelvesPriceTo: '',
+        freightFrom: '',
+        freightTo: '',
+        poundageFrom: '',
+        poundageTo: '',
+        theirPriceFrom: '',
+        theirPriceTo: '',
+        addressId: '',
+        waybillNo: '',
+        createTimeFrom: '',
+        createTimeTo: '',
+        updateTimeFrom: '',
+        updateTimeTo: '',
+        sellTimeFrom: '',
+        sellTimeTo: '',
+        successTimeFrom: '',
+        successTimeTo: '',
+        pageSize: 10,
+        pageNum: 1
+      }
+      this.createTime = ''
+      this.updateTime = ''
+      this.sellTime = ''
+      this.successTime = ''
+      this.getPage()
     }
   }
+}
 </script>

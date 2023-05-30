@@ -398,9 +398,10 @@
       }
     },
     created() {
-      const { actNo , months } = this.$route.query
+      const { actNo , months , orderNo } = this.$route.query
       this.queryParam.keyword = actNo
-      if (this.queryParam.keyword) {
+      this.queryParam.orderNo = orderNo
+      if (this.queryParam.keyword || this.queryParam.orderNo) {
         this.getPage()
       }
       this.months = months
@@ -506,6 +507,7 @@
       changeStatus(row) {
         goodsOrderApi.changeStatus(row).then(res => {
           if (res.subCode === 1000) {
+            this.$store.dispatch('apply/orderInfo')
             this.$message.success(res.subMsg)
           } else {
             this.$message.error(res.subMsg)
@@ -612,6 +614,7 @@
         }).then(() => {
           goodsOrderApi.delById(id).then(res => {
             if (res.subCode === 1000) {
+              this.$store.dispatch('apply/orderInfo')
               this.$message.success(res.subMsg)
               this.getPage()
             } else {

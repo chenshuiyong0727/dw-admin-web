@@ -4,6 +4,11 @@
       <el-row class="query-form">
         <el-col :span="6">
           <el-form-item size="small">
+            <el-input v-model.trim="queryParam.keyword" placeholder="关键词（货号、商品名）"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item size="small">
             <el-input placeholder="原因" v-model.trim="queryParam.reason"></el-input>
           </el-form-item>
         </el-col>
@@ -31,16 +36,6 @@
                 v-for="item in typeList">
               </el-option>
             </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item size="small">
-            <el-input placeholder="货号" v-model.trim="queryParam.actNo"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item size="small">
-            <el-input placeholder="商品名称" v-model.trim="queryParam.goodsName"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -86,9 +81,22 @@
             </div>
           </el-form-item>
         </el-col>
+<!--        <el-col :span="6">-->
+<!--          <el-form-item size="small">-->
+<!--            <el-input placeholder="状态" v-model.trim="queryParam.status"></el-input>-->
+<!--          </el-form-item>-->
+<!--        </el-col>-->
         <el-col :span="6">
           <el-form-item size="small">
-            <el-input placeholder="状态" v-model.trim="queryParam.status"></el-input>
+            <el-select v-model="queryParam.status">
+              <el-option label="类型" value=""></el-option>
+              <el-option
+                :key="item.fieldValue"
+                :label="item.fieldName"
+                :value="+item.fieldValue"
+                v-for="item in statusList">
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -102,18 +110,18 @@
                    style="margin-right: 10px"
                    type="primary" v-permission:[buttonPermissionArr.searchBtn]="['查询']">重置
         </el-button>
-        <el-button @click="goDetail(null,3)" icon="el-icon-plus" size="small"
-                   style="margin-right: 10px"
-                   type="primary" v-permission:[buttonPermissionArr.searchBtn]="['新增']">新增
-        </el-button>
-        <el-button @click="batchdelete" icon="el-icon-delete" size="small"
-                   style="margin-right: 10px"
-                   type="danger" v-permission:[buttonPermissionArr.searchBtn]="['批量删除']">批量删除
-        </el-button>
-        <el-button @click="exportHandle" icon="el-icon-download" size="small"
-                   style="margin-right: 10px"
-                   type="primary" v-permission:[buttonPermissionArr.searchBtn]="['导出']">导出
-        </el-button>
+<!--        <el-button @click="goDetail(null,3)" icon="el-icon-plus" size="small"-->
+<!--                   style="margin-right: 10px"-->
+<!--                   type="primary" v-permission:[buttonPermissionArr.searchBtn]="['新增']">新增-->
+<!--        </el-button>-->
+<!--        <el-button @click="batchdelete" icon="el-icon-delete" size="small"-->
+<!--                   style="margin-right: 10px"-->
+<!--                   type="danger" v-permission:[buttonPermissionArr.searchBtn]="['批量删除']">批量删除-->
+<!--        </el-button>-->
+<!--        <el-button @click="exportHandle" icon="el-icon-download" size="small"-->
+<!--                   style="margin-right: 10px"-->
+<!--                   type="primary" v-permission:[buttonPermissionArr.searchBtn]="['导出']">导出-->
+<!--        </el-button>-->
       </el-row>
     </el-form>
 
@@ -122,6 +130,38 @@
 
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column align="center" label="序号" type="index" width="50"></el-table-column>
+<!--      <el-table-column align="center" label="货号" prop="actNo"/>-->
+<!--      <el-table-column align="center" label="商品名称" prop="goodsName"/>-->
+<!--      <el-table-column align="center" label="图片" prop="img"/>-->
+      <el-table-column align="center" label="图片" width="120">
+        <template slot-scope="scope">
+          <img v-if="scope.row.img" :src="scope.row.img" class="userPic"
+               @click="avatarShow(scope.row.img)">
+          <img v-if="!scope.row.img && scope.row.imgUrl" :src="fileUrl+scope.row.imgUrl"
+               class="userPic" @click="avatarShow(fileUrl+scope.row.imgUrl)">
+        </template>
+      </el-table-column>
+      <el-table-column align="center" width="100" prop="actNo" label="货号">
+        <template slot-scope="scope">
+          <a style="color: #20a0ff" @click="jumpactNo(scope.row.actNo)"> {{ scope.row.actNo }}</a>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" width="120" prop="goodsName" label="商品名称">
+        <template slot-scope="scope">
+          <a style="color: #20a0ff" @click="jumpactNo(scope.row.actNo)"> {{ scope.row.goodsName }}</a>
+        </template>
+      </el-table-column>
+      <el-table-column align="center"  prop="orderNo" label="订单号">
+        <template slot-scope="scope">
+          <a style="color: #20a0ff" @click="jumpactOrder(scope.row.orderNo)"> {{ scope.row.orderNo }}</a>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="状态" prop="status">
+        <template slot-scope="scope">
+          <strong :class="scope.row.status == 1 ? 'color-danger' : 'color-success'">{{ scope.row.status | dictToDescTypeValue(45) }}
+          </strong>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="原因" prop="reason"/>
       <el-table-column align="center" label="创建时间" prop="createTime">
         <template slot-scope="scope">{{scope.row.createTime | formateTime('{y}-{m}-{d} {h}:{i}')
@@ -131,35 +171,33 @@
       <el-table-column align="center" label="类型" prop="type">
         <template slot-scope="scope">{{ scope.row.type | dictToDescTypeValue(20221108) }}</template>
       </el-table-column>
-      <el-table-column align="center" label="货号" prop="actNo"/>
-      <el-table-column align="center" label="商品名称" prop="goodsName"/>
-      <el-table-column align="center" label="图片地址-得物" prop="img"/>
       <el-table-column align="center" label="入库价" prop="price"/>
-      <el-table-column align="center" label="订单号" prop="orderNo"/>
+<!--      <el-table-column align="center" label="订单号" prop="orderNo"/>-->
+
       <el-table-column align="center" label="原售价" prop="shelvesPrice"/>
-      <el-table-column align="center" label="状态" prop="status"/>
+<!--      <el-table-column align="center" label="状态" prop="status"/>-->
       <el-table-column align="center" fixed="right" label="操作"
                        v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length"
                        width="130">
         <template slot-scope="scope">
-          <div>
-            <el-button @click="goDetail(scope.row.id , 1)" type="text"
-                       v-permission:[buttonPermissionArr.listBtn]="['查看']">查看
-            </el-button>
-            <el-button @click="goDetail(scope.row.id , 2)" type="text"
-                       v-permission:[buttonPermissionArr.listBtn]="['编辑']">编辑
-            </el-button>
-          </div>
-          <el-button @click="goDel(scope.row.id)" type="text"
-                     v-permission:[buttonPermissionArr.listBtn]="['删除']">删除
-          </el-button>
-          <el-button @click="changeStatus(scope.row.id, 0)" type="text"
-                     v-if="scope.row.dataStatus == 1"
-                     v-permission:[buttonPermissionArr.listBtn]="['更新状态']">停用
+<!--          <div>-->
+<!--&lt;!&ndash;            <el-button @click="goDetail(scope.row.id , 1)" type="text"&ndash;&gt;-->
+<!--&lt;!&ndash;                       v-permission:[buttonPermissionArr.listBtn]="['查看']">查看&ndash;&gt;-->
+<!--&lt;!&ndash;            </el-button>&ndash;&gt;-->
+<!--            <el-button @click="goDetail(scope.row.id , 2)" type="text"-->
+<!--                       v-permission:[buttonPermissionArr.listBtn]="['编辑']">编辑-->
+<!--            </el-button>-->
+<!--          </div>-->
+<!--          <el-button @click="goDel(scope.row.id)" type="text"-->
+<!--                     v-permission:[buttonPermissionArr.listBtn]="['删除']">删除-->
+<!--          </el-button>-->
+          <el-button @click="changeStatus(scope.row.id, 2)" type="text"
+                     v-if="scope.row.status == 1"
+                     v-permission:[buttonPermissionArr.listBtn]="['更新状态']">已处理
           </el-button>
           <el-button @click="changeStatus(scope.row.id, 1)" type="text"
-                     v-if="scope.row.dataStatus == 0"
-                     v-permission:[buttonPermissionArr.listBtn]="['更新状态']">启用
+                     v-if="scope.row.status == 2"
+                     v-permission:[buttonPermissionArr.listBtn]="['更新状态']">瑕疵
           </el-button>
         </template>
       </el-table-column>
@@ -175,6 +213,11 @@
         layout="total, sizes, prev, pager, next, jumper">
       </el-pagination>
     </el-row>
+    <div class="popContainer" v-if="pictureZoomShow" @click="pictureZoomShow = false">
+      <div class="imageShow">
+        <img :src="imageZoom" alt="" width="100%" >
+      </div>
+    </div>
   </three-level-route>
 </template>
 
@@ -191,13 +234,14 @@ export default {
   },
   data() {
     return {
+      pictureZoomShow: false,
+      imageZoom: '',
+      fileUrl: fileUrl,
       queryParam: {
         reason: '',
         createTimeFrom: '',
         createTimeTo: '',
-        type: '',
-        actNo: '',
-        goodsName: '',
+        keyword: '',
         priceFrom: '',
         priceTo: '',
         orderNo: '',
@@ -222,6 +266,16 @@ export default {
     this.listSysDict()
   },
   methods: {
+    avatarShow(e) {
+      this.imageZoom = e
+      this.pictureZoomShow = true
+    },
+    jumpactNo(actNo) {
+      this.$router.push({ path: '/goodsBase/goodsInventory', query: { actNo } })
+    },
+    jumpactOrder(orderNo) {
+      this.$router.push({ path: '/goodsOrder/list', query: { orderNo } })
+    },
     createTimeChange() {
       if (this.createTime) {
         this.queryParam.createTimeFrom = this.createTime[0]
@@ -259,7 +313,7 @@ export default {
     },
     goDetail(id, type) {
       // *** 根据真实路径配置地址
-      this.$router.push({ path: '/goodsDefects/list/detail', query: { id, type } })
+      this.$router.push({ path: '/goodsBase/goodsDefects/detail', query: { id, type } })
     },
     goDel(id) {
       goodsDefectsApi.delById(id).then(res => {
@@ -272,13 +326,19 @@ export default {
       })
     },
     changeStatus(id, dataStatus) {
-      goodsDefectsApi.changeStatus({ id, dataStatus }).then(res => {
-        if (res.subCode === 1000) {
-          this.$message.success(res.subMsg)
-        } else {
-          this.$message.error(res.subMsg)
-        }
-        this.getPage()
+      this.$confirm('是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        goodsDefectsApi.changeStatus({ id, dataStatus }).then(res => {
+          if (res.subCode === 1000) {
+            this.$message.success(res.subMsg)
+          } else {
+            this.$message.error(res.subMsg)
+          }
+          this.getPage()
+        })
       })
     },
     search() {
@@ -332,8 +392,7 @@ export default {
         reason: '',
         createTimeFrom: '',
         createTimeTo: '',
-        type: '',
-        actNo: '',
+        keyword: '',
         goodsName: '',
         priceFrom: '',
         priceTo: '',

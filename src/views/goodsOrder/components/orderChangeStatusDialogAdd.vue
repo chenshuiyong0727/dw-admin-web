@@ -131,6 +131,7 @@
       confirmHandle() {
         goodsOrderApi.update(this.requestParam).then(res => {
           if (res.subCode === 1000) {
+            this.$store.dispatch('apply/orderInfo')
             this.$message({
               message: '操作成功，即将返回',
               type: 'success'

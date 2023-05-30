@@ -185,6 +185,7 @@
           if (this.type == 2) {
             goodsOrderApi.update(this.form).then(res => {
               if (res.subCode === 1000) {
+                this.$store.dispatch('apply/orderInfo')
                 this.$message.success('操作成功')
                 this.goBack()
               } else {

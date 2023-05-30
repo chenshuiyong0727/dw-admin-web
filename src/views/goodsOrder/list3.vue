@@ -374,6 +374,7 @@
       changeStatus(row) {
         goodsOrderApi.changeStatus(row).then(res => {
           if (res.subCode === 1000) {
+            this.$store.dispatch('apply/orderInfo')
             this.$message.success(res.subMsg)
           } else {
             this.$message.error(res.subMsg)

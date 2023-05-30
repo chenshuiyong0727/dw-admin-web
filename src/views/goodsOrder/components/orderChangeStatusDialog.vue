@@ -8,8 +8,8 @@
     <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><span>图片：</span></el-col>
       <el-col :span="8" :offset="1">
-        <img v-if="orderData.imgUrl" :src="fileUrl+ orderData.imgUrl" class="userPic"
-             @click="avatarShow(orderData.imgUrl)">
+        <img v-if="orderData.img" :src="orderData.img" class="userPic"
+             @click="avatarShow(orderData.img)">
       </el-col>
     </el-row>
     <el-row class="form-flex">
@@ -90,6 +90,11 @@
       <el-button @click="dialogVisible = false" size="small">取 消</el-button>
       <el-button type="primary" @click="confirmHandle" size="small">确 定</el-button>
     </span>
+    <div class="popContainer" v-if="pictureZoomShow" @click="pictureZoomShow = false">
+      <div class="imageShow">
+        <img :src="imageZoom" alt="" width="100%" >
+      </div>
+    </div>
   </el-dialog>
 </template>
 <script>
@@ -103,7 +108,8 @@
     },
     data() {
       return {
-        fileUrl: fileUrl,
+        pictureZoomShow: false,
+        imageZoom: '',
         dialogVisible: true,
         requestParam: {
           id: '',
@@ -151,10 +157,8 @@
     },
     methods: {
       avatarShow(e) {
-        if (!e) {
-          return
-        }
-        window.open(this.fileUrl + e)
+        this.imageZoom = e
+        this.pictureZoomShow = true
       },
       closDialog() {
         this.$emit('closDialog')
