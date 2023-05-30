@@ -86,6 +86,18 @@
           </span>
         </template>
       </el-table-column>
+      <el-table-column align="center" width="100" label="瑕疵数">
+        <template slot-scope="scope">
+          <span
+            :style="scope.row.months == '合计' ? 'font-weight: bold' : ''"> {{ scope.row.saleNum }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" width="100" label="通过比例 %">
+        <template slot-scope="scope">
+          <span
+            :style="scope.row.months == '合计' ? 'font-weight: bold' : ''"> {{ scope.row.theirPrice }}</span>
+        </template>
+      </el-table-column>
     </el-table>
     <!--    <el-row class="top-15">-->
     <!--      <el-pagination-->
