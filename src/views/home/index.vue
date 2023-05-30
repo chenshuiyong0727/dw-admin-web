@@ -313,8 +313,22 @@
             </div>
           </div>
         </el-col>
-
-
+        <el-col :span="4">
+          <div class="out-border" @click="jumpSellList()">
+            <div class="layout-title">瑕疵数</div>
+            <div class="color-main address-content">
+              <span>{{form.defectsNum}}</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="4">
+          <div class="out-border" @click="jumpSellList()">
+            <div class="layout-title">通过比例</div>
+            <div class="color-main address-content">
+              <span>{{form.passRatio}} %</span>
+            </div>
+          </div>
+        </el-col>
       </el-row>
     </div>
     <div class="statistics-layout">

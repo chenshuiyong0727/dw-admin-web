@@ -128,7 +128,7 @@ export default {
       this.$emit('closDialog1')
     },
     confirmHandle() {
-      if (!this.requestParam.reason) {
+        if (!this.requestParam.reason) {
         this.$message.error('请输入瑕疵原因')
         return
       }
