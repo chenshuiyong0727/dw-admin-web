@@ -89,7 +89,7 @@
         <el-col :span="6">
           <el-form-item size="small">
             <el-select v-model="queryParam.status">
-              <el-option label="类型" value=""></el-option>
+              <el-option label="状态" value=""></el-option>
               <el-option
                 :key="item.fieldValue"
                 :label="item.fieldName"
@@ -369,6 +369,14 @@ export default {
       this.$router.push({ path: '/goodsBase/goodsDefects/detail', query: { id, type } })
     },
     update() {
+      if(!this.requestParam.createTime) {
+        this.$message.error('请输入创建时间')
+        return
+      }
+      if(!this.requestParam.reason) {
+        this.$message.error('请输入瑕疵原因')
+        return
+      }
       goodsDefectsApi.update(this.requestParam).then(res => {
         if (res.subCode === 1000) {
           this.$message.success('操作成功')
