@@ -59,6 +59,12 @@
         </el-select>
       </el-col>
     </el-row>
+    <el-row class="form-flex" v-if="requestParam.status == 8">
+      <el-col :span="8" style="text-align: right"><i class="red">*</i><span>瑕疵原因：</span></el-col>
+      <el-col :span="12" :offset="1">
+        <el-input type="textarea" :rows="4" maxlength="140" size="small" v-model="requestParam.reason"></el-input>
+      </el-col>
+    </el-row>
     <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><i class="red">*</i><span>发货截止时间：</span></el-col>
       <el-col :span="8" :offset="1">
@@ -99,7 +105,8 @@
           deliveryDeadlineTime: '',
           freight: '',
           status: '',
-          addressId: ''
+          addressId: '',
+          reason: '色差'
         }
       }
     },

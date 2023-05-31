@@ -314,7 +314,7 @@
           </div>
         </el-col>
         <el-col :span="4">
-          <div class="out-border" @click="jumpSellList()">
+          <div class="out-border" @click="goodsDefects()">
             <div class="layout-title">瑕疵数</div>
             <div class="color-main address-content">
               <span>{{form.defectsNum}}</span>
@@ -689,6 +689,10 @@ export default {
     },
     jumpSellList() {
       this.$router.push({ path: '/report/sellList' })
+    },
+    goodsDefects() {
+      // *** 根据真实路径配置地址
+      this.$router.push({ path: '/goodsBase/goodsDefects' })
     },
     goodsOther() {
       this.$router.push({ path: '/goodsOrder/goodsOther' })

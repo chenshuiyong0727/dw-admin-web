@@ -133,7 +133,7 @@
 <!--      <el-table-column align="center" label="货号" prop="actNo"/>-->
 <!--      <el-table-column align="center" label="商品名称" prop="goodsName"/>-->
 <!--      <el-table-column align="center" label="图片" prop="img"/>-->
-      <el-table-column align="center" label="图片" width="120">
+      <el-table-column align="center" label="图片" width="85">
         <template slot-scope="scope">
           <img v-if="scope.row.img" :src="scope.row.img" class="userPic"
                @click="avatarShow(scope.row.img)">
@@ -146,39 +146,39 @@
           <a style="color: #20a0ff" @click="jumpactNo(scope.row.actNo)"> {{ scope.row.actNo }}</a>
         </template>
       </el-table-column>
-      <el-table-column align="center" width="120" prop="goodsName" label="商品名称">
+      <el-table-column align="center"  prop="goodsName" label="商品名称">
         <template slot-scope="scope">
           <a style="color: #20a0ff" @click="jumpactNo(scope.row.actNo)"> {{ scope.row.goodsName }}</a>
         </template>
       </el-table-column>
-      <el-table-column align="center"  prop="orderNo" label="订单号">
+      <el-table-column align="center" width="110" prop="orderNo" label="订单号">
         <template slot-scope="scope">
           <a style="color: #20a0ff" @click="jumpactOrder(scope.row.orderNo)"> {{ scope.row.orderNo }}</a>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="状态" prop="status">
+      <el-table-column align="center" label="状态"  width="60" prop="status">
         <template slot-scope="scope">
           <strong :class="scope.row.status == 1 ? 'color-danger' : 'color-success'">{{ scope.row.status | dictToDescTypeValue(45) }}
           </strong>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="原因" prop="reason"/>
-      <el-table-column align="center" label="创建时间" prop="createTime">
+      <el-table-column align="center"  width="120" label="原因" prop="reason"/>
+      <el-table-column align="center" label="创建时间"  width="100" prop="createTime">
         <template slot-scope="scope">{{scope.row.createTime | formateTime('{y}-{m}-{d} {h}:{i}')
           }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="类型" prop="type">
+      <el-table-column align="center" label="类型"  width="60" prop="type">
         <template slot-scope="scope">{{ scope.row.type | dictToDescTypeValue(20221108) }}</template>
       </el-table-column>
-      <el-table-column align="center" label="入库价" prop="price"/>
+      <el-table-column align="center" label="入库价"  width="60" prop="price"/>
 <!--      <el-table-column align="center" label="订单号" prop="orderNo"/>-->
 
-      <el-table-column align="center" label="原售价" prop="shelvesPrice"/>
+      <el-table-column align="center" label="原售价" width="60" prop="shelvesPrice"/>
 <!--      <el-table-column align="center" label="状态" prop="status"/>-->
       <el-table-column align="center" fixed="right" label="操作"
                        v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length"
-                       width="130">
+                       width="110">
         <template slot-scope="scope">
 <!--          <div>-->
 <!--&lt;!&ndash;            <el-button @click="goDetail(scope.row.id , 1)" type="text"&ndash;&gt;-->
@@ -199,6 +199,7 @@
                      v-if="scope.row.status == 2"
                      v-permission:[buttonPermissionArr.listBtn]="['更新状态']">瑕疵
           </el-button>
+          <el-button type="text" @click="changeStatusDialog1(scope.row)">修改</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -218,6 +219,43 @@
         <img :src="imageZoom" alt="" width="100%" >
       </div>
     </div>
+    <el-dialog title="修改" :visible.sync="dialogVisible" width="40%" center>
+      <el-row class="form-flex" style="margin-bottom: 20px;">
+        <el-col :span="8" style="text-align: right"><span>图片：</span></el-col>
+        <el-col :span="8" :offset="1">
+          <img v-if="orderData1.img" :src="orderData1.img" class="userPic"
+               @click="avatarShow(orderData1.img)">
+        </el-col>
+      </el-row>
+      <el-row class="form-flex" style="margin-bottom: 20px;">
+        <el-col :span="8" style="text-align: right"><span>货号：</span></el-col>
+        <el-col :span="8" :offset="1">
+          <span>{{orderData1.actNo}}</span>
+        </el-col>
+      </el-row>
+      <el-row class="form-flex" style="margin-bottom: 20px;">
+        <el-col :span="8" style="text-align: right"><span>尺码：</span></el-col>
+        <el-col :span="8" :offset="1">
+          <span>{{orderData1.size}}</span>
+        </el-col>
+      </el-row>
+      <el-row class="form-flex" style="margin-bottom: 20px;">
+        <el-col :span="8" style="text-align: right"><i class="red">*</i><span>瑕疵原因：</span></el-col>
+        <el-col :span="12" :offset="1">
+          <el-input type="textarea" :rows="4" maxlength="140" size="small" v-model="requestParam.reason"></el-input>
+        </el-col>
+      </el-row>
+      <el-row class="form-flex">
+        <el-col :span="8" style="text-align: right"><i class="red">*</i><span>创建时间：</span></el-col>
+        <el-col :span="8" :offset="1">
+          <el-date-picker type="datetime" placeholder="发货截止时间" v-model="requestParam.createTime" value-format="yyyy-MM-dd HH:mm:ss">></el-date-picker>
+        </el-col>
+      </el-row>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false" size="small">取 消</el-button>
+        <el-button type="primary" @click="update" size="small">确 定</el-button>
+       </span>
+    </el-dialog>
   </three-level-route>
 </template>
 
@@ -226,6 +264,7 @@ import ThreeLevelRoute from '@/components/ThreeLevelRoute'
 import { goodsDefectsApi } from '@/api/goodsDefects'
 import { permissionMixin } from '@/mixins/permissionMixin'
 import { getExport } from '@/api/exportFile'
+import { parseTime } from '@/utils/index'
 
 export default {
   mixins: [permissionMixin],
@@ -234,6 +273,13 @@ export default {
   },
   data() {
     return {
+      orderData1: '',
+      requestParam: {
+        id: '',
+        reason: '',
+        createTime: ''
+      },
+      dialogVisible: false,
       pictureZoomShow: false,
       imageZoom: '',
       fileUrl: fileUrl,
@@ -266,6 +312,13 @@ export default {
     this.listSysDict()
   },
   methods: {
+    changeStatusDialog1(row) {
+      this.orderData1 = row
+      this.requestParam.reason = row.reason
+      this.requestParam.createTime = parseTime(row.createTime)
+      this.requestParam.id = row.id
+      this.dialogVisible = true
+    },
     avatarShow(e) {
       this.imageZoom = e
       this.pictureZoomShow = true
@@ -315,11 +368,12 @@ export default {
       // *** 根据真实路径配置地址
       this.$router.push({ path: '/goodsBase/goodsDefects/detail', query: { id, type } })
     },
-    goDel(id) {
-      goodsDefectsApi.delById(id).then(res => {
+    update() {
+      goodsDefectsApi.update(this.requestParam).then(res => {
         if (res.subCode === 1000) {
-          this.$message.success(res.subMsg)
+          this.$message.success('操作成功')
           this.getPage()
+          this.dialogVisible = false
         } else {
           this.$message.error(res.subMsg)
         }

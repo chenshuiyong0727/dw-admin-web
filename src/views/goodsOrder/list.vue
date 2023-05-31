@@ -285,7 +285,7 @@
           <div>
             <el-button type="text" class="color-danger" @click="goDel(scope.row.id)">删除</el-button>
             <el-button type="text" v-if="scope.row.status == 2" @click="changeStatusDialog2(scope.row)">出售</el-button>
-            <el-button type="text" v-else @click="changeStatusDialog1(scope.row)">修改地址</el-button>
+            <el-button type="text" v-else @click="changeStatusDialog1(scope.row)">修改</el-button>
             <el-button type="text" @click="changeStatusDialog(scope.row)">交易成功</el-button>
           </div>
         </template>
