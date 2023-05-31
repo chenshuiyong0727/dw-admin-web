@@ -16,9 +16,9 @@
           <el-form-item size="small">
             <el-date-picker
               @change="createTimeChange"
-              end-placeholder="创建时间结束"
+              end-placeholder="时间结束"
               range-separator="至"
-              start-placeholder="创建时间开始"
+              start-placeholder="时间开始"
               type="daterange"
               v-model="createTime"
               value-format="yyyy-MM-dd">
@@ -163,7 +163,7 @@
         </template>
       </el-table-column>
       <el-table-column align="center"  width="120" label="原因" prop="reason"/>
-      <el-table-column align="center" label="创建时间"  width="100" prop="createTime">
+      <el-table-column align="center" label="时间"  width="100" prop="createTime">
         <template slot-scope="scope">{{scope.row.createTime | formateTime('{y}-{m}-{d} {h}:{i}')
           }}
         </template>
@@ -246,7 +246,7 @@
         </el-col>
       </el-row>
       <el-row class="form-flex">
-        <el-col :span="8" style="text-align: right"><i class="red">*</i><span>创建时间：</span></el-col>
+        <el-col :span="8" style="text-align: right"><i class="red">*</i><span>时间：</span></el-col>
         <el-col :span="8" :offset="1">
           <el-date-picker type="datetime" placeholder="发货截止时间" v-model="requestParam.createTime" value-format="yyyy-MM-dd HH:mm:ss">></el-date-picker>
         </el-col>
@@ -370,7 +370,7 @@ export default {
     },
     update() {
       if(!this.requestParam.createTime) {
-        this.$message.error('请输入创建时间')
+        this.$message.error('请输入时间')
         return
       }
       if(!this.requestParam.reason) {
