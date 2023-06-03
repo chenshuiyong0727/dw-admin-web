@@ -361,6 +361,12 @@ export const constantRoutes = [
         ]
       },
       {
+        path: 'areaSellList',
+        name: 'areaSellList',
+        component: () => import('@/views/report/areaSellList'),
+        meta: { title: '区域销售报表' }
+      },
+      {
         path: 'giftReport',
         name: 'giftReport',
         component: () => import('@/views/report/giftReport'),

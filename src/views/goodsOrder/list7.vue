@@ -249,42 +249,14 @@
           }}
         </template>
       </el-table-column>
-      <!--      <el-table-column fixed="right" align="center" label="操作" width="130"-->
-      <!--                       v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length">-->
-      <!--        <template slot-scope="scope">-->
-      <!--          <div>-->
-      <!--&lt;!&ndash;            //  下架	1&ndash;&gt;-->
-      <!--&lt;!&ndash;            //  已上架	2&ndash;&gt;-->
-      <!--&lt;!&ndash;            //  待发货	3&ndash;&gt;-->
-      <!--&lt;!&ndash;            //  已发货	4&ndash;&gt;-->
-      <!--&lt;!&ndash;            //  已揽件	5&ndash;&gt;-->
-      <!--&lt;!&ndash;            //  已收货	6&ndash;&gt;-->
-      <!--&lt;!&ndash;            //  成功	7&ndash;&gt;-->
-      <!--&lt;!&ndash;            //  瑕疵	8&ndash;&gt;-->
-      <!--&lt;!&ndash;            //  取消	9&ndash;&gt;-->
-      <!--&lt;!&ndash;            //  发货后取消	10&ndash;&gt;-->
-      <!--&lt;!&ndash;            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 0">上架</el-button>&ndash;&gt;-->
-      <!--&lt;!&ndash;            <el-button type="text" @click="changeStatus(scope.row)" v-if="[1,9,10] .includes(scope.row.status)  ">上架</el-button>&ndash;&gt;-->
-      <!--            <el-button type="text" @click="changeStatus(scope.row,7)" >成功</el-button>-->
-      <!--            <el-button type="text" @click="changeStatus(scope.row,8)" >瑕疵</el-button>-->
-      <!--&lt;!&ndash;            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 3">已发货</el-button>&ndash;&gt;-->
-      <!--&lt;!&ndash;            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 4">已揽件</el-button>&ndash;&gt;-->
-      <!--&lt;!&ndash;            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 5">已收货</el-button>&ndash;&gt;-->
-      <!--&lt;!&ndash;            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 6">成功</el-button>&ndash;&gt;-->
-      <!--&lt;!&ndash;            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 6">瑕疵</el-button>&ndash;&gt;-->
-      <!--&lt;!&ndash;            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">瑕疵</el-button>&ndash;&gt;-->
-      <!--&lt;!&ndash;            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">取消</el-button>&ndash;&gt;-->
-      <!--&lt;!&ndash;            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">发货后取消</el-button>&ndash;&gt;-->
-      <!--&lt;!&ndash;            <el-button type="text" @click="changeStatus(scope.row)" v-if="scope.row.status == 1">已上架</el-button>&ndash;&gt;-->
-
-      <!--&lt;!&ndash;            <el-button type="text" @click="goDetail(scope.row.id , 1)">查看&ndash;&gt;-->
-      <!--&lt;!&ndash;            </el-button>&ndash;&gt;-->
-      <!--&lt;!&ndash;            <el-button type="text" @click="goDetail(scope.row.id , 2)">编辑&ndash;&gt;-->
-      <!--&lt;!&ndash;            </el-button>&ndash;&gt;-->
-      <!--          </div>-->
-
-      <!--        </template>-->
-      <!--      </el-table-column>-->
+     <el-table-column fixed="right" align="center" label="操作" width="130"
+                      v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length">
+       <template slot-scope="scope">
+         <div>
+           <el-button type="text"  @click="changeStatusDialog1(scope.row)">修改</el-button>
+         </div>
+       </template>
+     </el-table-column>
     </el-table>
     <el-row class="top-15">
       <el-pagination
@@ -303,6 +275,11 @@
         <img :src="imageZoom" alt="" width="100%" >
       </div>
     </div>
+    <order-change-dialog-add
+      v-if="isShowDialog1 "
+      :orderData="orderData1"
+      @refreshPage="refreshPage1"
+      @closDialog="closDialog1"/>
   </three-level-route>
 </template>
 
@@ -312,11 +289,13 @@
   import buttomButton from '@/components/buttomButton'
   import { permissionMixin } from '@/mixins/permissionMixin'
   import { getExport } from '@/api/exportFile'
+  import orderChangeDialogAdd from './components/orderChangeDialogAdd'
 
   export default {
     mixins: [permissionMixin],
     components: {
       buttomButton,
+      orderChangeDialogAdd,
       ThreeLevelRoute
     },
     data() {
@@ -324,6 +303,8 @@
         pictureZoomShow: false,
         imageZoom: '',
         fileUrl: fileUrl,
+        orderData1: '',
+        isShowDialog1: false,
         queryParam: {
           id: '',
           orderNo: '',
@@ -482,6 +463,17 @@
       },
       pageChangeHandle(currentPage) {
         this.queryParam.pageNum = currentPage
+        this.getPage()
+      },
+      changeStatusDialog1(row) {
+        this.orderData1 = row
+        this.isShowDialog1 = true
+      },
+      closDialog1() {
+        this.isShowDialog1 = false
+      },
+      refreshPage1() {
+        this.isShowDialog1 = false
         this.getPage()
       },
       reSearchHandle(size) {

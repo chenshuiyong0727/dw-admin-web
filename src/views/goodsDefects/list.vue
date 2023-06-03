@@ -99,6 +99,19 @@
             </el-select>
           </el-form-item>
         </el-col>
+        <el-col :span="6">
+          <el-form-item size="small">
+            <el-select v-model="queryParam.addressId">
+              <el-option label="地址" value=""></el-option>
+              <el-option
+                v-for="item in addressList"
+                :key="item.fieldValue"
+                :label="item.fieldName"
+                :value="item.fieldValue">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
       </el-row>
 
       <el-row justify="center" type="flex"
@@ -146,7 +159,7 @@
           <a style="color: #20a0ff" @click="jumpactNo(scope.row.actNo)"> {{ scope.row.actNo }}</a>
         </template>
       </el-table-column>
-      <el-table-column align="center"  prop="goodsName" label="商品名称">
+      <el-table-column align="center" width="250"  prop="goodsName" label="商品名称">
         <template slot-scope="scope">
           <a style="color: #20a0ff" @click="jumpactNo(scope.row.actNo)"> {{ scope.row.goodsName }}</a>
         </template>
@@ -160,6 +173,11 @@
         <template slot-scope="scope">
           <strong :class="scope.row.status == 1 ? 'color-danger' : 'color-success'">{{ scope.row.status | dictToDescTypeValue(45) }}
           </strong>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" prop="addressId" width="120" label="地址">
+        <template v-if="scope.row.addressId" slot-scope="scope">{{ scope.row.addressId |
+          dictToDescTypeValue(38) }}
         </template>
       </el-table-column>
       <el-table-column align="center"  width="120" label="原因" prop="reason"/>
@@ -251,6 +269,19 @@
           <el-date-picker type="datetime" placeholder="发货截止时间" v-model="requestParam.createTime" value-format="yyyy-MM-dd HH:mm:ss">></el-date-picker>
         </el-col>
       </el-row>
+      <el-row class="form-flex">
+        <el-col :span="8" style="text-align: right"><span>地址：</span></el-col>
+        <el-col :span="8" :offset="1">
+          <el-select v-model="requestParam.addressId">
+            <el-option
+              v-for="item in addressList"
+              :key="item.fieldValue"
+              :label="item.fieldName"
+              :value="+item.fieldValue">
+            </el-option>
+          </el-select>
+        </el-col>
+      </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false" size="small">取 消</el-button>
         <el-button type="primary" @click="update" size="small">确 定</el-button>
@@ -276,15 +307,18 @@ export default {
       orderData1: '',
       requestParam: {
         id: '',
+        addressId: '',
         reason: '',
         createTime: ''
       },
+      addressList: [],
       dialogVisible: false,
       pictureZoomShow: false,
       imageZoom: '',
       fileUrl: fileUrl,
       queryParam: {
         reason: '',
+        addressId: '',
         createTimeFrom: '',
         createTimeTo: '',
         keyword: '',
@@ -317,6 +351,7 @@ export default {
       this.requestParam.reason = row.reason
       this.requestParam.createTime = parseTime(row.createTime)
       this.requestParam.id = row.id
+      this.requestParam.addressId = row.addressId
       this.dialogVisible = true
     },
     avatarShow(e) {
@@ -353,6 +388,7 @@ export default {
         localStorage.getItem('sysDictList')) : []
       this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
       this.typeList = sysDictList.filter(item => item.typeValue == 20221108)
+      this.addressList = sysDictList.filter(item => item.typeValue == 38)
       this.statusList = sysDictList.filter(item => item.typeValue == 45)
     },
     pageChangeHandle(currentPage) {
@@ -375,6 +411,10 @@ export default {
       }
       if(!this.requestParam.reason) {
         this.$message.error('请输入瑕疵原因')
+        return
+      }
+      if(!this.requestParam.addressId) {
+        this.$message.error('请选择地址')
         return
       }
       goodsDefectsApi.update(this.requestParam).then(res => {
@@ -452,6 +492,7 @@ export default {
     resetHandle() {
       this.queryParam = {
         reason: '',
+        addressId: '',
         createTimeFrom: '',
         createTimeTo: '',
         keyword: '',

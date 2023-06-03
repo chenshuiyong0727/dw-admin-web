@@ -8,8 +8,8 @@
     <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><span>图片：</span></el-col>
       <el-col :span="8" :offset="1">
-        <img v-if="orderData.imgUrl" :src="fileUrl+ orderData.imgUrl" class="userPic"
-             @click="avatarShow(orderData.imgUrl)">
+        <img v-if="orderData.img" :src="orderData.img" class="userPic"
+             @click="avatarShow(orderData.img)">
       </el-col>
     </el-row>
     <el-row class="form-flex">
@@ -40,6 +40,19 @@
       <el-col :span="8" style="text-align: right"><i class="red">*</i><span>发货截止时间：</span></el-col>
       <el-col :span="8" :offset="1">
         <el-date-picker type="datetime" placeholder="发货截止时间" v-model="requestParam.deliveryDeadlineTime" value-format="yyyy-MM-dd HH:mm:ss">></el-date-picker>
+      </el-col>
+    </el-row>
+    <el-row class="form-flex">
+      <el-col :span="8" style="text-align: right"><i class="red">*</i><span>地址：</span></el-col>
+      <el-col :span="8" :offset="1">
+        <el-select v-model="requestParam.addressId">
+          <el-option
+            v-for="item in addressList"
+            :key="item.fieldValue"
+            :label="item.fieldName"
+            :value="+item.fieldValue">
+          </el-option>
+        </el-select>
       </el-col>
     </el-row>
     <!--    <el-row class="form-flex">-->
@@ -84,11 +97,14 @@ export default {
   },
   data() {
     return {
-      fileUrl: fileUrl,
+      pictureZoomShow: false,
+      imageZoom: '',
       dialogVisible: true,
+      addressList: [],
       requestParam: {
         id: '',
         status: 3,
+        addressId: '',
         deliveryDeadlineTime: '',
         shelvesPrice: '',
         theirPrice: '',
@@ -97,17 +113,21 @@ export default {
     }
   },
   mounted() {
+    this.listSysDict()
     this.requestParam.id = this.orderData.id
     this.requestParam.deliveryDeadlineTime =  parseTime(this.orderData.deliveryDeadlineTime)
     this.requestParam.shelvesPrice = this.orderData.shelvesPrice
     this.requestParam.subsidiesPrice = this.orderData.subsidiesPrice
   },
   methods: {
+    listSysDict() {
+      let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
+        localStorage.getItem('sysDictList')) : []
+      this.addressList = sysDictList.filter(item => item.typeValue == 38)
+    },
     avatarShow(e) {
-      if (!e) {
-        return
-      }
-      window.open(this.fileUrl + e)
+      this.imageZoom = e
+      this.pictureZoomShow = true
     },
     closDialog() {
       this.$emit('closDialog')
@@ -119,6 +139,10 @@ export default {
       }
       if (!this.requestParam.deliveryDeadlineTime) {
         this.$message.error('发货截止时间为空')
+        return
+      }
+      if (!this.requestParam.addressId) {
+        this.$message.error('发货地址为空')
         return
       }
       let realVal = this.requestParam.subsidiesPrice * 1 + this.requestParam.shelvesPrice

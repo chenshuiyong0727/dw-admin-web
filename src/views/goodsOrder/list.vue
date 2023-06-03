@@ -492,7 +492,6 @@
         this.getPage()
       },
       changeStatusDialog2(row) {
-        debugger
         this.orderData2 = row
         // this.orderData2.status = 3
         this.isShowDialog2 = true

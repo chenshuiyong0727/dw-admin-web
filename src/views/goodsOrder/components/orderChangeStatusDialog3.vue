@@ -58,7 +58,7 @@
             v-for="item in addressList"
             :key="item.fieldValue"
             :label="item.fieldName"
-            :value="item.fieldValue">
+            :value="+item.fieldValue">
           </el-option>
         </el-select>
       </el-col>
@@ -100,6 +100,7 @@
     mounted() {
       this.listSysDict()
       this.requestParam.id = this.orderData.id
+      this.requestParam.addressId = this.orderData.addressId
     },
     methods: {
       avatarShow(e) {
