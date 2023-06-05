@@ -125,6 +125,7 @@
 </template>
 <script>
 import { goodsOrderApi } from '@/api/goodsOrder'
+import { parseTime } from '@/utils/index'
 
 export default {
   props: {
@@ -156,8 +157,22 @@ export default {
     this.listSysDict()
     this.requestParam.ids = this.ids
     this.requestParam.status = this.status
+    this.getDetailById()
   },
   methods: {
+    getDetailById() {
+      let id = this.ids[0]
+      if (id) {
+        goodsOrderApi.getDetailById(id).then(res => {
+          if (res.subCode === 1000) {
+            this.requestParam.deliveryDeadlineTime = res.data ? parseTime(res.data.deliveryDeadlineTime) : ''
+            this.requestParam.addressId = res.data ? res.data.addressId : ''
+          } else {
+            this.$message.error(res.subMsg)
+          }
+        })
+      }
+    },
     listSysDict() {
       let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
         localStorage.getItem('sysDictList')) : []

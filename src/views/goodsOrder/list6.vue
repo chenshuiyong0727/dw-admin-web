@@ -597,6 +597,20 @@ export default {
         this.$emit('refresh')
       })
     },
+    changeStatusDialog3() {
+      if (this.ids.length == 0) {
+        this.$alert('没有选中数据')
+        return
+      }
+      this.isShowDialog3 = true
+    },
+    closDialog3() {
+      this.isShowDialog3 = false
+    },
+    refreshPage3() {
+      this.isShowDialog3 = false
+      this.getPage()
+    },
     resetHandle() {
       this.queryParam = {
         id: '',
