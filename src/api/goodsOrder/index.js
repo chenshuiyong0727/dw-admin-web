@@ -49,6 +49,12 @@ export const goodsOrderApi = {
     method: 'put',
     data: body
   }),
+  // 更新
+  updateSaleType: (body) => request({
+    url: '/gw/op/v1/goodsOrder/updateSaleType',
+    method: 'put',
+    data: body
+  }),
   indexData: () => request({
     url: '/gw/op/v1/goodsOrder/indexData',
     method: 'get'

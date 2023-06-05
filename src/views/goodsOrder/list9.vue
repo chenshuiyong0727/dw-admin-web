@@ -113,6 +113,19 @@
         </el-col>
         <el-col :span="6">
           <el-form-item size="small">
+            <el-select v-model="queryParam.saleType">
+              <el-option label="销售类型" value=""></el-option>
+              <el-option
+                v-for="item in saleTypeList"
+                :key="item.fieldValue"
+                :label="item.fieldName"
+                :value="+item.fieldValue">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item size="small">
             <el-input v-model.trim="queryParam.waybillNo" placeholder="运单编号"></el-input>
           </el-form-item>
         </el-col>
@@ -178,8 +191,8 @@
         <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-refresh"
                    v-permission:[buttonPermissionArr.searchBtn]="['查询']" @click="resetHandle">重置
         </el-button>
-        <el-button type="primary" size="small" style="margin-right: 10px" icon="el-icon-download"
-                   v-permission:[buttonPermissionArr.searchBtn]="['导出']" @click="exportHandle">导出
+        <el-button type="danger" size="small" style="margin-right: 10px" icon="el-icon-sell"
+                   v-permission:[buttonPermissionArr.searchBtn]="['导出']" @click="changeStatusDialog3">闪电直发
         </el-button>
       </el-row>
     </el-form>
@@ -210,6 +223,9 @@
       <el-table-column align="center" prop="size" label="尺码"/>
       <el-table-column align="center" prop="status" label="状态">
         <template slot-scope="scope">{{ scope.row.status | dictToDescTypeValue(37) }}</template>
+      </el-table-column>
+      <el-table-column align="center" prop="saleType" label="销售类型">
+        <template slot-scope="scope">{{ scope.row.saleType | dictToDescTypeValue(46) }}</template>
       </el-table-column>
       <el-table-column align="center" prop="price" label="入库价"/>
       <el-table-column align="center" prop="shelvesPrice" label="原售价"/>
@@ -295,12 +311,19 @@
         <img :src="imageZoom" alt="" width="100%" >
       </div>
     </div>
+    <order-change-status-dialog-sd
+      v-if="isShowDialog3 "
+      :ids="ids"
+      :status="3"
+      @refreshPage="refreshPage3"
+      @closDialog="closDialog3"/>
   </three-level-route>
 </template>
 
 <script>
   import ThreeLevelRoute from '@/components/ThreeLevelRoute'
   import { goodsOrderApi } from '@/api/goodsOrder'
+import orderChangeStatusDialogSd from './components/orderChangeStatusDialogSd'
   import buttomButton from '@/components/buttomButton'
   import { permissionMixin } from '@/mixins/permissionMixin'
   import { getExport } from '@/api/exportFile'
@@ -309,6 +332,7 @@
     mixins: [permissionMixin],
     components: {
       buttomButton,
+      orderChangeStatusDialogSd,
       ThreeLevelRoute
     },
     data() {
@@ -341,13 +365,16 @@
           sellTimeFrom: '',
           sellTimeTo: '',
           successTimeFrom: '',
+          saleType: '',
           successTimeTo: '',
           pageSize: 10,
           pageNum: 1
         },
         addressList: [],
+        saleTypeList: [],
         statusList: [],
         dataStatusList: [],
+        isShowDialog3: false,
         sellTime: '',
         successTime: '',
         createTime: '',
@@ -396,6 +423,7 @@
           if (column.property == 'id'
             || column.property == 'size'
             || column.property == 'status'
+            || column.property == 'saleType'
             || column.property == 'addressId'
             || column.property == 'waybillNo'
             || column.property == 'successTime'
@@ -466,6 +494,20 @@
           }
         })
       },
+      changeStatusDialog3() {
+        if (this.ids.length == 0) {
+          this.$alert('没有选中数据')
+          return
+        }
+        this.isShowDialog3 = true
+      },
+      closDialog3() {
+        this.isShowDialog3 = false
+      },
+      refreshPage3() {
+        this.isShowDialog3 = false
+        this.getPage()
+      },
       getSummaries(param) {
         const { columns, data } = param;
         const sums = [];
@@ -477,6 +519,7 @@
           if (column.property == 'id'
             || column.property == 'size'
             || column.property == 'status'
+            || column.property == 'saleType'
             || column.property == 'addressId'
             || column.property == 'waybillNo'
             || column.property == 'successTime'
@@ -598,6 +641,7 @@
           updateTimeTo: '',
           sellTimeFrom: '',
           sellTimeTo: '',
+          saleType: '',
           successTimeFrom: '',
           successTimeTo: '',
           pageSize: 10,
