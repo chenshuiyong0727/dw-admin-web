@@ -96,17 +96,17 @@
             </div>
           </el-col>
         </el-row>
-<!--        <el-row :gutter="20">-->
-<!--          <el-col :span="8">-->
-<!--            <div class="un-handle-item" @click="goDataDetailToday(7)">-->
-<!--              <span class="font-medium">变价商品</span>-->
-<!--              <span-->
-<!--                style="float: right"-->
-<!--                :class="storeData.upCout > 0 ? 'color-danger' : ''"-->
-<!--              >({{storeData.upCout}})</span>-->
-<!--            </div>-->
-<!--          </el-col>-->
-<!--        </el-row>-->
+        <el-row :gutter="20">
+          <el-col :span="8">
+            <div class="un-handle-item" @click="jumpactOrder(11)">
+              <span class="font-medium">闪电直发入仓</span>
+              <span
+                style="float: right"
+                :class="storeData.count11 > 0 ? 'color-danger' : ''"
+              >({{orderIofo.count11}})</span>
+            </div>
+          </el-col>
+        </el-row>
       </div>
     </div>
     <div class="address-layout">
@@ -326,6 +326,14 @@
             <div class="layout-title">通过比例</div>
             <div class="color-main address-content">
               <span>{{form.passRatio}} %</span>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="4">
+          <div class="out-border" @click="jumpactOrderSaleType(2)">
+            <div class="layout-title">闪电直发</div>
+            <div class="color-main address-content">
+              <span>{{orderIofo.countSd}}</span>
             </div>
           </div>
         </el-col>
@@ -668,6 +676,9 @@ export default {
     jumpactOrder(type) {
       let path = '/goodsOrder/list' + type
       this.$router.push({ path: path })
+    },
+    jumpactOrderSaleType(saleType) {
+      this.$router.push({ path: '/goodsOrder/list', query: { saleType }})
     },
     goDataDetail(warehouseId) {
       // // *** 根据真实路径配置地址

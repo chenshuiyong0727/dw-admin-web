@@ -382,6 +382,7 @@
         isShowDialog2: false,
         isShowDialog3: false,
         pictureZoomShow: false,
+        saleType: '',
         imageZoom: '',
         fileUrl: fileUrl,
         queryParam: {
@@ -428,10 +429,12 @@
       }
     },
     created() {
-      const { actNo , months , orderNo } = this.$route.query
+      const { actNo , months , orderNo,saleType } = this.$route.query
+      this.saleType = saleType
+      this.queryParam.saleType = saleType
       this.queryParam.keyword = actNo
       this.queryParam.orderNo = orderNo
-      if (this.queryParam.keyword || this.queryParam.orderNo) {
+      if (this.queryParam.keyword || this.queryParam.orderNo || this.queryParam.saleType) {
         this.getPage()
       }
       this.months = months
@@ -749,6 +752,9 @@
         this.sellTime = ''
         this.successTime = ''
         this.getPage()
+        if(this.saleType) {
+          this.queryParam.saleType = this.saleType
+        }
       }
     }
   }
