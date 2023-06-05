@@ -253,6 +253,12 @@ export const constantRoutes = [
         meta: { title: '已收货订单' }
       },
       {
+        path: 'list11',
+        name: 'list11',
+        component: () => import('@/views/goodsOrder/list11'),
+        meta: { title: '闪电直发入仓' }
+      },
+      {
         path: 'list7',
         name: 'list7',
         component: () => import('@/views/goodsOrder/list7'),
@@ -264,12 +270,12 @@ export const constantRoutes = [
         component: () => import('@/views/goodsOrder/list8'),
         meta: { title: '瑕疵订单' }
       },
-      {
-        path: 'list9',
-        name: 'list9',
-        component: () => import('@/views/goodsOrder/list9'),
-        meta: { title: '已下架订单' }
-      },
+      // {
+      //   path: 'list9',
+      //   name: 'list9',
+      //   component: () => import('@/views/goodsOrder/list9'),
+      //   meta: { title: '已下架订单' }
+      // },
       {
         path: 'goodsOther',
         name: 'goodsOther',
@@ -285,36 +291,36 @@ export const constantRoutes = [
           }
         ]
       },
-      {
-        path: 'gift',
-        name: 'gift',
-        component: () => import('@/views/gift/list'),
-        meta: { title: '红包' },
-        children: [
-          {
-            path: 'detail',
-            name: 'detail',
-            component: () => import('@/views/gift/detail'),
-            meta: { title: '详情', routerId: 3 },
-            hidden: true
-          }
-        ]
-      },
-      {
-        path: 'goodsBusiness',
-        name: 'goodsBusiness',
-        component: () => import('@/views/goodsBusiness/list'),
-        meta: { title: '营销' },
-        children: [
-          {
-            path: 'detail',
-            name: 'detail',
-            component: () => import('@/views/goodsBusiness/detail'),
-            meta: { title: '详情', routerId: 3 },
-            hidden: true
-          }
-        ]
-      }
+      // {
+      //   path: 'gift',
+      //   name: 'gift',
+      //   component: () => import('@/views/gift/list'),
+      //   meta: { title: '红包' },
+      //   children: [
+      //     {
+      //       path: 'detail',
+      //       name: 'detail',
+      //       component: () => import('@/views/gift/detail'),
+      //       meta: { title: '详情', routerId: 3 },
+      //       hidden: true
+      //     }
+      //   ]
+      // },
+      // {
+      //   path: 'goodsBusiness',
+      //   name: 'goodsBusiness',
+      //   component: () => import('@/views/goodsBusiness/list'),
+      //   meta: { title: '营销' },
+      //   children: [
+      //     {
+      //       path: 'detail',
+      //       name: 'detail',
+      //       component: () => import('@/views/goodsBusiness/detail'),
+      //       meta: { title: '详情', routerId: 3 },
+      //       hidden: true
+      //     }
+      //   ]
+      // }
     ]
   },
   {

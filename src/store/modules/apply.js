@@ -5,7 +5,8 @@ const state = {
   count4: '',
   count5: '',
   count6: '',
-  count8: ''
+  count8: '',
+  count11: ''
 }
 
 const mutations = {
@@ -23,6 +24,9 @@ const mutations = {
   },
   SET_COUNT_8: (state, num) => {
     state.count8 = num
+  },
+  SET_COUNT_11: (state, num) => {
+    state.count11 = num
   }
 }
 
@@ -37,6 +41,7 @@ const actions = {
           commit('SET_COUNT_5', data.countDto.count5)
           commit('SET_COUNT_6', data.countDto.count6)
           commit('SET_COUNT_8', data.countDto.count8)
+          commit('SET_COUNT_11', data.countDto.count11)
         }
         resolve(response)
       }).catch(error => {

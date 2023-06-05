@@ -10,6 +10,7 @@ const getters = {
   count5: state => state.apply.count5,
   count6: state => state.apply.count6,
   count8: state => state.apply.count8,
+  count11: state => state.apply.count11,
   showThreeRouter: state => state.page.showThreeRouter,
   unreadMsg: state => state.page.unreadMsg,
   projectTypeList: state => state.page.projectTypeList,

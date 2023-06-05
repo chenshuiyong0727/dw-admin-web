@@ -50,6 +50,10 @@
         if (store.getters.count8) {
           node = <div class='p-msg'><span slot='title'>{(title)}</span><i class='msg'>{(store.getters.count8)}</i></div>
         }
+      } else if (title === '闪电直发入仓'){
+        if (store.getters.count11) {
+          node = <div class='p-msg'><span slot='title'>{(title)}</span><i class='msg'>{(store.getters.count11)}</i></div>
+        }
       } else {
         if (msgCount) {
           node = <div class='p-msg'><span slot='title'>{(title)}</span><i class='msg'>{(msgCount)}</i></div>
