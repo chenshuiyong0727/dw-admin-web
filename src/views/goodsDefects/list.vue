@@ -196,7 +196,7 @@
 <!--      <el-table-column align="center" label="状态" prop="status"/>-->
       <el-table-column align="center" fixed="right" label="操作"
                        v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length"
-                       width="110">
+                       width="150">
         <template slot-scope="scope">
 <!--          <div>-->
 <!--&lt;!&ndash;            <el-button @click="goDetail(scope.row.id , 1)" type="text"&ndash;&gt;-->
@@ -206,9 +206,6 @@
 <!--                       v-permission:[buttonPermissionArr.listBtn]="['编辑']">编辑-->
 <!--            </el-button>-->
 <!--          </div>-->
-<!--          <el-button @click="goDel(scope.row.id)" type="text"-->
-<!--                     v-permission:[buttonPermissionArr.listBtn]="['删除']">删除-->
-<!--          </el-button>-->
           <el-button @click="changeStatus(scope.row.id, 2)" type="text"
                      v-if="scope.row.status == 1"
                      v-permission:[buttonPermissionArr.listBtn]="['更新状态']">已处理
@@ -216,6 +213,9 @@
           <el-button @click="changeStatus(scope.row.id, 1)" type="text"
                      v-if="scope.row.status == 2"
                      v-permission:[buttonPermissionArr.listBtn]="['更新状态']">瑕疵
+          </el-button>
+          <el-button @click="goDel(scope.row.id)" type="text"
+                     v-permission:[buttonPermissionArr.listBtn]="['删除']">删除
           </el-button>
           <el-button type="text" @click="changeStatusDialog1(scope.row)">修改</el-button>
         </template>
@@ -263,19 +263,19 @@
           <el-input type="textarea" :rows="4" maxlength="140" size="small" v-model="requestParam.reason"></el-input>
         </el-col>
       </el-row>
-      <el-row class="form-flex">
+      <el-row class="form-flex" style="margin-bottom: 20px;">
         <el-col :span="8" style="text-align: right"><i class="red">*</i><span>时间：</span></el-col>
         <el-col :span="8" :offset="1">
           <el-date-picker type="datetime" placeholder="发货截止时间" v-model="requestParam.createTime" value-format="yyyy-MM-dd HH:mm:ss">></el-date-picker>
         </el-col>
       </el-row>
-      <el-row class="form-flex">
+      <el-row class="form-flex" style="margin-bottom: 20px;">
         <el-col :span="8" style="text-align: right"><span>地址：</span></el-col>
         <el-col :span="8" :offset="1">
           <el-select v-model="requestParam.addressId">
             <el-option
               v-for="item in addressList"
-              :key="item.fieldValue"
+              :key="+item.fieldValue"
               :label="item.fieldName"
               :value="+item.fieldValue">
             </el-option>
@@ -351,7 +351,7 @@ export default {
       this.requestParam.reason = row.reason
       this.requestParam.createTime = parseTime(row.createTime)
       this.requestParam.id = row.id
-      this.requestParam.addressId = row.addressId
+      this.requestParam.addressId = + row.addressId
       this.dialogVisible = true
     },
     avatarShow(e) {
@@ -425,6 +425,22 @@ export default {
         } else {
           this.$message.error(res.subMsg)
         }
+      })
+    },
+    goDel(id) {
+      this.$confirm('是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        goodsDefectsApi.delById(id).then(res => {
+          if (res.subCode === 1000) {
+            this.$message.success(res.subMsg)
+            this.getPage()
+          } else {
+            this.$message.error(res.subMsg)
+          }
+        })
       })
     },
     changeStatus(id, dataStatus) {

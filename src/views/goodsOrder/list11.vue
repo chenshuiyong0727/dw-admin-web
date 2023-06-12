@@ -233,6 +233,22 @@
       <el-table-column align="center" prop="saleType" label="销售类型">
         <template slot-scope="scope">{{ scope.row.saleType | dictToDescTypeValue(46) }}</template>
       </el-table-column>
+     <el-table-column align="center" prop="inStoreTime" label="闪电入库时间">
+       <template slot-scope="scope">
+          <span class="color-danger">
+              {{scope.row.inStoreTime | formateTime }}
+          </span>
+       </template>
+     </el-table-column>
+     <el-table-column align="center" prop="inStoreFreeDay" label="免仓储费天数"/>
+     <el-table-column align="center" prop="surplusDay" label="剩余免费天数" sortable/>
+     <el-table-column align="center" prop="inStoreTimeEnd" label="仓库免费截止时间">
+       <template slot-scope="scope">
+          <span class="color-danger">
+              {{scope.row.inStoreTimeEnd | formateTime }}
+          </span>
+       </template>
+     </el-table-column>
       <el-table-column align="center" prop="price" label="入库价"/>
       <el-table-column align="center" prop="shelvesPrice" label="原售价"/>
 

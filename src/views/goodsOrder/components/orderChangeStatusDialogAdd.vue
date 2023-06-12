@@ -116,7 +116,11 @@
       this.requestParam.freight = this.orderData.freight
       this.requestParam.waybillNo = this.orderData.waybillNo
       this.requestParam.deliveryDeadlineTime = parseTime(this.orderData.deliveryDeadlineTime)
-      this.requestParam.status = this.orderData.status + 1
+      if (this.orderData.status != 11) {
+        this.requestParam.status = this.orderData.status + 1
+      } else{
+        this.requestParam.status = 6
+      }
       this.requestParam.addressId = this.orderData.addressId
     },
     methods: {

@@ -93,6 +93,20 @@
         <el-date-picker type="datetime" placeholder="闪电直发入仓时间" v-model="requestParam.inStoreTime" value-format="yyyy-MM-dd HH:mm:ss">></el-date-picker>
       </el-col>
     </el-row>
+    <el-row class="form-flex">
+      <el-col :span="8" style="text-align: right"><span>运费：</span></el-col>
+      <el-col :span="8" :offset="1">
+        <el-input
+          v-model="requestParam.freight"
+          size="small"></el-input>
+      </el-col>
+    </el-row>
+    <el-row class="form-flex">
+      <el-col :span="8" style="text-align: right"><span>运单号：</span></el-col>
+      <el-col :span="8" :offset="1">
+        <el-input v-model="requestParam.waybillNo" size="small"></el-input>
+      </el-col>
+    </el-row>
     <!--    <el-row class="form-flex">-->
     <!--      <el-col :span="8" style="text-align: right"><span>补贴价格：</span></el-col>-->
     <!--      <el-col :span="8" :offset="1">-->
@@ -149,7 +163,9 @@ export default {
         addressId: '',
         deliveryDeadlineTime: '',
         inStoreFreeDay: '',
-        inStoreTime: ''
+        inStoreTime: '',
+        waybillNo: '',
+        freight: ''
       }
     }
   },
@@ -166,7 +182,11 @@ export default {
         goodsOrderApi.getDetailById(id).then(res => {
           if (res.subCode === 1000) {
             this.requestParam.deliveryDeadlineTime = res.data ? parseTime(res.data.deliveryDeadlineTime) : ''
+            this.requestParam.inStoreTime = res.data ? parseTime(res.data.inStoreTime) : ''
             this.requestParam.addressId = res.data ? res.data.addressId : ''
+            this.requestParam.inStoreFreeDay = res.data ? res.data.inStoreFreeDay : ''
+            this.requestParam.freight = res.data ? res.data.freight : ''
+            this.requestParam.waybillNo = res.data ? res.data.waybillNo : ''
           } else {
             this.$message.error(res.subMsg)
           }

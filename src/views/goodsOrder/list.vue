@@ -246,13 +246,29 @@
       <el-table-column align="center" prop="status" label="状态">
         <template slot-scope="scope">{{ scope.row.status | dictToDescTypeValue(37) }}</template>
       </el-table-column>
-      <el-table-column align="center" prop="saleType" label="销售类型">
-        <template slot-scope="scope">{{ scope.row.saleType | dictToDescTypeValue(46) }}</template>
-      </el-table-column>
       <el-table-column align="center" prop="sellTime" label="发货截止时间">
         <template slot-scope="scope">
           <span class="color-danger">
               {{scope.row.deliveryDeadlineTime | formateTime }}
+          </span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" prop="saleType" label="销售类型">
+        <template slot-scope="scope">{{ scope.row.saleType | dictToDescTypeValue(46) }}</template>
+      </el-table-column>
+      <el-table-column align="center" prop="inStoreTime" label="闪电入库时间">
+        <template slot-scope="scope">
+          <span class="color-danger">
+              {{scope.row.inStoreTime | formateTime }}
+          </span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" prop="inStoreFreeDay" label="免仓储费天数"/>
+      <el-table-column align="center" prop="surplusDay" label="剩余免费天数" sortable/>
+      <el-table-column align="center" prop="inStoreTimeEnd" label="仓库免费截止时间">
+        <template slot-scope="scope">
+          <span class="color-danger">
+              {{scope.row.inStoreTimeEnd | formateTime }}
           </span>
         </template>
       </el-table-column>
@@ -430,8 +446,10 @@
     },
     created() {
       const { actNo , months , orderNo,saleType } = this.$route.query
-      this.saleType = saleType
-      this.queryParam.saleType = saleType
+      if (saleType ) {
+        this.saleType = saleType
+        this.queryParam.saleType = saleType
+      }
       this.queryParam.keyword = actNo
       this.queryParam.orderNo = orderNo
       if (this.queryParam.keyword || this.queryParam.orderNo || this.queryParam.saleType) {
@@ -751,10 +769,10 @@
         this.updateTime = ''
         this.sellTime = ''
         this.successTime = ''
-        this.getPage()
         if(this.saleType) {
           this.queryParam.saleType = this.saleType
         }
+        this.getPage()
       }
     }
   }

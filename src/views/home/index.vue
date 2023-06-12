@@ -102,7 +102,7 @@
               <span class="font-medium">闪电直发入仓</span>
               <span
                 style="float: right"
-                :class="storeData.count11 > 0 ? 'color-danger' : ''"
+                :class="orderIofo.count11 > 0 ? 'color-danger' : ''"
               >({{orderIofo.count11}})</span>
             </div>
           </el-col>
@@ -342,11 +342,12 @@
     <div class="statistics-layout">
       <div class="layout-title">订单统计</div>
       <el-col :span="4">
-        <div @click="jumpSellList()"  style="padding: 20px;z-index: 20000">
-          <div>
+        <div @click="jumpSellList()"  style="padding: 12px;z-index: 20000">
+          <div class="total-frame">
             <div style="color: #909399;font-size: 14px">本月订单总数</div>
-            <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderData.successNum}}
-            </div>
+            <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderData.successNum}}</div>
+            <div style="color: #909399;font-size: 14px">预计本月订单总数</div>
+            <div style="color: #606266;font-size: 20px;padding: 10px 0">{{orderData.expectSuccessNum}}</div>
             <div>
               <!--                (本期数-同期数)/同期数*100%-->
               <span
@@ -355,11 +356,13 @@
               <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
             </div>
           </div>
-          <div style="margin-top: 50px;">
+          <div style="margin-top: 20px;" class="total-frame">
             <div style="color: #909399;font-size: 14px">本月利润</div>
             <div style="color: #606266;font-size: 24px;padding: 10px 0">
               {{orderData.profitsAmount}}
             </div>
+            <div style="color: #909399;font-size: 14px">预计本月利润</div>
+            <div style="color: #606266;font-size: 20px;padding: 10px 0">{{orderData.expectProfitsAmount}}</div>
             <div>
                 <span
                   :class="orderData.profitsAmountRate<0 ? 'color-danger' : 'color-success'"
@@ -367,10 +370,12 @@
               <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
             </div>
           </div>
-          <div style="margin-top: 50px;">
+          <div style="margin-top: 20px;" class="total-frame">
             <div style="color: #909399;font-size: 14px">本月销售总额</div>
             <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderData.orderAmount}}
             </div>
+            <div style="color: #909399;font-size: 14px">预计销售总额</div>
+            <div style="color: #606266;font-size: 20px;padding: 10px 0">{{orderData.expectOrderAmount}}</div>
             <div>
                 <span
                   :class="orderData.orderAmountRate<0 ? 'color-danger' : 'color-success'"
@@ -390,7 +395,7 @@
       </el-col>
       <el-row style="position: static">
         <el-col :span="20">
-          <div style="padding: 10px;border-left:1px solid #DCDFE6">
+          <div style="padding: 10px;border-left:1px solid #DCDFE6;height: 100%">
             <el-button :type="mouthLl" @click="profitData(1)"  round>月利润</el-button>
             <el-button :type="dayLl" @click="profitData(0)" round>日利润</el-button>
 
@@ -481,6 +486,21 @@ export default {
     }
   },
   methods: {
+    // forecast() {
+    //   let date = date.getDate()
+    //   alert(date)
+    //   let successNum = this.orderData.successNum / (date/30)
+    //   alert(successNum)
+    //   this.orderData.successNumRate = parseFloat(
+    //     (this.orderData.successNum - this.orderData.successNumLast)
+    //     / this.orderData.successNumLast * 100).toFixed(2)
+    //   this.orderData.profitsAmountRate = parseFloat(
+    //     (this.orderData.profitsAmount - this.orderData.profitsAmountLast)
+    //     / this.orderData.profitsAmountLast * 100).toFixed(2)
+    //   this.orderData.orderAmountRate = parseFloat(
+    //     (this.orderData.orderAmount - this.orderData.orderAmountLast)
+    //     / this.orderData.orderAmountLast * 100).toFixed(2)
+    // },
     profitData(dataType) {
       this.createTime = ''
       this.queryParam = {
@@ -573,6 +593,14 @@ export default {
             this.orderData.orderAmountRate = parseFloat(
               (this.orderData.orderAmount - this.orderData.orderAmountLast)
               / this.orderData.orderAmountLast * 100).toFixed(2)
+            var date = new Date();
+            let todaydate = date.getDate()
+            let expectSuccessNum = this.orderData.successNum / (todaydate/30)
+            this.orderData.expectSuccessNum = parseFloat(expectSuccessNum).toFixed(0)
+            let expectProfitsAmount = this.orderData.profitsAmount / (todaydate/30)
+            this.orderData.expectProfitsAmount = parseFloat(expectProfitsAmount).toFixed(2)
+            let expectOrderAmount = this.orderData.orderAmount / (todaydate/30)
+            this.orderData.expectOrderAmount = parseFloat(expectOrderAmount).toFixed(2)
           }
         } else {
           this.$message.error(res.subMsg)
@@ -732,8 +760,7 @@ export default {
 
   .total-frame {
     border: 1px solid #DCDFE6;
-    padding: 20px;
-    height: 100px;
+    padding: 5px;
   }
 
   .total-icon {
