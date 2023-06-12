@@ -346,7 +346,7 @@
           <div class="total-frame">
             <div style="color: #909399;font-size: 14px">本月订单总数</div>
             <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderData.successNum}}</div>
-            <div style="color: #909399;font-size: 14px">预计本月订单总数</div>
+            <div style="color: #909399;font-size: 14px">预计本月总数</div>
             <div style="color: #606266;font-size: 20px;padding: 10px 0">{{orderData.expectSuccessNum}}</div>
             <div>
               <!--                (本期数-同期数)/同期数*100%-->
@@ -374,7 +374,7 @@
             <div style="color: #909399;font-size: 14px">本月销售总额</div>
             <div style="color: #606266;font-size: 24px;padding: 10px 0">{{orderData.orderAmount}}
             </div>
-            <div style="color: #909399;font-size: 14px">预计销售总额</div>
+            <div style="color: #909399;font-size: 14px">预计本月总额</div>
             <div style="color: #606266;font-size: 20px;padding: 10px 0">{{orderData.expectOrderAmount}}</div>
             <div>
                 <span
@@ -415,11 +415,13 @@
             </el-date-picker>
             <div>
               <ve-line
-                :data="chartData"
-                :legend-visible="false"
+                v-if="dataType == 1"
+                :data="chartData1"
+                :legend-visible="true"
                 :loading="loading"
                 :data-empty="dataEmpty"
                 :settings="chartSettings"></ve-line>
+              <ve-histogram v-else :data="chartData1" :extend="extend" :settings="chartSettings" :legend-visible="true"></ve-histogram>
             </div>
           </div>
         </el-col>
@@ -443,6 +445,7 @@ export default {
       dateType: 'monthrange',
       valueFormat: 'yyyy-MM',
       // valueFormat: 'yyyy-MM-dd',
+      dataType: 1,
       dayLl: 'default',
       mouthLl: 'primary',
       createTime: '',
@@ -452,13 +455,67 @@ export default {
         axisSite: { right: ['profitsAmount'] },
         labelAlias: {
           'successNum': '订单数',
-          'orderAmount': '订单金额',
-          'profitsAmount': '利润'
+          'orderAmount': '订单金额(千)',
+          'profitsAmount': '利润(百)'
         }
       },
       chartData: {
         columns: ['months', 'successNum', 'orderAmount', 'profitsAmount'],
         rows: []
+      },
+      chartData1: {
+        columns: ['months', '订单数', '订单金额(千)', '利润(百)'],
+        rows: []
+      },
+      // chartData1: {
+      //   columns: ["data", "number"],
+      //   rows: [
+      //     { data: "1/1", number: 1393 },
+      //     { data: "1/2", number: 3530 },
+      //     { data: "1/3", number: 2923 },
+      //     { data: "1/4", number: 1723 },
+      //     { data: "1/5", number: 3792 },
+      //     { data: "1/6", number: 4593 },
+      //   ],
+      // },
+      extend: {
+        // x轴的文字倾斜
+        "xAxis.0.axisLabel.rotate": 45,
+        yAxis: {
+          //是否显示y轴线条
+          axisLine: {
+            show: true,
+          },
+          // 纵坐标网格线设置，同理横坐标
+          splitLine: {
+            show: false,
+          },
+          // 线条位置
+          position: "left",
+        },
+        xAxis: {
+          axisLine: {
+            show: true,
+          },
+        },
+        series: {
+          label: { show: true, position: "top" },
+        },
+        //数据过多时出现横向滚动条
+        dataZoom: [
+          {
+            show: true,
+            realtime: true,
+            start: 0,
+            end: 50,
+          },
+          {
+            type: "inside",
+            realtime: true,
+            start: 0,
+            end: 50,
+          },
+        ],
       },
       countDay: '0', // 倒计时
       count: '', // 倒计时
@@ -502,6 +559,7 @@ export default {
     //     / this.orderData.orderAmountLast * 100).toFixed(2)
     // },
     profitData(dataType) {
+      this.dataType = dataType
       this.createTime = ''
       this.queryParam = {
         dataType: dataType,
@@ -582,6 +640,7 @@ export default {
           this.dataEmpty = false
           this.loading = false
           this.chartData.rows = res.data.rows
+          this.chartData1.rows = res.data.rowsDate
           this.orderData = res.data
           if (this.orderData) {
             this.orderData.successNumRate = parseFloat(
@@ -593,7 +652,7 @@ export default {
             this.orderData.orderAmountRate = parseFloat(
               (this.orderData.orderAmount - this.orderData.orderAmountLast)
               / this.orderData.orderAmountLast * 100).toFixed(2)
-            var date = new Date();
+            var date = new Date()
             let todaydate = date.getDate()
             let expectSuccessNum = this.orderData.successNum / (todaydate/30)
             this.orderData.expectSuccessNum = parseFloat(expectSuccessNum).toFixed(0)
@@ -602,6 +661,21 @@ export default {
             let expectOrderAmount = this.orderData.orderAmount / (todaydate/30)
             this.orderData.expectOrderAmount = parseFloat(expectOrderAmount).toFixed(2)
           }
+          // let chartList = []
+          // for (let i = 0; i < res.data.rows.length; i++) {
+          //   let datainfo = res.data.rows[i]
+          //   if (datainfo.successNum && datainfo.successNum != 0) {
+          //     datainfo.profitsAmount = parseFloat(datainfo.profitsAmount / 100).toFixed(2)
+          //     datainfo.orderAmount = parseFloat(datainfo.orderAmount / 1000).toFixed(2)
+          //     datainfo.订单数 = datainfo.successNum
+          //     datainfo.订单金额 = datainfo.orderAmount
+          //     datainfo.利润 = datainfo.profitsAmount
+          //     chartList.push(datainfo)
+          //   }
+          // }
+          // this.chartData.rows = chartList
+          // this.chartData1.rows = chartList
+          // console.log(this.chartData.rows.length)
         } else {
           this.$message.error(res.subMsg)
         }

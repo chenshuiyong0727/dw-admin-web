@@ -13,8 +13,9 @@ import '@/permission' // permission control
 import '@/directive'
 import '@/utils/filter'
 // import VCharts from 'v-charts-v2'
-import VeLine from 'v-charts-v2/lib/line'
-
+import VeLine from 'v-charts/lib/line'
+// import VeLine from 'v-charts-v2/lib/line'
+import VeHistogram from 'v-charts/lib/histogram.common'
 import { objMerge } from '@/utils'
 // import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 
@@ -37,6 +38,7 @@ import { objMerge } from '@/utils'
 Vue.use(ElementUI)
 // Vue.use(VCharts)
 Vue.component(VeLine.name, VeLine)
+Vue.component(VeHistogram.name,VeHistogram)
 Vue.config.productionTip = false
 
 new Vue({
