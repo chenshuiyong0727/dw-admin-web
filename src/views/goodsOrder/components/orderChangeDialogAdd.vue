@@ -4,7 +4,7 @@
     :visible.sync="dialogVisible"
     width="40%"
     center
-    @close="closDialog1">
+    @close="closDialog">
     <el-row class="form-flex">
       <el-col :span="8" style="text-align: right"><span>图片：</span></el-col>
       <el-col :span="8" :offset="1">
@@ -61,14 +61,16 @@ export default {
       statusList: [],
       requestParam: {
         id: '',
-        addressId: ''
+        addressId: 1
       }
     }
   },
   mounted() {
     this.listSysDict()
     this.requestParam.id = this.orderData.id
-    this.requestParam.addressId = this.orderData.addressId
+    if (this.orderData.addressId) {
+      this.requestParam.addressId = this.orderData.addressId
+    }
   },
   methods: {
     avatarShow(e) {
@@ -81,7 +83,7 @@ export default {
       this.addressList = sysDictList.filter(item => item.typeValue == 38)
     },
     closDialog() {
-      this.$emit('closDialog1')
+      this.$emit('closDialog')
     },
     confirmHandle() {
       goodsOrderApi.update(this.requestParam).then(res => {
@@ -91,7 +93,7 @@ export default {
             message: '操作成功，即将返回',
             type: 'success'
           })
-          this.$emit('refreshPage1')
+          this.$emit('refreshPage')
         } else {
           this.$message.error(res.subMsg)
         }

@@ -215,6 +215,7 @@
         let loginInfo = deepCopy(this.loginForm)
         loginInfo.loginPassword = encrypt(loginInfo.loginPassword, this.secretKey)
         this.$store.dispatch('user/login', loginInfo).then((res) => {
+          this.$store.dispatch('apply/orderInfo')
           this.loading = false
           if (res.data) {
             // 初始化字典

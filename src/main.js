@@ -14,6 +14,7 @@ import '@/directive'
 import '@/utils/filter'
 // import VCharts from 'v-charts-v2'
 import VeLine from 'v-charts/lib/line'
+import VePie from 'v-charts/lib/pie'
 // import VeLine from 'v-charts-v2/lib/line'
 import VeHistogram from 'v-charts/lib/histogram.common'
 import { objMerge } from '@/utils'
@@ -36,6 +37,7 @@ import { objMerge } from '@/utils'
 // Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
 Vue.use(ElementUI)
+Vue.component(VePie.name, VePie)
 // Vue.use(VCharts)
 Vue.component(VeLine.name, VeLine)
 Vue.component(VeHistogram.name,VeHistogram)
