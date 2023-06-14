@@ -350,10 +350,10 @@
             <div style="color: #606266;font-size: 20px;padding: 10px 0">{{orderData.expectSuccessNum}}</div>
             <div>
               <!--                (本期数-同期数)/同期数*100%-->
-              <span
-                :class="orderData.successNumRate<0 ? 'color-danger' : 'color-success'"
-                style="font-size: 14px"> {{orderData.successNumRate}} %</span>
               <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
+              <span
+                :class="orderData.successNumRate>0 ? 'color-danger' : 'color-success'"
+                style="font-size: 14px"> {{orderData.successNumRate}} %</span>
             </div>
           </div>
           <div style="margin-top: 20px;" class="total-frame">
@@ -364,10 +364,10 @@
             <div style="color: #909399;font-size: 14px">预计本月利润</div>
             <div style="color: #606266;font-size: 20px;padding: 10px 0">{{orderData.expectProfitsAmount}}</div>
             <div>
-                <span
-                  :class="orderData.profitsAmountRate<0 ? 'color-danger' : 'color-success'"
-                  style="font-size: 14px">{{orderData.profitsAmountRate}} %</span>
               <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
+              <span
+                  :class="orderData.profitsAmountRate>0 ? 'color-danger' : 'color-success'"
+                  style="font-size: 14px">{{orderData.profitsAmountRate}} %</span>
             </div>
           </div>
           <div style="margin-top: 20px;" class="total-frame">
@@ -377,10 +377,10 @@
             <div style="color: #909399;font-size: 14px">预计本月总额</div>
             <div style="color: #606266;font-size: 20px;padding: 10px 0">{{orderData.expectOrderAmount}}</div>
             <div>
-                <span
-                  :class="orderData.orderAmountRate<0 ? 'color-danger' : 'color-success'"
-                  style="font-size: 14px">{{orderData.orderAmountRate}} %</span>
               <span style="color: #C0C4CC;font-size: 14px">同比上月</span>
+              <span
+                  :class="orderData.orderAmountRate>0 ? 'color-danger' : 'color-success'"
+                  style="font-size: 14px">{{orderData.orderAmountRate}} %</span>
             </div>
           </div>
           <!--            <div style="margin-top: 20px;">-->

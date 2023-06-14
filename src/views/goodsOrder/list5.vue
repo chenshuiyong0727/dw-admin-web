@@ -207,7 +207,11 @@
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
       <!--      <el-table-column align="center" prop="id" label="订单主键"/>-->
-      <el-table-column align="center" prop="orderNo" label="订单号"/>
+           <el-table-column align="center" width="110" prop="orderNo" label="订单号">
+       <template slot-scope="scope">
+         <a style="color: #20a0ff" @click="jumpactOrder(scope.row.orderNo)"> {{ scope.row.orderNo }}</a>
+       </template>
+     </el-table-column>
       <el-table-column align="center" label="图片" width="120">
 <template slot-scope="scope">
           <img v-if="scope.row.img" :src="scope.row.img" class="userPic"
@@ -417,7 +421,10 @@ import orderChangeStatusDialogSd from './components/orderChangeStatusDialogSd'
         this.imageZoom = e
         this.pictureZoomShow = true
       },
-      getSummaries(param) {
+      jumpactOrder(orderNo) {
+      this.$router.push({ path: '/goodsOrder/list', query: { orderNo } })
+    },
+    getSummaries(param) {
         const { columns, data } = param;
         const sums = [];
         columns.forEach((column, index) => {
