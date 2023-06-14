@@ -247,16 +247,16 @@ export const constantRoutes = [
         meta: { title: '已揽件订单' }
       },
       {
-        path: 'list6',
-        name: 'list6',
-        component: () => import('@/views/goodsOrder/list6'),
-        meta: { title: '已收货订单' }
-      },
-      {
         path: 'list11',
         name: 'list11',
         component: () => import('@/views/goodsOrder/list11'),
         meta: { title: '闪电直发入仓' }
+      },
+      {
+        path: 'list6',
+        name: 'list6',
+        component: () => import('@/views/goodsOrder/list6'),
+        meta: { title: '已收货订单' }
       },
       {
         path: 'list7',

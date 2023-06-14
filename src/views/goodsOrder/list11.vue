@@ -288,8 +288,8 @@
                        v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length">
         <template slot-scope="scope">
           <div>
+            <el-button type="text" @click="changeStatus(scope.row.id)">收货</el-button>
             <el-button type="text" @click="changeStatusDialog(scope.row)">成功</el-button>
-            <!--            <el-button type="text" @click="changeStatus(scope.row,7)" >成功</el-button>-->
             <el-button type="text" @click="changeStatusDialog1(scope.row)">瑕疵</el-button>
           </div>
         </template>
@@ -476,10 +476,11 @@ export default {
       this.isShowDialog1 = false
       this.getPage()
     },
-    changeStatus(row, status) {
-      row.status = status
-      row.deliveryDeadlineTime = ''
-      goodsOrderApi.sellGoods(row).then(res => {
+    changeStatus(id) {
+      let data = {}
+      data.id = id
+      data.status = 6
+      goodsOrderApi.update(data).then(res => {
         if (res.subCode === 1000) {
           this.$message.success(res.subMsg)
           this.$store.dispatch('apply/orderInfo')
