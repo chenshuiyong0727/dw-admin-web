@@ -9,17 +9,22 @@
       </el-button>
     </el-row>
     <el-form ref="form" :model="form" :rules="rules" label-width="150px">
-      <el-row class="form-flex">
-        <el-col :span="10">
-          <el-form-item prop="actNo" label="货号" class="is-required">
-            <el-input v-model="form.actNo" :disabled="type == 1 ">
-              <el-button type="primary" slot="append" @click="getImgUrl()"
-                         :disabled="type == 1 "
-                         icon="el-icon-refresh">获取资料
-              </el-button>
-            </el-input>
-          </el-form-item>
-        </el-col>
+<!--      <el-row class="form-flex">-->
+<!--        <el-col :span="16" class="form-flex">-->
+<!--          <el-form-item prop="actNo" label="货号" class="is-required">-->
+<!--            <el-input v-model="form.actNo" :disabled="type == 1 " />-->
+<!--            </el-input>-->
+<!--          </el-form-item>-->
+<!--          <el-button type="primary" @click="getImgUrl()" icon="el-icon-refresh">获取资料</el-button>-->
+<!--        </el-col>-->
+<!--      </el-row>-->
+      <el-row class="flex" type="flex" align="middle">
+        <el-form-item prop="actNo" label="货号" class="is-required">
+          <!-- <el-input v-model="form.bindUserId" :disabled="type == 1 "></el-input> -->
+          <el-input v-model="form.actNo" :disabled="type == 1 " />
+        </el-form-item>
+        <el-button type="primary" size="small" @click="getImgUrl()"  style="margin: 0 0 22px 12px;"  icon="el-icon-refresh">获取资料</el-button>
+<!--        <el-button type="text" class="underline" style="margin: 0 0 22px 22px;" @click="openBinUserPop">添加绑定人</el-button>-->
       </el-row>
       <el-row class="form-flex">
         <el-col>
@@ -280,7 +285,7 @@ export default {
       reqCount: 0,
       form: {
         sellDate: '',
-        sellPrice: '01',
+        sellPrice: '',
         img: '',
         type: '01',
         actNo: '',
@@ -429,7 +434,7 @@ export default {
             this.form = res.data ? res.data : {}
             this.queryParam.goodsId = this.form.id
             this.getPage()
-            this.getImgUrl()
+            // this.getImgUrl()
           } else {
             this.$message.error(res.subMsg)
           }

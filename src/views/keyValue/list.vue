@@ -77,7 +77,7 @@
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
 <!--      <el-table-column align="center" prop="id" label="键值对编号" />-->
-      <el-table-column align="center"  show-overflow-tooltip  width="150"  prop="keyName" label="键" />
+      <el-table-column align="center"  show-overflow-tooltip  width="200"  prop="keyName" label="键" />
       <el-table-column align="center"  show-overflow-tooltip  prop="keyValue" label="值" />
       <el-table-column align="center"  show-overflow-tooltip  width="200" prop="remark" label="备注" />
 <!--      <el-table-column align="center" prop="dataStatus" label="数据状态">-->

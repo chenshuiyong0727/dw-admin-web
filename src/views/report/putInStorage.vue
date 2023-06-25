@@ -11,7 +11,7 @@
               start-placeholder="时间开始"
               end-placeholder="时间结束"
               @change="createTimeChange"
-              value-format="yyyy-MM-dd">
+              value-format="yyyy-MM">
             </el-date-picker>
           </el-form-item>
         </el-col>
