@@ -42,6 +42,19 @@
         </el-col>
         <el-col :span="6">
           <el-form-item size="small">
+            <el-select v-model="queryParam.channelId">
+              <el-option label="入库渠道" value=""></el-option>
+              <el-option
+                v-for="item in channelIdList"
+                :key="item.fieldValue"
+                :label="item.fieldName"
+                :value="+item.fieldValue">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item size="small">
             <el-input v-model.trim="queryParam.actNo" placeholder="关键词（货号、商品名）"></el-input>
           </el-form-item>
         </el-col>
@@ -121,6 +134,11 @@
       <el-table-column align="center" prop="warehouseId" label="仓库">
         <template v-if="scope.row.warehouseId" slot-scope="scope">{{ scope.row.warehouseId |
           dictToDescTypeValue(40) }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" prop="warehouseId" label="入库渠道">
+        <template v-if="scope.row.channelId" slot-scope="scope">{{ scope.row.channelId |
+          dictToDescTypeValue(47) }}
         </template>
       </el-table-column>
       <el-table-column align="center" prop="syncTime" label="同步时间" width="100" sortable>
@@ -281,6 +299,7 @@
           syncTimeTo: '',
           id: '',
           warehouseId: '',
+          channelId: '',
           today: '',
           createTimeFrom: '',
           createTimeTo: '',
@@ -313,6 +332,10 @@
           ids: [],
           warehouseId: 2
         },
+        requestParamChannel: {
+          ids: [],
+          channelId: 2
+        },
         selectedId: [],
         ids: [],
         isShowDialog2: false,
@@ -328,12 +351,13 @@
       }
     },
     created() {
-      const { actNo, months, warehouseId,today } = this.$route.query
+      const { actNo, months, warehouseId,channelId,today } = this.$route.query
       this.today = today
       this.queryParam.actNo = actNo
       this.queryParam.warehouseId = warehouseId
+      this.queryParam.channelId = channelId
       this.queryParam.today = today
-      if (this.queryParam.actNo || this.queryParam.warehouseId || this.queryParam.today) {
+      if (this.queryParam.actNo || this.queryParam.warehouseId || this.queryParam.channelId || this.queryParam.today) {
         this.pageGoods()
       }
       this.months = months
@@ -449,6 +473,7 @@
           if (column.property == 'id'
               || column.property == 'size'
               || column.property == 'warehouseId'
+              || column.property == 'channelId'
             ){
             return
           }
@@ -503,6 +528,7 @@
           localStorage.getItem('sysDictList')) : []
         this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
         this.warehouseList = sysDictList.filter(item => item.typeValue == 40)
+        this.channelIdList = sysDictList.filter(item => item.typeValue == 47)
         this.todayList = sysDictList.filter(item => item.typeValue == 44)
       },
       pageChangeHandle(currentPage) {
@@ -571,6 +597,7 @@
           id: '',
           today: '',
           warehouseId: '',
+          channelId: '',
           inventory: 1,
           inventoryFrom: '',
           inventoryTo: '',

@@ -211,6 +211,11 @@
               dictToDescTypeValue(40) }}
             </template>
           </el-table-column>
+          <el-table-column align="center" prop="channelId" label="渠道">
+            <template v-if="scope.row.channelId" slot-scope="scope">{{ scope.row.channelId |
+              dictToDescTypeValue(47) }}
+            </template>
+          </el-table-column>
           <el-table-column align="center" prop="" label="手续费">
             <template v-if="scope.row.dwPrice" slot-scope="scope">{{(scope.row.dwPrice * 0.075 + 38
               + 8.5) | numFilter}}
@@ -314,6 +319,10 @@ export default {
       requestParam: {
         ids: [],
         warehouseId: 2
+      },
+      requestParamChannel: {
+        ids: [],
+        channelId: 2
       },
       selectedId: [],
       ids: [],
@@ -524,6 +533,7 @@ export default {
         localStorage.getItem('sysDictList')) : []
       this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
       this.warehouseList = sysDictList.filter(item => item.typeValue == 40)
+      this.channelIdList = sysDictList.filter(item => item.typeValue == 47)
       console.info(this.warehouseList)
     },
     pageChangeHandle(currentPage) {

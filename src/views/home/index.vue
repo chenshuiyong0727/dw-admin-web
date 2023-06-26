@@ -791,6 +791,15 @@ export default {
       // let goodsId = this.queryParam.goodsId
       this.$router.push({ path: '/goodsBase/dataDetail', query: { warehouseId }})
     },
+    goDataDetailchannelId(channelId) {
+      // // *** 根据真实路径配置地址
+      // if (!this.queryParam.goodsId) {
+      //   this.$message.error('没有选中数据')
+      //   return
+      // }
+      // let goodsId = this.queryParam.goodsId
+      this.$router.push({ path: '/goodsBase/dataDetail', query: { channelId }})
+    },
     goDataDetailToday(today) {
       this.$router.push({ path: '/goodsBase/dataDetail', query: { today }})
     },

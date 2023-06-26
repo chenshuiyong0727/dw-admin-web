@@ -127,7 +127,7 @@
           <el-form ref="form">
             <el-row>
               <el-button type="primary" size="small" style="margin-right: 5px"
-                         @click="handleClick()">移动仓库
+                         @click="handleClickChannel()">设置渠道
               </el-button>
               <el-dropdown trigger="click">
             <span style="color: #409EFF" class="el-dropdown-link">
@@ -142,6 +142,10 @@
                   <el-dropdown-item
                     type="text"
                     @click.native="goDetail">新增尺码
+                  </el-dropdown-item>
+                  <el-dropdown-item
+                    type="text"
+                    @click.native="handleClick">移动仓库
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
@@ -211,6 +215,11 @@
           <el-table-column align="center" prop="warehouseId" label="仓库">
             <template v-if="scope.row.warehouseId" slot-scope="scope">{{ scope.row.warehouseId |
               dictToDescTypeValue(40) }}
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="warehouseId" label="入库渠道">
+            <template v-if="scope.row.channelId" slot-scope="scope">{{ scope.row.channelId |
+              dictToDescTypeValue(47) }}
             </template>
           </el-table-column>
           <el-table-column align="center" prop="" label="手续费">
@@ -283,6 +292,12 @@
       :warehouseList="warehouseList"
       @refreshPage="refreshPage2"
       @closDialog="closDialog2"/>
+    <change-status-dialog-3
+      v-if="isShowDialog3 "
+      :ids="ids"
+      :channelIdList="channelIdList"
+      @refreshPage="refreshPage3"
+      @closDialog="closDialog3"/>
     <change-status-dialog1
       v-if="isShowDialog1 "
       :sizeData="sizeData1"
@@ -300,6 +315,7 @@ import InventoryDetail from './components/inventoryDetail'
 import changeStatusDialog from './components/changeStatusDialog'
 import changeStatusDialog1 from './components/changeStatusDialog1'
 import changeStatusDialog2 from './components/changeStatusDialog2'
+import changeStatusDialog3 from './components/changeStatusDialog3'
 import { goodsBaseApi } from '@/api/goodsBase'
 
 export default {
@@ -309,6 +325,7 @@ export default {
     changeStatusDialog,
     changeStatusDialog1,
     changeStatusDialog2,
+    changeStatusDialog3,
     InventoryDetail
   },
   data() {
@@ -317,15 +334,21 @@ export default {
         ids: [],
         warehouseId: 2
       },
+      requestParamChannel: {
+        ids: [],
+        channelId: 2
+      },
       selectedId: [],
       ids: [],
       sizeList: '',
       warehouseList: '',
+      channelIdList: '',
       sizeData: '',
       sizeData1: '',
       imageZoom: '',
       isShowDialog: false,
       isShowDialog2: false,
+      isShowDialog3: false,
       isShowDialog1: false,
       queryParam1: {
         keyword: '',
@@ -400,12 +423,7 @@ export default {
       }
       this.ids = temp
     },
-    changeStatusDialog2() {
-      this.isShowDialog2 = true
-    },
-    closDialog2() {
-      this.isShowDialog2 = false
-    },
+
     changeStatusDialog1(row) {
       console.info(row)
       this.sizeData1 = row
@@ -418,8 +436,24 @@ export default {
       this.isShowDialog = false
       this.pageGoods()
     },
+    changeStatusDialog2() {
+      this.isShowDialog2 = true
+    },
+    closDialog2() {
+      this.isShowDialog2 = false
+    },
     refreshPage2() {
       this.isShowDialog2 = false
+      this.pageGoods()
+    },
+    changeStatusDialog3() {
+      this.isShowDialog3 = true
+    },
+    closDialog3() {
+      this.isShowDialog3 = false
+    },
+    refreshPage3() {
+      this.isShowDialog3 = false
       this.pageGoods()
     },
     refreshPage1() {
@@ -446,6 +480,14 @@ export default {
         return
       }
       this.isShowDialog2 = true
+    },
+    handleClickChannel() {
+      this.requestParamChannel.ids = this.ids
+      if (!this.ids.length) {
+        this.$message.error('请选择尺码')
+        return
+      }
+      this.isShowDialog3 = true
     },
     jumpactNo() {
       if (!this.actNo) {
@@ -526,7 +568,8 @@ export default {
         localStorage.getItem('sysDictList')) : []
       this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
       this.warehouseList = sysDictList.filter(item => item.typeValue == 40)
-      console.info(this.warehouseList)
+      this.channelIdList = sysDictList.filter(item => item.typeValue == 47)
+      console.info(this.channelIdList)
     },
     pageChangeHandle(currentPage) {
       this.queryParam.pageNum = currentPage
