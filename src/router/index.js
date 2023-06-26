@@ -367,6 +367,12 @@ export const constantRoutes = [
         ]
       },
       {
+        path: 'channelStorage',
+        name: 'channelStorage',
+        component: () => import('@/views/report/channelStorage'),
+        meta: { title: '入库渠道报表' }
+      },
+      {
         path: 'areaSellList',
         name: 'areaSellList',
         component: () => import('@/views/report/areaSellList'),

@@ -12,6 +12,12 @@ export const reportApi = {
     method: 'get',
     params: body
   }),
+  // 获取数据列表
+  channelStorage: (body) => request({
+    url: '/gw/op/v1/report/channelStorage',
+    method: 'get',
+    params: body
+  }),
   areaSellList: (body) => request({
     url: '/gw/op/v1/report/areaSellList',
     method: 'get',
