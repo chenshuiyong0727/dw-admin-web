@@ -224,7 +224,7 @@
       },
       goDetail(id, type) {
         // *** 根据真实路径配置地址
-        this.$router.push({ path: '/goodsOrder/gift/detail', query: { id, type } })
+        this.$router.push({ path: '/more/gift/detail', query: { id, type } })
       },
       goDel(id) {
         giftApi.delById(id).then(res => {

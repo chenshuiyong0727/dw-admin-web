@@ -170,21 +170,6 @@ export const constantRoutes = [
         meta: { title: '库存明细' }
       },
       {
-        path: 'goodsAct',
-        name: 'goodsAct',
-        component: () => import('@/views/goodsAct/list'),
-        meta: { title: '活动' },
-        children: [
-          {
-            path: 'detail',
-            name: 'detail',
-            component: () => import('@/views/goodsAct/detail'),
-            meta: { title: '详情', routerId: 3 },
-            hidden: true
-          }
-        ]
-      },
-      {
         path: 'goodsDefects',
         name: 'goodsDefects',
         component: () => import('@/views/goodsDefects/list'),
@@ -276,51 +261,8 @@ export const constantRoutes = [
       //   component: () => import('@/views/goodsOrder/list9'),
       //   meta: { title: '已下架订单' }
       // },
-      {
-        path: 'goodsOther',
-        name: 'goodsOther',
-        component: () => import('@/views/goodsOther/list'),
-        meta: { title: '其他收支' },
-        children: [
-          {
-            path: 'detail',
-            name: 'detail',
-            component: () => import('@/views/goodsOther/detail'),
-            meta: { title: '详情', routerId: 3 },
-            hidden: true
-          }
-        ]
-      },
-      // {
-      //   path: 'gift',
-      //   name: 'gift',
-      //   component: () => import('@/views/gift/list'),
-      //   meta: { title: '红包' },
-      //   children: [
-      //     {
-      //       path: 'detail',
-      //       name: 'detail',
-      //       component: () => import('@/views/gift/detail'),
-      //       meta: { title: '详情', routerId: 3 },
-      //       hidden: true
-      //     }
-      //   ]
-      // },
-      // {
-      //   path: 'goodsBusiness',
-      //   name: 'goodsBusiness',
-      //   component: () => import('@/views/goodsBusiness/list'),
-      //   meta: { title: '营销' },
-      //   children: [
-      //     {
-      //       path: 'detail',
-      //       name: 'detail',
-      //       component: () => import('@/views/goodsBusiness/detail'),
-      //       meta: { title: '详情', routerId: 3 },
-      //       hidden: true
-      //     }
-      //   ]
-      // }
+
+
     ]
   },
   {
@@ -476,6 +418,76 @@ export const constantRoutes = [
       }
     ]
   },
+  // 更多
+  {
+    path: '/more',
+    component: Layout,
+    meta: { title: '更多', leftMenuId: 3 },
+    redirect: '/more/goodsAct',
+    children: [
+      {
+        path: 'goodsAct',
+        name: 'goodsAct',
+        component: () => import('@/views/goodsAct/list'),
+        meta: { title: '活动' },
+        children: [
+          {
+            path: 'detail',
+            name: 'detail',
+            component: () => import('@/views/goodsAct/detail'),
+            meta: { title: '详情', routerId: 3 },
+            hidden: true
+          }
+        ]
+      },
+      {
+        path: 'goodsOther',
+        name: 'goodsOther',
+        component: () => import('@/views/goodsOther/list'),
+        meta: { title: '其他收支' },
+        children: [
+          {
+            path: 'detail',
+            name: 'detail',
+            component: () => import('@/views/goodsOther/detail'),
+            meta: { title: '详情', routerId: 3 },
+            hidden: true
+          }
+        ]
+      },
+      {
+        path: 'gift',
+        name: 'gift',
+        component: () => import('@/views/gift/list'),
+        meta: { title: '红包' },
+        children: [
+          {
+            path: 'detail',
+            name: 'detail',
+            component: () => import('@/views/gift/detail'),
+            meta: { title: '详情', routerId: 3 },
+            hidden: true
+          }
+        ]
+      },
+      // {
+      //   path: 'goodsBusiness',
+      //   name: 'goodsBusiness',
+      //   component: () => import('@/views/goodsBusiness/list'),
+      //   meta: { title: '营销' },
+      //   children: [
+      //     {
+      //       path: 'detail',
+      //       name: 'detail',
+      //       component: () => import('@/views/goodsBusiness/detail'),
+      //       meta: { title: '详情', routerId: 3 },
+      //       hidden: true
+      //     }
+      //   ]
+      // }
+    ]
+  },
+
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

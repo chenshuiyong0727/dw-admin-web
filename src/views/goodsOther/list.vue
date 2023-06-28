@@ -276,7 +276,7 @@
       },
       goDetail(id, type) {
         // *** 根据真实路径配置地址
-        this.$router.push({ path: '/goodsOrder/goodsOther/detail', query: { id, type } })
+        this.$router.push({ path: '/more/goodsOther/detail', query: { id, type } })
       },
       goDel(id) {
         this.$confirm('是否继续?', '提示', {

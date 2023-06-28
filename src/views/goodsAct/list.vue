@@ -210,7 +210,7 @@ export default {
     },
     goDetail(id, type) {
       // *** 根据真实路径配置地址
-      this.$router.push({ path: '/goodsBase/goodsAct/detail', query: { id, type } })
+      this.$router.push({ path: '/more/goodsAct/detail', query: { id, type } })
     },
     goDel(id) {
       goodsActApi.delById(id).then(res => {

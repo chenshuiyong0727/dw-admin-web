@@ -131,7 +131,7 @@
       },
       goBack() {
         // *** 根据真实路径配置地址
-        this.$router.push({path: '/goodsOrder/gift'})
+        this.$router.push({path: '/more/gift'})
       },
       goEdit() {
         this.type = 2
