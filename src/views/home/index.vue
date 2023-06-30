@@ -32,7 +32,7 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <div class="un-handle-item" @click="jumpactOrder(5)">
-              <span class="font-medium">已揽件订单</span>
+              <span class="font-medium">运输中订单</span>
               <span
                 style="float: right"
                 :class="orderIofo.count5 > 0 ? 'color-danger' : ''"
@@ -450,7 +450,7 @@ export default {
       mouthLl: 'primary',
       createTime: '',
       chartSettings: {
-        xAxisType: 'time',
+        // xAxisType: 'time',
         area: false,
         axisSite: { right: ['profitsAmount'] },
         labelAlias: {

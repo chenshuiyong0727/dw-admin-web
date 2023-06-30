@@ -229,7 +229,7 @@ export const constantRoutes = [
         path: 'list5',
         name: 'list5',
         component: () => import('@/views/goodsOrder/list5'),
-        meta: { title: '已揽件订单' }
+        meta: { title: '运输中订单' }
       },
       {
         path: 'list11',
