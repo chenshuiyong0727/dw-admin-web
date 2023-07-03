@@ -322,6 +322,7 @@
               <el-button type="text" @click="changeStatusDialog(scope.row)">交易成功</el-button>
             </div>
             <el-button type="text" class="color-danger" @click="goDel(scope.row.id)">删除</el-button>
+            <el-button type="text"  @click="gotoWl(scope.row)">物流</el-button>
           </div>
         </template>
       </el-table-column>
@@ -353,6 +354,13 @@
       :orderData="orderData1"
       @refreshPage="refreshPage1"
       @closDialog="closDialog1"/>
+    <order-change-status-dialog-wl
+      v-if="isShowDialogWl "
+      :requestParamWl="requestParamWl"
+      :wlData="wlData"
+      :wlDataSize="wlDataSize"
+      @refreshPage="refreshPage1"
+      @closDialog="closDialogwl"/>
     <order-change-status-dialog2
       v-if="isShowDialog2 "
       :orderData="orderData2"
@@ -375,6 +383,7 @@
   import orderChangeStatusDialog from './components/orderChangeStatusDialog'
   import orderChangeStatusDialog2 from './components/orderChangeStatusDialog2'
   import orderChangeStatusDialogSd from './components/orderChangeStatusDialogSd'
+  import orderChangeStatusDialogWl from './components/orderChangeStatusDialogWl'
   import orderChangeStatusDialogAdd from './components/orderChangeStatusDialogAdd'
   import buttomButton from '@/components/buttomButton'
 
@@ -383,6 +392,7 @@
     components: {
       buttomButton,
       orderChangeStatusDialogAdd,
+      orderChangeStatusDialogWl,
       orderChangeStatusDialog,
       orderChangeStatusDialog2,
       orderChangeStatusDialogSd,
@@ -390,8 +400,18 @@
     },
     data() {
       return {
+        requestParamWl: {
+          receiverAddress: '',
+          addressId: '',
+          waybillNo: '',
+          freight: '',
+        },
+        wlData: [],
+        wlDataSize: '',
         orderData: '',
         isShowDialog: false,
+        orderDataWl: '',
+        isShowDialogWl: false,
         orderData1: '',
         isShowDialog1: false,
         orderData2: '',
@@ -520,13 +540,49 @@
         });
         return sums;
       },
-
+      gotoWl(orderData) {
+        this.requestParamWl.addressId = orderData.addressId
+        this.requestParamWl.waybillNo = orderData.waybillNo
+        if (!this.requestParamWl.waybillNo) {
+          this.$message.error('没有物流单号')
+          return
+        }
+        goodsOrderApi.waybillNoList(this.requestParamWl).then(res => {
+          if (res.subCode === 1000) {
+            if (res.data.list.length) {
+              this.wlDataSize = res.data.list.length
+              this.requestParamWl.receiverAddress = res.data.receiverAddress
+              this.requestParamWl.freight = res.data.realAmount
+              this.wlData = []
+              for (let i = 0; i < res.data.list.length; i++) {
+                let dataInfo = res.data.list[i]
+                let status = '运输中'
+                if (dataInfo.message.indexOf("已收取快件") >= 0) {
+                  status = '已揽件'
+                } else if (dataInfo.message.indexOf("可查看签收人信息") >= 0) {
+                  status = '已签收'
+                }
+                dataInfo.status = status
+                this.wlData.push(dataInfo)
+              }
+              this.isShowDialogWl = true
+            } else {
+              this.$message.error("暂无物流信息，请核对物流单号")
+            }
+          } else {
+            this.$message.error(res.subMsg)
+          }
+        })
+      },
       changeStatusDialog1(row) {
         this.orderData1 = row
         this.isShowDialog1 = true
       },
       closDialog1() {
         this.isShowDialog1 = false
+      },
+      closDialogwl() {
+        this.isShowDialogWl = false
       },
       refreshPage1() {
         this.isShowDialog1 = false

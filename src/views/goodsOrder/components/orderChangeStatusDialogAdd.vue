@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="出售"
+    title="修改"
     :visible.sync="dialogVisible"
     width="40%"
     center

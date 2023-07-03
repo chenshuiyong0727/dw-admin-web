@@ -13,7 +13,11 @@ export const goodsOrderApi = {
     method: 'put',
     data: body
   }),
-
+  waybillNoList: (body) => request({
+    url: '/gw/op/v1/goodsOrder/waybillNoList',
+    method: 'get',
+    params: body
+  }),
   // 删除(某项)
   delById: (id) => request({
     url: '/gw/op/v1/goodsOrder/' + id,
