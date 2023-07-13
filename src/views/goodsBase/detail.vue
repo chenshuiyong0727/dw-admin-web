@@ -345,10 +345,6 @@ export default {
         if (!valid) {
           return false
         }
-        if (!this.form.imgUrl) {
-          this.$message.error('上传图片')
-          return false
-        }
         if (!this.form.sizeList.length) {
           this.$message.error('请选择尺码')
           return false

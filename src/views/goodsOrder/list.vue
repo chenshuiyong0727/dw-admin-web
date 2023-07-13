@@ -50,6 +50,19 @@
         </el-col>
         <el-col :span="6">
           <el-form-item size="small">
+            <el-select v-model="queryParam.goodType">
+              <el-option label="商品类型" value=""></el-option>
+              <el-option
+                v-for="item in typeList"
+                :key="item.fieldValue"
+                :label="item.fieldName"
+                :value="item.fieldValue">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item size="small">
             <div>
               <el-input
                 style="width: 47%"
@@ -243,6 +256,9 @@
         </template>
       </el-table-column>
       <el-table-column align="center" prop="size" label="尺码"/>
+      <el-table-column align="center" prop="type" label="类型">
+        <template slot-scope="scope">{{ scope.row.type | dictToDescTypeValue(20221108) }}</template>
+      </el-table-column>
       <el-table-column align="center" prop="status" label="状态">
         <template slot-scope="scope">{{ scope.row.status | dictToDescTypeValue(37) }}</template>
       </el-table-column>
@@ -430,6 +446,7 @@
           status: '',
           saleType: '',
           shelvesPriceFrom: '',
+          goodType: '',
           shelvesPriceTo: '',
           freightFrom: '',
           freightTo: '',
@@ -450,6 +467,7 @@
           pageSize: 10,
           pageNum: 1
         },
+        typeList: [],
         addressList: [],
         saleTypeList: [],
         statusList: [],
@@ -701,6 +719,7 @@
         this.statusList = sysDictList.filter(item => item.typeValue == 37)
         this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
         this.saleTypeList = sysDictList.filter(item => item.typeValue == 46)
+        this.typeList = sysDictList.filter(item => item.typeValue == 20221108)
       },
       pageChangeHandle(currentPage) {
         this.queryParam.pageNum = currentPage
@@ -802,6 +821,7 @@
           saleType: '',
           shelvesPriceFrom: '',
           shelvesPriceTo: '',
+          goodType: '',
           freightFrom: '',
           freightTo: '',
           poundageFrom: '',

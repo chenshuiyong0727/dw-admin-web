@@ -147,7 +147,7 @@
         @size-change="reSearchHandle"
         @current-change="pageChangeHandle"
         :current-page="queryParam.pageNum"
-        :page-sizes="[10, 20, 50, 100]"
+        :page-sizes="[10, 20, 50, 100,500,1000,2000,3000]"
         :page-size="queryParam.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="totalCount">
@@ -245,7 +245,12 @@
       },
       goDetail(id, type) {
         // *** 根据真实路径配置地址
-        this.$router.push({ path: '/goodsBase/list/detail', query: { id, type } })
+        // this.$router.push({ path: '/goodsBase/list/detail', query: { id, type } })
+        let routeUrl = this.$router.resolve({
+          path: '/goodsBase/list/detail',
+          query: { id, type },
+        })
+        window.open(routeUrl.href, '_blank')
       },
       detailNew(id, type) {
         // *** 根据真实路径配置地址

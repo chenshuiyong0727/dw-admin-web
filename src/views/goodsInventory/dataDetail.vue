@@ -42,6 +42,19 @@
         </el-col>
         <el-col :span="6">
           <el-form-item size="small">
+            <el-select v-model="queryParam.goodType">
+              <el-option label="商品类型" value=""></el-option>
+              <el-option
+                v-for="item in typeList"
+                :key="item.fieldValue"
+                :label="item.fieldName"
+                :value="item.fieldValue">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item size="small">
             <el-select v-model="queryParam.channelId">
               <el-option label="入库渠道" value=""></el-option>
               <el-option
@@ -131,6 +144,9 @@
         </template>
       </el-table-column>
       <el-table-column align="center" prop="size" width="50" label="尺码" sortable/>
+      <el-table-column align="center" prop="type" label="类型">
+        <template slot-scope="scope">{{ scope.row.type | dictToDescTypeValue(20221108) }}</template>
+      </el-table-column>
       <el-table-column align="center" prop="warehouseId" label="仓库">
         <template v-if="scope.row.warehouseId" slot-scope="scope">{{ scope.row.warehouseId |
           dictToDescTypeValue(40) }}
@@ -298,6 +314,7 @@
           syncTimeFrom: '',
           syncTimeTo: '',
           id: '',
+          goodType: '',
           warehouseId: '',
           channelId: '',
           today: '',
@@ -341,6 +358,7 @@
         isShowDialog2: false,
         warehouseList: '',
         dataStatusList: [],
+        typeList: [],
         imgUrl: '',
         actNo: '',
         months: '',
@@ -530,6 +548,7 @@
         this.warehouseList = sysDictList.filter(item => item.typeValue == 40)
         this.channelIdList = sysDictList.filter(item => item.typeValue == 47)
         this.todayList = sysDictList.filter(item => item.typeValue == 44)
+        this.typeList = sysDictList.filter(item => item.typeValue == 20221108)
       },
       pageChangeHandle(currentPage) {
         this.queryParam.pageNum = currentPage
@@ -594,6 +613,7 @@
         this.queryParam = {
           syncTimeFrom: '',
           syncTimeTo: '',
+          goodType: '',
           id: '',
           today: '',
           warehouseId: '',
