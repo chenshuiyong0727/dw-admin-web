@@ -470,6 +470,21 @@ export const constantRoutes = [
           }
         ]
       },
+      {
+        path: 'memo',
+        name: 'memo',
+        component: () => import('@/views/memo/list'),
+        meta: { title: '备忘录' },
+        children: [
+          {
+            path: 'detail',
+            name: 'detail',
+            component: () => import('@/views/memo/detail'),
+            meta: { title: '详情', routerId: 3 },
+            hidden: true
+          }
+        ]
+      },
       // {
       //   path: 'goodsBusiness',
       //   name: 'goodsBusiness',
