@@ -10,6 +10,13 @@
     </el-row>
     <el-form ref="form" :model="form" :rules="rules" label-width="150px">
       <el-row class="form-flex">
+        <el-col :span="10">
+          <el-form-item prop="name" label="事项名称">
+            <el-input v-model="form.name" :disabled="type == 1 "></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row class="form-flex">
         <el-col>
           <el-form-item prop="type" label="类型" class="is-required">
             <el-select v-model="form.type" :disabled="type == 1 ">
@@ -24,18 +31,33 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row v-if="form.type == 1" class="flex" type="flex" align="middle">
-          <el-form-item prop="happenTime" label="时间" class="is-required">
-<!--            <el-input  v-model="form.happenTime" :disabled="type == 1 "></el-input>-->
-            <el-input  v-model="form.happenTime" :disabled="type == 1 "></el-input>
+      <el-row class="form-flex">
+        <el-col>
+          <el-form-item prop="dateType" label="日历类型" class="is-required">
+            <el-select v-model="form.dateType" :disabled="type == 1 ">
+              <el-option label="请选择" value=""></el-option>
+              <el-option
+                v-for="item in dateTypeList"
+                :key="item.fieldValue"
+                :label="item.fieldName"
+                :value="+item.fieldValue">
+              </el-option>
+            </el-select>
           </el-form-item>
-        <span style="margin: 0 0 22px 12px;" > 请输入 1到31 数字</span>
+        </el-col>
       </el-row>
-      <el-row v-else class="flex" type="flex" align="middle">
+      <el-row v-if="form.type == 2 || form.dateType == 2"  class="flex" type="flex" align="middle">
           <el-form-item prop="happenTime" label="时间" class="is-required">
             <el-input  v-model="form.happenTime" :disabled="type == 1 "></el-input>
           </el-form-item>
         <span style="margin: 0 0 22px 12px;" > 请输入 MM-dd (07-27) 或者 yyyy-MM-dd (2018-09-19）</span>
+      </el-row>
+      <el-row  v-else class="flex" type="flex" align="middle">
+        <el-form-item prop="happenTime" label="时间" class="is-required">
+          <!--            <el-input  v-model="form.happenTime" :disabled="type == 1 "></el-input>-->
+          <el-input  v-model="form.happenTime" :disabled="type == 1 "></el-input>
+        </el-form-item>
+        <span style="margin: 0 0 22px 12px;" > 请输入 1到31 数字</span>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
@@ -72,21 +94,30 @@
     data() {
       return {
         form: {
+          name: '',
           happenTime: '',
           type: 1,
+          dateType: 1,
           title: '',
           content: ''
         },
         typeList: [],
+        dateTypeList: [],
         dataStatusList: [],
         type: '',
         id: '',
         rules: {
+          name: [
+            { required: true, trigger: 'blur', message: '时间非空' }
+          ],
           happenTime: [
             { required: true, trigger: 'blur', message: '时间非空' }
           ],
           type: [
             { required: true, trigger: 'blur', message: '类型非空' }
+          ],
+          dateType: [
+            { required: true, trigger: 'blur', message: '日历类型非空' }
           ],
           title: [
             { required: true, trigger: 'blur', message: '提醒标题非空' }
@@ -125,6 +156,7 @@
         let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
           localStorage.getItem('sysDictList')) : []
         this.typeList = sysDictList.filter(item => item.typeValue == 49)
+        this.dateTypeList = sysDictList.filter(item => item.typeValue == 50)
         this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
       },
       goBack() {

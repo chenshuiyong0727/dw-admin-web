@@ -22,6 +22,11 @@
         </el-col>
         <el-col :span="6">
           <el-form-item  size="small">
+            <el-input v-model.trim="queryParam.name" placeholder="事项名称"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item  size="small">
             <el-input v-model.trim="queryParam.title" placeholder="提醒标题"></el-input>
           </el-form-item>
         </el-col>
@@ -50,7 +55,11 @@
 
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+      <el-table-column align="center" prop="name" label="事项名称" />
       <el-table-column align="center" prop="happenTime" label="时间" />
+      <el-table-column align="center" prop="type" label="日历类型">
+        <template slot-scope="scope">{{ scope.row.dateType | dictToDescTypeValue(50) }}</template>
+      </el-table-column>
       <el-table-column align="center" prop="type" label="类型">
         <template slot-scope="scope">{{ scope.row.type | dictToDescTypeValue(49) }}</template>
       </el-table-column>
@@ -99,6 +108,7 @@
       happenTime: '',
       type: '',
       title: '',
+          name: '',
       content: '',
       pageSize: 10,
         pageNum: 1
@@ -226,6 +236,7 @@
     this.queryParam = {
     happenTime: '',
     type: '',
+      name: '',
     title: '',
     content: '',
     pageSize: 10,
