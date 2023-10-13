@@ -485,6 +485,21 @@ export const constantRoutes = [
           }
         ]
       },
+      {
+        path: 'baseMsg',
+        name: 'baseMsg',
+        component: () => import('@/views/baseMsg/list'),
+        meta: { title: '待办消息' },
+        children: [
+          {
+            path: 'detail',
+            name: 'detail',
+            component: () => import('@/views/baseMsg/detail'),
+            meta: { title: '详情', routerId: 3 },
+            hidden: true
+          }
+        ]
+      },
       // {
       //   path: 'goodsBusiness',
       //   name: 'goodsBusiness',

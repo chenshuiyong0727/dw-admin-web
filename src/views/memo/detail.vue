@@ -108,7 +108,7 @@
         id: '',
         rules: {
           name: [
-            { required: true, trigger: 'blur', message: '时间非空' }
+            { required: true, trigger: 'blur', message: '名称非空' }
           ],
           happenTime: [
             { required: true, trigger: 'blur', message: '时间非空' }
