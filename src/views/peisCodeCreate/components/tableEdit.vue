@@ -57,7 +57,7 @@
 
 <script>
   import { dictListApi } from '@/api/dictManage'
-  import { createCodeApi } from '@/api/createCode'
+  import { createCodeApi } from '@/api/peisCreateCode'
   import tableDataStep from './tableDataSteps'
   import backEndStep from './backendStep'
   import frontEndStep from './frontendStep'
@@ -148,7 +148,7 @@
         createCodeApi.getCodeDetailById({ id }).then((res) => {
           if (res.subCode === 1000) {
             this.tableFormCur = res.data ? res.data.columnList1 : []
-            this.baseForm = res.data ? res.data.genTableDto : {}
+            this.baseForm = res.data ? res.data.peisGenTableDto : {}
           } else {
             this.$message.error(res.subMsg)
           }

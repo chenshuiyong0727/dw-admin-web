@@ -53,7 +53,7 @@
 </template>
 
 <script>
-  import { createCodeApi } from '@/api/createCode'
+  import { createCodeApi } from '@/api/peisCreateCode'
   import { getExport } from '@/api/exportFile'
 
   export default {
@@ -132,7 +132,7 @@
         this.$refs['form'].validate(async(valid) => {
           if (valid) {
             getExport(
-              '/gw/op/v1/code/genLogs/create',
+              '/gw/op/v1/code/peisGenLogs/create',
               { ...this.form, tableId: this.id, templateId: 1 },
               'post',
               '导出代码'

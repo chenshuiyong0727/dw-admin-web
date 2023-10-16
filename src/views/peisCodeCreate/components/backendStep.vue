@@ -166,14 +166,14 @@
       }
     },
     data() {
-      const validateDictCode = (rule, value, callback) => {
-        let index = parseInt(rule.field.split('.')[1])
-        let item = this.tableFormCur[index]
-        if (item.showType === '2' && item.dictTypeCode === null) {
-          callback(new Error('请输入字典编号'))
-        }
-        callback()
-      }
+      // const validateDictCode = (rule, value, callback) => {
+      //   let index = parseInt(rule.field.split('.')[1])
+      //   let item = this.tableFormCur[index]
+      //   if (item.showType === '2' && item.dictTypeCode === null) {
+      //     callback(new Error('请输入字典编号'))
+      //   }
+      //   callback()
+      // }
       return {
         options2: [
           {
@@ -268,9 +268,6 @@
         columnRules: {
           javaType: [
             { required: true, message: '请选择Java类型', trigger: 'change' }
-          ],
-          dictTypeCode: [
-            { required: true, validator: validateDictCode, trigger: 'blur' }
           ]
         }
       }
