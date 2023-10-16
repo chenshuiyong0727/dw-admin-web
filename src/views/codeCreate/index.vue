@@ -96,11 +96,26 @@
     </el-table>
     <Edit ref="edit"/>
     <el-dialog
+      top="2vh"
       title="导入数据库表"
       :visible.sync="dataBaseVisible"
       width="60%"
       @close="closeDataBase"
     >
+      <el-form :inline="true"  style="margin-top: -30px">
+        <el-form-item>
+          <el-input
+            v-model.trim="databaseForm.tableName"
+            placeholder="请输入表名"
+            clearable
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-button icon="el-icon-search" type="primary" @click="queryTableData">
+            查询
+          </el-button>
+        </el-form-item>
+      </el-form>
       <el-table height="400" :data="dataBaseList" @selection-change="setSelectDataBaseRows">
         <el-table-column
           align="center"
@@ -199,6 +214,7 @@
           tableName: ''
         },
         databaseForm: {
+          tableName: '',
           pageNum: 1,
           pageSize: 10
         },
@@ -324,6 +340,10 @@
         if (row.id) {
           this.$refs['edit'].showEdit(row)
         }
+      },
+      queryTableData() {
+        this.databaseForm.pageNum = 1
+        this.getDataBaseList(this.databaseForm)
       },
       setSelectDataBaseRows(val) {
         this.selectDataBaseRows = val
