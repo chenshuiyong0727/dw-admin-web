@@ -101,7 +101,7 @@
       width="60%"
       @close="closeDataBase"
     >
-      <el-table height="400" :data="dataBaseList" @selection-change="setSelectDataBaseRows">
+      <el-table height="600" :data="dataBaseList" @selection-change="setSelectDataBaseRows">
         <el-table-column
           align="center"
           show-overflow-tooltip
@@ -168,7 +168,7 @@
 </template>
 
 <script>
-  import { createCodeApi } from '@/api/createCode'
+  import { createCodeApi } from '@/api/peisCreateCode'
   import CodeGenerate from './components/codeGenerate.vue'
   import Edit from './components/tableEdit.vue'
 
@@ -302,6 +302,10 @@
       },
       removeItem(row) {
         const { id } = row
+        // if (this.selectRows.length == 0) {
+        //   this.$alert('没有选中数据')
+        //   return
+        // }
         this.$confirm('是否确认删除该项', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',

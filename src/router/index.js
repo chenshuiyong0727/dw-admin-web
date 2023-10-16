@@ -396,6 +396,12 @@ export const constantRoutes = [
         meta: { title: '代码生成器' }
       },
       {
+        path: '/peisCode/list',
+        name: 'list',
+        component: () => import('@/views/peisCodeCreate/index'),
+        meta: { title: '体检代码生成器' }
+      },
+      {
         path: '/code/dist',
         name: 'dist',
         component: () => import('@/views/dictManage/dictList'),
