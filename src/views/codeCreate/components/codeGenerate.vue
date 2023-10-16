@@ -64,6 +64,9 @@
         default: () => {
           return ''
         }
+      },
+      tableInfo: {
+        type: Object
       }
     },
     data() {
@@ -84,9 +87,9 @@
           tableType: 0,
           codeTitle: '',
           codeTitleBrief: '',
-          packageName: '',
+          packageName: 'com',
           moduleName: '',
-          authorName: ''
+          authorName: 'chensy'
         },
         dict: {},
         rules: {
@@ -111,14 +114,24 @@
     },
     mounted() {
       this.getDetailById()
+      if (this.tableInfo) {
+        this.form.codeTitle = this.tableInfo.comments ? this.tableInfo.comments : ''
+        this.form.codeTitleBrief = this.tableInfo.comments ? this.tableInfo.comments : ''
+        this.form.moduleName = this.tableInfo.tableName ? this.toHump(this.tableInfo.tableName) : ''
+      }
     },
     methods: {
+      toHump(name) {
+        return name.replace(/\_(\w)/g, function(all, letter){
+          return letter.toUpperCase();
+        });
+      },
       // 获取生成代码的详情信息
       getDetailById() {
         const id = this.id
         createCodeApi.codeDetail({ tableId: id }).then((res) => {
           if (res.subCode === 1000) {
-            this.form = res.data ? res.data : {}
+            this.form = res.data ? res.data : this.form
           } else {
             this.$message.error(res.subMsg)
           }

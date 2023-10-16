@@ -6,13 +6,13 @@
         <el-button type="primary" @click="openDataBaseDialog">
           从数据库导入
         </el-button>
-        <el-button
-          :disabled="selectRows.length !== 1"
-          type="primary"
-          @click="showCode"
-        >生成代码
-        </el-button
-        >
+<!--        <el-button-->
+<!--          :disabled="selectRows.length !== 1"-->
+<!--          type="primary"-->
+<!--          @click="showCode"-->
+<!--        >生成代码-->
+<!--        </el-button-->
+<!--        >-->
       </div>
       <div class="right">
         <el-form :inline="true" :model="queryForm" @submit.native.prevent>
@@ -87,6 +87,9 @@
         width="200"
       >
         <template v-slot="scope">
+          <el-button type="text" @click="showCode(scope.row)">
+            生成代码
+          </el-button>
           <el-button type="text" @click="handleUpdate(scope.row)">
             编辑
           </el-button>
@@ -166,6 +169,7 @@
     </el-dialog>
     <CodeGenerate
       :id="codeDetailId"
+      :tableInfo="tableInfo"
       @closeDialog="closeDialog"
       v-if="generateCodeDialog"
     />
@@ -200,6 +204,7 @@
       return {
         dataBaseTotal: 0,
         codeDetailId: '',
+        tableInfo: {},
         tableNames: '',
         layout: 'total, sizes, prev, pager, next, jumper',
         generateCodeDialog: false,
@@ -266,9 +271,10 @@
       closeDialog() {
         this.generateCodeDialog = false
       },
-      showCode() {
+      showCode(row) {
         this.generateCodeDialog = true
-        this.codeDetailId = this.selectRows && this.selectRows[0].id
+        this.tableInfo = row
+        this.codeDetailId = row && row.id
       },
       confirm() {
         createCodeApi
