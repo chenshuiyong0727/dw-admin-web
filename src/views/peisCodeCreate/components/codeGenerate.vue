@@ -87,7 +87,7 @@
           tableType: 0,
           codeTitle: '',
           codeTitleBrief: '',
-          packageName: 'com',
+          packageName: '',
           moduleName: '',
           authorName: 'chensy'
         },
@@ -145,16 +145,13 @@
         this.$refs['form'].validate(async(valid) => {
           if (valid) {
             getExport(
-              '/gw/op/v1/code/peisGenLogs/create',
+              '/gw/op/v1/peisCode/genLogs/create',
               { ...this.form, tableId: this.id, templateId: 1 },
               'post',
               '导出代码'
-            ).then(() => {
-              this.$notify({
-                title: '成功',
-                message: '这是一条成功的提示消息',
-                type: 'success'
-              })
+            ).then((res) => {
+              console.info("res",res)
+              this.$message.success('导出成功')
               this.$emit('refresh')
             })
           }

@@ -150,11 +150,7 @@
               'post',
               '导出代码'
             ).then(() => {
-              this.$notify({
-                title: '成功',
-                message: '这是一条成功的提示消息',
-                type: 'success'
-              })
+              this.$message.success('导出成功')
               this.$emit('refresh')
             })
           }

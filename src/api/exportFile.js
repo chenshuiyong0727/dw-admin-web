@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { hideLoading, showLoading } from '@/components/Loading/loading'
+import { Message } from 'element-ui'
 
 export const getExport = (url, body, method = 'post') => {
   showLoading()
@@ -23,6 +24,16 @@ export const getExport = (url, body, method = 'post') => {
       } else {
         console.log('请求错误')
       }
+    }).catch(error => {
+      console.log('请求错误 res', error)
+      hideLoading()
+      debugger
+      // this.$message.error('导出失败')
+      Message({
+        message: error.msg || '导出失败',
+        type: 'error',
+        duration: 2 * 1000
+      })
     })
   })
 }
