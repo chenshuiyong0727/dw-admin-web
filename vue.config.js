@@ -45,7 +45,7 @@ module.exports = {
     disableHostCheck: true,
     proxy: {
       '/': {
-        // target: `http://114.132.243.79:28027`,
+        // target: `http://1.12.217.123:28027`,
         // target: `https://org.yimed.cn/`,
         // target: `http://orgunit.server.com:28087`,
         target: `http://localhost:28027`,
@@ -59,8 +59,8 @@ module.exports = {
       //before: require('./mock/mock-server.js')
   },
   configureWebpack: {
-    // provide the app's title in webpack's name field, so that
-    // it can be accessed in index.html to inject the correct title.
+    // provide the app's title in webpack's name field, so that utf8mb4_general_ci
+    // it can be accessed in index.html to inject the correct title. utf8mb4 -- UTF-8 Unicode
     name: name,
     resolve: {
       alias: {
