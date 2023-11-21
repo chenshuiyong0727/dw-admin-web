@@ -7,7 +7,7 @@
             show-overflow-tooltip
             prop="fieldName"
             label="字段名称"
-            min-width="200"
+            min-width="150"
           >
             <template slot-scope="scope">
               <el-form-item
@@ -27,7 +27,7 @@
             show-overflow-tooltip
             prop="fieldComments"
             label="字段描述"
-            min-width="240"
+            min-width="200"
           >
             <template slot-scope="scope">
               <el-form-item
@@ -103,6 +103,27 @@
               </el-form-item>
             </template>
           </el-table-column>
+          <el-table-column
+            show-overflow-tooltip
+            prop="izKeyword"
+            label="关键词匹配"
+            min-width="80"
+          >
+            <template slot-scope="scope">
+              <el-form-item
+                :prop="'tableForm.' + scope.$index + '.izKeyword'"
+                class="el-form-item-table"
+              >
+                <el-switch
+                  v-model="scope.row.izKeyword"
+                  :active-value="'1'"
+                  :inactive-value="'0'"
+                  @change="izKeywordChange(scope.row)"
+                >
+                </el-switch>
+              </el-form-item>
+            </template>
+          </el-table-column>
 
           <el-table-column
             show-overflow-tooltip
@@ -154,6 +175,7 @@
                     scope.row.showType === '3' ||
                     scope.row.showType === '4' ||
                     scope.row.izShowList === null ||
+                    scope.row.izKeyword === '1' ||
                     scope.row.izShowList === 0
                   "
                   style="width: 100%"
@@ -261,6 +283,10 @@
           {
             value: 'LIKE',
             label: '模糊匹配'
+          },
+          {
+            value: 'KEYWORD',
+            label: '关键词'
           }
         ]
       }
@@ -305,6 +331,18 @@
             else if (el.showType === '3' || el.showType === '4') {
               el.queryType = 'RANGE'
             }
+          } else {
+            el.queryType = ''
+          }
+        }
+      },
+      // 列表显示
+      izKeywordChange(el) {
+        if (!isNull(el)) {
+          // 在列表显示
+          if (el.izKeyword === 1) {
+            // 字典
+            el.queryType = 'KEYWORD'
           } else {
             el.queryType = ''
           }

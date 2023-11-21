@@ -66,6 +66,38 @@
               </el-select>
             </el-form-item>
           </el-col>
+
+
+          <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
+            <el-form-item label="关键词" prop="comments">
+              <el-input
+                size="small"
+                v-model="baseForm.keyword"
+                autocomplete="off"
+                maxlength="100"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+
+
+          <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
+            <el-form-item label="是否启用xml" prop="jdbcType">
+              <el-select
+                size="small"
+                v-model="baseForm.isXml"
+                placeholder="请选择"
+                ref="jdbcType"
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="item in options3"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
         </el-row>
       </el-form>
 
@@ -266,6 +298,7 @@
           }
         ],
         options2: [{ value: 'mysql', label: 'MySQL' }],
+        options3: [{ value: 1, label: '是' },{ value: 0, label: '否' }],
         rules: {
           tableName: [
             { required: true, trigger: 'blur', validator: validateTableName }
