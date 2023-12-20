@@ -8,6 +8,13 @@ export const dictListApi = {
       method: 'get',
       params: body
     }),
+  // 字典类型列表
+  listSysDictTypePeis: (body) =>
+    request({
+      url: '/gw/op/v1/base/sys/dict/peis/listSysDictType',
+      method: 'get',
+      params: body
+    }),
   // 新增字典类型
   addDictItem: (body) =>
     request({

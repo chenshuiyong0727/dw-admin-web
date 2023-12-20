@@ -175,7 +175,6 @@
                     scope.row.showType === '3' ||
                     scope.row.showType === '4' ||
                     scope.row.izShowList === null ||
-                    scope.row.izKeyword === '1' ||
                     scope.row.izShowList === 0
                   "
                   style="width: 100%"
@@ -340,7 +339,7 @@
       izKeywordChange(el) {
         if (!isNull(el)) {
           // 在列表显示
-          if (el.izKeyword === 1) {
+          if (el.izKeyword === 1 || el.izKeyword === '1') {
             // 字典
             el.queryType = 'KEYWORD'
           } else {

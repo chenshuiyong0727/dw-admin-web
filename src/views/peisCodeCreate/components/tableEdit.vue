@@ -118,7 +118,7 @@
         this.active = this.active - 1
       },
       getDictList() {
-        dictListApi.getCodeList({ pageNum: 1, pageSize: 1000 }).then((res) => {
+        dictListApi.listSysDictTypePeis({ pageNum: 1, pageSize: 1000 }).then((res) => {
           if (res.subCode === 1000) {
             this.dictList = res.data ? res.data.list : []
             this.dictList = this.dictList.map((item) => {
