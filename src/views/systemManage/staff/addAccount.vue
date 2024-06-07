@@ -90,6 +90,26 @@
                      style="width:100%; display:inline-block"></el-cascader>
       </el-col>
     </el-row>
+    <el-row class="form-flex">
+      <el-col :span="5"><i class="red">*</i><span>特殊类型：</span></el-col>
+      <el-col :span="18" :offset="1">
+        <el-select v-model="param.otherType" style="width:100%; display:inline-block" size="small">
+          <el-option
+            v-for="item in otherTypeList"
+            :key="item.fieldValue"
+            :label="item.fieldName"
+            :value="+item.fieldValue">
+          </el-option>
+        </el-select>
+      </el-col>
+    </el-row>
+    <el-row class="form-flex" v-if="param.otherType === 1">
+      <el-col :span="5"><span>限额：</span></el-col>
+      <el-col :span="18" :offset="1">
+        <el-input maxlength="5" type="number" v-model="param.limitPrice" placeholder="限额"
+                  size="small"></el-input>
+      </el-col>
+    </el-row>
     <el-row class="button" type="flex" justify="center">
       <el-button type="primary" @click="confirmHandle">确认</el-button>
       <el-button type="text" @click="returnPage">返回</el-button>
@@ -117,6 +137,7 @@
         genderList: [],
         // employeeTypeList: DICT_KEYS.employeeTypeList,
         employeeTypeList: [],
+        otherTypeList: [],
         param: {
           level: '',
           userAccount: '',
@@ -124,9 +145,11 @@
           gender: '',
           departmentId: '',
           postId: '',
-          staffType: '',
+          staffType: 1,
           userEmail: '',
           userMobile: '',
+          otherType: 0,
+          limitPrice: '',
           // customerCare: '',
           roleIds: []
         },
@@ -211,6 +234,7 @@
           localStorage.getItem('sysDictList')) : []
         this.genderList = sysDictList.filter(item => item.typeValue == DICT_KEYS.SEX)
         this.employeeTypeList = sysDictList.filter(item => item.typeValue == DICT_KEYS.EMPLOYEE)
+        this.otherTypeList = sysDictList.filter(item => item.typeValue == 61)
       },
       getOpSysUserById(id) {
         systemContainerApi.getOpSysUserById({ id }).then(res => {
