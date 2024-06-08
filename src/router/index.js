@@ -530,6 +530,21 @@ export const constantRoutes = [
           }
         ]
       },
+      {
+        path: 'baseOddsType',
+        name: 'baseOddsType',
+        component: () => import('@/views/sport/baseOddsType/list'),
+        meta: { title: '指数类型' },
+        children: [
+          {
+            path: 'detail',
+            name: 'detail',
+            component: () => import('@/views/sport/baseOddsType/detail'),
+            meta: { title: '详情', routerId: 3 },
+            hidden: true
+          }
+        ]
+      },
     ]
   },
 
