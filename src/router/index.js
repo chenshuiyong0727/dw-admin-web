@@ -515,6 +515,21 @@ export const constantRoutes = [
           }
         ]
       },
+      {
+        path: 'baseSchedule',
+        name: 'baseSchedule',
+        component: () => import('@/views/sport/baseSchedule/list'),
+        meta: { title: '赛程' },
+        children: [
+          {
+            path: 'detail',
+            name: 'detail',
+            component: () => import('@/views/sport/baseSchedule/detail'),
+            meta: { title: '详情', routerId: 3 },
+            hidden: true
+          }
+        ]
+      },
     ]
   },
 
