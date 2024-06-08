@@ -4,45 +4,55 @@
       <el-row class="query-form">
         <el-col :span="6">
           <el-form-item size="small">
-            <el-date-picker
-              v-model="time"
-              end-placeholder="时间结束"
-              range-separator="至"
-              start-placeholder="时间开始"
-              type="daterange"
-              value-format="yyyy-MM-dd"
-              @change="timeChange">
-            </el-date-picker>
+            <el-select v-model="queryParam.type">
+              <el-option label="指数类型"
+                         value=""></el-option>
+              <el-option
+                v-for="item in typeList"
+                :key="item.fieldValue"
+                :label="item.fieldName"
+                :value="+item.fieldValue">
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item size="small">
-            <el-input v-model.trim="queryParam.homeTeamId" placeholder="主队编号"></el-input>
+            <el-input v-model.trim="queryParam.scheduleId" placeholder="赛程编号"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item size="small">
-            <el-input v-model.trim="queryParam.homeTeamName" placeholder="主队名称"></el-input>
+            <el-input v-model.trim="queryParam.scheduleName" placeholder="赛程名称"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item size="small">
-            <el-input v-model.trim="queryParam.guestTeamId" placeholder="客队编号"></el-input>
+            <div>
+              <el-input
+                v-input-validation
+                v-model.trim="queryParam.oddsFrom"
+                placeholder="指数开始"
+                style="width: 47%">
+              </el-input>
+              <span> - </span>
+              <el-input
+                v-input-validation
+                v-model.trim="queryParam.oddsTo"
+                placeholder="指数结束"
+                style="width: 47%">
+              </el-input>
+            </div>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item size="small">
-            <el-input v-model.trim="queryParam.guestTeamName" placeholder="客队名称"></el-input>
+            <el-input v-model.trim="queryParam.oddsTypeId" placeholder="指数类型编号"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item size="small">
-            <el-input v-model.trim="queryParam.events" placeholder="赛事"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item size="small">
-            <el-input v-model.trim="queryParam.title" placeholder="标题"></el-input>
+            <el-input v-model.trim="queryParam.baseInfo" placeholder="基数"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -79,19 +89,16 @@
 
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column align="center" label="序号" type="index" width="50"></el-table-column>
-      <el-table-column align="center" label="赛程编号" prop="id"/>
-      <el-table-column align="center" label="时间" prop="time">
-        <template slot-scope="scope">{{
-            scope.row.time | formateTime('{y}-{m}-{d} {h}:{i}')
-          }}
-        </template>
+      <el-table-column align="center" label="指数编号" prop="id"/>
+      <el-table-column align="center" label="指数类型"
+                       prop="type">
+        <template slot-scope="scope">{{ scope.row.type | dictToDescTypeValue(63) }}</template>
       </el-table-column>
-      <el-table-column align="center" label="主队编号" prop="homeTeamId"/>
-      <el-table-column align="center" label="主队名称" prop="homeTeamName"/>
-      <el-table-column align="center" label="客队编号" prop="guestTeamId"/>
-      <el-table-column align="center" label="客队名称" prop="guestTeamName"/>
-      <el-table-column align="center" label="赛事" prop="events"/>
-      <el-table-column align="center" label="标题" prop="title"/>
+      <el-table-column align="center" label="赛程编号" prop="scheduleId"/>
+      <el-table-column align="center" label="赛程名称" prop="scheduleName"/>
+      <el-table-column align="center" label="指数" prop="odds"/>
+      <el-table-column align="center" label="指数类型编号" prop="oddsTypeId"/>
+      <el-table-column align="center" label="基数" prop="baseInfo"/>
       <el-table-column align="center" label="备注" prop="remark"/>
       <el-table-column v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length" align="center" fixed="right" label="操作"
                        width="130">
@@ -134,7 +141,7 @@
 
 <script>
 import ThreeLevelRoute from '@/components/ThreeLevelRoute'
-import { baseScheduleApi } from '@/api/sport/baseSchedule'
+import { baseOddsApi } from '@/api/sport/baseOdds'
 import { permissionMixin } from '@/mixins/permissionMixin'
 import { getExport } from '@/api/exportFile'
 
@@ -146,20 +153,19 @@ export default {
   data() {
     return {
       queryParam: {
-        timeFrom: '',
-        timeTo: '',
-        homeTeamId: '',
-        homeTeamName: '',
-        guestTeamId: '',
-        guestTeamName: '',
-        events: '',
-        title: '',
+        type: '',
+        scheduleId: '',
+        scheduleName: '',
+        oddsFrom: '',
+        oddsTo: '',
+        oddsTypeId: '',
+        baseInfo: '',
         remark: '',
         pageSize: 10,
         pageNum: 1
       },
+      typeList: [],
       dataStatusList: [],
-      time: '',
       selectedId: [],
       ids: [],
       tableData: [],
@@ -171,17 +177,8 @@ export default {
     this.listSysDict()
   },
   methods: {
-    timeChange() {
-      if (this.time) {
-        this.queryParam.timeFrom = this.time[0]
-        this.queryParam.timeTo = this.time[1]
-      } else {
-        this.queryParam.timeFrom = null
-        this.queryParam.timeTo = null
-      }
-    },
     getPage() {
-      baseScheduleApi.page(this.queryParam).then(res => {
+      baseOddsApi.page(this.queryParam).then(res => {
         if (res.subCode === 1000) {
           this.tableData = res.data ? res.data.list : []
           this.totalCount = res.data ? res.data.pageInfo.totalCount : 0
@@ -193,6 +190,7 @@ export default {
     listSysDict() {
       let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
         localStorage.getItem('sysDictList')) : []
+      this.typeList = sysDictList.filter(item => item.typeValue == 63)
       this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
     },
     pageChangeHandle(currentPage) {
@@ -206,10 +204,10 @@ export default {
     },
     goDetail(id, type) {
       // *** 根据真实路径配置地址
-      this.$router.push({ path: '/sport/baseSchedule/detail', query: { id, type } })
+      this.$router.push({ path: '/sport/baseOdds/detail', query: { id, type } })
     },
     goDel(id) {
-      baseScheduleApi.delById(id).then(res => {
+      baseOddsApi.delById(id).then(res => {
         if (res.subCode === 1000) {
           this.$message.success(res.subMsg)
           this.getPage()
@@ -219,7 +217,7 @@ export default {
       })
     },
     changeStatus(id, dataStatus) {
-      baseScheduleApi.changeStatus({ id, dataStatus }).then(res => {
+      baseOddsApi.changeStatus({ id, dataStatus }).then(res => {
         if (res.subCode === 1000) {
           this.$message.success(res.subMsg)
         } else {
@@ -250,7 +248,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        baseScheduleApi.batchdelete(this.ids).then(res => {
+        baseOddsApi.batchdelete(this.ids).then(res => {
           if (res.subCode === 1000) {
             this.$message.success(res.subMsg)
             this.getPage()
@@ -270,25 +268,23 @@ export default {
           ...this.queryParam
         }
       }
-      getExport('/gw/op/v1/baseSchedule/export', data, 'post', '赛程表列表').then(() => {
+      getExport('/gw/op/v1/baseOdds/export', data, 'post', '指数表列表').then(() => {
         this.$emit('refresh')
       })
     },
     resetHandle() {
       this.queryParam = {
-        timeFrom: '',
-        timeTo: '',
-        homeTeamId: '',
-        homeTeamName: '',
-        guestTeamId: '',
-        guestTeamName: '',
-        events: '',
-        title: '',
+        type: '',
+        scheduleId: '',
+        scheduleName: '',
+        oddsFrom: '',
+        oddsTo: '',
+        oddsTypeId: '',
+        baseInfo: '',
         remark: '',
         pageSize: 10,
         pageNum: 1
       }
-      this.time = ''
       this.getPage()
     }
   }
