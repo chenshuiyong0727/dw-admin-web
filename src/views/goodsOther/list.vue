@@ -210,6 +210,7 @@
           pageNum: 1
         },
         pictureZoomShow: false,
+        imageZoom: '',
         fileUrl: fileUrl,
         typeList: [],
         dataStatusList: [],

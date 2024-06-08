@@ -491,21 +491,30 @@ export const constantRoutes = [
           }
         ]
       },
-      // {
-      //   path: 'goodsBusiness',
-      //   name: 'goodsBusiness',
-      //   component: () => import('@/views/goodsBusiness/list'),
-      //   meta: { title: '营销' },
-      //   children: [
-      //     {
-      //       path: 'detail',
-      //       name: 'detail',
-      //       component: () => import('@/views/goodsBusiness/detail'),
-      //       meta: { title: '详情', routerId: 3 },
-      //       hidden: true
-      //     }
-      //   ]
-      // }
+    ]
+  },
+  // 更多
+  {
+    path: '/sport',
+    component: Layout,
+    meta: { title: '体育', leftMenuId: 3 },
+    redirect: '/sport/baseTeam',
+    children: [
+      {
+        path: 'baseTeam',
+        name: 'baseTeam',
+        component: () => import('@/views/sport/baseTeam/list'),
+        meta: { title: '球队' },
+        children: [
+          {
+            path: 'detail',
+            name: 'detail',
+            component: () => import('@/views/sport/baseTeam/detail'),
+            meta: { title: '详情', routerId: 3 },
+            hidden: true
+          }
+        ]
+      },
     ]
   },
 
