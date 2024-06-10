@@ -41,6 +41,10 @@ export const baseTeamApi = {
     url: '/gw/op/v1/baseTeam',
     method: 'put',
     data: body
+  }),
+  // 下拉
+  getList: (body) => request({
+    url: '/gw/op/v1/baseTeam/getList',
+    method: 'get'
   })
-
 }

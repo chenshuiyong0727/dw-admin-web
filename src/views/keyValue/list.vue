@@ -84,12 +84,12 @@
 <!--        <template slot-scope="scope">{{ scope.row.dataStatus | dictToDescTypeValue(36) }}</template>-->
 <!--      </el-table-column>-->
 <!--      <el-table-column align="center" prop="createTime" label="创建时间">-->
-<!--        <template slot-scope="scope">{{scope.row.createTime | formateTime('{y}-{m}-{d} {h}:{i}') }} </template>-->
+<!--        <template slot-scope="scope">{{scope.row.createTime | formateTime() }} </template>-->
 <!--      </el-table-column>-->
 <!--      <el-table-column align="center" prop="createUserId" label="创建人编号" />-->
 <!--      <el-table-column align="center" prop="createUserName" label="创建人名称" />-->
       <el-table-column align="center" prop="updateTime"  width="150" label="更新时间">
-        <template slot-scope="scope">{{scope.row.updateTime | formateTime('{y}-{m}-{d} {h}:{i}') }} </template>
+        <template slot-scope="scope">{{scope.row.updateTime | formateTime() }} </template>
       </el-table-column>
 <!--      <el-table-column align="center" prop="updateUserId" label="更新人编号" />-->
 <!--      <el-table-column align="center" prop="updateUserName" label="更新人名称" />-->

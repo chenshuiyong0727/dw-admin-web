@@ -15,24 +15,24 @@
             </el-date-picker>
           </el-form-item>
         </el-col>
+<!--        <el-col :span="6">-->
+<!--          <el-form-item size="small">-->
+<!--            <el-input v-model.trim="queryParam.homeTeamId" placeholder="主队编号"></el-input>-->
+<!--          </el-form-item>-->
+<!--        </el-col>-->
         <el-col :span="6">
           <el-form-item size="small">
-            <el-input v-model.trim="queryParam.homeTeamId" placeholder="主队编号"></el-input>
+            <el-input v-model.trim="queryParam.homeTeamName" placeholder="主队"></el-input>
           </el-form-item>
         </el-col>
+<!--        <el-col :span="6">-->
+<!--          <el-form-item size="small">-->
+<!--            <el-input v-model.trim="queryParam.guestTeamId" placeholder="客队编号"></el-input>-->
+<!--          </el-form-item>-->
+<!--        </el-col>-->
         <el-col :span="6">
           <el-form-item size="small">
-            <el-input v-model.trim="queryParam.homeTeamName" placeholder="主队名称"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item size="small">
-            <el-input v-model.trim="queryParam.guestTeamId" placeholder="客队编号"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item size="small">
-            <el-input v-model.trim="queryParam.guestTeamName" placeholder="客队名称"></el-input>
+            <el-input v-model.trim="queryParam.guestTeamName" placeholder="客队"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -82,16 +82,47 @@
       <el-table-column align="center" label="赛程编号" prop="id"/>
       <el-table-column align="center" label="时间" prop="time">
         <template slot-scope="scope">{{
-            scope.row.time | formateTime('{y}-{m}-{d} {h}:{i}')
+            scope.row.time | formateTime()
           }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="主队编号" prop="homeTeamId"/>
-      <el-table-column align="center" label="主队名称" prop="homeTeamName"/>
-      <el-table-column align="center" label="客队编号" prop="guestTeamId"/>
-      <el-table-column align="center" label="客队名称" prop="guestTeamName"/>
+      <el-table-column align="center" label="主队" prop="homeTeamName"/>
+      <el-table-column align="center" label="主队图片" width="80">
+        <template slot-scope="scope">
+          <img v-if="scope.row.homeTeamImg" :src="scope.row.homeTeamImg" alt=""
+               class="userPic" @click="avatarShow(scope.row.homeTeamImg)">
+          <img v-if="!scope.row.homeTeamImg && scope.row.homeTeamImgUrl" :src="fileUrl+scope.row.homeTeamImgUrl"
+               alt="" class="userPic" @click="avatarShow(fileUrl+scope.row.homeTeamImgUrl)">
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="客队" prop="guestTeamName"/>
+      <el-table-column align="center" label="主队图片" width="80">
+        <template slot-scope="scope">
+            <img v-if="scope.row.guestTeamImg" :src="scope.row.guestTeamImg" alt=""
+                 class="userPic" @click="avatarShow(scope.row.guestTeamImg)">
+            <img v-if="!scope.row.guestTeamImg && scope.row.guestTeamImgUrl" :src="fileUrl+scope.row.guestTeamImgUrl"
+                 alt="" class="userPic" @click="avatarShow(fileUrl+scope.row.guestTeamImgUrl)">
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="赛事" prop="events"/>
       <el-table-column align="center" label="标题" prop="title"/>
+      <el-table-column align="center" label="赛程状态" prop="type">
+        <template slot-scope="scope">{{ scope.row.status | dictToDescTypeValue(66) }}</template>
+      </el-table-column>
+<!--      <el-table-column align="center" label="结局"  width="200" prop="finale"/>-->
+      <el-table-column align="center" label="结局" width="200">
+        <template slot-scope="scope">
+          <span v-if="scope.row.homeTeamFinale > scope.row.guestTeamFinale"> <strong class="color-danger"> {{scope.row.homeTeamName}}{{scope.row.homeTeamFinale}}  </strong> : {{scope.row.guestTeamFinale}} {{scope.row.guestTeamName}}</span>
+          <span v-if="scope.row.homeTeamFinale == scope.row.guestTeamFinale">{{scope.row.homeTeamName}} {{scope.row.homeTeamFinale}} : {{scope.row.guestTeamFinale}} {{scope.row.guestTeamName}}</span>
+          <span v-if="scope.row.homeTeamFinale < scope.row.guestTeamFinale">{{scope.row.homeTeamName}} {{scope.row.homeTeamFinale}} : <strong class="color-danger">  {{scope.row.guestTeamFinale}} {{scope.row.guestTeamName}}  </strong></span>
+        </template>
+      </el-table-column>
+<!--      <el-table-column align="center" label="链接" prop="backLinks"/>-->
+      <el-table-column align="center" width="100" prop="backLinks" label="链接">
+        <template slot-scope="scope">
+          <a style="color: #20a0ff" @click="openLink(scope.row.backLinks)"> {{ scope.row.backLinks }}</a>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="备注" prop="remark"/>
       <el-table-column v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length" align="center" fixed="right" label="操作"
                        width="130">
@@ -137,6 +168,7 @@ import ThreeLevelRoute from '@/components/ThreeLevelRoute'
 import { baseScheduleApi } from '@/api/sport/baseSchedule'
 import { permissionMixin } from '@/mixins/permissionMixin'
 import { getExport } from '@/api/exportFile'
+import { systemContainerApi } from '@/api/systemManage'
 
 export default {
   mixins: [permissionMixin],
@@ -171,6 +203,12 @@ export default {
     this.listSysDict()
   },
   methods: {
+    openLink(e) {
+      if (!e) {
+        return
+      }
+      window.open(e)
+    },
     timeChange() {
       if (this.time) {
         this.queryParam.timeFrom = this.time[0]

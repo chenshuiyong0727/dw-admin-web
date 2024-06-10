@@ -24,33 +24,51 @@
         </el-col>
       </el-row>
       <el-row class="form-flex">
-        <el-col :span="10">
-          <el-form-item class="is-required" label="主队编号" prop="homeTeamId">
-            <el-input v-model="form.homeTeamId" :disabled="type == 1 "></el-input>
+        <el-col>
+          <el-form-item class="is-required" label="主队" prop="type">
+            <el-select @change="homeSelect(form.homeTeamId)" v-model="form.homeTeamId" :disabled="type == 1 ">
+              <el-option label="请选择" value=""></el-option>
+              <el-option
+                v-for="item in teamList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+            <el-input v-if="form.status == 3" @input="homeResult"  style="width: 300px; margin-left: 10px" placeholder="请输入主队结果" v-model="form.homeTeamFinale" :disabled="type == 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
-        <el-col :span="10">
-          <el-form-item label="主队名称" prop="homeTeamName">
-            <el-input v-model="form.homeTeamName" :disabled="type == 1 "></el-input>
+        <el-col>
+          <el-form-item class="is-required" label="客队" prop="type">
+            <el-select @change="guestSelect(form.guestTeamId)"  v-model="form.guestTeamId" :disabled="type == 1 ">
+              <el-option label="请选择" value=""></el-option>
+              <el-option
+                v-for="item in teamList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+            <el-input  v-if="form.status == 3"  @input="homeResult"  style="width: 300px; margin-left: 10px" placeholder="请输入客队结果" v-model="form.guestTeamFinale" :disabled="type == 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row class="form-flex">
-        <el-col :span="10">
-          <el-form-item class="is-required" label="客队编号" prop="guestTeamId">
-            <el-input v-model="form.guestTeamId" :disabled="type == 1 "></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row class="form-flex">
-        <el-col :span="10">
-          <el-form-item label="客队名称" prop="guestTeamName">
-            <el-input v-model="form.guestTeamName" :disabled="type == 1 "></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
+<!--      <el-row class="form-flex">-->
+<!--        <el-col :span="10">-->
+<!--          <el-form-item class="is-required" label="客队编号" prop="guestTeamId">-->
+<!--            <el-input v-model="form.guestTeamId" :disabled="type == 1 "></el-input>-->
+<!--          </el-form-item>-->
+<!--        </el-col>-->
+<!--      </el-row>-->
+<!--      <el-row class="form-flex">-->
+<!--        <el-col :span="10">-->
+<!--          <el-form-item label="客队名称" prop="guestTeamName">-->
+<!--            <el-input v-model="form.guestTeamName" :disabled="type == 1 "></el-input>-->
+<!--          </el-form-item>-->
+<!--        </el-col>-->
+<!--      </el-row>-->
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item label="赛事" prop="events">
@@ -62,6 +80,35 @@
         <el-col :span="10">
           <el-form-item label="标题" prop="title">
             <el-input v-model="form.title" :disabled="type == 1 "></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row class="form-flex">
+        <el-col :span="10">
+          <el-form-item label="链接" prop="backLinks">
+            <el-input v-model="form.backLinks" :disabled="type == 1 "></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row class="form-flex">
+        <el-col>
+          <el-form-item class="is-required" label="赛程状态" prop="status">
+            <el-select v-model="form.status" :disabled="type == 1 ">
+              <el-option label="请选择" value=""></el-option>
+              <el-option
+                v-for="item in statusList"
+                :key="item.fieldValue"
+                :label="item.fieldName"
+                :value="+item.fieldValue">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row class="form-flex">
+        <el-col :span="10">
+          <el-form-item label="结局" prop="finale">
+            <el-input v-model="form.finale" :disabled="type == 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -87,6 +134,7 @@
 </template>
 <script>
 import { baseScheduleApi } from '@/api/sport/baseSchedule'
+import { baseTeamApi } from '@/api/sport/baseTeam'
 
 export default {
   data() {
@@ -96,11 +144,18 @@ export default {
         homeTeamId: '',
         homeTeamName: '',
         guestTeamId: '',
+        homeTeamFinale: '',
+        guestTeamFinale: '',
+        backLinks: '',
+        finale: '',
+        status: 1,
         guestTeamName: '',
         events: '',
         title: '',
         remark: ''
       },
+      statusList: [],
+      teamList: [],
       dataStatusList: [],
       type: '',
       id: '',
@@ -128,13 +183,38 @@ export default {
   },
   mounted() {
     this.listSysDict()
+    this.getTeamList()
   },
   methods: {
+    homeSelect(a) {
+      let team = this.teamList.filter(item => item.id == a)
+      this.form.homeTeamName = team[0].name
+    },
+    homeResult() {
+      this.form.finale = this.form.homeTeamName + ' ' + this.form.homeTeamFinale + ' : '
+        + this.form.guestTeamFinale + ' ' + this.form.guestTeamName
+    },
+    guestSelect(a) {
+     let team = this.teamList.filter(item => item.id == a)
+      this.form.guestTeamName = team[0].name
+    },
+    getTeamList() {
+      baseTeamApi.getList().then(res => {
+        if (res.subCode === 1000) {
+          this.teamList = res.data
+        } else {
+          this.$message.error(res.subMsg)
+        }
+      })
+    },
     getDetailById(id) {
       if (id) {
         baseScheduleApi.getDetailById(id).then(res => {
           if (res.subCode === 1000) {
             this.form = res.data ? res.data : {}
+            if (this.form.status == 3) {
+              this.form.finale = this.form.homeTeamName + ' ' + this.form.homeTeamFinale + ' : ' + this.form.guestTeamFinale + ' ' + this.form.guestTeamName
+            }
           } else {
             this.$message.error(res.subMsg)
           }
@@ -145,6 +225,7 @@ export default {
       let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(
         localStorage.getItem('sysDictList')) : []
       this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
+      this.statusList = sysDictList.filter(item => item.typeValue == 66)
     },
     goBack() {
       // *** 根据真实路径配置地址

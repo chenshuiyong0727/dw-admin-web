@@ -104,7 +104,7 @@
         <template slot-scope="scope">{{ scope.row.type | dictToDescTypeValue(41) }}</template>
       </el-table-column>
       <el-table-column align="center" prop="updateTime" label="更新时间" sortable>
-        <template slot-scope="scope">{{scope.row.updateTime | formateTime('{y}-{m}-{d} {h}:{i}')
+        <template slot-scope="scope">{{scope.row.updateTime | formateTime()
           }}
         </template>
       </el-table-column>

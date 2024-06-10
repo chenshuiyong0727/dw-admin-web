@@ -182,7 +182,7 @@
       </el-table-column>
       <el-table-column align="center"  width="120" label="原因" prop="reason"/>
       <el-table-column align="center" label="时间"  width="100" prop="createTime">
-        <template slot-scope="scope">{{scope.row.createTime | formateTime('{y}-{m}-{d} {h}:{i}')
+        <template slot-scope="scope">{{scope.row.createTime | formateTime()
           }}
         </template>
       </el-table-column>

@@ -128,12 +128,12 @@
       <el-table-column align="center" prop="brand" label="品牌"/>
       <el-table-column align="center" prop="remark" label="备注"/>
       <el-table-column align="center" prop="createTime" label="创建时间">
-        <template slot-scope="scope">{{scope.row.createTime | formateTime('{y}-{m}-{d} {h}:{i}')
+        <template slot-scope="scope">{{scope.row.createTime | formateTime()
           }}
         </template>
       </el-table-column>
       <el-table-column align="center" prop="updateTime" label="更新时间">
-        <template slot-scope="scope">{{scope.row.updateTime | formateTime('{y}-{m}-{d} {h}:{i}')
+        <template slot-scope="scope">{{scope.row.updateTime | formateTime()
           }}
         </template>
       </el-table-column>

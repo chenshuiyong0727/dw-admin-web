@@ -73,7 +73,7 @@
                alt="" class="userPic" @click="avatarShow(fileUrl+scope.row.imgUrl)">
         </template>
       </el-table-column>
-      <el-table-column align="center" label="图片地址-外链" prop="img"/>
+<!--      <el-table-column align="center" label="图片地址-外链" prop="img"/>-->
       <el-table-column align="center" label="备注" prop="remark"/>
       <el-table-column v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length" align="center" fixed="right" label="操作"
                        width="130">
