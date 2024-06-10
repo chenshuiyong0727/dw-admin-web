@@ -15,6 +15,13 @@
       </el-col>
     </el-row>
     <el-row class="form-flex">
+      <el-col :span="5">昵称：</span></el-col>
+      <el-col :span="18" :offset="1">
+        <el-input maxlength="5" v-model="param.nickName" placeholder="昵称"
+                  size="small"></el-input>
+      </el-col>
+    </el-row>
+    <el-row class="form-flex">
       <el-col :span="5"><i class="red">*</i><span>性别：</span></el-col>
       <el-col :span="18" :offset="1">
         <el-select v-model="param.gender" style="width:100%; display:inline-block" size="small">
@@ -150,6 +157,7 @@
           userMobile: '',
           otherType: 0,
           limitPrice: '',
+          nickName: '',
           // customerCare: '',
           roleIds: []
         },
