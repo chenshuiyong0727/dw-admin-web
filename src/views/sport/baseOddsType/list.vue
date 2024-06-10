@@ -54,6 +54,7 @@
         <template slot-scope="scope">{{ scope.row.type | dictToDescTypeValue(63) }}</template>
       </el-table-column>
       <el-table-column align="center" label="名称" prop="name"/>
+      <el-table-column align="center" label="编号" prop="code"/>
       <el-table-column v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length" align="center" fixed="right" label="操作"
                        width="130">
         <template slot-scope="scope">

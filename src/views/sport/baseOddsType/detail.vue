@@ -31,6 +31,13 @@
           </el-form-item>
         </el-col>
       </el-row>
+      <el-row class="form-flex">
+        <el-col :span="10">
+          <el-form-item class="is-required" label="编号" prop="code">
+            <el-input v-model="form.code" :disabled="type == 1 "></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
       <el-form-item>
         <el-button-group v-if="type != 1">
           <el-button type="primary" @click="submit()">提交</el-button>
@@ -51,6 +58,7 @@ export default {
     return {
       form: {
         type: '',
+        code: '',
         name: ''
       },
       typeList: [],
@@ -63,6 +71,9 @@ export default {
         ],
         name: [
           { required: true, trigger: 'blur', message: '名称非空' }
+        ],
+        code: [
+          { required: true, trigger: 'blur', message: '编号非空' }
         ]
       }
     }
