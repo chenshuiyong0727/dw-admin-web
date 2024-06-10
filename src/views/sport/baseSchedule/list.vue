@@ -113,7 +113,7 @@
       <el-table-column align="center" label="结局" width="200">
         <template slot-scope="scope">
           <span v-if="scope.row.homeTeamFinale > scope.row.guestTeamFinale"> <strong class="color-danger"> {{scope.row.homeTeamName}}{{scope.row.homeTeamFinale}}  </strong> : {{scope.row.guestTeamFinale}} {{scope.row.guestTeamName}}</span>
-          <span v-if="scope.row.homeTeamFinale == scope.row.guestTeamFinale">{{scope.row.homeTeamName}} {{scope.row.homeTeamFinale}} : {{scope.row.guestTeamFinale}} {{scope.row.guestTeamName}}</span>
+          <span v-if="scope.row.homeTeamFinale === scope.row.guestTeamFinale">{{scope.row.homeTeamName}} {{scope.row.homeTeamFinale}} : {{scope.row.guestTeamFinale}} {{scope.row.guestTeamName}}</span>
           <span v-if="scope.row.homeTeamFinale < scope.row.guestTeamFinale">{{scope.row.homeTeamName}} {{scope.row.homeTeamFinale}} : <strong class="color-danger">  {{scope.row.guestTeamFinale}} {{scope.row.guestTeamName}}  </strong></span>
         </template>
       </el-table-column>
