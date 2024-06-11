@@ -6,6 +6,12 @@ export const baseOddsTypeApi = {
     method: 'get',
     params: body
   }),
+  // 获取数据列表
+  getList: (body) => request({
+    url: '/gw/op/v1/baseOddsType/getList',
+    method: 'get',
+    params: body
+  }),
   // 批量删除
   batchdelete: (body) => request({
     url: '/gw/op/v1/baseOddsType/batch/remove',

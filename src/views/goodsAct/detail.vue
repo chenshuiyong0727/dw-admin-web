@@ -6,18 +6,18 @@
       <h5  v-if="type == 3">新增</h5>
       <el-button size="small" style="margin-right: 10px ; margin-bottom: 10px" @click="goBack()">返回列表</el-button>
     </el-row>
-    <el-form ref="form" :model="form"  :rules="rules" label-width="150px"> 
+    <el-form ref="form" :model="form"  :rules="rules" label-width="150px">
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item  prop="actNo" label="尺码" >
-            <el-input v-model="form.actNo" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.actNo" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
-      </el-row> 
+      </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item  prop="price" label="当前价" >
-            <el-input v-model="form.price" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.price" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -40,10 +40,10 @@
     data() {
       return {
         form: {
-      actNo: '', 
-      price: '', 
-    },    
-      dataStatusList: [],       
+      actNo: '',
+      price: '',
+    },
+      dataStatusList: [],
       type: '',
         id: '',
         rules: {
@@ -75,8 +75,8 @@
         }
       },
       listSysDict() {
-        let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(localStorage.getItem('sysDictList')) : []     
-        this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)       
+        let sysDictList = localStorage.getItem('sysDictList') ? JSON.parse(localStorage.getItem('sysDictList')) : []
+        this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
       },
       goBack() {
         // *** 根据真实路径配置地址

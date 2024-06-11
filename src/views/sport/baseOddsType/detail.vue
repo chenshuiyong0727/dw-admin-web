@@ -12,7 +12,7 @@
       <el-row class="form-flex">
         <el-col>
           <el-form-item class="is-required" label="指数类型" prop="type">
-            <el-select v-model="form.type" :disabled="type == 1 ">
+            <el-select v-model="form.type" :disabled="type === 1 ">
               <el-option label="请选择" value=""></el-option>
               <el-option
                 v-for="item in typeList"
@@ -27,14 +27,21 @@
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item class="is-required" label="名称" prop="name">
-            <el-input v-model="form.name" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.name" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item class="is-required" label="编号" prop="code">
-            <el-input v-model="form.code" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.code" :disabled="type === 1 "></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row class="form-flex">
+        <el-col :span="10">
+          <el-form-item class="is-required" label="排序" prop="sort">
+            <el-input v-model="form.sort" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -59,6 +66,7 @@ export default {
       form: {
         type: '',
         code: '',
+        sort: '',
         name: ''
       },
       typeList: [],
@@ -71,6 +79,9 @@ export default {
         ],
         name: [
           { required: true, trigger: 'blur', message: '名称非空' }
+        ],
+        sort: [
+          { required: true, trigger: 'blur', message: '排序非空' }
         ],
         code: [
           { required: true, trigger: 'blur', message: '编号非空' }

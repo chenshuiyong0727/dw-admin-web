@@ -12,14 +12,14 @@
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="happenTime" label="时间" class="is-required">
-            <el-input v-model="form.happenTime" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.happenTime" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col>
           <el-form-item prop="type" label="类型" class="is-required">
-            <el-select v-model="form.type" :disabled="type == 1 ">
+            <el-select v-model="form.type" :disabled="type === 1 ">
               <el-option label="请选择" value=""></el-option>
               <el-option
                 v-for="item in typeList"
@@ -35,7 +35,7 @@
         <el-col :span="10">
           <el-form-item prop="title" label="提醒标题" class="is-required">
             <el-input type="textarea" :rows="4" maxlength="140" size="small"
-                      :disabled="type == 1 " v-model="form.title"></el-input>
+                      :disabled="type === 1 " v-model="form.title"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -43,7 +43,7 @@
         <el-col :span="10">
           <el-form-item prop="content" label="提醒内容" class="is-required">
             <el-input type="textarea" :rows="4" maxlength="140" size="small"
-                      :disabled="type == 1 " v-model="form.content"></el-input>
+                      :disabled="type === 1 " v-model="form.content"></el-input>
           </el-form-item>
         </el-col>
       </el-row>

@@ -11,59 +11,61 @@
     <el-form ref="form" :model="form" :rules="rules" label-width="150px">
       <el-row class="form-flex">
         <el-col>
-          <el-form-item class="is-required" label="指数类型"
-                        prop="type">
-            <el-select v-model="form.type" :disabled="type == 1 ">
+          <el-form-item class="is-required" label="比赛" prop="scheduleId">
+            <el-select   style="width: 400px;"  @change="homeSelect(form.scheduleId)" v-model="form.scheduleId" :disabled="type === 1 ">
               <el-option label="请选择" value=""></el-option>
               <el-option
-                v-for="item in typeList"
-                :key="item.fieldValue"
-                :label="item.fieldName"
-                :value="+item.fieldValue">
+                v-for="item in scheduleList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
               </el-option>
             </el-select>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
-        <el-col :span="10">
-          <el-form-item class="is-required" label="赛程编号" prop="scheduleId">
-            <el-input v-model="form.scheduleId" :disabled="type == 1 "></el-input>
+        <el-col>
+          <el-form-item class="is-required" label="胜平负" prop="odds">
+            <el-input oninput="value=value.replace(/[^0-9.]/g,'')"  style="width: 100px" type="" placeholder="胜" v-model="oddsDetailsList[0].odds" :disabled="type === 1 "></el-input>
+            <el-input oninput="value=value.replace(/[^0-9.]/g,'')"  style="width: 100px;margin-left: 5px;"  placeholder="平"  v-model="oddsDetailsList[1].odds" :disabled="type === 1 "></el-input>
+            <el-input oninput="value=value.replace(/[^0-9.]/g,'')" style="width: 100px;margin-left: 5px;"  placeholder="负"  v-model="oddsDetailsList[2].odds" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
-        <el-col :span="10">
-          <el-form-item label="赛程名称" prop="scheduleName">
-            <el-input v-model="form.scheduleName" :disabled="type == 1 "></el-input>
+        <el-col>
+          <el-form-item class="is-required" label="让球胜负" prop="odds">
+            <el-input oninput="value=value.replace(/[^0-9.]/g,'')"  style="width: 100px" type="" placeholder="让球胜" v-model="oddsDetailsList[3].odds" :disabled="type === 1 "></el-input>
+            <el-input oninput="value=value.replace(/[^0-9.]/g,'')"  style="width: 100px;margin-left: 5px;"  placeholder="让球基数"  v-model="oddsDetailsList[4].odds" :disabled="type === 1 "></el-input>
+            <el-input oninput="value=value.replace(/[^0-9.]/g,'')" style="width: 100px;margin-left: 5px;"  placeholder="让球负"  v-model="oddsDetailsList[5].odds" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
+
       <el-row class="form-flex">
-        <el-col :span="10">
-          <el-form-item class="is-required" label="指数" prop="odds">
-            <el-input v-model="form.odds" :disabled="type == 1 "></el-input>
+        <el-col>
+          <el-form-item class="is-required" label="大小球" prop="odds">
+            <el-input oninput="value=value.replace(/[^0-9.]/g,'')"  style="width: 100px" type="" placeholder="大" v-model="oddsDetailsList[6].odds" :disabled="type === 1 "></el-input>
+            <el-input oninput="value=value.replace(/[^0-9.]/g,'')"  style="width: 100px;margin-left: 5px;"  placeholder="大小球基数"  v-model="oddsDetailsList[7].odds" :disabled="type === 1 "></el-input>
+            <el-input oninput="value=value.replace(/[^0-9.]/g,'')" style="width: 100px;margin-left: 5px;"  placeholder="小"  v-model="oddsDetailsList[8].odds" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
+
       <el-row class="form-flex">
-        <el-col :span="10">
-          <el-form-item class="is-required" label="指数类型编号" prop="oddsTypeId">
-            <el-input v-model="form.oddsTypeId" :disabled="type == 1 "></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row class="form-flex">
-        <el-col :span="10">
-          <el-form-item label="基数" prop="baseInfo">
-            <el-input v-model="form.baseInfo" :disabled="type == 1 "></el-input>
+        <el-col>
+          <el-form-item class="is-required" label="大小角球" prop="odds">
+            <el-input oninput="value=value.replace(/[^0-9.]/g,'')"  style="width: 100px" type="" placeholder="大角球" v-model="oddsDetailsList[9].odds" :disabled="type === 1 "></el-input>
+            <el-input oninput="value=value.replace(/[^0-9.]/g,'')"  style="width: 100px;margin-left: 5px;"  placeholder="大小角球基数"  v-model="oddsDetailsList[10].odds" :disabled="type === 1 "></el-input>
+            <el-input oninput="value=value.replace(/[^0-9.]/g,'')" style="width: 100px;margin-left: 5px;"  placeholder="小角球"  v-model="oddsDetailsList[11].odds" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item label="备注" prop="remark">
-            <el-input v-model="form.remark" :disabled="type == 1 " :rows="4" maxlength="140"
+            <el-input v-model="form.remark" :disabled="type === 1 " :rows="4" maxlength="140"
                       size="small" type="textarea"></el-input>
           </el-form-item>
         </el-col>
@@ -82,39 +84,50 @@
 </template>
 <script>
 import { baseOddsApi } from '@/api/sport/baseOdds'
+import { baseScheduleApi } from '@/api/sport/baseSchedule'
+import { baseOddsTypeApi } from '@/api/sport/baseOddsType'
 
 export default {
   data() {
     return {
       form: {
-        type: '',
+        type: 1,
         scheduleId: '',
         scheduleName: '',
         odds: '',
         oddsTypeId: '',
         baseInfo: '',
+        oddsDetailsList: '',
         remark: ''
       },
+      queryParam: {
+        status: 3
+      },
+      queryParamOddsType: {
+      },
+      oddsDetailsList: [
+        { code: 'generalWin', odds: '1'},
+        { code: 'generalDraw', odds: '2'},
+        { code: 'generalLose', odds: '3'},
+        { code: 'letWin', odds: '4'},
+        { code: 'letBase', odds: '5'},
+        { code: 'letWin', odds: '6'},
+        { code: 'sizeBig', odds: '7'},
+        { code: 'sizeBase', odds: '8'},
+        { code: 'sizeSmall', odds: '9'},
+        { code: 'cornerSizeBig', odds: '10'},
+        { code: 'cornerSizeBase', odds: '11'},
+        { code: 'cornerSizeSmall', odds: '12'}
+      ],
+      oddsDetailsList1: [],
+      scheduleList: [],
       typeList: [],
       dataStatusList: [],
       type: '',
       id: '',
       rules: {
-        type: [
-          {
-            required: true,
-            trigger: 'blur',
-            message: '指数类型非空'
-          }
-        ],
         scheduleId: [
-          { required: true, trigger: 'blur', message: '赛程编号非空' }
-        ],
-        odds: [
-          { required: true, trigger: 'blur', message: '指数非空' }
-        ],
-        oddsTypeId: [
-          { required: true, trigger: 'blur', message: '指数类型编号非空' }
+          { required: true, trigger: 'blur', message: '请选择比赛' }
         ]
       }
     }
@@ -130,8 +143,33 @@ export default {
   },
   mounted() {
     this.listSysDict()
+    this.getList()
+    // this.getOddsList()
   },
   methods: {
+    homeSelect(a) {
+      let team = this.scheduleList.filter(item => item.id === a)
+      this.form.scheduleName = team[0].title + ' - ' + team[0].name
+    },
+    getOddsList() {
+      baseOddsTypeApi.getList(this.queryParamOddsType).then(res => {
+        if (res.subCode === 1000) {
+          this.oddsDetailsList1 = res.data
+          console.info("oddsDetail", this.oddsDetailsList1)
+        } else {
+          this.$message.error(res.subMsg)
+        }
+      })
+    },
+    getList() {
+      baseScheduleApi.getList(this.queryParam).then(res => {
+        if (res.subCode === 1000) {
+          this.scheduleList = res.data
+        } else {
+          this.$message.error(res.subMsg)
+        }
+      })
+    },
     getDetailById(id) {
       if (id) {
         baseOddsApi.getDetailById(id).then(res => {
@@ -161,6 +199,7 @@ export default {
         if (!valid) {
           return false
         }
+        this.form.oddsDetailsList = this.oddsDetailsList
         if (this.type == 2) {
           baseOddsApi.update(this.form).then(res => {
             if (res.subCode === 1000) {

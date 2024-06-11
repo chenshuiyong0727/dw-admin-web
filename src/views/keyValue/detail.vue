@@ -10,21 +10,21 @@
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item  prop="keyName" label="键"    class="is-required" >
-            <el-input v-model="form.keyName" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.keyName" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
 <!--      <el-row class="form-flex">-->
 <!--        <el-col :span="10">-->
 <!--          <el-form-item  prop="keyValue" label="值"    class="is-required" >-->
-<!--            <el-input v-model="form.keyValue" :disabled="type == 1 "></el-input>-->
+<!--            <el-input v-model="form.keyValue" :disabled="type === 1 "></el-input>-->
 <!--          </el-form-item>-->
 <!--        </el-col>-->
 <!--      </el-row>-->
 <!--      <el-row class="form-flex">-->
 <!--        <el-col :span="10">-->
 <!--          <el-form-item  prop="remark" label="备注"  >-->
-<!--            <el-input v-model="form.remark" :disabled="type == 1 "></el-input>-->
+<!--            <el-input v-model="form.remark" :disabled="type === 1 "></el-input>-->
 <!--          </el-form-item>-->
 <!--        </el-col>-->
 <!--      </el-row>-->
@@ -32,7 +32,7 @@
         <el-col :span="10">
           <el-form-item prop="keyValue" label="值">
             <el-input type="textarea" :rows="10" maxlength="4000" size="small"
-                      :disabled="type == 1 " v-model="form.keyValue"></el-input>
+                      :disabled="type === 1 " v-model="form.keyValue"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -40,7 +40,7 @@
         <el-col :span="10">
           <el-form-item prop="remark" label="备注">
             <el-input type="textarea" :rows="4" maxlength="200" size="small"
-                      :disabled="type == 1 " v-model="form.remark"></el-input>
+                      :disabled="type === 1 " v-model="form.remark"></el-input>
           </el-form-item>
         </el-col>
       </el-row>

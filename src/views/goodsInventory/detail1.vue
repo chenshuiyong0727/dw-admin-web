@@ -12,28 +12,28 @@
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="id" label="库存编号" class="is-required">
-            <el-input v-model="form.id" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.id" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="goodsId" label="商品编号" class="is-required">
-            <el-input v-model="form.goodsId" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.goodsId" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="sizeId" label="尺码编号" class="is-required">
-            <el-input v-model="form.sizeId" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.sizeId" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="inventory" label="库存" class="is-required">
-            <el-input v-model="form.inventory" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.inventory" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>

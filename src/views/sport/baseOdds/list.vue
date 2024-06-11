@@ -4,55 +4,12 @@
       <el-row class="query-form">
         <el-col :span="6">
           <el-form-item size="small">
-            <el-select v-model="queryParam.type">
-              <el-option label="指数类型"
-                         value=""></el-option>
-              <el-option
-                v-for="item in typeList"
-                :key="item.fieldValue"
-                :label="item.fieldName"
-                :value="+item.fieldValue">
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item size="small">
             <el-input v-model.trim="queryParam.scheduleId" placeholder="赛程编号"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item size="small">
             <el-input v-model.trim="queryParam.scheduleName" placeholder="赛程名称"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item size="small">
-            <div>
-              <el-input
-                v-input-validation
-                v-model.trim="queryParam.oddsFrom"
-                placeholder="指数开始"
-                style="width: 47%">
-              </el-input>
-              <span> - </span>
-              <el-input
-                v-input-validation
-                v-model.trim="queryParam.oddsTo"
-                placeholder="指数结束"
-                style="width: 47%">
-              </el-input>
-            </div>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item size="small">
-            <el-input v-model.trim="queryParam.oddsTypeId" placeholder="指数类型编号"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item size="small">
-            <el-input v-model.trim="queryParam.baseInfo" placeholder="基数"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -90,15 +47,7 @@
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column align="center" label="序号" type="index" width="50"></el-table-column>
       <el-table-column align="center" label="指数编号" prop="id"/>
-      <el-table-column align="center" label="指数类型"
-                       prop="type">
-        <template slot-scope="scope">{{ scope.row.type | dictToDescTypeValue(63) }}</template>
-      </el-table-column>
-      <el-table-column align="center" label="赛程编号" prop="scheduleId"/>
       <el-table-column align="center" label="赛程名称" prop="scheduleName"/>
-      <el-table-column align="center" label="指数" prop="odds"/>
-      <el-table-column align="center" label="指数类型编号" prop="oddsTypeId"/>
-      <el-table-column align="center" label="基数" prop="baseInfo"/>
       <el-table-column align="center" label="备注" prop="remark"/>
       <el-table-column v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length" align="center" fixed="right" label="操作"
                        width="130">

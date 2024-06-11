@@ -6,6 +6,11 @@ export const baseScheduleApi = {
     method: 'get',
     params: body
   }),
+  getList: (body) => request({
+    url: '/gw/op/v1/baseSchedule/getList',
+    method: 'get',
+    params: body
+  }),
   // 批量删除
   batchdelete: (body) => request({
     url: '/gw/op/v1/baseSchedule/batch/remove',

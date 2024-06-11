@@ -14,7 +14,7 @@
           <el-form-item class="is-required" label="时间" prop="time">
             <el-date-picker
               v-model="form.time"
-              :disabled="type == 1 "
+              :disabled="type === 1 "
               placeholder="选择时间"
               style="width: 100%"
               type="datetime"
@@ -26,7 +26,7 @@
       <el-row class="form-flex">
         <el-col>
           <el-form-item class="is-required" label="主队" prop="type">
-            <el-select @change="homeSelect(form.homeTeamId)" v-model="form.homeTeamId" :disabled="type == 1 ">
+            <el-select @change="homeSelect(form.homeTeamId)" v-model="form.homeTeamId" :disabled="type === 1 ">
               <el-option label="请选择" value=""></el-option>
               <el-option
                 v-for="item in teamList"
@@ -35,14 +35,14 @@
                 :value="item.id">
               </el-option>
             </el-select>
-            <el-input v-if="form.status == 3" @input="homeResult"  style="width: 300px; margin-left: 10px" placeholder="请输入主队结果" v-model="form.homeTeamFinale" :disabled="type == 1 "></el-input>
+            <el-input v-if="form.status == 3" @input="homeResult"  style="width: 300px; margin-left: 10px" placeholder="请输入主队结果" v-model="form.homeTeamFinale" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col>
           <el-form-item class="is-required" label="客队" prop="type">
-            <el-select @change="guestSelect(form.guestTeamId)"  v-model="form.guestTeamId" :disabled="type == 1 ">
+            <el-select @change="guestSelect(form.guestTeamId)"  v-model="form.guestTeamId" :disabled="type === 1 ">
               <el-option label="请选择" value=""></el-option>
               <el-option
                 v-for="item in teamList"
@@ -51,49 +51,49 @@
                 :value="item.id">
               </el-option>
             </el-select>
-            <el-input  v-if="form.status == 3"  @input="homeResult"  style="width: 300px; margin-left: 10px" placeholder="请输入客队结果" v-model="form.guestTeamFinale" :disabled="type == 1 "></el-input>
+            <el-input  v-if="form.status == 3"  @input="homeResult"  style="width: 300px; margin-left: 10px" placeholder="请输入客队结果" v-model="form.guestTeamFinale" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
 <!--      <el-row class="form-flex">-->
 <!--        <el-col :span="10">-->
 <!--          <el-form-item class="is-required" label="客队编号" prop="guestTeamId">-->
-<!--            <el-input v-model="form.guestTeamId" :disabled="type == 1 "></el-input>-->
+<!--            <el-input v-model="form.guestTeamId" :disabled="type === 1 "></el-input>-->
 <!--          </el-form-item>-->
 <!--        </el-col>-->
 <!--      </el-row>-->
 <!--      <el-row class="form-flex">-->
 <!--        <el-col :span="10">-->
 <!--          <el-form-item label="客队名称" prop="guestTeamName">-->
-<!--            <el-input v-model="form.guestTeamName" :disabled="type == 1 "></el-input>-->
+<!--            <el-input v-model="form.guestTeamName" :disabled="type === 1 "></el-input>-->
 <!--          </el-form-item>-->
 <!--        </el-col>-->
 <!--      </el-row>-->
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item label="赛事" prop="events">
-            <el-input v-model="form.events" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.events" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item label="标题" prop="title">
-            <el-input v-model="form.title" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.title" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item label="链接" prop="backLinks">
-            <el-input v-model="form.backLinks" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.backLinks" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col>
           <el-form-item class="is-required" label="赛程状态" prop="status">
-            <el-select v-model="form.status" :disabled="type == 1 ">
+            <el-select v-model="form.status" :disabled="type === 1 ">
               <el-option label="请选择" value=""></el-option>
               <el-option
                 v-for="item in statusList"
@@ -108,14 +108,14 @@
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item label="结局" prop="finale">
-            <el-input v-model="form.finale" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.finale" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item label="备注" prop="remark">
-            <el-input v-model="form.remark" :disabled="type == 1 " :rows="4" maxlength="140"
+            <el-input v-model="form.remark" :disabled="type === 1 " :rows="4" maxlength="140"
                       size="small" type="textarea"></el-input>
           </el-form-item>
         </el-col>

@@ -12,28 +12,28 @@
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="id" label="订单主键" class="is-required">
-            <el-input v-model="form.id" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.id" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="orderNo" label="订单号" class="is-required">
-            <el-input v-model="form.orderNo" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.orderNo" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="inventoryId" label="库存编号" class="is-required">
-            <el-input v-model="form.inventoryId" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.inventoryId" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col>
           <el-form-item prop="status" label="状态" class="is-required">
-            <el-select v-model="form.status" :disabled="type == 1 ">
+            <el-select v-model="form.status" :disabled="type === 1 ">
               <el-option label="请选择" value=""></el-option>
               <el-option
                 v-for="item in statusList"
@@ -48,42 +48,42 @@
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="shelvesPrice" label="原售价" class="is-required">
-            <el-input v-model="form.shelvesPrice" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.shelvesPrice" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="freight" label="运费">
-            <el-input v-model="form.freight" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.freight" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="poundage" label="手续费">
-            <el-input v-model="form.poundage" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.poundage" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="theirPrice" label="到手价">
-            <el-input v-model="form.theirPrice" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.theirPrice" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="addressId" label="地址编号">
-            <el-input v-model="form.addressId" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.addressId" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="waybillNo" label="运单编号">
-            <el-input v-model="form.waybillNo" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.waybillNo" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>

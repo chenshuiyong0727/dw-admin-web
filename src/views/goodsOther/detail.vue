@@ -12,7 +12,7 @@
       <el-row class="form-flex">
         <el-col>
           <el-form-item prop="type" label="类型" class="is-required">
-            <el-select v-model="form.type" :disabled="type == 1 ">
+            <el-select v-model="form.type" :disabled="type === 1 ">
               <el-option label="请选择" value=""></el-option>
               <el-option
                 v-for="item in typeList"
@@ -27,28 +27,28 @@
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="price" label="金额" class="is-required">
-            <el-input v-model="form.price" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.price" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="name" label="商品名称">
-            <el-input v-model="form.name" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.name" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="actNo" label="货号">
-            <el-input v-model="form.actNo" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.actNo" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <!--      <el-row class="form-flex">-->
       <!--        <el-col :span="10">-->
       <!--          <el-form-item  prop="imgUrl" label="图片地址" >-->
-      <!--            <el-input v-model="form.imgUrl" :disabled="type == 1 "></el-input>-->
+      <!--            <el-input v-model="form.imgUrl" :disabled="type === 1 "></el-input>-->
       <!--          </el-form-item>-->
       <!--        </el-col>-->
       <!--      </el-row>-->
@@ -85,7 +85,7 @@
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="brand" label="品牌">
-            <el-input v-model="form.brand" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.brand" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -93,7 +93,7 @@
         <el-col :span="10">
           <el-form-item prop="remark" label="备注">
             <el-input type="textarea" :rows="4" maxlength="140" size="small"
-                      :disabled="type == 1 " v-model="form.remark"></el-input>
+                      :disabled="type === 1 " v-model="form.remark"></el-input>
           </el-form-item>
         </el-col>
       </el-row>

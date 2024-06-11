@@ -10,49 +10,49 @@
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item  prop="goodsId" label="商品编号" >
-            <el-input v-model="form.goodsId" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.goodsId" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item  prop="sizeId" label="尺码编号" >
-            <el-input v-model="form.sizeId" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.sizeId" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item  prop="size" label="尺码" >
-            <el-input v-model="form.size" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.size" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item  prop="inPutPrice" label="入库价" >
-            <el-input v-model="form.inPutPrice" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.inPutPrice" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item  prop="price" label="当前价" >
-            <el-input v-model="form.price" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.price" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item  prop="thisTimeThePrice" label="当前价" >
-            <el-input v-model="form.thisTimeThePrice" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.thisTimeThePrice" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item  prop="thisTimeProfits" label="利润" >
-            <el-input v-model="form.thisTimeProfits" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.thisTimeProfits" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>

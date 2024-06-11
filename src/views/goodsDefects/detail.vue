@@ -13,7 +13,7 @@
         <el-col :span="10">
           <el-form-item prop="reason" label="原因" class="is-required">
             <el-input type="textarea" :rows="4" maxlength="140" size="small"
-                      :disabled="type == 1 " v-model="form.reason"></el-input>
+                      :disabled="type === 1 " v-model="form.reason"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -21,7 +21,7 @@
         <el-col :span="10">
           <el-form-item prop="createTime" label="创建时间" class="is-required">
             <el-date-picker
-              :disabled="type == 1 "
+              :disabled="type === 1 "
               v-model="form.createTime"
               type="datetime"
               placeholder="选择创建时间"
@@ -34,7 +34,7 @@
       <el-row class="form-flex">
         <el-col>
           <el-form-item prop="type" label="类型">
-            <el-select v-model="form.type" :disabled="type == 1 ">
+            <el-select v-model="form.type" :disabled="type === 1 ">
               <el-option label="请选择" value=""></el-option>
               <el-option
                 v-for="item in typeList"
@@ -49,49 +49,49 @@
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="actNo" label="货号">
-            <el-input v-model="form.actNo" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.actNo" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="goodsName" label="商品名称">
-            <el-input v-model="form.goodsName" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.goodsName" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="img" label="图片地址-得物">
-            <el-input v-model="form.img" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.img" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="price" label="入库价">
-            <el-input v-model="form.price" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.price" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="orderNo" label="订单号">
-            <el-input v-model="form.orderNo" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.orderNo" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="shelvesPrice" label="原售价">
-            <el-input v-model="form.shelvesPrice" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.shelvesPrice" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item prop="status" label="状态" class="is-required">
-            <el-input v-model="form.status" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.status" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>

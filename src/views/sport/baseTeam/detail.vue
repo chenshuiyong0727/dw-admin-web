@@ -12,7 +12,7 @@
       <el-row class="form-flex">
         <el-col>
           <el-form-item class="is-required" label="球队类型" prop="type">
-            <el-select v-model="form.type" :disabled="type == 1 ">
+            <el-select v-model="form.type" :disabled="type === 1 ">
               <el-option label="请选择" value=""></el-option>
               <el-option
                 v-for="item in typeList"
@@ -27,14 +27,14 @@
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item class="is-required" label="名称" prop="name">
-            <el-input v-model="form.name" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.name" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <!--      <el-row class="form-flex">-->
       <!--        <el-col :span="10">-->
       <!--          <el-form-item prop="imgUrl" label="图片地址">-->
-      <!--            <el-input v-model="form.imgUrl" :disabled="type == 1 "></el-input>-->
+      <!--            <el-input v-model="form.imgUrl" :disabled="type === 1 "></el-input>-->
       <!--          </el-form-item>-->
       <!--        </el-col>-->
       <!--      </el-row>-->
@@ -72,7 +72,7 @@
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item label="图片地址-外链" prop="img">
-            <el-input v-model="form.img" :disabled="type == 1 "></el-input>
+            <el-input v-model="form.img" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -87,7 +87,7 @@
       <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item label="备注" prop="remark">
-            <el-input v-model="form.remark" :disabled="type == 1 " :rows="4" maxlength="140"
+            <el-input v-model="form.remark" :disabled="type === 1 " :rows="4" maxlength="140"
                       size="small" type="textarea"></el-input>
           </el-form-item>
         </el-col>
