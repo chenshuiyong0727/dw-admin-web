@@ -50,7 +50,7 @@
       <el-table-column align="center" label="赛程名称" prop="scheduleName"/>
       <el-table-column align="center" label="备注" prop="remark"/>
       <el-table-column v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length" align="center" fixed="right" label="操作"
-                       width="130">
+                       width="230">
         <template slot-scope="scope">
           <div>
             <el-button v-permission:[buttonPermissionArr.listBtn]="['查看']" type="text"
@@ -59,18 +59,19 @@
             <el-button v-permission:[buttonPermissionArr.listBtn]="['编辑']" type="text"
                        @click="goDetail(scope.row.id , 2)">编辑
             </el-button>
+            <el-button v-permission:[buttonPermissionArr.listBtn]="['删除']" type="text"
+                       @click="goDel(scope.row.id)">删除
+            </el-button>
+            <el-button v-if="scope.row.dataStatus == 1" v-permission:[buttonPermissionArr.listBtn]="['更新状态']"
+                       type="text"
+                       @click="changeStatus(scope.row.id, 0)">停用
+            </el-button>
+            <el-button v-if="scope.row.dataStatus == 0" v-permission:[buttonPermissionArr.listBtn]="['更新状态']"
+                       type="text"
+                       @click="changeStatus(scope.row.id, 1)">启用
+            </el-button>
+            <el-button type="text" @click="goCopy(scope.row)">复制</el-button>
           </div>
-          <el-button v-permission:[buttonPermissionArr.listBtn]="['删除']" type="text"
-                     @click="goDel(scope.row.id)">删除
-          </el-button>
-          <el-button v-if="scope.row.dataStatus == 1" v-permission:[buttonPermissionArr.listBtn]="['更新状态']"
-                     type="text"
-                     @click="changeStatus(scope.row.id, 0)">停用
-          </el-button>
-          <el-button v-if="scope.row.dataStatus == 0" v-permission:[buttonPermissionArr.listBtn]="['更新状态']"
-                     type="text"
-                     @click="changeStatus(scope.row.id, 1)">启用
-          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -126,6 +127,22 @@ export default {
     this.listSysDict()
   },
   methods: {
+    goCopy(val) {
+      this.$confirm('是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        baseOddsApi.goCopy({ id: val.id }).then(
+          res => {
+            if (res.subCode === 1000) {
+              this.getPage()
+            } else {
+              this.$message.error(res.subMsg)
+            }
+          })
+      })
+    },
     getPage() {
       baseOddsApi.page(this.queryParam).then(res => {
         if (res.subCode === 1000) {
@@ -156,13 +173,19 @@ export default {
       this.$router.push({ path: '/sport/baseOdds/detail', query: { id, type } })
     },
     goDel(id) {
-      baseOddsApi.delById(id).then(res => {
-        if (res.subCode === 1000) {
-          this.$message.success(res.subMsg)
-          this.getPage()
-        } else {
-          this.$message.error(res.subMsg)
-        }
+      this.$confirm('是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        baseOddsApi.delById(id).then(res => {
+          if (res.subCode === 1000) {
+            this.$message.success(res.subMsg)
+            this.getPage()
+          } else {
+            this.$message.error(res.subMsg)
+          }
+        })
       })
     },
     changeStatus(id, dataStatus) {

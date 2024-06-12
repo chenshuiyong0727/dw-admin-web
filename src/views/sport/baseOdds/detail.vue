@@ -51,7 +51,7 @@
         <el-col>
           <el-form-item class="is-required" label="让球胜负" prop="odds">
             <el-input oninput="value=value.replace(/[^0-9.]/g,'')"  style="width: 100px" type="" placeholder="让球胜" v-model="oddsDetailsList[3].odds" :disabled="type === 1 "></el-input>
-            <el-input oninput="value=value.replace(/[^0-9.]/g,'')"  style="width: 100px;margin-left: 5px;"  placeholder="让球基数"  v-model="oddsDetailsList[4].odds" :disabled="type === 1 "></el-input>
+            <el-input   style="width: 100px;margin-left: 5px;"  placeholder="让球基数"  v-model="oddsDetailsList[4].odds" :disabled="type === 1 "></el-input>
             <el-input oninput="value=value.replace(/[^0-9.]/g,'')" style="width: 100px;margin-left: 5px;"  placeholder="让球负"  v-model="oddsDetailsList[5].odds" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
@@ -61,7 +61,7 @@
         <el-col>
           <el-form-item label="大小球" prop="odds">
             <el-input oninput="value=value.replace(/[^0-9.]/g,'')"  style="width: 100px" type="" placeholder="大" v-model="oddsDetailsList[6].odds" :disabled="type === 1 "></el-input>
-            <el-input oninput="value=value.replace(/[^0-9.]/g,'')"  style="width: 100px;margin-left: 5px;"  placeholder="大小球基数"  v-model="oddsDetailsList[7].odds" :disabled="type === 1 "></el-input>
+            <el-input style="width: 100px;margin-left: 5px;"  placeholder="大小球基数"  v-model="oddsDetailsList[7].odds" :disabled="type === 1 "></el-input>
             <el-input oninput="value=value.replace(/[^0-9.]/g,'')" style="width: 100px;margin-left: 5px;"  placeholder="小"  v-model="oddsDetailsList[8].odds" :disabled="type === 1 "></el-input>
           </el-form-item>
         </el-col>
@@ -115,7 +115,7 @@ export default {
         remark: ''
       },
       queryParam: {
-        status: 3
+        status: 1
       },
       queryParamOddsType: {
       },

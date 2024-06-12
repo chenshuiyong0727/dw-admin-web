@@ -12,7 +12,11 @@ export const baseOddsApi = {
     method: 'put',
     data: body
   }),
-
+  goCopy: (body) => request({
+    url: '/gw/op/v1/baseOdds/goCopy',
+    method: 'post',
+    data: body
+  }),
   // 删除(某项)
   delById: (id) => request({
     url: '/gw/op/v1/baseOdds/' + id,
