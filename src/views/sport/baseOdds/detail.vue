@@ -24,6 +24,20 @@
           </el-form-item>
         </el-col>
       </el-row>
+      <el-row class="form-flex" v-if="events">
+        <el-col>
+          <el-form-item  label="赛事">
+            <span>{{events}}</span>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row class="form-flex" v-if="title">
+        <el-col>
+          <el-form-item  label="标题">
+            <span>{{title}}</span>
+          </el-form-item>
+        </el-col>
+      </el-row>
       <el-row class="form-flex">
         <el-col>
           <el-form-item class="is-required" label="胜平负" prop="odds">
@@ -45,7 +59,7 @@
 
       <el-row class="form-flex">
         <el-col>
-          <el-form-item class="is-required" label="大小球" prop="odds">
+          <el-form-item label="大小球" prop="odds">
             <el-input oninput="value=value.replace(/[^0-9.]/g,'')"  style="width: 100px" type="" placeholder="大" v-model="oddsDetailsList[6].odds" :disabled="type === 1 "></el-input>
             <el-input oninput="value=value.replace(/[^0-9.]/g,'')"  style="width: 100px;margin-left: 5px;"  placeholder="大小球基数"  v-model="oddsDetailsList[7].odds" :disabled="type === 1 "></el-input>
             <el-input oninput="value=value.replace(/[^0-9.]/g,'')" style="width: 100px;margin-left: 5px;"  placeholder="小"  v-model="oddsDetailsList[8].odds" :disabled="type === 1 "></el-input>
@@ -55,7 +69,7 @@
 
       <el-row class="form-flex">
         <el-col>
-          <el-form-item class="is-required" label="大小角球" prop="odds">
+          <el-form-item  label="大小角球" prop="odds">
             <el-input oninput="value=value.replace(/[^0-9.]/g,'')"  style="width: 100px" type="" placeholder="大角球" v-model="oddsDetailsList[9].odds" :disabled="type === 1 "></el-input>
             <el-input oninput="value=value.replace(/[^0-9.]/g,'')"  style="width: 100px;margin-left: 5px;"  placeholder="大小角球基数"  v-model="oddsDetailsList[10].odds" :disabled="type === 1 "></el-input>
             <el-input oninput="value=value.replace(/[^0-9.]/g,'')" style="width: 100px;margin-left: 5px;"  placeholder="小角球"  v-model="oddsDetailsList[11].odds" :disabled="type === 1 "></el-input>
@@ -106,23 +120,25 @@ export default {
       queryParamOddsType: {
       },
       oddsDetailsList: [
-        { code: 'generalWin', odds: '1'},
-        { code: 'generalDraw', odds: '2'},
-        { code: 'generalLose', odds: '3'},
-        { code: 'letWin', odds: '4'},
-        { code: 'letBase', odds: '5'},
-        { code: 'letWin', odds: '6'},
-        { code: 'sizeBig', odds: '7'},
-        { code: 'sizeBase', odds: '8'},
-        { code: 'sizeSmall', odds: '9'},
-        { code: 'cornerSizeBig', odds: '10'},
-        { code: 'cornerSizeBase', odds: '11'},
-        { code: 'cornerSizeSmall', odds: '12'}
+        { code: 'generalWin', odds: ''},
+        { code: 'generalDraw', odds: ''},
+        { code: 'generalLose', odds: ''},
+        { code: 'letWin', odds: ''},
+        { code: 'letBase', odds: ''},
+        { code: 'letWin', odds: ''},
+        { code: 'sizeBig', odds: ''},
+        { code: 'sizeBase', odds: ''},
+        { code: 'sizeSmall', odds: ''},
+        { code: 'cornerSizeBig', odds: ''},
+        { code: 'cornerSizeBase', odds: ''},
+        { code: 'cornerSizeSmall', odds: ''}
       ],
       oddsDetailsList1: [],
       scheduleList: [],
       typeList: [],
       dataStatusList: [],
+      events: '',
+      title: '',
       type: '',
       id: '',
       rules: {
@@ -148,8 +164,18 @@ export default {
   },
   methods: {
     homeSelect(a) {
-      let team = this.scheduleList.filter(item => item.id === a)
-      this.form.scheduleName = team[0].title + ' - ' + team[0].name
+      if (a){
+        let team = this.scheduleList.filter(item => item.id === a)
+        this.events = team[0].events
+        this.title = team[0].title
+        this.form.scheduleName = team[0].name
+        this.form.remark = team[0].detail
+      } else {
+        this.events = ''
+        this.title = ''
+        this.form.remark = ''
+        this.form.scheduleName = ''
+      }
     },
     getOddsList() {
       baseOddsTypeApi.getList(this.queryParamOddsType).then(res => {
@@ -175,6 +201,16 @@ export default {
         baseOddsApi.getDetailById(id).then(res => {
           if (res.subCode === 1000) {
             this.form = res.data ? res.data : {}
+            let list = res.data.oddsDetailsList
+            if (list.length) {
+              for (let i = 0; i < list.length; i++) {
+                for (let j = 0; j < this.oddsDetailsList.length; j++) {
+                  if (list[i].code === this.oddsDetailsList[j].code) {
+                    this.oddsDetailsList[j].odds = list[i].odds
+                  }
+                }
+              }
+            }
           } else {
             this.$message.error(res.subMsg)
           }
@@ -198,6 +234,38 @@ export default {
       this.$refs['form'].validate(async(valid) => {
         if (!valid) {
           return false
+        }
+        if (!this.oddsDetailsList[0].odds || !this.oddsDetailsList[1].odds || !this.oddsDetailsList[2].odds) {
+          this.$message.error('胜平负全部必填')
+          return
+        }
+        if (!this.oddsDetailsList[3].odds || !this.oddsDetailsList[4].odds || !this.oddsDetailsList[5].odds) {
+          this.$message.error('让球胜负全部必填')
+          return
+        }
+        if (this.oddsDetailsList[6].odds && (!this.oddsDetailsList[7].odds || !this.oddsDetailsList[8].odds)) {
+          this.$message.error('大小球未完整')
+          return
+        }
+        if (this.oddsDetailsList[7].odds && (!this.oddsDetailsList[6].odds || !this.oddsDetailsList[8].odds)) {
+          this.$message.error('大小球未完整')
+          return
+        }
+        if (this.oddsDetailsList[8].odds && (!this.oddsDetailsList[6].odds || !this.oddsDetailsList[7].odds)) {
+          this.$message.error('大小球未完整')
+          return
+        }
+        if (this.oddsDetailsList[9].odds && (!this.oddsDetailsList[10].odds || !this.oddsDetailsList[11].odds)) {
+          this.$message.error('大小角球未完整')
+          return
+        }
+        if (this.oddsDetailsList[10].odds && (!this.oddsDetailsList[9].odds || !this.oddsDetailsList[11].odds)) {
+          this.$message.error('大小角球未完整')
+          return
+        }
+        if (this.oddsDetailsList[11].odds && (!this.oddsDetailsList[9].odds || !this.oddsDetailsList[10].odds)) {
+          this.$message.error('大小角球未完整')
+          return
         }
         this.form.oddsDetailsList = this.oddsDetailsList
         if (this.type == 2) {
