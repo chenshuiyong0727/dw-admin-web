@@ -15,10 +15,21 @@
       </el-col>
     </el-row>
     <el-row class="form-flex">
-      <el-col :span="5">昵称：</span></el-col>
+      <el-col :span="5">昵称1：</span></el-col>
       <el-col :span="18" :offset="1">
         <el-input maxlength="5" v-model="param.nickName" placeholder="昵称"
                   size="small"></el-input>
+        <text>
+          巴西闪电, 英格兰幽灵, 德国战魂, 法国暗影, 意大利骑士, 西班牙狂风, 阿根廷龙卷, 葡萄牙幻影, 荷兰暗夜, 比利时巨人, 克罗地亚怒火, 乌拉圭电光, 瑞士钢铁, 瑞典冷锋, 哥伦比亚猛虎, 墨西哥旋风, 丹麦冰剑, 挪威雷霆, 波兰烈焰, 日本烈风, 韩国龙影, 澳大利亚狂野, 伊朗风暴, 沙特闪影, 俄罗斯战熊, 尼日利亚铁鹰, 加纳黑焰, 喀麦隆雄豹, 摩洛哥幻翼, 塞尔维亚铁骑
+        </text>
+      </el-col>
+    </el-row>
+    <el-row class="form-flex">
+      <el-col :span="5">昵称选项：</span></el-col>
+      <el-col :span="18" :offset="1">
+        巴西闪电, 英格兰幽灵, 德国战魂, 法国暗影, 意大利骑士, 西班牙狂风, 阿根廷龙卷, 葡萄牙幻影, 荷兰暗夜, 比利时巨人, 克罗地亚怒火, 乌拉圭电光, 瑞士钢铁, 瑞典冷锋, 哥伦比亚猛虎, 墨西哥旋风, 丹麦冰剑, 挪威雷霆, 波兰烈焰, 日本烈风, 韩国龙影, 澳大利亚狂野, 伊朗风暴, 沙特闪影, 俄罗斯战熊, 尼日利亚铁鹰, 加纳黑焰, 喀麦隆雄豹, 摩洛哥幻翼, 塞尔维亚铁骑
+        <!--        <el-input maxlength="5" v-model="param.nickName" placeholder="昵称"-->
+<!--                  size="small"></el-input>-->
       </el-col>
     </el-row>
     <el-row class="form-flex">

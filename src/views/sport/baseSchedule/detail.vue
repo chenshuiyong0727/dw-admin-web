@@ -166,8 +166,8 @@ export default {
         finale: '',
         status: 1,
         guestTeamName: '',
-        events: '',
-        title: '',
+        events: '欧洲杯',
+        title: '小组赛',
         remark: ''
       },
       typeList: [],
