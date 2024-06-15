@@ -76,16 +76,14 @@
 <!--      <el-table-column align="center" label="图片地址-外链" prop="img"/>-->
       <el-table-column align="center" label="备注" prop="remark"/>
       <el-table-column v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length" align="center" fixed="right" label="操作"
-                       width="130">
+                       width="230">
         <template slot-scope="scope">
-          <div>
             <el-button v-permission:[buttonPermissionArr.listBtn]="['查看']" type="text"
                        @click="goDetail(scope.row.id , 1)">查看
             </el-button>
             <el-button v-permission:[buttonPermissionArr.listBtn]="['编辑']" type="text"
                        @click="goDetail(scope.row.id , 2)">编辑
             </el-button>
-          </div>
           <el-button v-permission:[buttonPermissionArr.listBtn]="['删除']" type="text"
                      @click="goDel(scope.row.id)">删除
           </el-button>

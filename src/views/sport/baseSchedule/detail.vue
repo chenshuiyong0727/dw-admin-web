@@ -10,6 +10,21 @@
     </el-row>
     <el-form ref="form" :model="form" :rules="rules" label-width="150px">
       <el-row class="form-flex">
+        <el-col>
+          <el-form-item class="is-required" label="赛程类型" prop="type">
+            <el-select v-model="form.type" :disabled="type === 1 ">
+              <el-option label="请选择" value=""></el-option>
+              <el-option
+                v-for="item in typeList"
+                :key="item.fieldValue"
+                :label="item.fieldName"
+                :value="+item.fieldValue">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row class="form-flex">
         <el-col :span="10">
           <el-form-item class="is-required" label="时间" prop="time">
             <el-date-picker
@@ -140,6 +155,7 @@ export default {
   data() {
     return {
       form: {
+        type: 1,
         time: '',
         homeTeamId: '',
         homeTeamName: '',
@@ -154,6 +170,7 @@ export default {
         title: '',
         remark: ''
       },
+      typeList: [],
       statusList: [],
       teamList: [],
       dataStatusList: [],
@@ -162,6 +179,9 @@ export default {
       rules: {
         time: [
           { required: true, trigger: 'blur', message: '时间非空' }
+        ],
+        type: [
+          { required: true, trigger: 'blur', message: '赛程类型非空' }
         ],
         homeTeamId: [
           { required: true, trigger: 'blur', message: '主队编号非空' }
@@ -226,6 +246,7 @@ export default {
         localStorage.getItem('sysDictList')) : []
       this.dataStatusList = sysDictList.filter(item => item.typeValue == 36)
       this.statusList = sysDictList.filter(item => item.typeValue == 66)
+      this.typeList = sysDictList.filter(item => item.typeValue == 62)
     },
     goBack() {
       // *** 根据真实路径配置地址

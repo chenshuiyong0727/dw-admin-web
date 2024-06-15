@@ -48,6 +48,9 @@
       <el-table-column align="center" label="序号" type="index" width="50"></el-table-column>
       <el-table-column align="center" label="指数编号" prop="id"/>
       <el-table-column align="center" label="赛程名称" prop="scheduleName"/>
+      <el-table-column align="center" label="状态" prop="type">
+        <template slot-scope="scope">{{ scope.row.dataStatus | dictToDescTypeValue(36) }}</template>
+      </el-table-column>
       <el-table-column align="center" label="备注" prop="remark"/>
       <el-table-column v-if="buttonPermissionArr.listBtn && buttonPermissionArr.listBtn.length" align="center" fixed="right" label="操作"
                        width="230">

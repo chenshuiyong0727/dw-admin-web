@@ -80,11 +80,17 @@
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column align="center" label="序号" type="index" width="50"></el-table-column>
       <el-table-column align="center" label="赛程编号" prop="id"/>
+      <el-table-column align="center" label="赛程类型" prop="type">
+        <template slot-scope="scope">{{ scope.row.type | dictToDescTypeValue(62) }}</template>
+      </el-table-column>
       <el-table-column align="center" label="时间" prop="time">
         <template slot-scope="scope">{{
             scope.row.time | formateTime()
           }}
         </template>
+      </el-table-column>
+      <el-table-column align="center" label="状态" prop="type">
+        <template slot-scope="scope">{{ scope.row.dataStatus | dictToDescTypeValue(36) }}</template>
       </el-table-column>
       <el-table-column align="center" label="主队" prop="homeTeamName"/>
       <el-table-column align="center" label="主队图片" width="80">
@@ -108,6 +114,9 @@
       <el-table-column align="center" label="标题" prop="title"/>
       <el-table-column align="center" label="赛程状态" prop="type">
         <template slot-scope="scope">{{ scope.row.status | dictToDescTypeValue(66) }}</template>
+      </el-table-column>
+      <el-table-column align="center" label="状态" prop="type">
+        <template slot-scope="scope">{{ scope.row.dataStatus | dictToDescTypeValue(36) }}</template>
       </el-table-column>
 <!--      <el-table-column align="center" label="结局"  width="200" prop="finale"/>-->
       <el-table-column align="center" label="结局" width="200">

@@ -125,7 +125,7 @@ export default {
         { code: 'generalLose', odds: ''},
         { code: 'letWin', odds: ''},
         { code: 'letBase', odds: ''},
-        { code: 'letWin', odds: ''},
+        { code: 'letLose', odds: ''},
         { code: 'sizeBig', odds: ''},
         { code: 'sizeBase', odds: ''},
         { code: 'sizeSmall', odds: ''},
@@ -235,6 +235,8 @@ export default {
         if (!valid) {
           return false
         }
+        console.info(this.oddsDetailsList)
+        this.oddsDetailsList1 = this.oddsDetailsList
         if (!this.oddsDetailsList[0].odds || !this.oddsDetailsList[1].odds || !this.oddsDetailsList[2].odds) {
           this.$message.error('胜平负全部必填')
           return
@@ -267,7 +269,9 @@ export default {
           this.$message.error('大小角球未完整')
           return
         }
-        this.form.oddsDetailsList = this.oddsDetailsList
+        console.info(this.oddsDetailsList)
+        console.info(this.oddsDetailsList1)
+        this.form.oddsDetailsList = this.oddsDetailsList1
         if (this.type == 2) {
           baseOddsApi.update(this.form).then(res => {
             if (res.subCode === 1000) {
