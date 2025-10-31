@@ -45,7 +45,7 @@ module.exports = {
     disableHostCheck: true,
     proxy: {
       '/': {
-        // target: `http://1.12.217.123:28027`,
+        // target: `http://114.132.121.25:28027`,
         // target: `https://org.yimed.cn/`,
         // target: `http://orgunit.server.com:28087`,
         target: `http://localhost:28027`,

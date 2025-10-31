@@ -595,7 +595,7 @@ export default {
     },
     initTime() {
       let myDate = new Date().getTime()
-      let endTime = '2024/02/10 00:00:00'
+      let endTime = '2026/02/17 00:00:00'
       let timestamp2 = Date.parse(new Date(endTime))
       this.seconds = (timestamp2 - myDate) / 1000
     },
